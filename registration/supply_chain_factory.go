@@ -1,149 +1,154 @@
 package registration
 
 import (
-	"fmt"
-
-	"github.com/turbonomic/kubeturbo/pkg/discovery/probe/stitching"
+	//"fmt"
 
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 	"github.com/turbonomic/turbo-go-sdk/pkg/supplychain"
 )
 
 var (
+
+	cpuType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_CPU
+	memType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_MEM
 	vCpuType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_VCPU
 	vMemType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMEM
-	cpuProvisionedType proto.CommodityDTO_CommodityType = proto.CommodityDTO_CPU_PROVISIONED
-	memProvisionedType proto.CommodityDTO_CommodityType = proto.CommodityDTO_MEM_PROVISIONED
-	transactionType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_TRANSACTION
-
 	clusterType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_CLUSTER
 	appCommType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_APPLICATION
+	transactionType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_TRANSACTION
 	vmPMAccessType proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMPM_ACCESS
 
 	fakeKey string = "fake"
 
+	CpuTemplateComm           *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &cpuType}
+	MemTemplateComm           *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &memType}
 	vCpuTemplateComm           *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &vCpuType}
 	vMemTemplateComm           *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &vMemType}
-	cpuProvisionedTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &cpuProvisionedType}
-	memProvisionedTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &memProvisionedType}
-	applicationTemplateComm    *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &appCommType}
 	clusterTemplateComm        *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &clusterType}
+	applicationTemplateComm    *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &appCommType}
 	transactionTemplateComm    *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &transactionType}
+	vmpmAccessTemplateComm     *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &vmPMAccessType}
 )
 
 type SupplyChainFactory struct {
-	// The property used for stitching.
-	stitchingPropertyType stitching.StitchingPropertyType
 }
 
 func NewSupplyChainFactory(stype string) *SupplyChainFactory {
-	pType := stitching.IP
-	if stype == "UUID" {
-		pType = stitching.UUID
-	}
-
 	return &SupplyChainFactory{
-		stitchingPropertyType: pType,
 	}
 }
 
 func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
-	// Node supply chain builder
-	nodeSupplyChainNodeBuilder, err := f.buildNodeSupplyBuilder()
+	////Physical Machine
+	//pmSupplyChainNode, err := f.buildPMSupply()
+	//if err != nil {
+	//	return nil, err
+	//}
+
+	// Virtual Machine
+	vmSupplyChainNode, err := f.buildVMSupply()
 	if err != nil {
 		return nil, err
 	}
 
 	// Pod supply chain builder
-	podSupplyChainNodeBuilder, err := f.buildPodSupplyBuilder()
+	podSupplyChainNode, err := f.buildPodSupply()
+	if err != nil {
+		return nil, err
+	}
+
+	// Container
+	containerSupplyChainNode, err := f.buildContainerSupply()
 	if err != nil {
 		return nil, err
 	}
 
 	// Application supply chain builder
-	appSupplyChainNodeBuilder, err := f.buildApplicationSupplyBuilder()
+	appSupplyChainNode, err := f.buildApplicationSupply()
 	if err != nil {
 		return nil, err
 	}
 
 	// Virtual application supply chain builder
-	vAppSupplyChainNodeBuilder, err := f.buildVirtualApplicationSupplyBuilder()
+	vAppSupplyChainNode, err := f.buildVirtualApplicationSupply()
 	if err != nil {
 		return nil, err
 	}
 
 	supplyChainBuilder := supplychain.NewSupplyChainBuilder()
-	supplyChainBuilder.Top(vAppSupplyChainNodeBuilder)
-	supplyChainBuilder.Entity(appSupplyChainNodeBuilder)
-	supplyChainBuilder.Entity(podSupplyChainNodeBuilder)
-	supplyChainBuilder.Entity(nodeSupplyChainNodeBuilder)
+	supplyChainBuilder.Top(vAppSupplyChainNode)
+	supplyChainBuilder.Entity(appSupplyChainNode)
+	supplyChainBuilder.Entity(containerSupplyChainNode)
+	supplyChainBuilder.Entity(podSupplyChainNode)
+	supplyChainBuilder.Entity(vmSupplyChainNode)
+	//supplyChainBuilder.Entity(pmSupplyChainNode)
 
 	return supplyChainBuilder.Create()
 }
 
-func (f *SupplyChainFactory) buildNodeSupplyBuilder() (*proto.TemplateDTO, error) {
-	nodeSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_VIRTUAL_MACHINE)
+func (f *SupplyChainFactory) buildPMSupply() (*proto.TemplateDTO, error) {
+	nodeSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_PHYSICAL_MACHINE)
 	nodeSupplyChainNodeBuilder = nodeSupplyChainNodeBuilder.
-		Sells(vCpuTemplateComm).
-		Sells(vMemTemplateComm).
-		// TODO we will re-include provisioned commodities sold by node later.
-		//Sells(cpuProvisionedTemplateComm).
-		//Sells(memProvisionedTemplateComm)
+		Sells(CpuTemplateComm).
+		Sells(MemTemplateComm).
 		Sells(clusterTemplateComm)
 
 	return nodeSupplyChainNodeBuilder.Create()
 }
 
-func (f *SupplyChainFactory) buildPodSupplyBuilder() (*proto.TemplateDTO, error) {
+func (f *SupplyChainFactory) buildVMSupply() (*proto.TemplateDTO, error) {
+	nodeSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_VIRTUAL_MACHINE)
+	nodeSupplyChainNodeBuilder = nodeSupplyChainNodeBuilder.
+		//Provider(proto.EntityDTO_PHYSICAL_MACHINE, proto.Provider_HOSTING).
+		//Buys(vCpuTemplateComm).
+		//Buys(vMemTemplateComm).
+		//Buys(clusterTemplateComm).
+		Sells(vCpuTemplateComm).
+		Sells(vMemTemplateComm).
+		Sells(clusterTemplateComm)
+		// TODO we will re-include provisioned commodities sold by node later.
+		//Sells(cpuProvisionedTemplateComm).
+		//Sells(memProvisionedTemplateComm)
+
+	return nodeSupplyChainNodeBuilder.Create()
+}
+
+func (f *SupplyChainFactory) buildPodSupply() (*proto.TemplateDTO, error) {
 	// Pod supply chain node builder
 	podSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_CONTAINER_POD)
 	podSupplyChainNodeBuilder = podSupplyChainNodeBuilder.
+		Provider(proto.EntityDTO_VIRTUAL_MACHINE, proto.Provider_HOSTING).
+		Buys(vCpuTemplateComm).
+		Buys(vMemTemplateComm).
+		Buys(clusterTemplateComm).
 		Sells(vCpuTemplateComm).
 		Sells(vMemTemplateComm).
-		Sells(applicationTemplateComm).
-		Provider(proto.EntityDTO_VIRTUAL_MACHINE, proto.Provider_HOSTING).
-		// TODO we will re-include provisioned commodities bought by pod later.
-		//Buys(cpuProvisionedTemplateComm).
-		//Buys(memProvisionedTemplateComm).
-		Buys(clusterTemplateComm)
+		Sells(vmpmAccessTemplateComm)
 
-	// Link from Pod to VM
-	vmPodExtLinkBuilder := supplychain.NewExternalEntityLinkBuilder()
-	vmPodExtLinkBuilder.Link(proto.EntityDTO_CONTAINER_POD, proto.EntityDTO_VIRTUAL_MACHINE, proto.Provider_HOSTING).
-		Commodity(vCpuType, false).
-		Commodity(vMemType, false).
-		//Commodity(cpuProvisionedType, false).
-		//Commodity(memProvisionedType, false).
-		Commodity(vmPMAccessType, true).
-		Commodity(clusterType, true)
-
-	switch f.stitchingPropertyType {
-	case stitching.UUID:
-		vmPodExtLinkBuilder.
-			ProbeEntityPropertyDef(supplychain.SUPPLY_CHAIN_CONSTANT_UUID, "UUID of the Node").
-			ExternalEntityPropertyDef(supplychain.VM_UUID)
-	case stitching.IP:
-		vmPodExtLinkBuilder.
-			ProbeEntityPropertyDef(supplychain.SUPPLY_CHAIN_CONSTANT_IP_ADDRESS, "IP of the Node").
-			ExternalEntityPropertyDef(supplychain.VM_IP)
-	default:
-		return nil, fmt.Errorf("Stitching property type %s is not supported.", f.stitchingPropertyType)
-	}
-
-	vmPodExternalLink, err := vmPodExtLinkBuilder.Build()
-	if err != nil {
-		return nil, err
-	}
-
-	return podSupplyChainNodeBuilder.ConnectsTo(vmPodExternalLink).Create()
+	return podSupplyChainNodeBuilder.Create()
 }
 
-func (f *SupplyChainFactory) buildApplicationSupplyBuilder() (*proto.TemplateDTO, error) {
+func (f *SupplyChainFactory) buildContainerSupply() (*proto.TemplateDTO, error) {
+	containerBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_CONTAINER)
+
+	containerBuilder = containerBuilder.
+		Provider(proto.EntityDTO_CONTAINER_POD, proto.Provider_HOSTING).
+		Buys(vmpmAccessTemplateComm).
+		Buys(vCpuTemplateComm).
+		Buys(vMemTemplateComm).
+		Sells(vCpuTemplateComm).
+		Sells(vMemTemplateComm).
+		Sells(applicationTemplateComm)
+
+	return containerBuilder.Create()
+}
+
+func (f *SupplyChainFactory) buildApplicationSupply() (*proto.TemplateDTO, error) {
 	// Application supply chain builder
 	appSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_APPLICATION)
 	appSupplyChainNodeBuilder = appSupplyChainNodeBuilder.
 		Sells(transactionTemplateComm).
-		Provider(proto.EntityDTO_CONTAINER_POD, proto.Provider_HOSTING).
+		Provider(proto.EntityDTO_CONTAINER, proto.Provider_HOSTING).
 		Buys(vCpuTemplateComm).
 		Buys(vMemTemplateComm).
 		Buys(applicationTemplateComm)
@@ -151,7 +156,7 @@ func (f *SupplyChainFactory) buildApplicationSupplyBuilder() (*proto.TemplateDTO
 	return appSupplyChainNodeBuilder.Create()
 }
 
-func (f *SupplyChainFactory) buildVirtualApplicationSupplyBuilder() (*proto.TemplateDTO, error) {
+func (f *SupplyChainFactory) buildVirtualApplicationSupply() (*proto.TemplateDTO, error) {
 	vAppSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_VIRTUAL_APPLICATION)
 	vAppSupplyChainNodeBuilder = vAppSupplyChainNodeBuilder.
 		Provider(proto.EntityDTO_APPLICATION, proto.Provider_LAYERED_OVER).
