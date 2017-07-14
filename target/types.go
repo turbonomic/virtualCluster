@@ -17,7 +17,7 @@ type PhysicalMachine struct {
 	CPU    Resource
 	Memory Resource
 
-	ClusterId string
+	ClusterID string
 	IP        string
 
 	Pods []*Pod

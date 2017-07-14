@@ -9,7 +9,7 @@ import (
 )
 
 func (pod *Pod) BuildDTO(host *PhysicalMachine) (*proto.EntityDTO, error) {
-	bought, _ := pod.createCommoditiesBought(host.ClusterId)
+	bought, _ := pod.createCommoditiesBought(host.ClusterID)
 	sold, _ := pod.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_PHYSICAL_MACHINE, host.UUID)
 
