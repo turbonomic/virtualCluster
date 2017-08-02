@@ -16,6 +16,7 @@ func (pm *PhysicalMachine) BuildDTO() (*proto.EntityDTO, error) {
 
 	entity, err := builder.
 	NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, pm.UUID).
+		WithPowerState(proto.EntityDTO_POWERED_ON).
 		DisplayName(pm.Name).
 		BuysCommodities(bought).
 		SellsCommodities(sold).

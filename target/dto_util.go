@@ -5,6 +5,10 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/builder"
 )
 
+const (
+	defaultInfiniteCapacity = 1E10
+)
+
 func CreateResourceCommodity(res *Resource, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.NewCommodityDTOBuilder(ctype).
 		Capacity(res.Capacity).
@@ -16,5 +20,6 @@ func CreateKeyCommodity(key string, ctype proto.CommodityDTO_CommodityType) (*pr
 	return builder.
 		NewCommodityDTOBuilder(ctype).
 		Key(key).
+		Capacity(defaultInfiniteCapacity).
 		Create()
 }
