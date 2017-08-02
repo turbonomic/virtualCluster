@@ -8,7 +8,6 @@ import (
 )
 
 var (
-
 	cpuType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_CPU
 	memType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_MEM
 	vCpuType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_VCPU

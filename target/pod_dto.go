@@ -55,7 +55,7 @@ func (pod *Pod) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	memComm, _ := CreateResourceCommodity(&(pod.Memory), proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
-	podComm, _ := CreateKeyCommodity(pod.UUID, proto.CommodityDTO_CLUSTER)
+	podComm, _ := CreateKeyCommodity(pod.UUID, proto.CommodityDTO_VMPM_ACCESS)
 	result = append(result, podComm)
 
 	return result, nil

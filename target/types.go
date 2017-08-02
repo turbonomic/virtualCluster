@@ -25,6 +25,7 @@ type PhysicalMachine struct {
 
 type Pod struct {
 	ObjectMeta
+	AppName string
 
 	CPU    Resource
 	Memory Resource
@@ -37,6 +38,8 @@ type Container struct {
 
 	CPU    Resource
 	Memory Resource
+
+	app *Application
 }
 
 type Application struct {
@@ -44,6 +47,12 @@ type Application struct {
 
 	CPU    Resource
 	Memory Resource
+}
+
+type VApplication struct {
+	ObjectMeta
+
+	pods []*Pod
 }
 
 type Cluster struct {
