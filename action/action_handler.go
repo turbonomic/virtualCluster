@@ -61,7 +61,7 @@ func (h *ActionHandler) ExecuteAction(
 		return result, nil
 	}
 
-	result, err := executor.Execute(action)
+	result, err := executor.Execute(action, progressTracker)
 	if err != nil {
 		msg := fmt.Sprintf("Action failed: %v", err.Error())
 		glog.Error(msg)

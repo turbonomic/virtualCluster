@@ -2,6 +2,7 @@ package action
 
 import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
+	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 )
 
 type TurboActionType string
@@ -13,5 +14,5 @@ const (
 )
 
 type TurboExecutor interface {
-	Execute(actionItem *proto.ActionItemDTO) (*proto.ActionResult, error)
+	Execute(actionItem *proto.ActionItemDTO, progressTracker sdkprobe.ActionProgressTracker) (*proto.ActionResult, error)
 }
