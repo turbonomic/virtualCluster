@@ -8,12 +8,12 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (vapp *VApplication) BuildDTO(pods []*Pod,  appDTOs map[string]*proto.EntityDTO) (*proto.EntityDTO, error) {
+func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 	vAppBuilder := builder.
 		NewEntityDTOBuilder(proto.EntityDTO_VIRTUAL_APPLICATION, vapp.UUID).
 		DisplayName(vapp.Name)
 
-	if err := vapp.getCommoditiesBought(vAppBuilder, pods,appDTOs); err != nil {
+	if err := vapp.getCommoditiesBought(vAppBuilder); err != nil {
 		nerr := fmt.Errorf("build VApplication DTO failed: %v", err)
 		glog.Error(nerr.Error())
 		return nil, nerr
@@ -30,27 +30,23 @@ func (vapp *VApplication) BuildDTO(pods []*Pod,  appDTOs map[string]*proto.Entit
 	return entity, nil
 }
 
-func (vapp *VApplication) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuilder, pods []*Pod, appDTOs map[string]*proto.EntityDTO) error {
+func (vapp *VirtualApp) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuilder) error {
 	i := 0
 
-	for _, pod := range pods {
+	for _, pod := range vapp.Pods {
 		for _, container := range pod.Containers {
-			appId := container.UUID
-
-			appDTO, exist := appDTOs[appId]
-			if !exist {
-				//TODO: should I retrun error?
-				glog.Warningf("cannot find container[%s/%s] appDTO for VApplication[%s/%s]", container.Name, appId, vapp.Kind, vapp.Name)
-				continue
-			}
-
-			bought, err := vapp.getCommodityBought(appDTO)
+			app := container.App
+			bought, err := builder.NewCommodityDTOBuilder(proto.EntityDTO_APPLICATION).
+									Key(app.UUID).
+									Used(app.Transaction).
+									Create()
 			if err != nil {
-				glog.Errorf("failed to get commodity from container[%s/%s] for VApplication[%s/%s]", container.Name, appId, vapp.Kind, vapp.Name)
+				glog.Errorf("failed to create commodity bought for VirtualApp[%s]-pod[%s]-container[%s]-app[%s]",
+					vapp.Name, pod.Name, container.Name, app.Name)
 				continue
 			}
 
-			appProvider := builder.CreateProvider(proto.EntityDTO_APPLICATION, appId)
+			appProvider := builder.CreateProvider(proto.EntityDTO_APPLICATION, app.UUID)
 			vAppBuilder.Provider(appProvider).BuysCommodities(bought)
 			i ++
 		}
@@ -63,7 +59,8 @@ func (vapp *VApplication) getCommoditiesBought(vAppBuilder *builder.EntityDTOBui
 	return nil
 }
 
-func (vapp *VApplication) getCommodityBought(appDTO *proto.EntityDTO)([]*proto.CommodityDTO, error) {
+/*
+func (vapp *VirtualApp) getCommodityBought(appDTO *proto.EntityDTO)([]*proto.CommodityDTO, error) {
 	var result []*proto.CommodityDTO
 
 	hmap := make(map[proto.CommodityDTO_CommodityType]struct{})
@@ -94,4 +91,4 @@ func (vapp *VApplication) getCommodityBought(appDTO *proto.EntityDTO)([]*proto.C
 	}
 
 	return result, nil
-}
+}*/

@@ -13,7 +13,6 @@ type DiscoveryClient struct {
 }
 
 func NewDiscoveryClient(targetConfig *TargetConf) *DiscoveryClient {
-
 	return &DiscoveryClient{
 		targetConfig: targetConfig,
 	}
@@ -52,7 +51,7 @@ func (dc *DiscoveryClient) GetAccountValues() *sdkprobe.TurboTargetInfo {
 }
 
 func (dc *DiscoveryClient) Validate(accountValues []*proto.AccountValue) (*proto.ValidationResponse, error) {
-	glog.V(2).Infof("begin to validating target")
+	glog.V(2).Infof("begin to validating target...")
 
 	return &proto.ValidationResponse{}, nil
 }

@@ -8,6 +8,38 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
+func (d *Container) Clone(newId string) *Container {
+	result := NewContainer(d.Name, newId)
+
+	result.Memory = d.Memory
+	result.CPU = d.CPU
+
+	//not copy the APP
+	result.App = nil
+	return result
+}
+
+// this should be called after Pods have been built
+func (d *Container) GenerateApp() error {
+	appName := fmt.Sprintf("app-%s", d.Name)
+	appId := fmt.Sprintf("app-%s", d.UUID)
+	app := NewApplication(appName, appId)
+
+	app.CPU = d.CPU
+	app.Memory = d.Memory
+
+	d.App = app
+	return nil
+}
+
+func (d *Container) BuildAppDTO() (*proto.EntityDTO, error) {
+	if d.App == nil {
+		d.GenerateApp()
+	}
+
+	return d.App.BuildDTO(d)
+}
+
 func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {
 	bought, _ := docker.createCommoditiesBought(pod.UUID)
 	sold, _ := docker.createCommoditiesSold(pod.AppName)

@@ -8,7 +8,7 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (pod *Pod) BuildDTO(host *PhysicalMachine) (*proto.EntityDTO, error) {
+func (pod *Pod) BuildDTO(host *HostNode) (*proto.EntityDTO, error) {
 	bought, _ := pod.createCommoditiesBought(host.ClusterID)
 	sold, _ := pod.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_PHYSICAL_MACHINE, host.UUID)
@@ -57,6 +57,34 @@ func (pod *Pod) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	podComm, _ := CreateKeyCommodity(pod.UUID, proto.CommodityDTO_VMPM_ACCESS)
 	result = append(result, podComm)
+
+	return result, nil
+}
+
+func (pod *Pod) BuildContainerDTOs()([]*proto.EntityDTO, error) {
+	var result []*proto.EntityDTO
+
+	for _, container := range pod.Containers {
+		containerDTO, err := container.BuildDTO(pod)
+		if err != nil {
+			e := fmt.Errorf("failed to build containerDTO for pod[%s] container[%s]",
+			pod.Name, container.Name)
+			glog.Error(e.Error())
+			continue
+		}
+		result = append(result, containerDTO)
+
+		appDTO, err := container.BuildAppDTO()
+		if err != nil {
+			e := fmt.Errorf("failed to build appDTO for pod[%s] container[%s]",
+				pod.Name, container.Name)
+			glog.Error(e.Error())
+			continue
+		}
+		result = append(result, appDTO)
+	}
+
+	glog.V(3).Infof("There are %d DTOs for Pod[%s].", len(result) + 1, pod.Name)
 
 	return result, nil
 }

@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/golang/glog"
-	"github.com/spf13/pflag"
 
 	"containerChain/action"
 	"containerChain/discovery"
@@ -24,17 +23,17 @@ var (
 )
 
 func getFlags() {
-	pflag.StringVar(&targetConf, "targetConf", "./target-conf.json", "configuration file of target")
-	pflag.StringVar(&opsMgrConf, "opsMgrConf", "./turbo-conf.json", "configuration file of OpsMgr")
-	pflag.IntVar(&pmNum, "pmNum", 10, "number of total physical machines")
-	pflag.IntVar(&vmNum, "vmNum", 50, "number of total virtual machines")
-	pflag.IntVar(&podNum, "podNum", 100, "number of total pods")
-	pflag.StringVar(&stitchType, "stitchType", "IP", "stitching type (IP | UUID)")
+	flag.StringVar(&targetConf, "targetConf", "./target-conf.json", "configuration file of target")
+	flag.StringVar(&opsMgrConf, "opsMgrConf", "./turbo-conf.json", "configuration file of OpsMgr")
+	flag.IntVar(&pmNum, "pmNum", 10, "number of total physical machines")
+	flag.IntVar(&vmNum, "vmNum", 50, "number of total virtual machines")
+	flag.IntVar(&podNum, "podNum", 100, "number of total pods")
+	flag.StringVar(&stitchType, "stitchType", "IP", "stitching type (IP | UUID)")
 
-	pflag.Set("alsologtostderr", "true")
+	flag.Set("alsologtostderr", "true")
 
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
+	//flag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	flag.Parse()
 }
 
 type TargetTopoConf struct {

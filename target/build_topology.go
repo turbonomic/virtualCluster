@@ -34,34 +34,35 @@ type serviceTemplate struct {
 }
 
 type TargetTopology struct {
-	ClusterId string
+	ClusterId            string
 
 	// containerTemplate map
-	containerTemplateMap map[string]*containerTemplate
+	ContainerTemplateMap map[string]*containerTemplate
 
 	// podTemplate map
-	podTemplateMap map[string]*podTemplate
+	PodTemplateMap       map[string]*podTemplate
 
 	//nodeTemplate map
-	nodeTemplateMap map[string]*nodeTemplate
+	NodeTemplateMap      map[string]*nodeTemplate
 
 	//serviceTemplate amp
-	serviceTemplateMap map[string]*serviceTemplate
+	ServiceTemplateMap   map[string]*serviceTemplate
 }
 
 func NewTargetTopology(clusterId string) *TargetTopology {
 	topo := &TargetTopology{
 		ClusterId: clusterId,
-		containerTemplateMap: make(map[string]*containerTemplate),
-		podTemplateMap: make(map[string]*podTemplate),
-		nodeTemplateMap: make(map[string]*nodeTemplate),
+		ContainerTemplateMap: make(map[string]*containerTemplate),
+		PodTemplateMap: make(map[string]*podTemplate),
+		NodeTemplateMap: make(map[string]*nodeTemplate),
 	}
 
 	return topo
 }
 
+// load containerTemplate from a line
 //fields: containerName, req_cpu, used_cpu, req_memory, used_mem
-func (t *TargetTopology) buildContainer(fields []string) error {
+func (t *TargetTopology) loadContainer(fields []string) error {
 	expectNumFields := 5
 	if len(fields) != expectNumFields {
 		return fmt.Errorf("fields num mismatch [%d Vs. %d]", len(fields), expectNumFields)
@@ -74,7 +75,7 @@ func (t *TargetTopology) buildContainer(fields []string) error {
 	}
 
 	key := fields[0]
-	if _, exist := t.containerTemplateMap[key]; exist {
+	if _, exist := t.ContainerTemplateMap[key]; exist {
 		return fmt.Errorf("container[%s] already exists.", key)
 	}
 
@@ -108,12 +109,13 @@ func (t *TargetTopology) buildContainer(fields []string) error {
 			},
 	}
 
-	t.containerTemplateMap[key] = container
+	t.ContainerTemplateMap[key] = container
 	return nil
 }
 
+// load podTemplate from a line
 // pod.key, container1, container2, ...
-func (t *TargetTopology) buildPod(fields []string) error {
+func (t *TargetTopology) loadPod(fields []string) error {
 	expectNumFields := 2
 	if len(fields) < expectNumFields {
 		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
@@ -127,7 +129,7 @@ func (t *TargetTopology) buildPod(fields []string) error {
 	}
 
 	key := fields[0]
-	if _, exist := t.podTemplateMap[key]; exist {
+	if _, exist := t.PodTemplateMap[key]; exist {
 		fmt.Errorf("Pod[%s] already exist.")
 	}
 
@@ -141,12 +143,13 @@ func (t *TargetTopology) buildPod(fields []string) error {
 		Containers: containers,
 	}
 
-	t.podTemplateMap[key] = pod
+	t.PodTemplateMap[key] = pod
 	return nil
 }
 
+// load nodeTemplate from a line
 // node.key, cpu, memory, pod1, pod2, ...
-func (t *TargetTopology) buildNode(fields []string) error {
+func (t *TargetTopology) loadNode(fields []string) error {
 	expectNumFields := 3
 	if len(fields) < expectNumFields {
 		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
@@ -160,7 +163,7 @@ func (t *TargetTopology) buildNode(fields []string) error {
 	}
 
 	key := fields[0]
-	if _, exist := t.nodeTemplateMap[key]; exist {
+	if _, exist := t.NodeTemplateMap[key]; exist {
 		fmt.Errorf("node [%s] already exist.")
 	}
 
@@ -186,12 +189,13 @@ func (t *TargetTopology) buildNode(fields []string) error {
 		Pods: pods,
 	}
 
-	t.nodeTemplateMap[key] = node
+	t.NodeTemplateMap[key] = node
 	return nil
 }
 
+// load serviceTemplate from a line
 // service-key, pod1, pod2, ...
-func (t *TargetTopology) buildService(fields []string) error {
+func (t *TargetTopology) loadService(fields []string) error {
 	expectNumFields := 2
 	if len(fields) < expectNumFields {
 		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
@@ -205,7 +209,7 @@ func (t *TargetTopology) buildService(fields []string) error {
 	}
 
 	key := fields[0]
-	if _, exist := t.serviceTemplateMap[key]; exist {
+	if _, exist := t.ServiceTemplateMap[key]; exist {
 		fmt.Errorf("service[%s] already exist.")
 	}
 
@@ -219,7 +223,7 @@ func (t *TargetTopology) buildService(fields []string) error {
 		Pods: pods,
 	}
 
-	t.serviceTemplateMap[key] = service
+	t.ServiceTemplateMap[key] = service
 	return nil
 }
 
@@ -230,16 +234,16 @@ func (t *TargetTopology) ParseLine(lineNum int, line string, fields[] string) er
 	switch entityType {
 	case "container":
 		glog.V(2).Infof("begin to build a container [%d]: %s", lineNum, line)
-		err = t.buildContainer(fields[1:])
+		err = t.loadContainer(fields[1:])
 	case "pod":
 		glog.V(2).Infof("begin to build a pod [%d]: %s", lineNum, line)
-		err = t.buildPod(fields[1:])
+		err = t.loadPod(fields[1:])
 	case "node":
 		glog.V(2).Infof("begin to build a node [%d]: %s", lineNum, line)
-		err = t.buildNode(fields[1:])
+		err = t.loadNode(fields[1:])
 	case "service":
 		glog.V(2).Infof("begin to build a service [%d]: %s", lineNum, line)
-		err = t.buildService(fields[1:])
+		err = t.loadService(fields[1:])
 	default:
 		err = fmt.Errorf("wrong EntityType[%s]", fields[0])
 	}
@@ -249,6 +253,39 @@ func (t *TargetTopology) ParseLine(lineNum int, line string, fields[] string) er
 	}
 
 	return nil
+}
+
+func (t *TargetTopology) CheckTemplateEmpty() error {
+	if len(t.PodTemplateMap) < 1 {
+		err := fmt.Errorf("podTemplate is empty.")
+		glog.Error(err.Error())
+		return err
+	}
+
+	if len(t.ContainerTemplateMap) < 1 {
+		err := fmt.Errorf("containerTemplate is empty.")
+		glog.Error(err.Error())
+		return err
+	}
+
+	if len(t.NodeTemplateMap) < 1 {
+		err := fmt.Errorf("nodeTemplate is empty.")
+		glog.Error(err.Error())
+		return err
+	}
+
+	if len(t.ServiceTemplateMap) < 1 {
+		glog.Warningf("serviceTemplateMap is empty.")
+	}
+
+	return nil
+}
+
+func (t *TargetTopology) PrintTemplateInfo() {
+	glog.V(1).Infof("containerTemplate.num=%d", len(t.ContainerTemplateMap))
+	glog.V(1).Infof("podTemplate.num=%d", len(t.PodTemplateMap))
+	glog.V(1).Infof("nodeTemplate.num=%d", len(t.NodeTemplateMap))
+	glog.V(1).Infof("serviceTemplate.num=%d", len(t.ServiceTemplateMap))
 }
 
 func (t *TargetTopology) LoadTopology(fname string)  error {
@@ -285,9 +322,13 @@ func (t *TargetTopology) LoadTopology(fname string)  error {
 		return err
 	}
 
-	return nil
-}
+	if err := t.CheckTemplateEmpty(); err != nil {
+		err := fmt.Errorf("Template checked failed: %v", err)
+		glog.Error(err.Error())
+		return err
+	}
 
-func (t *TargetTopology) GenerateTarget() error {
+	t.PrintTemplateInfo()
+
 	return nil
 }
