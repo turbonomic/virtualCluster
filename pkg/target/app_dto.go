@@ -31,7 +31,7 @@ func (app *Application) BuildDTO(docker *Container) (*proto.EntityDTO, error) {
 	return entity, nil
 }
 
-func (app *Application) createCommoditiesBought(containerId string) (*proto.CommodityDTO, error) {
+func (app *Application) createCommoditiesBought(containerId string) ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 

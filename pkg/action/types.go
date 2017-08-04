@@ -1,8 +1,8 @@
 package action
 
 import (
-	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
+	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
 type TurboActionType string

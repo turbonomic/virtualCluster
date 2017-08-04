@@ -1,12 +1,12 @@
 package target
 
 import (
-	"os"
-	"github.com/golang/glog"
 	"bufio"
-	"strings"
 	"fmt"
+	"github.com/golang/glog"
+	"os"
 	"strconv"
+	"strings"
 )
 
 type containerTemplate struct {
@@ -21,7 +21,7 @@ type podTemplate struct {
 }
 
 type nodeTemplate struct {
-	Key    string
+	Key string
 
 	CPU    float64
 	Memory float64
@@ -29,32 +29,33 @@ type nodeTemplate struct {
 }
 
 type serviceTemplate struct {
-	Key string
+	Key  string
 	Pods []string
 }
 
 type TargetTopology struct {
-	ClusterId            string
+	ClusterId string
 
 	// containerTemplate map
 	ContainerTemplateMap map[string]*containerTemplate
 
 	// podTemplate map
-	PodTemplateMap       map[string]*podTemplate
+	PodTemplateMap map[string]*podTemplate
 
 	//nodeTemplate map
-	NodeTemplateMap      map[string]*nodeTemplate
+	NodeTemplateMap map[string]*nodeTemplate
 
 	//serviceTemplate amp
-	ServiceTemplateMap   map[string]*serviceTemplate
+	ServiceTemplateMap map[string]*serviceTemplate
 }
 
 func NewTargetTopology(clusterId string) *TargetTopology {
 	topo := &TargetTopology{
-		ClusterId: clusterId,
+		ClusterId:            clusterId,
 		ContainerTemplateMap: make(map[string]*containerTemplate),
-		PodTemplateMap: make(map[string]*podTemplate),
-		NodeTemplateMap: make(map[string]*nodeTemplate),
+		PodTemplateMap:       make(map[string]*podTemplate),
+		NodeTemplateMap:      make(map[string]*nodeTemplate),
+		ServiceTemplateMap:   make(map[string]*serviceTemplate),
 	}
 
 	return topo
@@ -100,13 +101,13 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 	container := &containerTemplate{
 		Key: key,
 		CPU: Resource{
-				Capacity: reqCPU,
-				Used: usedCPU,
-			},
+			Capacity: reqCPU,
+			Used:     usedCPU,
+		},
 		Memory: Resource{
-				Capacity: reqMem,
-				Used: usedMem,
-			},
+			Capacity: reqMem,
+			Used:     usedMem,
+		},
 	}
 
 	t.ContainerTemplateMap[key] = container
@@ -134,12 +135,12 @@ func (t *TargetTopology) loadPod(fields []string) error {
 	}
 
 	containers := []string{}
-	for i := 1; i < len(fields); i ++ {
+	for i := 1; i < len(fields); i++ {
 		containers = append(containers, fields[i])
 	}
 
 	pod := &podTemplate{
-		Key: key,
+		Key:        key,
 		Containers: containers,
 	}
 
@@ -178,15 +179,15 @@ func (t *TargetTopology) loadNode(fields []string) error {
 	}
 
 	pods := []string{}
-	for i := 3; i < len(fields); i ++ {
+	for i := 3; i < len(fields); i++ {
 		pods = append(pods, fields[i])
 	}
 
 	node := &nodeTemplate{
-		Key: key,
-		CPU: cpu,
+		Key:    key,
+		CPU:    cpu,
 		Memory: mem,
-		Pods: pods,
+		Pods:   pods,
 	}
 
 	t.NodeTemplateMap[key] = node
@@ -214,12 +215,12 @@ func (t *TargetTopology) loadService(fields []string) error {
 	}
 
 	pods := []string{}
-	for i := 1; i < len(fields); i ++ {
+	for i := 1; i < len(fields); i++ {
 		pods = append(pods, fields[i])
 	}
 
 	service := &serviceTemplate{
-		Key: key,
+		Key:  key,
 		Pods: pods,
 	}
 
@@ -227,7 +228,7 @@ func (t *TargetTopology) loadService(fields []string) error {
 	return nil
 }
 
-func (t *TargetTopology) ParseLine(lineNum int, line string, fields[] string) error {
+func (t *TargetTopology) parseLine(lineNum int, line string, fields []string) error {
 	entityType := strings.TrimSpace(fields[0])
 
 	var err error
@@ -288,7 +289,7 @@ func (t *TargetTopology) PrintTemplateInfo() {
 	glog.V(1).Infof("serviceTemplate.num=%d", len(t.ServiceTemplateMap))
 }
 
-func (t *TargetTopology) LoadTopology(fname string)  error {
+func (t *TargetTopology) LoadTopology(fname string) error {
 	file, err := os.Open(fname)
 	if err != nil {
 		glog.Errorf("failed to open file[%s] for read: %v", fname, err)
@@ -303,7 +304,7 @@ func (t *TargetTopology) LoadTopology(fname string)  error {
 		lineNum += 1
 
 		if len(line) < 1 || line[0] == '#' {
-			glog.V(3).Infof("skip file[%s] line#%d", fname, lineNum)
+			glog.V(4).Infof("skip file[%s] line#%d", fname, lineNum)
 			continue
 		}
 
@@ -312,7 +313,7 @@ func (t *TargetTopology) LoadTopology(fname string)  error {
 			glog.V(2).Infof("Invalid file[%s] line#%d", fname, lineNum)
 		}
 
-		if err := t.ParseLine(lineNum, line, segs); err != nil {
+		if err := t.parseLine(lineNum, line, segs); err != nil {
 			glog.Errorf("parse [%s/%d] line[%s] failed: %v", fname, lineNum, line, err)
 		}
 	}

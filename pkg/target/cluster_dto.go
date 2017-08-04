@@ -1,19 +1,36 @@
 package target
 
 import (
-	"github.com/golang/glog"
 	"fmt"
+	"github.com/golang/glog"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
+func (c *Cluster) GenerateContainerAPP() error {
 	if c.Nodes == nil || len(c.Nodes) < 1 {
 		err := fmt.Errorf("empty cluster[%s/%s].", c.Name, c.UUID)
 		glog.Error(err.Error())
 		return err
 	}
 
+	for _, host := range c.Nodes {
+		for _, pod := range host.Pods {
+			for _, container := range pod.Containers {
+				container.GenerateApp()
+			}
+		}
+	}
+	return nil
+}
+
+func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 	var result []*proto.EntityDTO
+
+	if c.Nodes == nil || len(c.Nodes) < 1 {
+		err := fmt.Errorf("empty cluster[%s/%s].", c.Name, c.UUID)
+		glog.Error(err.Error())
+		return result, err
+	}
 
 	//1. node, pod, container, app DTOs
 	for _, host := range c.Nodes {
@@ -32,11 +49,11 @@ func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 			continue
 		}
 		result = append(result, subDTOs...)
-		glog.V(3).Infof("There are %d DTOs on node[%s].", len(subDTOs) + 1, host.Name)
+		glog.V(3).Infof("There are %d DTOs on node[%s].", len(subDTOs)+1, host.Name)
 	}
 
 	//2. service DTOs
-	if serviceDTOs, err := c.GenerateServiceDTOs(); err != nil {
+	if serviceDTOs, err := c.generateServiceDTOs(); err != nil {
 		glog.Errorf("failed to generate ServiceDTOs:%v", err)
 	} else {
 		result = append(result, serviceDTOs...)
@@ -50,7 +67,7 @@ func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 	return result, nil
 }
 
-func (c *Cluster) GenerateServiceDTOs() ([]*proto.EntityDTO, error) {
+func (c *Cluster) generateServiceDTOs() ([]*proto.EntityDTO, error) {
 	var result []*proto.EntityDTO
 	if c.Services == nil || len(c.Services) < 1 {
 		glog.Warningf("No services in cluster[%s]", c.Name)

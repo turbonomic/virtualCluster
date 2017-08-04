@@ -1,7 +1,5 @@
 package target
 
-
-
 import (
 	"fmt"
 	"github.com/golang/glog"
@@ -11,14 +9,14 @@ import (
 )
 
 func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
-	bought, _ := node.createCommoditiesBought(node.ClusterID)
+	//bought, _ := node.createCommoditiesBought(node.ClusterID)
 	sold, _ := node.createCommoditiesSold()
 
 	entity, err := builder.
-	NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
+		NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
 		WithPowerState(proto.EntityDTO_POWERED_ON).
 		DisplayName(node.Name).
-		BuysCommodities(bought).
+		//BuysCommodities(bought).
 		SellsCommodities(sold).
 		Create()
 
@@ -32,7 +30,7 @@ func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
 	return entity, nil
 }
 
-func (pm *HostNode) createCommoditiesBought(clusterId string) (*proto.CommodityDTO, error) {
+func (pm *HostNode) createCommoditiesBought(clusterId string) ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
@@ -74,7 +72,7 @@ func (node *HostNode) BuildPodDTOs() ([]*proto.EntityDTO, error) {
 		subDTOs, err := pod.BuildContainerDTOs()
 		if err != nil {
 			e := fmt.Errorf("failed to build Pod-containerDTOs for node[%s] pod[%s]",
-			node.Name, pod.Name)
+				node.Name, pod.Name)
 			glog.Error(e.Error())
 			continue
 		}

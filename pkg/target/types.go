@@ -6,7 +6,7 @@ const (
 	KindPod        = "pod"
 	KindVirtualApp = "service"
 	KindNode       = "host"
-	KindCluster = "cluster"
+	KindCluster    = "cluster"
 )
 
 type ObjectMeta struct {
@@ -23,8 +23,8 @@ type Resource struct {
 type Application struct {
 	ObjectMeta
 
-	CPU    Resource
-	Memory Resource
+	CPU         Resource
+	Memory      Resource
 	Transaction float64
 }
 
@@ -34,7 +34,7 @@ type Container struct {
 	CPU    Resource
 	Memory Resource
 
-	App    *Application
+	App *Application
 }
 
 type Pod struct {
@@ -67,54 +67,66 @@ type HostNode struct {
 
 type Cluster struct {
 	ObjectMeta
-	Nodes []*HostNode
+	Nodes    []*HostNode
 	Services []*VirtualApp
 }
 
 func NewContainer(name, id string) *Container {
 	return &Container{
-		ObjectMeta.Kind: KindContainer,
-		ObjectMeta.Name: name,
-		ObjectMeta.UUID: id,
+		ObjectMeta: ObjectMeta{
+			Kind: KindContainer,
+			Name: name,
+			UUID: id,
+		},
 	}
 }
 
 func NewPod(name, id string) *Pod {
 	return &Pod{
-		ObjectMeta.Kind: KindPod,
-		ObjectMeta.Name: name,
-		ObjectMeta.UUID: id,
+		ObjectMeta: ObjectMeta{
+			Kind: KindPod,
+			Name: name,
+			UUID: id,
+		},
 	}
 }
 
 func NewHostNode(name, id string) *HostNode {
 	return &HostNode{
-		ObjectMeta.Kind: KindNode,
-		ObjectMeta.Name: name,
-		ObjectMeta.UUID: id,
+		ObjectMeta: ObjectMeta{
+			Kind: KindNode,
+			Name: name,
+			UUID: id,
+		},
 	}
 }
 
 func NewApplication(name, id string) *Application {
 	return &Application{
-		ObjectMeta.Kind: KindApp,
-		ObjectMeta.Name: name,
-		ObjectMeta.UUID: id,
+		ObjectMeta: ObjectMeta{
+			Kind: KindApp,
+			Name: name,
+			UUID: id,
+		},
 	}
 }
 
 func NewVirtualApp(name, id string) *VirtualApp {
 	return &VirtualApp{
-		ObjectMeta.Kind: KindVirtualApp,
-		ObjectMeta.Name: name,
-		ObjectMeta.UUID: id,
+		ObjectMeta: ObjectMeta{
+			Kind: KindVirtualApp,
+			Name: name,
+			UUID: id,
+		},
 	}
 }
 
 func NewCluster(name, id string) *Cluster {
 	return &Cluster{
-		ObjectMeta.Kind: KindCluster,
-		ObjectMeta.Name: name,
-		ObjectMeta.UUID: id,
+		ObjectMeta: ObjectMeta{
+			Kind: KindCluster,
+			Name: name,
+			UUID: id,
+		},
 	}
 }

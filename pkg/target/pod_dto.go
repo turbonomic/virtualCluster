@@ -31,7 +31,7 @@ func (pod *Pod) BuildDTO(host *HostNode) (*proto.EntityDTO, error) {
 	return entity, nil
 }
 
-func (pod *Pod) createCommoditiesBought(clusterId string) (*proto.CommodityDTO, error) {
+func (pod *Pod) createCommoditiesBought(clusterId string) ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
@@ -61,14 +61,14 @@ func (pod *Pod) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	return result, nil
 }
 
-func (pod *Pod) BuildContainerDTOs()([]*proto.EntityDTO, error) {
+func (pod *Pod) BuildContainerDTOs() ([]*proto.EntityDTO, error) {
 	var result []*proto.EntityDTO
 
 	for _, container := range pod.Containers {
 		containerDTO, err := container.BuildDTO(pod)
 		if err != nil {
 			e := fmt.Errorf("failed to build containerDTO for pod[%s] container[%s]",
-			pod.Name, container.Name)
+				pod.Name, container.Name)
 			glog.Error(e.Error())
 			continue
 		}
@@ -84,7 +84,7 @@ func (pod *Pod) BuildContainerDTOs()([]*proto.EntityDTO, error) {
 		result = append(result, appDTO)
 	}
 
-	glog.V(3).Infof("There are %d DTOs for Pod[%s].", len(result) + 1, pod.Name)
+	glog.V(3).Infof("There are %d DTOs for Pod[%s].", len(result)+1, pod.Name)
 
 	return result, nil
 }

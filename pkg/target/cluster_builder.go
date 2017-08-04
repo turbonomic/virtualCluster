@@ -1,26 +1,34 @@
 package target
+
 import (
-	"github.com/golang/glog"
 	"fmt"
+	"github.com/golang/glog"
 )
 
 type ClusterBuilder struct {
-	clusterId string
+	clusterId   string
 	clusterName string
 
 	topology *TargetTopology
 
 	containers map[string]*Container
-	pods map[string]*Pod
-	nodes []*HostNode
-	services []*VirtualApp
+	pods       map[string]*Pod
+	nodes      []*HostNode
+	services   []*VirtualApp
 }
 
-func NewClusterBuilder(clusterId, clusterName string ,topo *TargetTopology) *ClusterBuilder {
+func NewClusterBuilder(clusterId, clusterName, topoConf string) *ClusterBuilder {
+	topo := NewTargetTopology(clusterId)
+	if err := topo.LoadTopology(topoConf); err != nil {
+		glog.Errorf("failed to load topology from file: %s, error: %v",
+			topoConf, err)
+		return nil
+	}
+
 	return &ClusterBuilder{
-		clusterId: clusterId,
+		clusterId:   clusterId,
 		clusterName: clusterName,
-		topology: topo,
+		topology:    topo,
 
 		//containers: make(map[string]*Container),
 		//pods: make(map[string]*Pod),
@@ -29,7 +37,7 @@ func NewClusterBuilder(clusterId, clusterName string ,topo *TargetTopology) *Clu
 	}
 }
 
-func(b *ClusterBuilder) buildContainers() error {
+func (b *ClusterBuilder) buildContainers() error {
 	containers := make(map[string]*Container)
 
 	for k, v := range b.topology.ContainerTemplateMap {
@@ -86,7 +94,6 @@ func (b *ClusterBuilder) buildPods() error {
 	b.pods = result
 	return nil
 }
-
 
 func (b *ClusterBuilder) buildNodes() error {
 	var result []*HostNode
@@ -189,26 +196,6 @@ func (b *ClusterBuilder) GenerateCluster() (*Cluster, error) {
 	cluster.Nodes = b.nodes
 	cluster.Services = b.services
 
+	cluster.GenerateContainerAPP()
 	return cluster, nil
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

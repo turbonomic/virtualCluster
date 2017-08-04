@@ -4,6 +4,7 @@ import (
 	"github.com/golang/glog"
 
 	"github.com/songbinliu/containerChain/pkg/registration"
+	"github.com/songbinliu/containerChain/pkg/target"
 
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
@@ -11,11 +12,13 @@ import (
 
 type DiscoveryClient struct {
 	targetConfig *TargetConf
+	cluster      *target.Cluster
 }
 
-func NewDiscoveryClient(targetConfig *TargetConf) *DiscoveryClient {
+func NewDiscoveryClient(targetConfig *TargetConf, cluster *target.Cluster) *DiscoveryClient {
 	return &DiscoveryClient{
 		targetConfig: targetConfig,
+		cluster:      cluster,
 	}
 }
 

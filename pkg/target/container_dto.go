@@ -34,7 +34,8 @@ func (d *Container) GenerateApp() error {
 
 func (d *Container) BuildAppDTO() (*proto.EntityDTO, error) {
 	if d.App == nil {
-		d.GenerateApp()
+		return nil, fmt.Errorf("container[%s] App is nil.", d.Name)
+		//d.GenerateApp()
 	}
 
 	return d.App.BuildDTO(d)
@@ -63,7 +64,7 @@ func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {
 	return entity, nil
 }
 
-func (docker *Container) createCommoditiesBought(podId string) (*proto.CommodityDTO, error) {
+func (docker *Container) createCommoditiesBought(podId string) ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
