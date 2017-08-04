@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/golang/glog"
 
-	"containerChain/action"
-	"containerChain/discovery"
-	"containerChain/registration"
+	"github.com/songbinliu/containerChain/pkg/action"
+	"github.com/songbinliu/containerChain/pkg/discovery"
+	"github.com/songbinliu/containerChain/pkg/registration"
 
 	"github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/service"

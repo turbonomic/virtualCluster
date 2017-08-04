@@ -1,11 +1,12 @@
 package discovery
 
 import (
-	"containerChain/registration"
+	"github.com/golang/glog"
+
+	"github.com/songbinliu/containerChain/pkg/registration"
+
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
-
-	"github.com/golang/glog"
 )
 
 type DiscoveryClient struct {
