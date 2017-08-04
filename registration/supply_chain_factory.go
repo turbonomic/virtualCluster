@@ -13,6 +13,8 @@ var (
 	vCpuType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_VCPU
 	vMemType           proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMEM
 	clusterType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_CLUSTER
+
+	// Application Commodity is an AccessCommodity, bind the seller to the buyer
 	appCommType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_APPLICATION
 	transactionType    proto.CommodityDTO_CommodityType = proto.CommodityDTO_TRANSACTION
 	vmPMAccessType proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMPM_ACCESS

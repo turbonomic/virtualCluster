@@ -50,6 +50,7 @@ func (app *Application) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
+	//TODO: set Capacity of transaction to be 50
 	appComm, _ := CreateKeyCommodity(app.UUID, proto.CommodityDTO_TRANSACTION)
 	result = append(result, appComm)
 
