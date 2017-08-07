@@ -49,13 +49,13 @@ func (node *HostNode) getVMRData() *proto.EntityDTO_VirtualMachineData {
 	return vmData
 }
 
-func (pm *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
+func (node *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
 	mem := &proto.EntityDTO_MemoryData{
-		Capacity: &(pm.Memory.Capacity),
+		Capacity: &(node.Memory.Capacity),
 	}
 
 	cpu := &proto.EntityDTO_ProcessorData{
-		Capacity: &(pm.CPU.Capacity),
+		Capacity: &(node.CPU.Capacity),
 	}
 
 	relatedData := &proto.EntityDTO_PhysicalMachineRelatedData{
@@ -76,19 +76,19 @@ func (pm *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
 //	return result, nil
 //}
 
-func (pm *HostNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
+func (node *HostNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
-	cpu := &(pm.CPU)
+	cpu := &(node.CPU)
 	cpuComm, _ := CreateResourceCommodity(cpu, proto.CommodityDTO_VCPU)
 	result = append(result, cpuComm)
 
-	mem := &(pm.Memory)
+	mem := &(node.Memory)
 	memComm, _ := CreateResourceCommodity(mem, proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
-	clusterComm, _ := CreateKeyCommodity(pm.ClusterID, proto.CommodityDTO_CLUSTER)
+	clusterComm, _ := CreateKeyCommodity(node.ClusterID, proto.CommodityDTO_CLUSTER)
 	result = append(result, clusterComm)
 
 	return result, nil
