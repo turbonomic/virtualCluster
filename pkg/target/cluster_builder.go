@@ -125,6 +125,7 @@ func (b *ClusterBuilder) buildPods() error {
 func assignNode(node *HostNode, tmp *nodeTemplate) {
 	node.Memory.Capacity = tmp.Memory
 	node.CPU.Capacity = tmp.CPU
+	node.IP = tmp.IP
 }
 
 func (b *ClusterBuilder) buildNodes() error {

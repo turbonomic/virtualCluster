@@ -13,9 +13,10 @@ func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
 	sold, _ := node.createCommoditiesSold()
 
 	entity, err := builder.
-		NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
+		NewEntityDTOBuilder(proto.EntityDTO_VIRTUAL_MACHINE, node.UUID).
 		WithPowerState(proto.EntityDTO_POWERED_ON).
 		DisplayName(node.Name).
+		VirtualMachineData(node.getVMRData()).
 		//BuysCommodities(bought).
 		SellsCommodities(sold).
 		Create()
@@ -27,9 +28,25 @@ func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
 		return nil, msg
 	}
 
-	node.addPMRelatedData(entity)
+	//node.addPMRelatedData(entity)
 
 	return entity, nil
+}
+
+func (node *HostNode) getVMRData() *proto.EntityDTO_VirtualMachineData {
+	ips := []string{node.IP}
+	connected := true
+
+	vmState := &proto.EntityDTO_VMState{
+		Connected: &connected,
+	}
+
+	vmData := &proto.EntityDTO_VirtualMachineData{
+		IpAddress: ips,
+		VmState: vmState,
+		GuestName: &(node.Name),
+	}
+	return vmData
 }
 
 func (pm *HostNode) addPMRelatedData(e *proto.EntityDTO) error {

@@ -40,16 +40,16 @@ func NewSupplyChainFactory(stype string) *SupplyChainFactory {
 
 func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
 	////Physical Machine
-	pmSupplyChainNode, err := f.buildPMSupply()
-	if err != nil {
-		return nil, err
-	}
-
-	//// Virtual Machine
-	//vmSupplyChainNode, err := f.buildVMSupply()
+	//pmSupplyChainNode, err := f.buildPMSupply()
 	//if err != nil {
 	//	return nil, err
 	//}
+
+	// Virtual Machine
+	vmSupplyChainNode, err := f.buildVMSupply()
+	if err != nil {
+		return nil, err
+	}
 
 	// Pod supply chain builder
 	podSupplyChainNode, err := f.buildPodSupply()
@@ -80,8 +80,8 @@ func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
 	supplyChainBuilder.Entity(appSupplyChainNode)
 	supplyChainBuilder.Entity(containerSupplyChainNode)
 	supplyChainBuilder.Entity(podSupplyChainNode)
-	//supplyChainBuilder.Entity(vmSupplyChainNode)
-	supplyChainBuilder.Entity(pmSupplyChainNode)
+	supplyChainBuilder.Entity(vmSupplyChainNode)
+	//supplyChainBuilder.Entity(pmSupplyChainNode)
 
 	return supplyChainBuilder.Create()
 }

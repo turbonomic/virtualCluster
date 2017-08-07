@@ -25,6 +25,7 @@ type nodeTemplate struct {
 
 	CPU    float64
 	Memory float64
+	IP string
 	Pods   []string
 }
 
@@ -151,9 +152,9 @@ func (t *TargetTopology) loadPod(fields []string) error {
 }
 
 // load nodeTemplate from a line
-// node.key, cpu, memory, pod1, pod2, ...
+// node.key, cpu, memory, IP, pod1, pod2, ...
 func (t *TargetTopology) loadNode(fields []string) error {
-	expectNumFields := 3
+	expectNumFields := 4
 	if len(fields) < expectNumFields {
 		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
 	}
@@ -180,8 +181,10 @@ func (t *TargetTopology) loadNode(fields []string) error {
 		return fmt.Errorf("conver field-2-mem[%s] failed: %v", fields[2], err)
 	}
 
+	ip := fields[3]
+
 	pods := []string{}
-	for i := 3; i < len(fields); i++ {
+	for i := 4; i < len(fields); i++ {
 		pods = append(pods, fields[i])
 	}
 
@@ -189,6 +192,7 @@ func (t *TargetTopology) loadNode(fields []string) error {
 		Key:    key,
 		CPU:    cpu,
 		Memory: mem,
+		IP: ip,
 		Pods:   pods,
 	}
 
