@@ -47,10 +47,26 @@ func (b *ClusterBuilder) buildContainers() error {
 		container.Memory = v.Memory
 
 		containers[k] = container
+		glog.V(4).Infof("container-%+v", container)
 	}
 
 	b.containers = containers
 	return nil
+}
+
+func resetResource(r *Resource) {
+	r.Capacity = 0
+	r.Used = 0
+}
+
+func addResource(r, delta *Resource) {
+	r.Capacity += delta.Capacity
+	r.Used += delta.Used
+}
+
+func setResource(r, r2 *Resource) {
+	r.Capacity = r2.Capacity
+	r.Used = r2.Used
 }
 
 func (b *ClusterBuilder) buildPods() error {
@@ -58,8 +74,14 @@ func (b *ClusterBuilder) buildPods() error {
 
 	allContainers := b.containers
 
+	cpu := &Resource{}
+	mem := &Resource{}
+
 	for k, v := range b.topology.PodTemplateMap {
 		pod := NewPod(k, k)
+
+		resetResource(cpu)
+		resetResource(mem)
 
 		containers := []*Container{}
 		for i, cname := range v.Containers {
@@ -68,6 +90,8 @@ func (b *ClusterBuilder) buildPods() error {
 				newId := fmt.Sprintf("%s-%d", pod.UUID, i)
 				ct := container.Clone(newId)
 				containers = append(containers, ct)
+				addResource(cpu, &(ct.CPU))
+				addResource(mem, &(ct.Memory))
 			} else {
 				glog.Warningf("pod[%s]-%dth container[%s] does not exist.", k, i+1, cname)
 				break
@@ -88,11 +112,19 @@ func (b *ClusterBuilder) buildPods() error {
 		}
 
 		pod.Containers = containers
+		setResource(&(pod.CPU), cpu)
+		setResource(&(pod.Memory), mem)
 		result[k] = pod
+		glog.V(4).Infof("pod--%+v", pod)
 	}
 
 	b.pods = result
 	return nil
+}
+
+func assignNode(node *HostNode, tmp *nodeTemplate) {
+	node.Memory.Capacity = tmp.Memory
+	node.CPU.Capacity = tmp.CPU
 }
 
 func (b *ClusterBuilder) buildNodes() error {
@@ -101,13 +133,19 @@ func (b *ClusterBuilder) buildNodes() error {
 	allPods := b.pods
 	for k, v := range b.topology.NodeTemplateMap {
 		node := NewHostNode(k, k)
+		assignNode(node, v)
 		node.ClusterID = b.clusterId
 		//node.IP = ip
+
+		cpu := 0.0
+		mem := 0.0
 
 		pods := []*Pod{}
 		for i, podName := range v.Pods {
 			if pod, exist := allPods[podName]; exist {
 				pods = append(pods, pod)
+				cpu += pod.CPU.Used
+				mem += pod.Memory.Used
 			} else {
 				glog.Warningf("node[%s]-%dth pod[%s] does not exist.", k, i+1, podName)
 				break
@@ -122,7 +160,11 @@ func (b *ClusterBuilder) buildNodes() error {
 		}
 
 		node.Pods = pods
+		node.CPU.Used = cpu
+		node.Memory.Used = mem
+
 		result = append(result, node)
+		glog.V(4).Infof("[node] %+v", node)
 	}
 
 	b.nodes = result

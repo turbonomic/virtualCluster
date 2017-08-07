@@ -18,31 +18,16 @@ var (
 	targetConf   string
 	opsMgrConf   string
 	topologyConf string
-	//pmNum        int
-	//vmNum        int
-	//podNum       int
-	stitchType string
+	stitchType string = "IP"
 )
 
 func getFlags() {
-	flag.StringVar(&opsMgrConf, "opsMgrConf", "./turbo-conf.json", "configuration file of OpsMgr")
-	flag.StringVar(&targetConf, "targetConf", "./target-conf.json", "configuration file of target")
-	flag.StringVar(&topologyConf, "topologyConf", "./topology.conf", "topology definition of the target")
-	//flag.IntVar(&pmNum, "pmNum", 10, "number of total physical machines")
-	//flag.IntVar(&vmNum, "vmNum", 50, "number of total virtual machines")
-	//flag.IntVar(&podNum, "podNum", 100, "number of total pods")
-	//flag.StringVar(&stitchType, "stitchType", "IP", "stitching type (IP | UUID)")
+	flag.StringVar(&opsMgrConf, "turboConf", "./conf/turbo.json", "configuration file of OpsMgr")
+	flag.StringVar(&targetConf, "targetConf", "./conf/target.json", "configuration file of target")
+	flag.StringVar(&topologyConf, "topologyConf", "./conf/topology.conf", "topology definition of the target")
 
-	flag.Set("alsologtostderr", "true")
-
-	//flag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	//flag.Set("alsologtostderr", "true")
 	flag.Parse()
-}
-
-type TargetTopoConf struct {
-	pmNum  int
-	vmNum  int
-	podNum int
 }
 
 func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
@@ -64,7 +49,7 @@ func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
 	return cluster
 }
 
-func buildProber(stype, targetConf, topoConf string, stop chan struct{}) (*probe.ProbeBuilder, error) {
+func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.ProbeBuilder, error) {
 
 	//1. generate the target Cluster
 	clusterId := "clusterId"
@@ -101,7 +86,7 @@ func createTapService() (*service.TAPService, error) {
 	}
 
 	stop := make(chan struct{})
-	probeBuilder, err := buildProber(stitchType, targetConf, topologyConf, stop)
+	probeBuilder, err := buildProbe(stitchType, targetConf, topologyConf, stop)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create probe: %v", err)
 	}
@@ -123,6 +108,13 @@ func main() {
 	glog.V(2).Infof("hello")
 	defer glog.V(2).Infof("bye")
 
-	stop := make(chan struct{})
-	buildProber("IP", targetConf, topologyConf, stop)
+	tap, err := createTapService()
+	if err != nil {
+		glog.Errorf("failed to create tapServier: %v", err)
+	}
+
+	tap.ConnectToTurbo()
+	select {}
+	//stop := make(chan struct{})
+	//buildProbe("IP", targetConf, topologyConf, stop)
 }

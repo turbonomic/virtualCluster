@@ -5,7 +5,7 @@ import (
 )
 
 func TestTargetTopology_LoadTopology(t *testing.T) {
-	fname := "../conf/small.conf"
+	fname := "../../conf/small.conf"
 
 	topo := NewTargetTopology("testCluster")
 

@@ -39,7 +39,7 @@ type Container struct {
 
 type Pod struct {
 	ObjectMeta
-	AppName string
+	//AppName string
 
 	CPU    Resource
 	Memory Resource

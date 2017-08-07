@@ -35,10 +35,10 @@ func (pod *Pod) createCommoditiesBought(clusterId string) ([]*proto.CommodityDTO
 
 	var result []*proto.CommodityDTO
 
-	cpuComm, _ := CreateResourceCommodity(&(pod.CPU), proto.CommodityDTO_CPU)
+	cpuComm, _ := CreateResourceCommodityBought(&(pod.CPU), proto.CommodityDTO_VCPU)
 	result = append(result, cpuComm)
 
-	memComm, _ := CreateResourceCommodity(&(pod.Memory), proto.CommodityDTO_MEM)
+	memComm, _ := CreateResourceCommodityBought(&(pod.Memory), proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
 	clusterComm, _ := CreateKeyCommodity(clusterId, proto.CommodityDTO_CLUSTER)

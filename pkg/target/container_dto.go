@@ -43,11 +43,11 @@ func (d *Container) BuildAppDTO() (*proto.EntityDTO, error) {
 
 func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {
 	bought, _ := docker.createCommoditiesBought(pod.UUID)
-	sold, _ := docker.createCommoditiesSold(pod.AppName)
+	sold, _ := docker.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_CONTAINER_POD, pod.UUID)
 
 	entity, err := builder.
-		NewEntityDTOBuilder(proto.EntityDTO_CONTAINER_POD, docker.UUID).
+		NewEntityDTOBuilder(proto.EntityDTO_CONTAINER, docker.UUID).
 		DisplayName(docker.Name).
 		Provider(provider).
 		BuysCommodities(bought).
@@ -68,10 +68,10 @@ func (docker *Container) createCommoditiesBought(podId string) ([]*proto.Commodi
 
 	var result []*proto.CommodityDTO
 
-	cpuComm, _ := CreateResourceCommodity(&(docker.CPU), proto.CommodityDTO_VCPU)
+	cpuComm, _ := CreateResourceCommodityBought(&(docker.CPU), proto.CommodityDTO_VCPU)
 	result = append(result, cpuComm)
 
-	memComm, _ := CreateResourceCommodity(&(docker.Memory), proto.CommodityDTO_VMEM)
+	memComm, _ := CreateResourceCommodityBought(&(docker.Memory), proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
 	podComm, _ := CreateKeyCommodity(podId, proto.CommodityDTO_VMPM_ACCESS)
@@ -79,7 +79,7 @@ func (docker *Container) createCommoditiesBought(podId string) ([]*proto.Commodi
 	return result, nil
 }
 
-func (docker *Container) createCommoditiesSold(appName string) ([]*proto.CommodityDTO, error) {
+func (docker *Container) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 	cpuComm, _ := CreateResourceCommodity(&(docker.CPU), proto.CommodityDTO_VCPU)
@@ -88,7 +88,7 @@ func (docker *Container) createCommoditiesSold(appName string) ([]*proto.Commodi
 	memComm, _ := CreateResourceCommodity(&(docker.Memory), proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
-	appComm, _ := CreateKeyCommodity(appName, proto.CommodityDTO_APPLICATION)
+	appComm, _ := CreateKeyCommodity(docker.UUID, proto.CommodityDTO_APPLICATION)
 	result = append(result, appComm)
 
 	return result, nil

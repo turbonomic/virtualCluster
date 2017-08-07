@@ -35,10 +35,10 @@ func (app *Application) createCommoditiesBought(containerId string) ([]*proto.Co
 
 	var result []*proto.CommodityDTO
 
-	cpuComm, _ := CreateResourceCommodity(&(app.CPU), proto.CommodityDTO_VCPU)
+	cpuComm, _ := CreateResourceCommodityBought(&(app.CPU), proto.CommodityDTO_VCPU)
 	result = append(result, cpuComm)
 
-	memComm, _ := CreateResourceCommodity(&(app.Memory), proto.CommodityDTO_VMEM)
+	memComm, _ := CreateResourceCommodityBought(&(app.Memory), proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
 	podComm, _ := CreateKeyCommodity(containerId, proto.CommodityDTO_APPLICATION)
@@ -47,11 +47,8 @@ func (app *Application) createCommoditiesBought(containerId string) ([]*proto.Co
 }
 
 func (app *Application) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
-
 	var result []*proto.CommodityDTO
-
-	//TODO: set Capacity of transaction to be 50
-	appComm, _ := CreateKeyCommodity(app.UUID, proto.CommodityDTO_TRANSACTION)
+	appComm, _ := CreateTransactionCommodity(app.UUID, proto.CommodityDTO_TRANSACTION)
 	result = append(result, appComm)
 
 	return result, nil

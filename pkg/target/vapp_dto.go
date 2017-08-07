@@ -39,11 +39,10 @@ func (vapp *VirtualApp) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuild
 				glog.Errorf("contain.App is not ready; VirtualApp[%s]-pod[%s]-container[%s]",
 					vapp.Name, pod.Name, container.Name)
 				continue
-				//container.GenerateApp()
 			}
 
 			app := container.App
-			appCommodity, err := builder.NewCommodityDTOBuilder(proto.CommodityDTO_APPLICATION).
+			appCommodity, err := builder.NewCommodityDTOBuilder(proto.CommodityDTO_TRANSACTION).
 				Key(app.UUID).
 				Used(app.Transaction).
 				Create()

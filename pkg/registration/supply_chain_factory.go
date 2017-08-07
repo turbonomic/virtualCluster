@@ -89,8 +89,8 @@ func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
 func (f *SupplyChainFactory) buildPMSupply() (*proto.TemplateDTO, error) {
 	nodeSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_PHYSICAL_MACHINE)
 	nodeSupplyChainNodeBuilder = nodeSupplyChainNodeBuilder.
-		Sells(CpuTemplateComm).
-		Sells(MemTemplateComm).
+		Sells(vCpuTemplateComm).
+		Sells(vMemTemplateComm).
 		Sells(clusterTemplateComm)
 
 	return nodeSupplyChainNodeBuilder.Create()

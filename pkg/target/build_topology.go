@@ -111,6 +111,7 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 	}
 
 	t.ContainerTemplateMap[key] = container
+	glog.V(3).Infof("[container] %+v", container)
 	return nil
 }
 
@@ -145,6 +146,7 @@ func (t *TargetTopology) loadPod(fields []string) error {
 	}
 
 	t.PodTemplateMap[key] = pod
+	glog.V(4).Infof("[pod] %+v", pod)
 	return nil
 }
 
@@ -191,6 +193,7 @@ func (t *TargetTopology) loadNode(fields []string) error {
 	}
 
 	t.NodeTemplateMap[key] = node
+	glog.V(4).Infof("[node] %+v", node)
 	return nil
 }
 
@@ -225,6 +228,7 @@ func (t *TargetTopology) loadService(fields []string) error {
 	}
 
 	t.ServiceTemplateMap[key] = service
+	glog.V(4).Infof("[service] %+v", service)
 	return nil
 }
 

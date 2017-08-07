@@ -8,6 +8,7 @@ import (
 
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
+	"fmt"
 )
 
 type DiscoveryClient struct {
@@ -60,8 +61,34 @@ func (dc *DiscoveryClient) Validate(accountValues []*proto.AccountValue) (*proto
 	return &proto.ValidationResponse{}, nil
 }
 
+func printDTOs(dtos []*proto.EntityDTO) {
+	msg := ""
+	for _, dto := range dtos {
+		line := fmt.Sprintf("%+v", dto)
+		msg = msg + "\n" + line
+	}
+
+	glog.V(3).Infof("%s", msg)
+}
+
 func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto.DiscoveryResponse, error) {
 	//TODO: implement it
 
-	return &proto.DiscoveryResponse{}, nil
+	glog.V(2).Infof("begin to discovery target...")
+
+	resultDTOs, err := dc.cluster.GenerateDTOs()
+	if err != nil {
+		glog.Errorf("failed to generate DTOs: %v", err)
+		resultDTOs = []*proto.EntityDTO{}
+	}
+
+	printDTOs(resultDTOs)
+
+	response := &proto.DiscoveryResponse{
+		EntityDTO: resultDTOs,
+	}
+
+	glog.V(2).Infof("end of discoverying target. [%d]", len(resultDTOs))
+
+	return response, nil
 }

@@ -27,17 +27,37 @@ func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
 		return nil, msg
 	}
 
+	node.addPMRelatedData(entity)
+
 	return entity, nil
 }
 
-func (pm *HostNode) createCommoditiesBought(clusterId string) ([]*proto.CommodityDTO, error) {
+func (pm *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
+	mem := &proto.EntityDTO_MemoryData{
+		Capacity: &(pm.Memory.Capacity),
+	}
 
-	var result []*proto.CommodityDTO
+	cpu := &proto.EntityDTO_ProcessorData{
+		Capacity: &(pm.CPU.Capacity),
+	}
 
-	clusterComm, _ := CreateKeyCommodity(clusterId, proto.CommodityDTO_CLUSTER)
-	result = append(result, clusterComm)
-	return result, nil
+	relatedData := &proto.EntityDTO_PhysicalMachineRelatedData{
+		Memory: mem,
+		Processor: []*proto.EntityDTO_ProcessorData{cpu},
+	}
+
+	e.RelatedEntityData = &proto.EntityDTO_PhysicalMachineRelatedData_{relatedData}
+	return nil
 }
+
+//func (pm *HostNode) createCommoditiesBought(clusterId string) ([]*proto.CommodityDTO, error) {
+//
+//	var result []*proto.CommodityDTO
+//
+//	clusterComm, _ := CreateKeyCommodity(clusterId, proto.CommodityDTO_CLUSTER)
+//	result = append(result, clusterComm)
+//	return result, nil
+//}
 
 func (pm *HostNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
@@ -51,7 +71,7 @@ func (pm *HostNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	memComm, _ := CreateResourceCommodity(mem, proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
-	clusterComm, _ := CreateKeyCommodity(pm.UUID, proto.CommodityDTO_CLUSTER)
+	clusterComm, _ := CreateKeyCommodity(pm.ClusterID, proto.CommodityDTO_CLUSTER)
 	result = append(result, clusterComm)
 
 	return result, nil
