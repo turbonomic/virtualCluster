@@ -35,17 +35,17 @@ func (rClient *DemoRegistrationClient) GetAccountDefinition() []*proto.AccountDe
 
 	// target ID
 	targetIDAcctDefEntry := builder.NewAccountDefEntryBuilder(TargetIdentifierField, "Address",
-		"IP of the Kubernetes master", ".*", false, false).Create()
+		"IP of the target cluster master", ".*", false, false).Create()
 	acctDefProps = append(acctDefProps, targetIDAcctDefEntry)
 
 	// username
 	usernameAcctDefEntry := builder.NewAccountDefEntryBuilder(Username, "Username",
-		"Username of the Kubernetes master", ".*", false, false).Create()
+		"Username of the target cluster master", ".*", false, false).Create()
 	acctDefProps = append(acctDefProps, usernameAcctDefEntry)
 
 	// password
 	passwordAcctDefEntry := builder.NewAccountDefEntryBuilder(Password, "Password",
-		"Password of the Kubernetes master", ".*", false, true).Create()
+		"Password of the target cluster master", ".*", false, true).Create()
 	acctDefProps = append(acctDefProps, passwordAcctDefEntry)
 
 	return acctDefProps
