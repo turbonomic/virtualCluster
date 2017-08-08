@@ -48,5 +48,5 @@ func (m *VirtualMachineMover) Execute(actionItem *proto.ActionItemDTO, progressT
 		return fmt.Errorf("move failed: %v", err)
 	}
 
-	return fmt.Errorf("VirtualMachiner Mover is not implemented.")
+	return nil
 }
