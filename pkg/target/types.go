@@ -5,6 +5,7 @@ const (
 	KindContainer  = "container"
 	KindPod        = "pod"
 	KindVirtualApp = "service"
+	KindVNode       = "vhost"
 	KindNode       = "host"
 	KindCluster    = "cluster"
 )
@@ -53,21 +54,38 @@ type VirtualApp struct {
 	Pods []*Pod
 }
 
-type HostNode struct {
+// virtual machine
+type VNode struct {
+	ObjectMeta
+
+	CPU       Resource
+	Memory    Resource
+
+	ClusterId string
+	IP        string
+
+	//a map for easy of move/deletion, key=pod.UUID
+	Pods      map[string]*Pod
+}
+
+// physical machine
+type Node struct {
 	ObjectMeta
 
 	CPU    Resource
 	Memory Resource
 
-	ClusterID string
+	ClusterId string
 	IP        string
 
-	Pods []*Pod
+	//Map for easy of deletion
+	// key = vm.UUID
+	VMs map[string]*VNode
 }
 
 type Cluster struct {
 	ObjectMeta
-	Nodes    []*HostNode
+	Nodes    map[string]*Node
 	Services []*VirtualApp
 }
 
@@ -91,8 +109,18 @@ func NewPod(name, id string) *Pod {
 	}
 }
 
-func NewHostNode(name, id string) *HostNode {
-	return &HostNode{
+func NewVNode(name, id string) *VNode {
+	return &VNode{
+		ObjectMeta: ObjectMeta{
+			Kind: KindVNode,
+			Name: name,
+			UUID: id,
+		},
+	}
+}
+
+func NewNode(name, id string) *Node {
+	return &Node{
 		ObjectMeta: ObjectMeta{
 			Kind: KindNode,
 			Name: name,
@@ -100,6 +128,7 @@ func NewHostNode(name, id string) *HostNode {
 		},
 	}
 }
+
 
 func NewApplication(name, id string) *Application {
 	return &Application{

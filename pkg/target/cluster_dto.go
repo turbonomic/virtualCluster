@@ -14,9 +14,11 @@ func (c *Cluster) GenerateContainerAPP() error {
 	}
 
 	for _, host := range c.Nodes {
-		for _, pod := range host.Pods {
-			for _, container := range pod.Containers {
-				container.GenerateApp()
+		for _, vhost := range host.VMs {
+			for _, pod := range vhost.Pods {
+				for _, container := range pod.Containers {
+					container.GenerateApp()
+				}
 			}
 		}
 	}
@@ -42,7 +44,7 @@ func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 		}
 		result = append(result, hostDTO)
 
-		subDTOs, err := host.BuildPodDTOs()
+		subDTOs, err := host.BuildSubDTOs()
 		if err != nil {
 			e := fmt.Errorf("failed to build subHostDTOs for node[%s]", host.Name)
 			glog.Error(e.Error())
@@ -87,4 +89,9 @@ func (c *Cluster) generateServiceDTOs() ([]*proto.EntityDTO, error) {
 
 	glog.V(2).Infof("There are %d services, and %d serviceDTOs.", len(c.Services), len(result))
 	return result, nil
+}
+
+func (c *Cluster) MovePod(podId, vnodeId string) (error) {
+	glog.V(2).Infof("move pod[%s] to node[%s]", podId, vnodeId)
+	return fmt.Errorf("movePod is not implemented.")
 }

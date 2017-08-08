@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	defaultInfiniteCapacity = 1E10
+	defaultInfiniteCapacity    = 1E10
 	defaultTransactionCapacity = 100
 )
 
@@ -32,10 +32,16 @@ func CreateKeyCommodity(key string, ctype proto.CommodityDTO_CommodityType) (*pr
 		Create()
 }
 
+func CreateKeyCommodityBought(key string, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
+	return builder.
+	NewCommodityDTOBuilder(ctype).
+		Key(key).
+		Create()
+}
 
 func CreateTransactionCommodity(key string, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.
-	NewCommodityDTOBuilder(ctype).
+		NewCommodityDTOBuilder(ctype).
 		Key(key).
 		Capacity(defaultTransactionCapacity).
 		Create()

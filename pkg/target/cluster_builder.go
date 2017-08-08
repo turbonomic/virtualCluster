@@ -13,7 +13,8 @@ type ClusterBuilder struct {
 
 	containers map[string]*Container
 	pods       map[string]*Pod
-	nodes      []*HostNode
+	vnodes     map[string]*VNode
+	nodes      map[string]*Node
 	services   []*VirtualApp
 }
 
@@ -87,7 +88,7 @@ func (b *ClusterBuilder) buildPods() error {
 		for i, cname := range v.Containers {
 			if container, exist := allContainers[cname]; exist {
 				// generate a new container with different UUID
-				newId := fmt.Sprintf("%s-%d", pod.UUID, i)
+				newId := fmt.Sprintf("%s-%s", pod.UUID, container.Name)
 				ct := container.Clone(newId)
 				containers = append(containers, ct)
 				addResource(cpu, &(ct.CPU))
@@ -122,49 +123,97 @@ func (b *ClusterBuilder) buildPods() error {
 	return nil
 }
 
-func assignNode(node *HostNode, tmp *nodeTemplate) {
+func assignVNode(node *VNode, tmp *vnodeTemplate) {
+	node.Memory.Capacity = tmp.Memory
+	node.CPU.Capacity = tmp.CPU
+	node.IP = tmp.IP
+}
+
+func (b *ClusterBuilder) buildVNodes() error {
+	result := make(map[string]*VNode)
+
+	allPods := b.pods
+	for k, v := range b.topology.VNodeTemplateMap {
+		vnode := NewVNode(k, k)
+		assignVNode(vnode, v)
+		vnode.ClusterId = b.clusterId
+
+		cpu := 0.0
+		mem := 0.0
+
+		pods := make(map[string]*Pod)
+		for i, podName := range v.Pods {
+			if pod, exist := allPods[podName]; exist {
+				pods[pod.UUID] = pod
+				cpu += pod.CPU.Used
+				mem += pod.Memory.Used
+			} else {
+				glog.Warningf("vnode[%s]-%dth pod[%s] does not exist.", k, i+1, podName)
+				break
+			}
+		}
+
+		glog.V(3).Infof("vnode[%s] has %d Pods.", k, len(pods))
+		if len(pods) != len(v.Pods) {
+			glog.Warningf("cannot get enough Pods[%d Vs. %d] for vnode[%s].",
+				len(pods), len(v.Pods), k)
+			continue
+		}
+
+		vnode.Pods = pods
+		vnode.CPU.Used = cpu
+		vnode.Memory.Used = mem
+
+		result[vnode.UUID] = vnode
+		glog.V(4).Infof("[vnode] %+v", vnode)
+	}
+
+	b.vnodes = result
+	return nil
+}
+
+func assignNode(node *Node, tmp *nodeTemplate) {
 	node.Memory.Capacity = tmp.Memory
 	node.CPU.Capacity = tmp.CPU
 	node.IP = tmp.IP
 }
 
 func (b *ClusterBuilder) buildNodes() error {
-	var result []*HostNode
+	result := make(map[string]*Node)
 
-	allPods := b.pods
+	allVMs := b.vnodes
 	for k, v := range b.topology.NodeTemplateMap {
-		node := NewHostNode(k, k)
+		node := NewNode(k, k)
 		assignNode(node, v)
-		node.ClusterID = b.clusterId
-		//node.IP = ip
+		node.ClusterId = b.clusterId
 
 		cpu := 0.0
 		mem := 0.0
 
-		pods := []*Pod{}
-		for i, podName := range v.Pods {
-			if pod, exist := allPods[podName]; exist {
-				pods = append(pods, pod)
-				cpu += pod.CPU.Used
-				mem += pod.Memory.Used
+		vnodes := make(map[string]*VNode)
+		for i, vmKey := range v.VMs {
+			if vm, exist := allVMs[vmKey]; exist {
+				vnodes[vm.UUID] = vm
+				cpu += vm.CPU.Capacity
+				mem += vm.Memory.Capacity
 			} else {
-				glog.Warningf("node[%s]-%dth pod[%s] does not exist.", k, i+1, podName)
+				glog.Warningf("node[%s]-%dth VM[%s] does not exist.", k, i + 1, vmKey)
 				break
 			}
 		}
 
-		glog.V(3).Infof("node[%s] has %d Pods.", k, len(pods))
-		if len(pods) != len(v.Pods) {
-			glog.Warningf("cannot get enough Pods[%d Vs. %d] for node[%s].",
-				len(pods), len(v.Pods), k)
+		glog.V(3).Infof("node[%s] has %d VNodes.", k, len(vnodes))
+		if len(vnodes) != len(v.VMs) {
+			glog.Warningf("cannot get enough VMs[%d Vs. %d] for node[%s].",
+				len(vnodes), len(v.VMs), k)
 			continue
 		}
 
-		node.Pods = pods
+		node.VMs = vnodes
 		node.CPU.Used = cpu
 		node.Memory.Used = mem
 
-		result = append(result, node)
+		result[node.UUID] = node
 		glog.V(4).Infof("[node] %+v", node)
 	}
 

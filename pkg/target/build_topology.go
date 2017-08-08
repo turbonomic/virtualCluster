@@ -20,13 +20,24 @@ type podTemplate struct {
 	Containers []string
 }
 
+// virtual machine
+type vnodeTemplate struct {
+	Key string
+
+	CPU    float64
+	Memory float64
+	IP     string
+	Pods   []string
+}
+
+// physical machine
 type nodeTemplate struct {
 	Key string
 
 	CPU    float64
 	Memory float64
-	IP string
-	Pods   []string
+	IP     string
+	VMs    []string
 }
 
 type serviceTemplate struct {
@@ -44,6 +55,9 @@ type TargetTopology struct {
 	PodTemplateMap map[string]*podTemplate
 
 	//nodeTemplate map
+	VNodeTemplateMap map[string]*vnodeTemplate
+
+	//physicalMachine map
 	NodeTemplateMap map[string]*nodeTemplate
 
 	//serviceTemplate amp
@@ -55,6 +69,7 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 		ClusterId:            clusterId,
 		ContainerTemplateMap: make(map[string]*containerTemplate),
 		PodTemplateMap:       make(map[string]*podTemplate),
+		VNodeTemplateMap:     make(map[string]*vnodeTemplate),
 		NodeTemplateMap:      make(map[string]*nodeTemplate),
 		ServiceTemplateMap:   make(map[string]*serviceTemplate),
 	}
@@ -151,9 +166,9 @@ func (t *TargetTopology) loadPod(fields []string) error {
 	return nil
 }
 
-// load nodeTemplate from a line
-// node.key, cpu, memory, IP, pod1, pod2, ...
-func (t *TargetTopology) loadNode(fields []string) error {
+// load vnodeTemplate from a line
+// vnode.key, cpu, memory, IP, pod1, pod2, ...
+func (t *TargetTopology) loadVNode(fields []string) error {
 	expectNumFields := 4
 	if len(fields) < expectNumFields {
 		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
@@ -167,7 +182,7 @@ func (t *TargetTopology) loadNode(fields []string) error {
 	}
 
 	key := fields[0]
-	if _, exist := t.NodeTemplateMap[key]; exist {
+	if _, exist := t.VNodeTemplateMap[key]; exist {
 		fmt.Errorf("node [%s] already exist.")
 	}
 
@@ -188,12 +203,62 @@ func (t *TargetTopology) loadNode(fields []string) error {
 		pods = append(pods, fields[i])
 	}
 
+	vnode := &vnodeTemplate{
+		Key:    key,
+		CPU:    cpu,
+		Memory: mem,
+		IP:     ip,
+		Pods:   pods,
+	}
+
+	t.VNodeTemplateMap[key] = vnode
+	glog.V(4).Infof("[vnode] %+v", vnode)
+	return nil
+}
+
+// load nodeTemplate from a line
+// node.key, cpu, memory, IP, pod1, pod2, ...
+func (t *TargetTopology) loadNode(fields []string) error {
+	expectNumFields := 4
+	if len(fields) < expectNumFields {
+		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
+	}
+
+	for i := range fields {
+		fields[i] = strings.TrimSpace(fields[i])
+		if len(fields[i]) < 1 {
+			return fmt.Errorf("field[%d] of fields-%v is empty", i+1, fields)
+		}
+	}
+
+	key := fields[0]
+	if _, exist := t.VNodeTemplateMap[key]; exist {
+		fmt.Errorf("node [%s] already exist.")
+	}
+
+	cpu, err := strconv.ParseFloat(fields[1], 64)
+	if err != nil {
+		return fmt.Errorf("convert field-1-cpu[%s] failed: %v", fields[1], err)
+	}
+
+	mem, err := strconv.ParseFloat(fields[2], 64)
+	if err != nil {
+		return fmt.Errorf("conver field-2-mem[%s] failed: %v", fields[2], err)
+	}
+
+	ip := fields[3]
+
+	vms := []string{}
+	for i := 4; i < len(fields); i++ {
+		vms = append(vms, fields[i])
+	}
+
 	node := &nodeTemplate{
 		Key:    key,
 		CPU:    cpu,
 		Memory: mem,
-		IP: ip,
-		Pods:   pods,
+		IP:     ip,
+		VMs:    vms,
 	}
 
 	t.NodeTemplateMap[key] = node
@@ -247,6 +312,9 @@ func (t *TargetTopology) parseLine(lineNum int, line string, fields []string) er
 	case "pod":
 		glog.V(2).Infof("begin to build a pod [%d]: %s", lineNum, line)
 		err = t.loadPod(fields[1:])
+	case "vnode":
+		glog.V(2).Infof("begin to build a vnode [%d]: %s", lineNum, line)
+		err = t.loadVNode(fields[1:])
 	case "node":
 		glog.V(2).Infof("begin to build a node [%d]: %s", lineNum, line)
 		err = t.loadNode(fields[1:])
@@ -277,6 +345,12 @@ func (t *TargetTopology) CheckTemplateEmpty() error {
 		return err
 	}
 
+	if len(t.VNodeTemplateMap) < 1 {
+		err := fmt.Errorf("vnodeTemplate is empty.")
+		glog.Error(err.Error())
+		return err
+	}
+
 	if len(t.NodeTemplateMap) < 1 {
 		err := fmt.Errorf("nodeTemplate is empty.")
 		glog.Error(err.Error())
@@ -293,6 +367,7 @@ func (t *TargetTopology) CheckTemplateEmpty() error {
 func (t *TargetTopology) PrintTemplateInfo() {
 	glog.V(1).Infof("containerTemplate.num=%d", len(t.ContainerTemplateMap))
 	glog.V(1).Infof("podTemplate.num=%d", len(t.PodTemplateMap))
+	glog.V(1).Infof("vnodeTemplate.num=%d", len(t.VNodeTemplateMap))
 	glog.V(1).Infof("nodeTemplate.num=%d", len(t.NodeTemplateMap))
 	glog.V(1).Infof("serviceTemplate.num=%d", len(t.ServiceTemplateMap))
 }

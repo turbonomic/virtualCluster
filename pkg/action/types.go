@@ -8,11 +8,13 @@ import (
 type TurboActionType string
 
 const (
-	ActionMove      TurboActionType = "move"
-	ActionProvision TurboActionType = "provision"
-	ActionUnknown   TurboActionType = "unknown"
+	ActionMovePod         TurboActionType = "movePod"
+	ActionMoveVM          TurboActionType = "moveVirtualMachine"
+	ActionResizeContainer TurboActionType = "resizeContainer"
+	ActionResizeVM        TurboActionType = "resizeVirtualMachine"
+	ActionUnknown         TurboActionType = "unknown"
 )
 
 type TurboExecutor interface {
-	Execute(actionItem *proto.ActionItemDTO, progressTracker sdkprobe.ActionProgressTracker) (*proto.ActionResult, error)
+	Execute(actionItem *proto.ActionItemDTO, progressTracker sdkprobe.ActionProgressTracker) error
 }

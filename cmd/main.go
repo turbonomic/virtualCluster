@@ -18,7 +18,7 @@ var (
 	targetConf   string
 	opsMgrConf   string
 	topologyConf string
-	stitchType string = "IP"
+	stitchType   string = "IP"
 )
 
 func getFlags() {
@@ -69,7 +69,7 @@ func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.
 
 	regClient := registration.NewRegistrationClient(stype)
 	discoveryClient := discovery.NewDiscoveryClient(config, cluster)
-	actionHandler := action.NewActionHandler(stop)
+	actionHandler := action.NewActionHandler(cluster, stop)
 
 	builder := probe.NewProbeBuilder(config.TargetType, config.ProbeCategory).
 		RegisteredBy(regClient).

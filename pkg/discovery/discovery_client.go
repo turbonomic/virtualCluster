@@ -6,9 +6,9 @@ import (
 	"github.com/songbinliu/containerChain/pkg/registration"
 	"github.com/songbinliu/containerChain/pkg/target"
 
+	"fmt"
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
-	"fmt"
 )
 
 type DiscoveryClient struct {
@@ -72,8 +72,6 @@ func printDTOs(dtos []*proto.EntityDTO) {
 }
 
 func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto.DiscoveryResponse, error) {
-	//TODO: implement it
-
 	glog.V(2).Infof("begin to discovery target...")
 
 	resultDTOs, err := dc.cluster.GenerateDTOs()
@@ -82,13 +80,12 @@ func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto
 		resultDTOs = []*proto.EntityDTO{}
 	}
 
+	glog.V(2).Infof("end of discoverying target. [%d]", len(resultDTOs))
 	printDTOs(resultDTOs)
 
 	response := &proto.DiscoveryResponse{
 		EntityDTO: resultDTOs,
 	}
-
-	glog.V(2).Infof("end of discoverying target. [%d]", len(resultDTOs))
 
 	return response, nil
 }

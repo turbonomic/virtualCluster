@@ -8,8 +8,8 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (pod *Pod) BuildDTO(host *HostNode) (*proto.EntityDTO, error) {
-	bought, _ := pod.createCommoditiesBought(host.ClusterID)
+func (pod *Pod) BuildDTO(host *VNode) (*proto.EntityDTO, error) {
+	bought, _ := pod.createCommoditiesBought(host.ClusterId)
 	sold, _ := pod.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_PHYSICAL_MACHINE, host.UUID)
 

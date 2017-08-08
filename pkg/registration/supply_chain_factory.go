@@ -39,11 +39,11 @@ func NewSupplyChainFactory(stype string) *SupplyChainFactory {
 }
 
 func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
-	////Physical Machine
-	//pmSupplyChainNode, err := f.buildPMSupply()
-	//if err != nil {
-	//	return nil, err
-	//}
+	//Physical Machine
+	pmSupplyChainNode, err := f.buildPMSupply()
+	if err != nil {
+		return nil, err
+	}
 
 	// Virtual Machine
 	vmSupplyChainNode, err := f.buildVMSupply()
@@ -81,7 +81,7 @@ func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
 	supplyChainBuilder.Entity(containerSupplyChainNode)
 	supplyChainBuilder.Entity(podSupplyChainNode)
 	supplyChainBuilder.Entity(vmSupplyChainNode)
-	//supplyChainBuilder.Entity(pmSupplyChainNode)
+	supplyChainBuilder.Entity(pmSupplyChainNode)
 
 	return supplyChainBuilder.Create()
 }
@@ -89,8 +89,8 @@ func (f *SupplyChainFactory) createSupplyChain() ([]*proto.TemplateDTO, error) {
 func (f *SupplyChainFactory) buildPMSupply() (*proto.TemplateDTO, error) {
 	nodeSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_PHYSICAL_MACHINE)
 	nodeSupplyChainNodeBuilder = nodeSupplyChainNodeBuilder.
-		Sells(vCpuTemplateComm).
-		Sells(vMemTemplateComm).
+		Sells(CpuTemplateComm).
+		Sells(MemTemplateComm).
 		Sells(clusterTemplateComm)
 
 	return nodeSupplyChainNodeBuilder.Create()
@@ -99,13 +99,13 @@ func (f *SupplyChainFactory) buildPMSupply() (*proto.TemplateDTO, error) {
 func (f *SupplyChainFactory) buildVMSupply() (*proto.TemplateDTO, error) {
 	nodeSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_VIRTUAL_MACHINE)
 	nodeSupplyChainNodeBuilder = nodeSupplyChainNodeBuilder.
-		//Provider(proto.EntityDTO_PHYSICAL_MACHINE, proto.Provider_HOSTING).
-		//Buys(vCpuTemplateComm).
-		//Buys(vMemTemplateComm).
-		//Buys(clusterTemplateComm).
 		Sells(vCpuTemplateComm).
 		Sells(vMemTemplateComm).
-		Sells(clusterTemplateComm)
+		Sells(clusterTemplateComm).
+		Provider(proto.EntityDTO_PHYSICAL_MACHINE, proto.Provider_HOSTING).
+		Buys(CpuTemplateComm).
+		Buys(MemTemplateComm).
+		Buys(clusterTemplateComm)
 		// TODO we will re-include provisioned commodities sold by node later.
 		//Sells(cpuProvisionedTemplateComm).
 		//Sells(memProvisionedTemplateComm)
@@ -117,14 +117,13 @@ func (f *SupplyChainFactory) buildPodSupply() (*proto.TemplateDTO, error) {
 	// Pod supply chain node builder
 	podSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_CONTAINER_POD)
 	podSupplyChainNodeBuilder = podSupplyChainNodeBuilder.
-		//Provider(proto.EntityDTO_VIRTUAL_MACHINE, proto.Provider_HOSTING).
-		Provider(proto.EntityDTO_PHYSICAL_MACHINE, proto.Provider_HOSTING).
-		Buys(vCpuTemplateComm).
-		Buys(vMemTemplateComm).
-		Buys(clusterTemplateComm).
 		Sells(vCpuTemplateComm).
 		Sells(vMemTemplateComm).
-		Sells(vmpmAccessTemplateComm)
+		Sells(vmpmAccessTemplateComm).
+		Provider(proto.EntityDTO_VIRTUAL_MACHINE, proto.Provider_HOSTING).
+		Buys(vCpuTemplateComm).
+		Buys(vMemTemplateComm).
+		Buys(clusterTemplateComm)
 
 	return podSupplyChainNodeBuilder.Create()
 }
@@ -133,13 +132,13 @@ func (f *SupplyChainFactory) buildContainerSupply() (*proto.TemplateDTO, error) 
 	containerBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_CONTAINER)
 
 	containerBuilder = containerBuilder.
+		Sells(vCpuTemplateComm).
+		Sells(vMemTemplateComm).
+		Sells(applicationTemplateComm).
 		Provider(proto.EntityDTO_CONTAINER_POD, proto.Provider_HOSTING).
 		Buys(vmpmAccessTemplateComm).
 		Buys(vCpuTemplateComm).
-		Buys(vMemTemplateComm).
-		Sells(vCpuTemplateComm).
-		Sells(vMemTemplateComm).
-		Sells(applicationTemplateComm)
+		Buys(vMemTemplateComm)
 
 	return containerBuilder.Create()
 }

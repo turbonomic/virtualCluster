@@ -8,16 +8,15 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
+//  ---------- Virtual Machine Node ------------------
+func (node *Node) BuildDTO() (*proto.EntityDTO, error) {
 	//bought, _ := node.createCommoditiesBought(node.ClusterID)
 	sold, _ := node.createCommoditiesSold()
 
 	entity, err := builder.
-		NewEntityDTOBuilder(proto.EntityDTO_VIRTUAL_MACHINE, node.UUID).
+		NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
 		WithPowerState(proto.EntityDTO_POWERED_ON).
 		DisplayName(node.Name).
-		VirtualMachineData(node.getVMRData()).
-		//BuysCommodities(bought).
 		SellsCommodities(sold).
 		Create()
 
@@ -28,28 +27,12 @@ func (node *HostNode) BuildDTO() (*proto.EntityDTO, error) {
 		return nil, msg
 	}
 
-	//node.addPMRelatedData(entity)
+	node.addPMRelatedData(entity)
 
 	return entity, nil
 }
 
-func (node *HostNode) getVMRData() *proto.EntityDTO_VirtualMachineData {
-	ips := []string{node.IP}
-	connected := true
-
-	vmState := &proto.EntityDTO_VMState{
-		Connected: &connected,
-	}
-
-	vmData := &proto.EntityDTO_VirtualMachineData{
-		IpAddress: ips,
-		VmState: vmState,
-		GuestName: &(node.Name),
-	}
-	return vmData
-}
-
-func (node *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
+func (node *Node) addPMRelatedData(e *proto.EntityDTO) error {
 	mem := &proto.EntityDTO_MemoryData{
 		Capacity: &(node.Memory.Capacity),
 	}
@@ -59,7 +42,7 @@ func (node *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
 	}
 
 	relatedData := &proto.EntityDTO_PhysicalMachineRelatedData{
-		Memory: mem,
+		Memory:    mem,
 		Processor: []*proto.EntityDTO_ProcessorData{cpu},
 	}
 
@@ -67,16 +50,7 @@ func (node *HostNode) addPMRelatedData(e *proto.EntityDTO) error {
 	return nil
 }
 
-//func (pm *HostNode) createCommoditiesBought(clusterId string) ([]*proto.CommodityDTO, error) {
-//
-//	var result []*proto.CommodityDTO
-//
-//	clusterComm, _ := CreateKeyCommodity(clusterId, proto.CommodityDTO_CLUSTER)
-//	result = append(result, clusterComm)
-//	return result, nil
-//}
-
-func (node *HostNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
+func (node *Node) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
@@ -88,28 +62,29 @@ func (node *HostNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	memComm, _ := CreateResourceCommodity(mem, proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
-	clusterComm, _ := CreateKeyCommodity(node.ClusterID, proto.CommodityDTO_CLUSTER)
+	clusterComm, _ := CreateKeyCommodity(node.ClusterId, proto.CommodityDTO_CLUSTER)
 	result = append(result, clusterComm)
 
 	return result, nil
 }
 
-func (node *HostNode) BuildPodDTOs() ([]*proto.EntityDTO, error) {
+// build DTOs for the hosted VNodes (Virtual Machine)
+func (node *Node) BuildSubDTOs() ([]*proto.EntityDTO, error) {
 	var result []*proto.EntityDTO
 
-	for _, pod := range node.Pods {
-		podDTO, err := pod.BuildDTO(node)
+	for _, vm := range node.VMs {
+		vmDTO, err := vm.BuildDTO(node)
 		if err != nil {
-			e := fmt.Errorf("failed to build PodDTO for node[%s] pod[%s]", node.Name, pod.Name)
+			e := fmt.Errorf("failed to build VMDTO for node[%s] vnode[%s]", node.Name, vm.Name)
 			glog.Error(e.Error())
 			continue
 		}
-		result = append(result, podDTO)
+		result = append(result, vmDTO)
 
-		subDTOs, err := pod.BuildContainerDTOs()
+		subDTOs, err := vm.BuildSubDTOs()
 		if err != nil {
-			e := fmt.Errorf("failed to build Pod-containerDTOs for node[%s] pod[%s]",
-				node.Name, pod.Name)
+			e := fmt.Errorf("failed to build VM-PodDTOs for node[%s] vnode[%s]",
+				node.Name, vm.Name)
 			glog.Error(e.Error())
 			continue
 		}
