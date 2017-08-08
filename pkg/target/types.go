@@ -1,19 +1,27 @@
 package target
 
+import (
+	"fmt"
+	"github.com/golang/glog"
+)
+
 const (
 	KindApp        = "application"
 	KindContainer  = "container"
 	KindPod        = "pod"
 	KindVirtualApp = "service"
-	KindVNode       = "vhost"
+	KindVNode      = "vhost"
 	KindNode       = "host"
 	KindCluster    = "cluster"
+
+	emptyProvider = "None"
 )
 
 type ObjectMeta struct {
-	Name string
-	UUID string
-	Kind string
+	Name       string
+	UUID       string
+	Kind       string
+	ProviderID string
 }
 
 type Resource struct {
@@ -58,14 +66,14 @@ type VirtualApp struct {
 type VNode struct {
 	ObjectMeta
 
-	CPU       Resource
-	Memory    Resource
+	CPU    Resource
+	Memory Resource
 
 	ClusterId string
 	IP        string
 
 	//a map for easy of move/deletion, key=pod.UUID
-	Pods      map[string]*Pod
+	Pods map[string]*Pod
 }
 
 // physical machine
@@ -129,7 +137,6 @@ func NewNode(name, id string) *Node {
 	}
 }
 
-
 func NewApplication(name, id string) *Application {
 	return &Application{
 		ObjectMeta: ObjectMeta{
@@ -158,4 +165,72 @@ func NewCluster(name, id string) *Cluster {
 			UUID: id,
 		},
 	}
+}
+
+func (v *VNode) DeletePod(podId string) error {
+	pod, exist := v.Pods[podId]
+
+	if !exist {
+		err := fmt.Errorf("VNode Delete Pod failed: VNode[%s][%s] does not has pod[%s].", v.Name, v.UUID, podId)
+		glog.Error(err.Error())
+		return err
+	}
+
+	pod.ProviderID = emptyProvider
+	delete(v.Pods, podId)
+
+	return nil
+}
+
+func (v *VNode) AddPod(pod *Pod) error {
+	podId := pod.UUID
+
+	if _, exist := v.Pods[podId]; exist {
+		err := fmt.Errorf("VNode Add Pod failed: VNode[%s][%s] already has pod[%s].", v.Name, v.UUID, podId)
+		glog.Error(err.Error())
+		return err
+	}
+
+	pod.ProviderID = v.UUID
+	v.Pods[podId] = pod
+	return nil
+}
+
+func (n *Node) DeleteVM(vnodeId string) error {
+	vnode, exist := n.VMs[vnodeId]
+	if !exist {
+		err := fmt.Errorf("Node[%s] deletes VM[%s] failed: VM is not found.", n.Name, vnodeId)
+		glog.Error(err.Error())
+		return err
+	}
+
+	vnode.ProviderID = emptyProvider
+	delete(n.VMs, vnodeId)
+
+	return nil
+}
+
+func (n *Node) AddVM(vnode *VNode) error {
+	vnodeId := vnode.UUID
+
+	if _, exist := n.VMs[vnodeId]; exist {
+		err := fmt.Errorf("Node[%s] add VM[%s] failed: VM already on the node.", n.Name, vnode.Name)
+		glog.Error(err.Error())
+		return err
+	}
+
+	vnode.ProviderID = n.UUID
+	n.VMs[vnodeId] = vnode
+	return nil
+}
+
+func (c *Container) SetCapacity(cpu, memory float64) error {
+	if cpu > 0.0 {
+		c.CPU.Capacity = cpu
+	}
+
+	if memory > 0.0 {
+		c.Memory.Capacity = memory
+	}
+	return nil
 }

@@ -6,25 +6,6 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (c *Cluster) GenerateContainerAPP() error {
-	if c.Nodes == nil || len(c.Nodes) < 1 {
-		err := fmt.Errorf("empty cluster[%s/%s].", c.Name, c.UUID)
-		glog.Error(err.Error())
-		return err
-	}
-
-	for _, host := range c.Nodes {
-		for _, vhost := range host.VMs {
-			for _, pod := range vhost.Pods {
-				for _, container := range pod.Containers {
-					container.GenerateApp()
-				}
-			}
-		}
-	}
-	return nil
-}
-
 func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 	var result []*proto.EntityDTO
 
@@ -91,7 +72,20 @@ func (c *Cluster) generateServiceDTOs() ([]*proto.EntityDTO, error) {
 	return result, nil
 }
 
-func (c *Cluster) MovePod(podId, vnodeId string) (error) {
-	glog.V(2).Infof("move pod[%s] to node[%s]", podId, vnodeId)
-	return fmt.Errorf("movePod is not implemented.")
+// Generate complement information
+//   (1) set providerId for each entity;
+//   (2) Generate Application Entity for each container;
+func (c *Cluster) CompleteBuild() {
+	for _, host := range c.Nodes {
+		for _, vhost := range host.VMs {
+			vhost.ProviderID = host.UUID
+			for _, pod := range vhost.Pods {
+				pod.ProviderID = vhost.UUID
+				for _, container := range pod.Containers {
+					container.ProviderID = pod.UUID
+					container.GenerateApp()
+				}
+			}
+		}
+	}
 }

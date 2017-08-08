@@ -1,25 +1,25 @@
 package discovery
 
 import (
+	"fmt"
 	"github.com/golang/glog"
 
-	"github.com/songbinliu/containerChain/pkg/registration"
 	"github.com/songbinliu/containerChain/pkg/target"
+	"github.com/songbinliu/containerChain/pkg/registration"
 
-	"fmt"
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
 type DiscoveryClient struct {
 	targetConfig *TargetConf
-	cluster      *target.Cluster
+	cluster      *target.ClusterHandler
 }
 
-func NewDiscoveryClient(targetConfig *TargetConf, cluster *target.Cluster) *DiscoveryClient {
+func NewDiscoveryClient(targetConfig *TargetConf, handler *target.ClusterHandler) *DiscoveryClient {
 	return &DiscoveryClient{
 		targetConfig: targetConfig,
-		cluster:      cluster,
+		cluster:      handler,
 	}
 }
 
@@ -74,7 +74,7 @@ func printDTOs(dtos []*proto.EntityDTO) {
 func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto.DiscoveryResponse, error) {
 	glog.V(2).Infof("begin to discovery target...")
 
-	resultDTOs, err := dc.cluster.GenerateDTOs()
+	resultDTOs, err := dc.cluster.GenerateClusterDTOs()
 	if err != nil {
 		glog.Errorf("failed to generate DTOs: %v", err)
 		resultDTOs = []*proto.EntityDTO{}

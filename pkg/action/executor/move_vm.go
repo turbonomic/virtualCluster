@@ -11,10 +11,10 @@ import (
 )
 
 type VirtualMachineMover struct {
-	cluster *target.Cluster
+	cluster *target.ClusterHandler
 }
 
-func NewVirtualMachineMover(c *target.Cluster) *VirtualMachineMover {
+func NewVirtualMachineMover(c *target.ClusterHandler) *VirtualMachineMover {
 	return &VirtualMachineMover{
 		cluster: c,
 	}
@@ -22,5 +22,31 @@ func NewVirtualMachineMover(c *target.Cluster) *VirtualMachineMover {
 
 func (m *VirtualMachineMover) Execute(actionItem *proto.ActionItemDTO, progressTracker sdkprobe.ActionProgressTracker) error {
 	glog.V(2).Infof("begin to move a VirtualMachine.")
+
+	//1. check
+	vmEntity := actionItem.GetTargetSE()
+	if vmEntity == nil {
+		return fmt.Errorf("TargetSE is empty.")
+	}
+
+	hostEntity := actionItem.GetNewSE()
+	if hostEntity == nil {
+		return fmt.Errorf("HostEntity is empty.")
+	}
+
+	hostType := hostEntity.GetEntityType()
+	if hostType != proto.EntityDTO_PHYSICAL_MACHINE {
+		return fmt.Errorf("new host entity is not a VM: %v", hostType)
+	}
+
+	//2. move
+	vmId := vmEntity.GetId()
+	hostId := hostEntity.GetId()
+
+	err := m.cluster.MoveVirtualMachine(vmId, hostId)
+	if err != nil {
+		return fmt.Errorf("move failed: %v", err)
+	}
+
 	return fmt.Errorf("VirtualMachiner Mover is not implemented.")
 }

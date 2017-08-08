@@ -34,7 +34,7 @@ func CreateKeyCommodity(key string, ctype proto.CommodityDTO_CommodityType) (*pr
 
 func CreateKeyCommodityBought(key string, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.
-	NewCommodityDTOBuilder(ctype).
+		NewCommodityDTOBuilder(ctype).
 		Key(key).
 		Create()
 }

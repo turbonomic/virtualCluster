@@ -49,14 +49,26 @@ func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
 	return cluster
 }
 
-func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.ProbeBuilder, error) {
-
-	//1. generate the target Cluster
+func buildClusterHandler(topoConf string) (*target.ClusterHandler, error) {
 	clusterId := "clusterId"
 	clusterName := "clusterName"
 	cluster := buildCluster(clusterId, clusterName, topoConf)
 	if cluster == nil {
 		err := fmt.Errorf("failed to build cluster[%s]", topoConf)
+		glog.Error(err.Error())
+		return nil, err
+	}
+
+	handler := target.NewClusterHandler(cluster)
+	return handler, nil
+}
+
+func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.ProbeBuilder, error) {
+
+	//1. generate the target Cluster Handler
+	clusterHandler, err := buildClusterHandler(topologyConf)
+	if err != nil {
+		err := fmt.Errorf("failed to build cluster handler for [%s]", topoConf)
 		glog.Error(err.Error())
 		return nil, err
 	}
@@ -68,8 +80,8 @@ func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.
 	}
 
 	regClient := registration.NewRegistrationClient(stype)
-	discoveryClient := discovery.NewDiscoveryClient(config, cluster)
-	actionHandler := action.NewActionHandler(cluster, stop)
+	discoveryClient := discovery.NewDiscoveryClient(config, clusterHandler)
+	actionHandler := action.NewActionHandler(clusterHandler, stop)
 
 	builder := probe.NewProbeBuilder(config.TargetType, config.ProbeCategory).
 		RegisteredBy(regClient).

@@ -11,10 +11,10 @@ import (
 )
 
 type ContainerResizer struct {
-	cluster *target.Cluster
+	cluster *target.ClusterHandler
 }
 
-func NewContainerResizer(c *target.Cluster) *ContainerResizer {
+func NewContainerResizer(c *target.ClusterHandler) *ContainerResizer {
 	return &ContainerResizer{
 		cluster: c,
 	}

@@ -4,7 +4,7 @@
 
 options="--logtostderr"
 options="$options --v 3"
-options="$options --topologyConf ./conf/test.conf"
+options="$options --topologyConf ./conf/topology.conf"
 options="$options --turboConf ./conf/turbo.json"
 options="$options --targetConf ./conf/target.json"
 

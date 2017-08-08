@@ -1,5 +1,5 @@
 {
-    "probeCategory": "MockCloudNative",
+    "probeCategory": "CloudNative",
     "targetType": "MockCloud",
     "address": "https://127.0.0.1:8443",
     "username": "mocker",

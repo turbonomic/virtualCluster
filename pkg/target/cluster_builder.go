@@ -197,7 +197,7 @@ func (b *ClusterBuilder) buildNodes() error {
 				cpu += vm.CPU.Capacity
 				mem += vm.Memory.Capacity
 			} else {
-				glog.Warningf("node[%s]-%dth VM[%s] does not exist.", k, i + 1, vmKey)
+				glog.Warningf("node[%s]-%dth VM[%s] does not exist.", k, i+1, vmKey)
 				break
 			}
 		}
@@ -272,14 +272,20 @@ func (b *ClusterBuilder) GenerateCluster() (*Cluster, error) {
 		return nil, err
 	}
 
+	if err := b.buildVNodes(); err != nil {
+		err := fmt.Errorf("Generate cluster failed: build vnodes failed: %v", err)
+		glog.Error(err.Error())
+		return nil, err
+	}
+
 	if err := b.buildNodes(); err != nil {
-		err := fmt.Errorf("Generate cluster failed: build pods failed: %v", err)
+		err := fmt.Errorf("Generate cluster failed: build nodes failed: %v", err)
 		glog.Error(err.Error())
 		return nil, err
 	}
 
 	if err := b.buildVirtualApp(); err != nil {
-		err := fmt.Errorf("Generate cluster failed: build pods failed: %v", err)
+		err := fmt.Errorf("Generate cluster failed: build virtualApp failed: %v", err)
 		glog.Error(err.Error())
 		return nil, err
 	}
@@ -288,6 +294,6 @@ func (b *ClusterBuilder) GenerateCluster() (*Cluster, error) {
 	cluster.Nodes = b.nodes
 	cluster.Services = b.services
 
-	cluster.GenerateContainerAPP()
+	cluster.CompleteBuild()
 	return cluster, nil
 }

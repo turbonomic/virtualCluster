@@ -11,10 +11,10 @@ import (
 )
 
 type VMResizer struct {
-	cluster *target.Cluster
+	cluster *target.ClusterHandler
 }
 
-func NewVMResizer(c *target.Cluster) *VMResizer {
+func NewVMResizer(c *target.ClusterHandler) *VMResizer {
 	return &VMResizer{
 		cluster: c,
 	}

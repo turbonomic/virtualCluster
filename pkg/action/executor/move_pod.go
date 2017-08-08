@@ -1,20 +1,20 @@
 package executor
 
 import (
+	"fmt"
 	"github.com/golang/glog"
 
 	"github.com/songbinliu/containerChain/pkg/target"
 
-	"fmt"
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
 type PodMover struct {
-	cluster *target.Cluster
+	cluster *target.ClusterHandler
 }
 
-func NewPodMover(c *target.Cluster) *PodMover {
+func NewPodMover(c *target.ClusterHandler) *PodMover {
 	return &PodMover{
 		cluster: c,
 	}

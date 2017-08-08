@@ -183,7 +183,7 @@ func (t *TargetTopology) loadVNode(fields []string) error {
 
 	key := fields[0]
 	if _, exist := t.VNodeTemplateMap[key]; exist {
-		fmt.Errorf("node [%s] already exist.")
+		fmt.Errorf("vnode [%s] already exist.")
 	}
 
 	cpu, err := strconv.ParseFloat(fields[1], 64)
@@ -217,7 +217,7 @@ func (t *TargetTopology) loadVNode(fields []string) error {
 }
 
 // load nodeTemplate from a line
-// node.key, cpu, memory, IP, pod1, pod2, ...
+// node.key, cpu, memory, IP, vnode1, vnode2, ...
 func (t *TargetTopology) loadNode(fields []string) error {
 	expectNumFields := 4
 	if len(fields) < expectNumFields {
@@ -232,7 +232,7 @@ func (t *TargetTopology) loadNode(fields []string) error {
 	}
 
 	key := fields[0]
-	if _, exist := t.VNodeTemplateMap[key]; exist {
+	if _, exist := t.NodeTemplateMap[key]; exist {
 		fmt.Errorf("node [%s] already exist.")
 	}
 

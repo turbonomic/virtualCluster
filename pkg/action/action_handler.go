@@ -5,24 +5,24 @@ import (
 	"github.com/golang/glog"
 	"time"
 
-	"github.com/songbinliu/containerChain/pkg/action/executor"
 	"github.com/songbinliu/containerChain/pkg/target"
+	"github.com/songbinliu/containerChain/pkg/action/executor"
 
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
 type ActionHandler struct {
-	cluster         *target.Cluster
+	cluster         *target.ClusterHandler
 	actionExecutors map[TurboActionType]TurboExecutor
 	stop            chan struct{}
 }
 
-func NewActionHandler(c *target.Cluster, stop chan struct{}) *ActionHandler {
+func NewActionHandler(h *target.ClusterHandler, stop chan struct{}) *ActionHandler {
 	executors := make(map[TurboActionType]TurboExecutor)
 
 	handler := &ActionHandler{
-		cluster:         c,
+		cluster:         h,
 		stop:            stop,
 		actionExecutors: executors,
 	}

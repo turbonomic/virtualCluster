@@ -27,8 +27,10 @@ func (d *Container) GenerateApp() error {
 
 	app.CPU = d.CPU
 	app.Memory = d.Memory
+	app.ProviderID = d.UUID
 
 	d.App = app
+
 	return nil
 }
 
