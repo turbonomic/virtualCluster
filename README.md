@@ -11,3 +11,11 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 <img width="500" src="https://github.com/songbinliu/containerChain/blob/master/conf/commodity.png">
 </div>
 
+# Supported Actions
+|SE type| Move | Resize|
+|ContainerPod| Yes | No |
+|Container | No | WIP |
+| VirtualMachine |Yes | WIP|
+
+note *WIP* = work in progress.
+
