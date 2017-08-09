@@ -1,5 +1,5 @@
 # containerChain
-build a supply chain of *node --> pod --> container --> application --> virtualApplication*.
+build a supply chain of *physical Node --> virtual Node --> pod --> container --> application --> virtualApplication*.
 
 # Overview
 <div >
