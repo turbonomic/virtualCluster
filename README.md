@@ -11,6 +11,13 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 <img width="500" src="https://github.com/songbinliu/containerChain/blob/master/conf/commodity.png">
 </div>
 
+What is the amount of buy and sell?
+|SE type| vCPU/vMem | CommoditySell | CommodityBought |
+|-|-|-|-|
+|Container | Limit/Request/Used | Capacity=Limit, Used=Used | Used = Request Vs. Used|
+|Pod | Limit/Request/Used | Capacity=Limit, Used=Used| Used = Request Vs. Used|
+|VM | Capacity/Used | Capacity=Capacity, Used=Used | Used=Used|
+
 # Supported Actions
 |SE type| Move | Resize|
 |-|-|-|
