@@ -18,7 +18,7 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 |Container | No | WIP |
 | VirtualMachine |Yes | WIP|
 
-note *WIP* = work in progress.
+ (*WIP* = work in progress.)
 
 # Run it
 
