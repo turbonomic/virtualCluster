@@ -21,7 +21,7 @@ What is the amount of buy and sell?
 |VM | Capacity/Used | Capacity=Capacity <br/> Used=Used | Used=Capacity|
 
 *Container.Used* is the monitored usage; others should be calculated based on *Container.Used*; <br/>
-*Container.Limit and Container.Request* are read from Container settings;
+*Container.Limit and Container.Request* are read from Container settings.
 
 
 # Supported Actions
