@@ -22,7 +22,7 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 
 # Run it
 
-```bash
+```console
 #1. get source code
 go get github.com/songbinliu/containerChain
 
