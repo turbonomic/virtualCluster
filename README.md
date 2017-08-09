@@ -12,6 +12,7 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 </div>
 
 What is the amount of buy and sell?
+
 |SE type| vCPU/vMem | CommoditySell | CommodityBought |
 |-|-|-|-|
 |Container | Limit/Request/Used | Capacity=Limit, Used=Used | Used = Request Vs. Used|
