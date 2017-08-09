@@ -6,3 +6,8 @@ build a supply chain of *node --> pod --> container --> application --> virtualA
 <img width="700" src="https://github.com/songbinliu/containerChain/blob/master/conf/supplyChain.png">
 </div>
 
+# Commodities between layers
+<div>
+<img width="500" src="https://github.com/songbinliu/containerChain/blob/master/conf/commodity.png">
+</div>
+

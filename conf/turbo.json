@@ -1,6 +1,6 @@
 {
     "serverMeta": {
-        "turboServer": "https://10.10.200.35:9400",
+        "turboServer": "https://localhost:9400",
         "version": "5.9.0-SNAPSHOT"
     },
     "restAPIConfig": {
