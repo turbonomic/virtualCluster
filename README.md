@@ -18,9 +18,9 @@ What is the amount of buy and sell?
 | Application | - | - | Used=Container.Used |
 |Container | Limit/Request/Used | Capacity=Limit <br/> Used= Request Vs. Used | Used = Limit, Request Vs. Used|
 |Pod | Limit/Request/Used | Capacity=VM.Capacity  <br/> Used=Container.(Request Vs. Used) | Used = Container.(Request Vs. Used) |
-|VM | Capacity/Used | Capacity=Capacity <br/> Used=Used | Used=Used|
+|VM | Capacity/Used | Capacity=Capacity <br/> Used=Used | Used=Capacity|
 
-*Used* is the monitored usage.
+*Container.Used* is the monitored usage; others should be calculated based on *Container.Used*.
 
 # Supported Actions
 |SE type| Move | Resize|
