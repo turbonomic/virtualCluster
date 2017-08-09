@@ -16,9 +16,9 @@ What is the amount of buy and sell?
 |SE type| vCPU/vMem | CommoditySell | CommodityBought |
 |-|-|-|-|
 | Application | - | - | Used=Container.Used |
-|Container | Limit/Request/Used | Capacity=Limit, Used= Request Vs. Used | Used = Request Vs. Used|
+|Container | Limit/Request/Used | Capacity=Limit <br/> Used= Request Vs. Used | Used = Request Vs. Used|
 |Pod | Limit/Request/Used | Capacity=VM.Capacity  <br/> Used=(Container.Request Vs. Used) | Used = (Container.Request Vs. Used) |
-|VM | Capacity/Used | Capacity=Capacity, Used=Used | Used=Used|
+|VM | Capacity/Used | Capacity=Capacity <br/> Used=Used | Used=Used|
 
 *Used* is the monitored usage.
 
