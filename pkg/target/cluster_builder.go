@@ -18,7 +18,7 @@ type ClusterBuilder struct {
 	services   []*VirtualApp
 }
 
-func NewClusterBuilderfromTopology(clusterId, clusterName string, topo *TargetTopology) *ClusterHandler {
+func NewClusterBuilderfromTopology(clusterId, clusterName string, topo *TargetTopology) *ClusterBuilder {
 	return &ClusterBuilder{
 		clusterId:   clusterId,
 		clusterName: clusterName,
