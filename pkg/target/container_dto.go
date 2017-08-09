@@ -8,8 +8,8 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (d *Container) Clone(newId string) *Container {
-	result := NewContainer(d.Name, newId)
+func (d *Container) Clone(newName, newId string) *Container {
+	result := NewContainer(newName, newId)
 
 	result.Memory = d.Memory
 	result.CPU = d.CPU
@@ -34,13 +34,13 @@ func (d *Container) GenerateApp() error {
 	return nil
 }
 
-func (d *Container) BuildAppDTO() (*proto.EntityDTO, error) {
+func (d *Container) BuildAppDTO(pod *Pod) (*proto.EntityDTO, error) {
 	if d.App == nil {
 		return nil, fmt.Errorf("container[%s] App is nil.", d.Name)
 		//d.GenerateApp()
 	}
 
-	return d.App.BuildDTO(d)
+	return d.App.BuildDTO(d, pod)
 }
 
 func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {

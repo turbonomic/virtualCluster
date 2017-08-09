@@ -74,7 +74,7 @@ func (pod *Pod) BuildContainerDTOs() ([]*proto.EntityDTO, error) {
 		}
 		result = append(result, containerDTO)
 
-		appDTO, err := container.BuildAppDTO()
+		appDTO, err := container.BuildAppDTO(pod)
 		if err != nil {
 			e := fmt.Errorf("failed to build appDTO for pod[%s] container[%s]",
 				pod.Name, container.Name)

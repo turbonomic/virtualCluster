@@ -8,10 +8,13 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-func (app *Application) BuildDTO(docker *Container) (*proto.EntityDTO, error) {
+func (app *Application) BuildDTO(docker *Container, pod *Pod) (*proto.EntityDTO, error) {
 	bought, _ := app.createCommoditiesBought(docker.UUID)
 	sold, _ := app.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_CONTAINER_POD, docker.UUID)
+	appData, _ := app.createApplicationData(pod)
+
+	//TODO: do we need ApplicationProperties?
 
 	entity, err := builder.
 		NewEntityDTOBuilder(proto.EntityDTO_APPLICATION, app.UUID).
@@ -19,6 +22,7 @@ func (app *Application) BuildDTO(docker *Container) (*proto.EntityDTO, error) {
 		Provider(provider).
 		BuysCommodities(bought).
 		SellsCommodities(sold).
+		ApplicationData(appData).
 		Create()
 
 	if err != nil {
@@ -29,6 +33,14 @@ func (app *Application) BuildDTO(docker *Container) (*proto.EntityDTO, error) {
 	}
 
 	return entity, nil
+}
+
+func (app *Application) createApplicationData(pod *Pod) (*proto.EntityDTO_ApplicationData, error) {
+
+	appType := pod.Name
+	return &proto.EntityDTO_ApplicationData{
+		Type: &appType,
+	}, nil
 }
 
 func (app *Application) createCommoditiesBought(containerId string) ([]*proto.CommodityDTO, error) {

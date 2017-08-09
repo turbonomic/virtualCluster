@@ -33,11 +33,16 @@ func (node *Node) BuildDTO() (*proto.EntityDTO, error) {
 }
 
 func (node *Node) addPMRelatedData(e *proto.EntityDTO) error {
+	//what is Id for?
+	memId := fmt.Sprintf("mem-%s", node.UUID)
 	mem := &proto.EntityDTO_MemoryData{
+		Id: &memId,
 		Capacity: &(node.Memory.Capacity),
 	}
 
+	cpuId := fmt.Sprintf("cpu-%s", node.UUID)
 	cpu := &proto.EntityDTO_ProcessorData{
+		Id: &cpuId,
 		Capacity: &(node.CPU.Capacity),
 	}
 
@@ -55,11 +60,11 @@ func (node *Node) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	var result []*proto.CommodityDTO
 
 	cpu := &(node.CPU)
-	cpuComm, _ := CreateResourceCommodity(cpu, proto.CommodityDTO_VCPU)
+	cpuComm, _ := CreateResourceCommodity(cpu, proto.CommodityDTO_CPU)
 	result = append(result, cpuComm)
 
 	mem := &(node.Memory)
-	memComm, _ := CreateResourceCommodity(mem, proto.CommodityDTO_VMEM)
+	memComm, _ := CreateResourceCommodity(mem, proto.CommodityDTO_MEM)
 	result = append(result, memComm)
 
 	clusterComm, _ := CreateKeyCommodity(node.ClusterId, proto.CommodityDTO_CLUSTER)

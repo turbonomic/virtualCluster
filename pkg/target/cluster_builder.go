@@ -18,14 +18,7 @@ type ClusterBuilder struct {
 	services   []*VirtualApp
 }
 
-func NewClusterBuilder(clusterId, clusterName, topoConf string) *ClusterBuilder {
-	topo := NewTargetTopology(clusterId)
-	if err := topo.LoadTopology(topoConf); err != nil {
-		glog.Errorf("failed to load topology from file: %s, error: %v",
-			topoConf, err)
-		return nil
-	}
-
+func NewClusterBuilderfromTopology(clusterId, clusterName string, topo *TargetTopology) *ClusterHandler {
 	return &ClusterBuilder{
 		clusterId:   clusterId,
 		clusterName: clusterName,
@@ -36,6 +29,17 @@ func NewClusterBuilder(clusterId, clusterName, topoConf string) *ClusterBuilder 
 		//nodes: []*HostNode{},
 		//services: []*VirtualApp{},
 	}
+}
+
+func NewClusterBuilder(clusterId, clusterName, topoConf string) *ClusterBuilder {
+	topo := NewTargetTopology(clusterId)
+	if err := topo.LoadTopology(topoConf); err != nil {
+		glog.Errorf("failed to load topology from file: %s, error: %v",
+			topoConf, err)
+		return nil
+	}
+
+	return NewClusterBuilderfromTopology(clusterId, clusterName, topo)
 }
 
 func (b *ClusterBuilder) buildContainers() error {
@@ -88,8 +92,8 @@ func (b *ClusterBuilder) buildPods() error {
 		for i, cname := range v.Containers {
 			if container, exist := allContainers[cname]; exist {
 				// generate a new container with different UUID
-				newId := fmt.Sprintf("%s-%s", pod.UUID, container.Name)
-				ct := container.Clone(newId)
+				newId := fmt.Sprintf("%s-%s", container.Name, pod.UUID)
+				ct := container.Clone(newId, newId)
 				containers = append(containers, ct)
 				addResource(cpu, &(ct.CPU))
 				addResource(mem, &(ct.Memory))

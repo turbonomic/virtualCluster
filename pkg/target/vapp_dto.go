@@ -19,6 +19,11 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 		return nil, nerr
 	}
 
+	vappData := &proto.EntityDTO_VirtualApplicationData{
+		Type: &(vapp.Name),
+	}
+	vAppBuilder.VirtualApplicationData(vappData)
+
 	entity, err := vAppBuilder.Create()
 	if err != nil {
 		msg := fmt.Errorf("Failed to build EntityDTO for vApplication(%v): %v",
