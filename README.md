@@ -20,3 +20,16 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 
 note *WIP* = work in progress.
 
+# Run it
+
+```bash
+#1. get source code
+go get github.com/songbinliu/containerChain
+
+#2. compile it
+cd $GOPATH/src/github.com/songbinliu/containerChain
+make build
+
+#3. run it
+./_output/containerChain --logtostderr --v 3 --topologyConf ./conf/simple.topology.conf --turboConf ./conf/turbo.json --targetConf ./conf/target.json
+```
