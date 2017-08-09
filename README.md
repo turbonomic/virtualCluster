@@ -13,6 +13,7 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 
 # Supported Actions
 |SE type| Move | Resize|
+|-|-|-|
 |ContainerPod| Yes | No |
 |Container | No | WIP |
 | VirtualMachine |Yes | WIP|
