@@ -16,8 +16,8 @@ What is the amount of commodity bought and sell?
 |SE type| vCPU/vMem | CommoditySell | CommodityBought |
 |-|-|-|-|
 | Application | - | - | Used=Container.Used |
-|Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used= Used | Used = Used|
-|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Used | Used = sum.Container.Used) |
+|Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used=Used | Used=Used|
+|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Used | Used=sum.Container.Used |
 |VM | Capacity/Used | Capacity=Capacity <br/> Used=sum.Pod.Used + overhead | Used=VM.Capacity|
 
 *Container.Used*  is the monitored usage; others should be calculated based on *Container.Used*; <br/>
