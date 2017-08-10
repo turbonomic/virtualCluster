@@ -40,8 +40,10 @@ type Application struct {
 type Container struct {
 	ObjectMeta
 
-	CPU    Resource
-	Memory Resource
+	CPU       Resource
+	Memory    Resource
+	ReqCPU    float64
+	ReqMemory float64
 
 	App *Application
 }

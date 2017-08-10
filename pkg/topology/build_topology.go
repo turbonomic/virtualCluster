@@ -1,9 +1,10 @@
-package target
+package topology
 
 import (
 	"bufio"
 	"fmt"
 	"github.com/golang/glog"
+	"github.com/songbinliu/containerChain/pkg/target"
 	"os"
 	"strconv"
 	"strings"
@@ -11,8 +12,10 @@ import (
 
 type containerTemplate struct {
 	Key    string
-	CPU    Resource
-	Memory Resource
+	CPU    target.Resource
+	Memory target.Resource
+	ReqCPU float64
+	ReqMem float64
 }
 
 type podTemplate struct {
@@ -80,7 +83,7 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 // load containerTemplate from a line
 //fields: containerName, req_cpu, used_cpu, req_memory, used_mem
 func (t *TargetTopology) loadContainer(fields []string) error {
-	expectNumFields := 5
+	expectNumFields := 7
 	if len(fields) != expectNumFields {
 		return fmt.Errorf("fields num mismatch [%d Vs. %d]", len(fields), expectNumFields)
 	}
@@ -96,7 +99,7 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 		return fmt.Errorf("container[%s] already exists.", key)
 	}
 
-	reqCPU, err := strconv.ParseFloat(fields[1], 64)
+	limitCPU, err := strconv.ParseFloat(fields[1], 64)
 	if err != nil {
 		return fmt.Errorf("req_cpu field-1-[%s] should be a float number.", fields[1])
 	}
@@ -104,26 +107,38 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 	if err != nil {
 		return fmt.Errorf("used_cpu field-2-[%s] should be a float number.", fields[2])
 	}
-
-	reqMem, err := strconv.ParseFloat(fields[3], 64)
+	reqCPU, err := strconv.ParseFloat(fields[3], 64)
 	if err != nil {
-		return fmt.Errorf("req_mem field-3-[%s] should be a float number.", fields[3])
+		return fmt.Errorf("used_cpu field-2-[%s] should be a float number.", fields[3])
 	}
-	usedMem, err := strconv.ParseFloat(fields[4], 64)
+
+	//in MB
+	limitMem, err := strconv.ParseFloat(fields[4], 64)
 	if err != nil {
-		return fmt.Errorf("used_mem field-4-[%s] should be a float number.", fields[4])
+		return fmt.Errorf("req_mem field-3-[%s] should be a float number.", fields[4])
+	}
+	usedMem, err := strconv.ParseFloat(fields[5], 64)
+	if err != nil {
+		return fmt.Errorf("used_mem field-4-[%s] should be a float number.", fields[5])
+	}
+	reqMem, err := strconv.ParseFloat(fields[6], 64)
+	if err != nil {
+		return fmt.Errorf("used_mem field-4-[%s] should be a float number.", fields[6])
 	}
 
 	container := &containerTemplate{
 		Key: key,
-		CPU: Resource{
-			Capacity: reqCPU,
+		CPU: target.Resource{
+			Capacity: limitCPU,
 			Used:     usedCPU,
 		},
-		Memory: Resource{
-			Capacity: reqMem,
-			Used:     usedMem,
+		ReqCPU: reqCPU,
+
+		Memory: target.Resource{
+			Capacity: limitMem * 1024.0,
+			Used:     usedMem * 1024.0,
 		},
+		ReqMem: reqMem * 1024.0,
 	}
 
 	t.ContainerTemplateMap[key] = container

@@ -5,8 +5,8 @@ import (
 	"github.com/golang/glog"
 	"time"
 
-	"github.com/songbinliu/containerChain/pkg/target"
 	"github.com/songbinliu/containerChain/pkg/action/executor"
+	"github.com/songbinliu/containerChain/pkg/target"
 
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"

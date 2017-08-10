@@ -9,6 +9,7 @@ import (
 	"github.com/songbinliu/containerChain/pkg/discovery"
 	"github.com/songbinliu/containerChain/pkg/registration"
 	"github.com/songbinliu/containerChain/pkg/target"
+	"github.com/songbinliu/containerChain/pkg/topology"
 
 	"github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/service"
@@ -31,7 +32,7 @@ func getFlags() {
 }
 
 func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
-	builder := target.NewClusterBuilder(clusterId, clusterName, topoConf)
+	builder := topology.NewClusterBuilder(clusterId, clusterName, topoConf)
 	if builder == nil {
 		err := fmt.Errorf("failed to create a cluster builder[%s]", topoConf)
 		glog.Error(err.Error())
@@ -45,6 +46,7 @@ func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
 		return nil
 	}
 
+	//TODO: delete it, this is for test only.
 	cluster.GenerateDTOs()
 	return cluster
 }

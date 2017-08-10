@@ -1,8 +1,9 @@
-package target
+package topology
 
 import (
 	"fmt"
 	"github.com/golang/glog"
+	"github.com/songbinliu/containerChain/pkg/target"
 )
 
 type ClusterBuilder struct {
@@ -11,11 +12,11 @@ type ClusterBuilder struct {
 
 	topology *TargetTopology
 
-	containers map[string]*Container
-	pods       map[string]*Pod
-	vnodes     map[string]*VNode
-	nodes      map[string]*Node
-	services   []*VirtualApp
+	containers map[string]*target.Container
+	pods       map[string]*target.Pod
+	vnodes     map[string]*target.VNode
+	nodes      map[string]*target.Node
+	services   []*target.VirtualApp
 }
 
 func NewClusterBuilderfromTopology(clusterId, clusterName string, topo *TargetTopology) *ClusterBuilder {
@@ -43,52 +44,54 @@ func NewClusterBuilder(clusterId, clusterName, topoConf string) *ClusterBuilder 
 }
 
 func (b *ClusterBuilder) buildContainers() error {
-	containers := make(map[string]*Container)
+	containers := make(map[string]*target.Container)
 
 	for k, v := range b.topology.ContainerTemplateMap {
-		container := NewContainer(k, k)
+		container := target.NewContainer(k, k)
 
 		container.CPU = v.CPU
 		container.Memory = v.Memory
+		container.ReqCPU = v.ReqCPU
+		container.ReqMemory = v.ReqMem
 
 		containers[k] = container
-		glog.V(4).Infof("container-%+v", container)
+		glog.V(3).Infof("container-%+v", container)
 	}
 
 	b.containers = containers
 	return nil
 }
 
-func resetResource(r *Resource) {
+func resetResource(r *target.Resource) {
 	r.Capacity = 0
 	r.Used = 0
 }
 
-func addResource(r, delta *Resource) {
+func addResource(r, delta *target.Resource) {
 	r.Capacity += delta.Capacity
 	r.Used += delta.Used
 }
 
-func setResource(r, r2 *Resource) {
+func setResource(r, r2 *target.Resource) {
 	r.Capacity = r2.Capacity
 	r.Used = r2.Used
 }
 
 func (b *ClusterBuilder) buildPods() error {
-	result := make(map[string]*Pod)
+	result := make(map[string]*target.Pod)
 
 	allContainers := b.containers
 
-	cpu := &Resource{}
-	mem := &Resource{}
+	cpu := &target.Resource{}
+	mem := &target.Resource{}
 
 	for k, v := range b.topology.PodTemplateMap {
-		pod := NewPod(k, k)
+		pod := target.NewPod(k, k)
 
 		resetResource(cpu)
 		resetResource(mem)
 
-		containers := []*Container{}
+		containers := []*target.Container{}
 		for i, cname := range v.Containers {
 			if container, exist := allContainers[cname]; exist {
 				// generate a new container with different UUID
@@ -127,25 +130,25 @@ func (b *ClusterBuilder) buildPods() error {
 	return nil
 }
 
-func assignVNode(node *VNode, tmp *vnodeTemplate) {
+func assignVNode(node *target.VNode, tmp *vnodeTemplate) {
 	node.Memory.Capacity = tmp.Memory
 	node.CPU.Capacity = tmp.CPU
 	node.IP = tmp.IP
 }
 
 func (b *ClusterBuilder) buildVNodes() error {
-	result := make(map[string]*VNode)
+	result := make(map[string]*target.VNode)
 
 	allPods := b.pods
 	for k, v := range b.topology.VNodeTemplateMap {
-		vnode := NewVNode(k, k)
+		vnode := target.NewVNode(k, k)
 		assignVNode(vnode, v)
 		vnode.ClusterId = b.clusterId
 
 		cpu := 0.0
 		mem := 0.0
 
-		pods := make(map[string]*Pod)
+		pods := make(map[string]*target.Pod)
 		for i, podName := range v.Pods {
 			if pod, exist := allPods[podName]; exist {
 				pods[pod.UUID] = pod
@@ -176,25 +179,25 @@ func (b *ClusterBuilder) buildVNodes() error {
 	return nil
 }
 
-func assignNode(node *Node, tmp *nodeTemplate) {
+func assignNode(node *target.Node, tmp *nodeTemplate) {
 	node.Memory.Capacity = tmp.Memory
 	node.CPU.Capacity = tmp.CPU
 	node.IP = tmp.IP
 }
 
 func (b *ClusterBuilder) buildNodes() error {
-	result := make(map[string]*Node)
+	result := make(map[string]*target.Node)
 
 	allVMs := b.vnodes
 	for k, v := range b.topology.NodeTemplateMap {
-		node := NewNode(k, k)
+		node := target.NewNode(k, k)
 		assignNode(node, v)
 		node.ClusterId = b.clusterId
 
 		cpu := 0.0
 		mem := 0.0
 
-		vnodes := make(map[string]*VNode)
+		vnodes := make(map[string]*target.VNode)
 		for i, vmKey := range v.VMs {
 			if vm, exist := allVMs[vmKey]; exist {
 				vnodes[vm.UUID] = vm
@@ -226,13 +229,13 @@ func (b *ClusterBuilder) buildNodes() error {
 }
 
 func (b *ClusterBuilder) buildVirtualApp() error {
-	var result []*VirtualApp
+	var result []*target.VirtualApp
 
 	allPods := b.pods
 	for k, v := range b.topology.ServiceTemplateMap {
-		vapp := NewVirtualApp(k, k)
+		vapp := target.NewVirtualApp(k, k)
 
-		pods := []*Pod{}
+		pods := []*target.Pod{}
 		for i, podName := range v.Pods {
 			if pod, exist := allPods[podName]; exist {
 				pods = append(pods, pod)
@@ -257,7 +260,7 @@ func (b *ClusterBuilder) buildVirtualApp() error {
 	return nil
 }
 
-func (b *ClusterBuilder) GenerateCluster() (*Cluster, error) {
+func (b *ClusterBuilder) GenerateCluster() (*target.Cluster, error) {
 	if b.topology == nil {
 		err := fmt.Errorf("need to set topology first.")
 		glog.Error(err.Error())
@@ -294,7 +297,7 @@ func (b *ClusterBuilder) GenerateCluster() (*Cluster, error) {
 		return nil, err
 	}
 
-	cluster := NewCluster(b.clusterName, b.clusterId)
+	cluster := target.NewCluster(b.clusterName, b.clusterId)
 	cluster.Nodes = b.nodes
 	cluster.Services = b.services
 

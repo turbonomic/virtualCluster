@@ -36,13 +36,13 @@ func (node *Node) addPMRelatedData(e *proto.EntityDTO) error {
 	//what is Id for?
 	memId := fmt.Sprintf("mem-%s", node.UUID)
 	mem := &proto.EntityDTO_MemoryData{
-		Id: &memId,
+		Id:       &memId,
 		Capacity: &(node.Memory.Capacity),
 	}
 
 	cpuId := fmt.Sprintf("cpu-%s", node.UUID)
 	cpu := &proto.EntityDTO_ProcessorData{
-		Id: &cpuId,
+		Id:       &cpuId,
 		Capacity: &(node.CPU.Capacity),
 	}
 
