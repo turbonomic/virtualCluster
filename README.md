@@ -21,11 +21,10 @@ What is the amount of commodity bought and sell?
 |VM | Capacity/Used | Capacity=Capacity <br/> Used=*Monitored-VM* | Used=VM.Capacity|
 |PM | Capacity/Used | Capacity=Capacity<br/> Used=*Monitored-PM*| -|
 
-*Monitored-Container* : monitored resource usage of container;
-*Monitored-VM*: monitored resource usage of VM (= sum.Pod.Bought.Used + overhead1);
-*Monitored-PM*: monitored resource usage of PM (= sum.Monitored-VM + overhead2);
-*Container.Used*  is the monitored usage; others should be calculated based on *Container.Used*; <br/>
-*Container.Limit and Container.Request* are read from Container settings.
+1.*Monitored-Container* : monitored resource usage of container;<br/>
+2.*Monitored-VM*: monitored resource usage of VM (= sum.Pod.Bought.Used + overhead1);<br/>
+3.*Monitored-PM*: monitored resource usage of PM (= sum.Monitored-VM + overhead2);<br/>
+4.*Container.Limit and Container.Request* are read from Container settings.<br/>
 
 
 # Supported Actions
