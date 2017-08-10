@@ -1,5 +1,6 @@
 # containerChain
-build a supply chain of *physical Node --> virtual Node --> pod --> container --> application --> virtualApplication*.
+1. Generate a virtual cluster with physical machine, virtual machine, pod, container, and servies.
+2. Build a supply chain of *physical Node --> virtual Node --> pod --> container --> application --> virtualApplication*.
 
 # Overview
 <div >
@@ -10,6 +11,22 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 <div>
 <img width="500" src="https://github.com/songbinliu/containerChain/blob/master/conf/commodity.png">
 </div>
+
+How to decide the amount of commodity bought and sold?
+
+|SE type| vCPU/vMem | CommoditySold | CommodityBought |
+|-|-|-|-|
+| Application | - | - | Used=Container.Sold.Used |
+|Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used=*Monitored-Container* | Used=Container.Sold.Used|
+|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Bought.Used | Used=sum.Container.Bought.Used |
+|VM | Capacity/Used | Capacity=Capacity <br/> Used=*Monitored-VM* | Used=VM.Capacity|
+|PM | Capacity/Used | Capacity=Capacity<br/> Used=*Monitored-PM*| -|
+
+1.*Monitored-Container* : monitored resource usage of container;<br/>
+2.*Monitored-VM*: monitored resource usage of VM (= sum.Pod.Bought.Used + overhead1);<br/>
+3.*Monitored-PM*: monitored resource usage of PM (= sum.Monitored-VM + overhead2);<br/>
+4.*Container.Limit and Container.Request* are read from Container settings.<br/>
+
 
 # Supported Actions
 |SE type| Move | Resize|
