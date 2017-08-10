@@ -18,7 +18,8 @@ What is the amount of commodity bought and sell?
 | Application | - | - | Used=Container.Used |
 |Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used=Used | Used=Used|
 |Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Used | Used=sum.Container.Used |
-|VM | Capacity/Used | Capacity=Capacity <br/> Used=sum.Pod.Used + overhead | Used=VM.Capacity|
+|VM | Capacity/Used | Capacity=Capacity <br/> Used=*Monitored-VM* | Used=VM.Capacity|
+|PM | Capacity/Used | Capacity=Capacity<br/> Used=*Monitored-PM*| -|
 
 *Container.Used*  is the monitored usage; others should be calculated based on *Container.Used*; <br/>
 *Container.Limit and Container.Request* are read from Container settings.
