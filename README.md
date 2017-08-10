@@ -12,7 +12,7 @@
 <img width="500" src="https://github.com/songbinliu/containerChain/blob/master/conf/commodity.png">
 </div>
 
-What is the amount of commodity bought and sell?
+How to decide the amount of commodity bought and sold?
 
 |SE type| vCPU/vMem | CommoditySold | CommodityBought |
 |-|-|-|-|
