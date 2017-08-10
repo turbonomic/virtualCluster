@@ -15,6 +15,9 @@ func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 		return result, err
 	}
 
+	//0. calculate the resource usage
+	c.SetResourceAmount()
+
 	//1. node, pod, container, app DTOs
 	for _, host := range c.Nodes {
 		hostDTO, err := host.BuildDTO()
@@ -72,10 +75,18 @@ func (c *Cluster) generateServiceDTOs() ([]*proto.EntityDTO, error) {
 	return result, nil
 }
 
+// 1. set ProviderId for each SE;
+// 2. Generate Application for each pod-container;
+// 3. calculate and set resource usage;
+func (c *Cluster) CompleteBuild() {
+	c.SetProvider()
+	c.SetResourceAmount()
+}
+
 // Generate complement information
 //   (1) set providerId for each entity;
 //   (2) Generate Application Entity for each container;
-func (c *Cluster) CompleteBuild() {
+func (c *Cluster) SetProvider() {
 	for _, host := range c.Nodes {
 		for _, vhost := range host.VMs {
 			vhost.ProviderID = host.UUID
@@ -88,4 +99,67 @@ func (c *Cluster) CompleteBuild() {
 			}
 		}
 	}
+	return
+}
+
+// SetResourceAmount: Set the resource Capacity and Usage
+// Container.Capacity = Container.Limit/Pod.Capacity
+// Pod.Capacity = VM.Capacity
+// VM.Capacity = setting
+// PM.Capacity = setting
+// Container.Used = monitored (from topology)
+// Pod.Used = sum.container.Used
+// VM.Used = monitored = sum.Pod.Used + overhead1
+// PM.Used = monitored = sum.Vm.Used + overhead2
+func (c *Cluster) SetResourceAmount() {
+	for _, host := range c.Nodes {
+		hostCPU := 0.0
+		hostMem := 0.0
+
+		for _, vhost := range host.VMs {
+			vhostCPU := 0.0
+			vhostMem := 0.0
+
+			for _, pod := range vhost.Pods {
+				pod.CPU.Capacity = vhost.CPU.Capacity
+				pod.Memory.Capacity = vhost.Memory.Capacity
+
+				podCPU := 0.0
+				podMem := 0.0
+
+				for _, container := range pod.Containers {
+					app := container.App
+					app.CPU.Used = container.CPU.Used
+					app.Memory.Used = container.Memory.Used
+
+					podCPU += container.CPU.Used
+					podMem += container.Memory.Used
+
+					if container.CPU.Capacity < 1 {
+						container.CPU.Capacity = pod.CPU.Capacity
+					}
+
+					if container.Memory.Capacity < 1 {
+						container.Memory.Capacity = pod.Memory.Capacity
+					}
+				}
+
+				pod.CPU.Used = podCPU
+				pod.Memory.Used = podMem
+
+				vhostCPU += pod.CPU.Used
+				vhostMem += pod.Memory.Used
+			}
+
+			vhost.CPU.Used = vhostCPU + defaultOverheadVMCPU
+			vhost.Memory.Used = vhostMem + defaultOverheadVMMem
+
+			hostCPU += vhost.CPU.Used
+		}
+
+		host.CPU.Used = hostCPU + defaultOverheadPMCPU
+		host.Memory.Used = hostMem + defaultOverheadPMMem
+	}
+
+	return
 }

@@ -17,6 +17,14 @@ const (
 	emptyProvider = "None"
 )
 
+const (
+	defaultOverheadPMCPU = 400        // 400 MHz
+	defaultOverheadPMMem = 800 * 1024 // 800 MB
+
+	defaultOverheadVMCPU = 200        // 200 MHz
+	defaultOverheadVMMem = 400 * 1024 // 400 MB
+)
+
 type ObjectMeta struct {
 	Name       string
 	UUID       string

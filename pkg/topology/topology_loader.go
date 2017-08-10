@@ -94,36 +94,47 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 		}
 	}
 
-	key := fields[0]
+	i := 0
+	key := fields[i]
+	i++
 	if _, exist := t.ContainerTemplateMap[key]; exist {
 		return fmt.Errorf("container[%s] already exists.", key)
 	}
 
-	limitCPU, err := strconv.ParseFloat(fields[1], 64)
+	limitCPU, err := strconv.ParseFloat(fields[i], 64)
+	i++
 	if err != nil {
-		return fmt.Errorf("req_cpu field-1-[%s] should be a float number.", fields[1])
-	}
-	usedCPU, err := strconv.ParseFloat(fields[2], 64)
-	if err != nil {
-		return fmt.Errorf("used_cpu field-2-[%s] should be a float number.", fields[2])
-	}
-	reqCPU, err := strconv.ParseFloat(fields[3], 64)
-	if err != nil {
-		return fmt.Errorf("used_cpu field-2-[%s] should be a float number.", fields[3])
+		return fmt.Errorf("limit_cpu field-%d-[%s] should be a float number.", i, fields[i-1])
 	}
 
-	//in MB
-	limitMem, err := strconv.ParseFloat(fields[4], 64)
+	usedCPU, err := strconv.ParseFloat(fields[i], 64)
+	i++
 	if err != nil {
-		return fmt.Errorf("req_mem field-3-[%s] should be a float number.", fields[4])
+		return fmt.Errorf("used_cpu field-%d-[%s] should be a float number.", i, fields[i-1])
 	}
-	usedMem, err := strconv.ParseFloat(fields[5], 64)
+
+	reqCPU, err := strconv.ParseFloat(fields[i], 64)
+	i++
 	if err != nil {
-		return fmt.Errorf("used_mem field-4-[%s] should be a float number.", fields[5])
+		return fmt.Errorf("req_cpu field-%d-[%s] should be a float number.", i, fields[i-1])
 	}
-	reqMem, err := strconv.ParseFloat(fields[6], 64)
+
+	limitMem, err := strconv.ParseFloat(fields[i], 64)
+	i++
 	if err != nil {
-		return fmt.Errorf("used_mem field-4-[%s] should be a float number.", fields[6])
+		return fmt.Errorf("limit_mem field-%d-[%s] should be a float number.", i, fields[i-1])
+	}
+
+	usedMem, err := strconv.ParseFloat(fields[i], 64)
+	i++
+	if err != nil {
+		return fmt.Errorf("used_mem field-%d-[%s] should be a float number.", i, fields[i-1])
+	}
+
+	reqMem, err := strconv.ParseFloat(fields[i], 64)
+	i++
+	if err != nil {
+		return fmt.Errorf("req_mem field-%d-[%s] should be a float number.", i, fields[i-1])
 	}
 
 	container := &containerTemplate{
@@ -134,6 +145,7 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 		},
 		ReqCPU: reqCPU,
 
+		// change the unit of Memory from MB to KB
 		Memory: target.Resource{
 			Capacity: limitMem * 1024.0,
 			Used:     usedMem * 1024.0,
@@ -221,7 +233,7 @@ func (t *TargetTopology) loadVNode(fields []string) error {
 	vnode := &vnodeTemplate{
 		Key:    key,
 		CPU:    cpu,
-		Memory: mem,
+		Memory: mem * 1024.0,
 		IP:     ip,
 		Pods:   pods,
 	}
@@ -271,7 +283,7 @@ func (t *TargetTopology) loadNode(fields []string) error {
 	node := &nodeTemplate{
 		Key:    key,
 		CPU:    cpu,
-		Memory: mem,
+		Memory: mem * 1024,
 		IP:     ip,
 		VMs:    vms,
 	}

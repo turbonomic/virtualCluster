@@ -62,34 +62,14 @@ func (b *ClusterBuilder) buildContainers() error {
 	return nil
 }
 
-func resetResource(r *target.Resource) {
-	r.Capacity = 0
-	r.Used = 0
-}
-
-func addResource(r, delta *target.Resource) {
-	r.Capacity += delta.Capacity
-	r.Used += delta.Used
-}
-
-func setResource(r, r2 *target.Resource) {
-	r.Capacity = r2.Capacity
-	r.Used = r2.Used
-}
-
+//Note: will set Pod resource amount later in cluster.SetResourceAmount()
 func (b *ClusterBuilder) buildPods() error {
 	result := make(map[string]*target.Pod)
 
 	allContainers := b.containers
 
-	cpu := &target.Resource{}
-	mem := &target.Resource{}
-
 	for k, v := range b.topology.PodTemplateMap {
 		pod := target.NewPod(k, k)
-
-		resetResource(cpu)
-		resetResource(mem)
 
 		containers := []*target.Container{}
 		for i, cname := range v.Containers {
@@ -98,8 +78,6 @@ func (b *ClusterBuilder) buildPods() error {
 				newId := fmt.Sprintf("%s-%s", container.Name, pod.UUID)
 				ct := container.Clone(newId, newId)
 				containers = append(containers, ct)
-				addResource(cpu, &(ct.CPU))
-				addResource(mem, &(ct.Memory))
 			} else {
 				glog.Warningf("pod[%s]-%dth container[%s] does not exist.", k, i+1, cname)
 				break
@@ -120,8 +98,6 @@ func (b *ClusterBuilder) buildPods() error {
 		}
 
 		pod.Containers = containers
-		setResource(&(pod.CPU), cpu)
-		setResource(&(pod.Memory), mem)
 		result[k] = pod
 		glog.V(4).Infof("pod--%+v", pod)
 	}
@@ -136,6 +112,7 @@ func assignVNode(node *target.VNode, tmp *vnodeTemplate) {
 	node.IP = tmp.IP
 }
 
+//Note: will set VNode resourceAmount in cluster.SetResourceAmount()
 func (b *ClusterBuilder) buildVNodes() error {
 	result := make(map[string]*target.VNode)
 
@@ -145,15 +122,10 @@ func (b *ClusterBuilder) buildVNodes() error {
 		assignVNode(vnode, v)
 		vnode.ClusterId = b.clusterId
 
-		cpu := 0.0
-		mem := 0.0
-
 		pods := make(map[string]*target.Pod)
 		for i, podName := range v.Pods {
 			if pod, exist := allPods[podName]; exist {
 				pods[pod.UUID] = pod
-				cpu += pod.CPU.Used
-				mem += pod.Memory.Used
 			} else {
 				glog.Warningf("vnode[%s]-%dth pod[%s] does not exist.", k, i+1, podName)
 				break
@@ -168,9 +140,6 @@ func (b *ClusterBuilder) buildVNodes() error {
 		}
 
 		vnode.Pods = pods
-		vnode.CPU.Used = cpu
-		vnode.Memory.Used = mem
-
 		result[vnode.UUID] = vnode
 		glog.V(4).Infof("[vnode] %+v", vnode)
 	}
@@ -185,6 +154,7 @@ func assignNode(node *target.Node, tmp *nodeTemplate) {
 	node.IP = tmp.IP
 }
 
+//Note: will set Node resourceAmount in cluster.SetResourceAmount()
 func (b *ClusterBuilder) buildNodes() error {
 	result := make(map[string]*target.Node)
 
@@ -194,16 +164,10 @@ func (b *ClusterBuilder) buildNodes() error {
 		assignNode(node, v)
 		node.ClusterId = b.clusterId
 
-		cpu := 0.0
-		mem := 0.0
-
 		vnodes := make(map[string]*target.VNode)
 		for i, vmKey := range v.VMs {
 			if vm, exist := allVMs[vmKey]; exist {
 				vnodes[vm.UUID] = vm
-				cpu += vm.CPU.Capacity
-				mem += vm.Memory.Capacity
-			} else {
 				glog.Warningf("node[%s]-%dth VM[%s] does not exist.", k, i+1, vmKey)
 				break
 			}
@@ -217,9 +181,6 @@ func (b *ClusterBuilder) buildNodes() error {
 		}
 
 		node.VMs = vnodes
-		node.CPU.Used = cpu
-		node.Memory.Used = mem
-
 		result[node.UUID] = node
 		glog.V(4).Infof("[node] %+v", node)
 	}
