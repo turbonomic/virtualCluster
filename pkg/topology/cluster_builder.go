@@ -53,6 +53,7 @@ func (b *ClusterBuilder) buildContainers() error {
 		container.Memory = v.Memory
 		container.ReqCPU = v.ReqCPU
 		container.ReqMemory = v.ReqMem
+		container.QPS = v.QPS
 
 		containers[k] = container
 		glog.V(3).Infof("container-%+v", container)

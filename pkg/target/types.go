@@ -42,7 +42,7 @@ type Application struct {
 
 	CPU         Resource
 	Memory      Resource
-	Transaction float64
+	QPS Resource  //This field is copied from Container.QPS
 }
 
 type Container struct {
@@ -52,6 +52,8 @@ type Container struct {
 	Memory    Resource
 	ReqCPU    float64
 	ReqMemory float64
+
+	QPS Resource
 
 	App *Application
 }

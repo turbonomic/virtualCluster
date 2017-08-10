@@ -60,7 +60,7 @@ func (app *Application) createCommoditiesBought(containerId string) ([]*proto.Co
 
 func (app *Application) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	var result []*proto.CommodityDTO
-	appComm, _ := CreateTransactionCommodity(app.UUID, proto.CommodityDTO_TRANSACTION)
+	appComm, _ := CreateTransactionCommodity(app.UUID, &(app.QPS), proto.CommodityDTO_TRANSACTION)
 	result = append(result, appComm)
 
 	return result, nil

@@ -10,12 +10,18 @@ import (
 	"strings"
 )
 
+const (
+	defaultQPSLimit = float64(120)
+)
+
 type containerTemplate struct {
 	Key    string
 	CPU    target.Resource
 	Memory target.Resource
 	ReqCPU float64
 	ReqMem float64
+
+	QPS     target.Resource
 }
 
 type podTemplate struct {
@@ -80,11 +86,24 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 	return topo
 }
 
+func parseFloatValues(fields []string) ([]float64, error) {
+	result := []float64{}
+	for _, field := range fields {
+		value, err := strconv.ParseFloat(field, 64)
+		if err != nil {
+			return result, fmt.Errorf("parse field failed: %s: %v", field, err)
+		}
+
+		result = append(result, value)
+	}
+	return result, nil
+}
+
 // load containerTemplate from a line
 //fields: containerName, req_cpu, used_cpu, req_memory, used_mem
 func (t *TargetTopology) loadContainer(fields []string) error {
 	expectNumFields := 7
-	if len(fields) != expectNumFields {
+	if len(fields) < expectNumFields {
 		return fmt.Errorf("fields num mismatch [%d Vs. %d]", len(fields), expectNumFields)
 	}
 	for i := range fields {
@@ -94,47 +113,49 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 		}
 	}
 
-	i := 0
-	key := fields[i]
-	i++
+	key := fields[0]
 	if _, exist := t.ContainerTemplateMap[key]; exist {
 		return fmt.Errorf("container[%s] already exists.", key)
 	}
 
-	limitCPU, err := strconv.ParseFloat(fields[i], 64)
-	i++
+	// CPU amount
+	cpuNums, err := parseFloatValues(fields[1:4])
 	if err != nil {
-		return fmt.Errorf("limit_cpu field-%d-[%s] should be a float number.", i, fields[i-1])
+		glog.Error(err.Error())
+		return err
+	}
+	limitCPU := cpuNums[0]
+	usedCPU := cpuNums[1]
+	reqCPU := cpuNums[2]
+
+	// Memory amount
+	memNums, err := parseFloatValues(fields[4:7])
+	if err != nil {
+		glog.Error(err.Error())
+		return err
+	}
+	limitMem := memNums[0]
+	usedMem := memNums[1]
+	reqMem := memNums[2]
+
+	// QPS amount
+	limitQPS := defaultQPSLimit
+	usedQPS := 0.0
+	i := 7
+	if len(fields) > i {
+		limitQPS, err = strconv.ParseFloat(fields[i], 64)
+		i ++
+		if err != nil {
+			return fmt.Errorf("limit_qps field-%d-[%s] should be a float number.", i, fields[i-1])
+		}
 	}
 
-	usedCPU, err := strconv.ParseFloat(fields[i], 64)
-	i++
-	if err != nil {
-		return fmt.Errorf("used_cpu field-%d-[%s] should be a float number.", i, fields[i-1])
-	}
-
-	reqCPU, err := strconv.ParseFloat(fields[i], 64)
-	i++
-	if err != nil {
-		return fmt.Errorf("req_cpu field-%d-[%s] should be a float number.", i, fields[i-1])
-	}
-
-	limitMem, err := strconv.ParseFloat(fields[i], 64)
-	i++
-	if err != nil {
-		return fmt.Errorf("limit_mem field-%d-[%s] should be a float number.", i, fields[i-1])
-	}
-
-	usedMem, err := strconv.ParseFloat(fields[i], 64)
-	i++
-	if err != nil {
-		return fmt.Errorf("used_mem field-%d-[%s] should be a float number.", i, fields[i-1])
-	}
-
-	reqMem, err := strconv.ParseFloat(fields[i], 64)
-	i++
-	if err != nil {
-		return fmt.Errorf("req_mem field-%d-[%s] should be a float number.", i, fields[i-1])
+	if len(fields) > i {
+		usedQPS, err = strconv.ParseFloat(fields[i], 64)
+		i ++
+		if err != nil {
+			return fmt.Errorf("used_qps field-%d-[%s] should be a float number.", i, fields[i-1])
+		}
 	}
 
 	container := &containerTemplate{
@@ -151,6 +172,11 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 			Used:     usedMem * 1024.0,
 		},
 		ReqMem: reqMem * 1024.0,
+
+		QPS: target.Resource{
+			Capacity: limitQPS,
+			Used: usedQPS,
+		},
 	}
 
 	t.ContainerTemplateMap[key] = container
@@ -213,15 +239,13 @@ func (t *TargetTopology) loadVNode(fields []string) error {
 		fmt.Errorf("vnode [%s] already exist.")
 	}
 
-	cpu, err := strconv.ParseFloat(fields[1], 64)
+	nums, err := parseFloatValues(fields[1:3])
 	if err != nil {
-		return fmt.Errorf("convert field-1-cpu[%s] failed: %v", fields[1], err)
+		glog.Error(err.Error())
+		return err
 	}
-
-	mem, err := strconv.ParseFloat(fields[2], 64)
-	if err != nil {
-		return fmt.Errorf("conver field-2-mem[%s] failed: %v", fields[2], err)
-	}
+	cpu := nums[0]
+	mem := nums[1]
 
 	ip := fields[3]
 
@@ -263,16 +287,13 @@ func (t *TargetTopology) loadNode(fields []string) error {
 		fmt.Errorf("node [%s] already exist.")
 	}
 
-	cpu, err := strconv.ParseFloat(fields[1], 64)
+	nums, err := parseFloatValues(fields[1:3])
 	if err != nil {
-		return fmt.Errorf("convert field-1-cpu[%s] failed: %v", fields[1], err)
+		glog.Error(err.Error())
+		return err
 	}
-
-	mem, err := strconv.ParseFloat(fields[2], 64)
-	if err != nil {
-		return fmt.Errorf("conver field-2-mem[%s] failed: %v", fields[2], err)
-	}
-
+	cpu := nums[0]
+	mem := nums[1]
 	ip := fields[3]
 
 	vms := []string{}

@@ -13,6 +13,9 @@ func (d *Container) Clone(newName, newId string) *Container {
 
 	result.Memory = d.Memory
 	result.CPU = d.CPU
+	result.ReqMemory = d.ReqMemory
+	result.ReqCPU = d.ReqCPU
+	result.QPS = d.QPS
 
 	//not copy the APP
 	result.App = nil
@@ -28,9 +31,11 @@ func (d *Container) GenerateApp() error {
 	app.CPU = d.CPU
 	app.Memory = d.Memory
 	app.ProviderID = d.UUID
+	app.QPS = d.QPS
 
 	d.App = app
 
+	glog.V(3).Infof("App: %+v", app)
 	return nil
 }
 

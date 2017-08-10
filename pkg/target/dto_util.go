@@ -7,7 +7,6 @@ import (
 
 const (
 	defaultInfiniteCapacity    = 1E10
-	defaultTransactionCapacity = 100
 )
 
 // no capacity for bought commodity
@@ -39,10 +38,11 @@ func CreateKeyCommodityBought(key string, ctype proto.CommodityDTO_CommodityType
 		Create()
 }
 
-func CreateTransactionCommodity(key string, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
+func CreateTransactionCommodity(key string, qps *Resource, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.
 		NewCommodityDTOBuilder(ctype).
 		Key(key).
-		Capacity(defaultTransactionCapacity).
+		Capacity(qps.Capacity).
+		Used(qps.Used).
 		Create()
 }
