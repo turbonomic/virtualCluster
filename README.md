@@ -17,12 +17,12 @@ What is the amount of commodity bought and sell?
 |-|-|-|-|
 | Application | - | - | Used=Container.Sold.Used |
 |Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used=*Monitored-Container* | Used=Container.Sold.Used|
-|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Sold.Used | Used=sum.Container.Sold.Used |
+|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Bought.Used | Used=sum.Container.Bought.Used |
 |VM | Capacity/Used | Capacity=Capacity <br/> Used=*Monitored-VM* | Used=VM.Capacity|
 |PM | Capacity/Used | Capacity=Capacity<br/> Used=*Monitored-PM*| -|
 
 *Monitored-Container* : monitored resource usage of container;
-*Monitored-VM*: monitored resource usage of VM (= sum.Pod.Used + overhead1);
+*Monitored-VM*: monitored resource usage of VM (= sum.Pod.Bought.Used + overhead1);
 *Monitored-PM*: monitored resource usage of PM (= sum.Monitored-VM + overhead2);
 *Container.Used*  is the monitored usage; others should be calculated based on *Container.Used*; <br/>
 *Container.Limit and Container.Request* are read from Container settings.
