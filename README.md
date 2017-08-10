@@ -13,11 +13,11 @@ build a supply chain of *physical Node --> virtual Node --> pod --> container --
 
 What is the amount of commodity bought and sell?
 
-|SE type| vCPU/vMem | CommoditySell | CommodityBought |
+|SE type| vCPU/vMem | CommoditySold | CommodityBought |
 |-|-|-|-|
-| Application | - | - | Used=Container.Used |
-|Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used=*Monitored-Container* | Used=Used|
-|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Used | Used=sum.Container.Used |
+| Application | - | - | Used=Container.Sold.Used |
+|Container | Limit/Request/Used | Capacity=Limit (if no limit, then pod.Capacity) <br/> Used=*Monitored-Container* | Used=Container.Sold.Used|
+|Pod | Capacity/Used | Capacity=VM.Capacity  <br/> Used=sum.Container.Sold.Used | Used=sum.Container.Sold.Used |
 |VM | Capacity/Used | Capacity=Capacity <br/> Used=*Monitored-VM* | Used=VM.Capacity|
 |PM | Capacity/Used | Capacity=Capacity<br/> Used=*Monitored-PM*| -|
 
