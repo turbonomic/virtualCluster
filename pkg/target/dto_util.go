@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	defaultInfiniteCapacity    = 1E10
+	defaultInfiniteCapacity = 1E10
 )
 
 // no capacity for bought commodity

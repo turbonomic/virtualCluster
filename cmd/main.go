@@ -52,8 +52,8 @@ func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
 }
 
 func buildClusterHandler(topoConf string) (*target.ClusterHandler, error) {
-	clusterId := "clusterId"
-	clusterName := "clusterName"
+	clusterId := "clusterId-1"
+	clusterName := "clusterName-1"
 	cluster := buildCluster(clusterId, clusterName, topoConf)
 	if cluster == nil {
 		err := fmt.Errorf("failed to build cluster[%s]", topoConf)
@@ -119,8 +119,6 @@ func createTapService() (*service.TAPService, error) {
 
 func main() {
 	getFlags()
-	glog.V(2).Infof("hello")
-	defer glog.V(2).Infof("bye")
 
 	tap, err := createTapService()
 	if err != nil {
@@ -128,7 +126,4 @@ func main() {
 	}
 
 	tap.ConnectToTurbo()
-	select {}
-	//stop := make(chan struct{})
-	//buildProbe("IP", targetConf, topologyConf, stop)
 }

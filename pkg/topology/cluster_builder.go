@@ -56,7 +56,7 @@ func (b *ClusterBuilder) buildContainers() error {
 		container.QPS = v.QPS
 
 		containers[k] = container
-		glog.V(3).Infof("container-%+v", container)
+		glog.V(4).Infof("container-%+v", container)
 	}
 
 	b.containers = containers
@@ -169,6 +169,7 @@ func (b *ClusterBuilder) buildNodes() error {
 		for i, vmKey := range v.VMs {
 			if vm, exist := allVMs[vmKey]; exist {
 				vnodes[vm.UUID] = vm
+			} else {
 				glog.Warningf("node[%s]-%dth VM[%s] does not exist.", k, i+1, vmKey)
 				break
 			}

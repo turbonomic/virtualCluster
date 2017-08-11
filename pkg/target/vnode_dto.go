@@ -98,5 +98,7 @@ func (vnode *VNode) BuildSubDTOs() ([]*proto.EntityDTO, error) {
 		result = append(result, subDTOs...)
 	}
 
+	glog.V(3).Infof("There are %d DTOs for VNode[%s].", len(result)+1, vnode.Name)
+
 	return result, nil
 }

@@ -23,6 +23,10 @@ func NewDiscoveryClient(targetConfig *TargetConf, handler *target.ClusterHandler
 	}
 }
 
+func (dc *DiscoveryClient) String() string {
+	return fmt.Sprintf("%+v\n%v", dc.targetConfig, dc.cluster.String())
+}
+
 func (dc *DiscoveryClient) GetAccountValues() *sdkprobe.TurboTargetInfo {
 	var accountValues []*proto.AccountValue
 

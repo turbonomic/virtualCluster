@@ -21,7 +21,7 @@ type containerTemplate struct {
 	ReqCPU float64
 	ReqMem float64
 
-	QPS     target.Resource
+	QPS target.Resource
 }
 
 type podTemplate struct {
@@ -144,7 +144,7 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 	i := 7
 	if len(fields) > i {
 		limitQPS, err = strconv.ParseFloat(fields[i], 64)
-		i ++
+		i++
 		if err != nil {
 			return fmt.Errorf("limit_qps field-%d-[%s] should be a float number.", i, fields[i-1])
 		}
@@ -152,7 +152,7 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 
 	if len(fields) > i {
 		usedQPS, err = strconv.ParseFloat(fields[i], 64)
-		i ++
+		i++
 		if err != nil {
 			return fmt.Errorf("used_qps field-%d-[%s] should be a float number.", i, fields[i-1])
 		}
@@ -175,12 +175,12 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 
 		QPS: target.Resource{
 			Capacity: limitQPS,
-			Used: usedQPS,
+			Used:     usedQPS,
 		},
 	}
 
 	t.ContainerTemplateMap[key] = container
-	glog.V(3).Infof("[container] %+v", container)
+	glog.V(4).Infof("[container] %+v", container)
 	return nil
 }
 
@@ -355,19 +355,19 @@ func (t *TargetTopology) parseLine(lineNum int, line string, fields []string) er
 	var err error
 	switch entityType {
 	case "container":
-		glog.V(2).Infof("begin to build a container [%d]: %s", lineNum, line)
+		glog.V(4).Infof("begin to build a container [%d]: %s", lineNum, line)
 		err = t.loadContainer(fields[1:])
 	case "pod":
-		glog.V(2).Infof("begin to build a pod [%d]: %s", lineNum, line)
+		glog.V(4).Infof("begin to build a pod [%d]: %s", lineNum, line)
 		err = t.loadPod(fields[1:])
 	case "vnode":
-		glog.V(2).Infof("begin to build a vnode [%d]: %s", lineNum, line)
+		glog.V(4).Infof("begin to build a vnode [%d]: %s", lineNum, line)
 		err = t.loadVNode(fields[1:])
 	case "node":
-		glog.V(2).Infof("begin to build a node [%d]: %s", lineNum, line)
+		glog.V(4).Infof("begin to build a node [%d]: %s", lineNum, line)
 		err = t.loadNode(fields[1:])
 	case "service":
-		glog.V(2).Infof("begin to build a service [%d]: %s", lineNum, line)
+		glog.V(4).Infof("begin to build a service [%d]: %s", lineNum, line)
 		err = t.loadService(fields[1:])
 	default:
 		err = fmt.Errorf("wrong EntityType[%s]", fields[0])

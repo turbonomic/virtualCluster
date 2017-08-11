@@ -71,7 +71,7 @@ func (c *Cluster) generateServiceDTOs() ([]*proto.EntityDTO, error) {
 		result = append(result, serviceDTO)
 	}
 
-	glog.V(2).Infof("There are %d services, and %d serviceDTOs.", len(c.Services), len(result))
+	glog.V(3).Infof("There are %d services, and %d serviceDTOs.", len(c.Services), len(result))
 	return result, nil
 }
 

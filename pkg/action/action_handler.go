@@ -32,6 +32,17 @@ func NewActionHandler(h *target.ClusterHandler, stop chan struct{}) *ActionHandl
 	return handler
 }
 
+func (h *ActionHandler) String() string {
+	cinfo := fmt.Sprintf("%s", h.cluster.String())
+
+	atypes := []TurboActionType{}
+	for k := range h.actionExecutors {
+		atypes = append(atypes, k)
+	}
+
+	return fmt.Sprintf("%s\n%v", cinfo, atypes)
+}
+
 func (h *ActionHandler) registerExecutors() {
 	podMover := executor.NewPodMover(h.cluster)
 	h.actionExecutors[ActionMovePod] = podMover

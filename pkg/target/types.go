@@ -40,9 +40,9 @@ type Resource struct {
 type Application struct {
 	ObjectMeta
 
-	CPU         Resource
-	Memory      Resource
-	QPS Resource  //This field is copied from Container.QPS
+	CPU    Resource
+	Memory Resource
+	QPS    Resource //This field is copied from Container.QPS
 }
 
 type Container struct {

@@ -35,7 +35,7 @@ func (d *Container) GenerateApp() error {
 
 	d.App = app
 
-	glog.V(3).Infof("App: %+v", app)
+	glog.V(4).Infof("App: %+v", app)
 	return nil
 }
 

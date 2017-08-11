@@ -32,6 +32,10 @@ func NewClusterHandler(c *Cluster) *ClusterHandler {
 	return h
 }
 
+func (h *ClusterHandler) String() string {
+	return fmt.Sprintf("clusterInfo: %s; %s", h.cluster.Name, h.cluster.UUID)
+}
+
 func (h *ClusterHandler) BuildIndex() {
 	h.mux.Lock()
 	defer h.mux.Unlock()
