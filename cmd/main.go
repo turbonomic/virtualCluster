@@ -20,12 +20,16 @@ var (
 	opsMgrConf   string
 	topologyConf string
 	stitchType   string = "IP"
+	clusterName  string = "clusterName-1"
+	clusterId    string = "clusterId-1"
 )
 
 func getFlags() {
 	flag.StringVar(&opsMgrConf, "turboConf", "./conf/turbo.json", "configuration file of OpsMgr")
 	flag.StringVar(&targetConf, "targetConf", "./conf/target.json", "configuration file of target")
 	flag.StringVar(&topologyConf, "topologyConf", "./conf/topology.conf", "topology definition of the target")
+	flag.StringVar(&clusterName, "clusterName", "clusterName-1", "virtual cluster Name")
+	flag.StringVar(&clusterId, "clusterId", "clusterId-1", "virtual cluster Id")
 
 	//flag.Set("alsologtostderr", "true")
 	flag.Parse()
@@ -52,8 +56,6 @@ func buildCluster(clusterId, clusterName, topoConf string) *target.Cluster {
 }
 
 func buildClusterHandler(topoConf string) (*target.ClusterHandler, error) {
-	clusterId := "clusterId-1"
-	clusterName := "clusterName-1"
 	cluster := buildCluster(clusterId, clusterName, topoConf)
 	if cluster == nil {
 		err := fmt.Errorf("failed to build cluster[%s]", topoConf)
