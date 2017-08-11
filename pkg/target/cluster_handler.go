@@ -130,6 +130,10 @@ func (h *ClusterHandler) MovePod(podId, vnodeId string) error {
 		return err
 	}
 
+	glog.V(2).Infof("Successed: move pod[%s] from vnode[%s] to vnode[%s]", pod.Name, oldVnode.Name, vnode.Name)
+	glog.V(2).Infof("oldVnode pods: %s", oldVnode.GetPodNames())
+	glog.V(2).Infof("newVnode pods: %s", vnode.GetPodNames())
+
 	return nil
 }
 
@@ -203,6 +207,10 @@ func (h *ClusterHandler) MoveVirtualMachine(vnodeId, nodeId string) error {
 		glog.Error(err.Error())
 		return err
 	}
+
+	glog.V(2).Infof("Successed: move vnode[%s] from node[%s] to node[%s]", vnode.Name, oldNode.Name, node.Name)
+	glog.V(2).Infof("old Node has vnodes: %s", oldNode.GetVMNames())
+	glog.V(2).Infof("new Node has vnodes: %s", node.GetVMNames())
 
 	return nil
 }

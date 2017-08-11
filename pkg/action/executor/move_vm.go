@@ -43,6 +43,7 @@ func (m *VirtualMachineMover) Execute(actionItem *proto.ActionItemDTO, progressT
 	vmId := vmEntity.GetId()
 	hostId := hostEntity.GetId()
 
+	glog.V(2).Infof("move vnodeId: %s, new NodeId:%s", vmId, hostId)
 	err := m.cluster.MoveVirtualMachine(vmId, hostId)
 	if err != nil {
 		return fmt.Errorf("move failed: %v", err)

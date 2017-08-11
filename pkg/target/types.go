@@ -194,6 +194,15 @@ func (v *VNode) DeletePod(podId string) error {
 	return nil
 }
 
+func (v *VNode) GetPodNames() string {
+	alist := []string{}
+	for _, pod := range v.Pods {
+		alist = append(alist, pod.Name)
+	}
+
+	return fmt.Sprintf("%v", alist)
+}
+
 func (v *VNode) AddPod(pod *Pod) error {
 	podId := pod.UUID
 
@@ -206,6 +215,15 @@ func (v *VNode) AddPod(pod *Pod) error {
 	pod.ProviderID = v.UUID
 	v.Pods[podId] = pod
 	return nil
+}
+
+func (n *Node) GetVMNames() string {
+	alist := []string{}
+	for _, vm := range n.VMs {
+		alist = append(alist, vm.Name)
+	}
+
+	return fmt.Sprintf("%v", alist)
 }
 
 func (n *Node) DeleteVM(vnodeId string) error {

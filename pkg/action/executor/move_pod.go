@@ -43,6 +43,7 @@ func (m *PodMover) Execute(actionItem *proto.ActionItemDTO, progressTracker sdkp
 	podId := podEntity.GetId()
 	hostId := hostEntity.GetId()
 
+	glog.V(2).Infof("podId: %s, new VNodeId:%s", podId, hostId)
 	err := m.cluster.MovePod(podId, hostId)
 	if err != nil {
 		return fmt.Errorf("move failed: %v", err)
