@@ -1,0 +1,18 @@
+
+container, {"kind": "container", "key": "container-cpu", "cpu":[900, 530, 600], "mem": [100, 50, 60], "qps": [120, 50]}
+container, {"kind": "container", "key": "container-mem", "cpu":[100, 50, 60], "mem": [950, 620, 600], "qps": [120, 50]}
+container, {"kind": "container", "key": "container-cpu-mem", "cpu":[850, 600, 500], "mem": [850, 530, 600], "qps": [120, 90]}
+container, {"kind": "container", "key": "container-log", "cpu":[100, 50, 60], "mem": [110, 55, 60], "qps": [120, 1]}
+
+pod, {"kind": "pod", "key": "pod1", "containers":["container-cpu"]}
+pod, {"kind": "pod", "key": "pod2", "containers":["container-mem"]}
+pod, {"kind": "pod", "key": "pod3", "containers":["container-cpu-mem", "container-log"]}
+
+vnode, {"kind": "vnode", "key": "vnode1", "cpu": 5200, "mem": 8192, "pods":["pod1", "pod1", "pod2"]}
+vnode, {"kind": "vnode", "key": "vnode2", "cpu": 5200, "mem": 8192, "pods":["pod2", "pod3", "pod3"]}
+
+node, {"kind": "node", "key": "node1", "cpu": 10400, "mem": 16384, "vnodes": ["vnode1", "vnode1", "vnode2"], "num": 2}
+node, {"kind": "node", "key": "node2", "cpu": 10400, "mem": 16384, "vnodes": ["vnode1", "vnode2"], "num": 3}
+
+service, {"kind": "service", "key": "service1", "pods":["pod1", "pod2"]}
+service, {"kind": "service", "key": "service2", "pods":["pod3"]}
