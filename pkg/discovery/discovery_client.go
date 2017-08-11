@@ -65,14 +65,14 @@ func (dc *DiscoveryClient) Validate(accountValues []*proto.AccountValue) (*proto
 	return &proto.ValidationResponse{}, nil
 }
 
-func printDTOs(dtos []*proto.EntityDTO) {
+func printDTOs(dtos []*proto.EntityDTO) string {
 	msg := ""
 	for _, dto := range dtos {
 		line := fmt.Sprintf("%+v", dto)
 		msg = msg + "\n" + line
 	}
 
-	glog.V(3).Infof("%s", msg)
+	return msg
 }
 
 func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto.DiscoveryResponse, error) {
@@ -85,7 +85,7 @@ func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto
 	}
 
 	glog.V(2).Infof("end of discoverying target. [%d]", len(resultDTOs))
-	printDTOs(resultDTOs)
+	glog.V(4).Infof("DTOs:\n%s", printDTOs(resultDTOs))
 
 	response := &proto.DiscoveryResponse{
 		EntityDTO: resultDTOs,

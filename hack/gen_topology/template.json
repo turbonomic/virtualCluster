@@ -11,8 +11,8 @@ pod, {"kind": "pod", "key": "pod3", "containers":["container-cpu-mem", "containe
 vnode, {"kind": "vnode", "key": "vnode1", "cpu": 5200, "mem": 8192, "pods":["pod1", "pod1", "pod2"]}
 vnode, {"kind": "vnode", "key": "vnode2", "cpu": 5200, "mem": 8192, "pods":["pod2", "pod3", "pod3"]}
 
-node, {"kind": "node", "key": "node1", "cpu": 10400, "mem": 16384, "vnodes": ["vnode1", "vnode1", "vnode2"], "num": 2}
-node, {"kind": "node", "key": "node2", "cpu": 10400, "mem": 16384, "vnodes": ["vnode1", "vnode2"], "num": 3}
+node, {"kind": "node", "key": "node1", "cpu": 10400, "mem": 16384, "vnodes": ["vnode1", "vnode1", "vnode2"], "num": 500}
+node, {"kind": "node", "key": "node2", "cpu": 10400, "mem": 16384, "vnodes": ["vnode1", "vnode2"], "num": 600}
 
 service, {"kind": "service", "key": "service1", "pods":["pod1", "pod2"]}
 service, {"kind": "service", "key": "service2", "pods":["pod3"]}
