@@ -155,6 +155,7 @@ func (c *Cluster) SetResourceAmount() {
 			vhost.Memory.Used = vhostMem + defaultOverheadVMMem
 
 			hostCPU += vhost.CPU.Used
+			hostMem += vhost.Memory.Used
 		}
 
 		host.CPU.Used = hostCPU + defaultOverheadPMCPU

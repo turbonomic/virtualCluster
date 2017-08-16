@@ -18,11 +18,11 @@ const (
 )
 
 const (
-	defaultOverheadPMCPU = 400        // 400 MHz
-	defaultOverheadPMMem = 800 * 1024 // 800 MB
+	defaultOverheadPMCPU = 100        // 100 MHz
+	defaultOverheadPMMem = 100 * 1024 // 100 MB
 
-	defaultOverheadVMCPU = 200        // 200 MHz
-	defaultOverheadVMMem = 400 * 1024 // 400 MB
+	defaultOverheadVMCPU = 50        // 50 MHz
+	defaultOverheadVMMem = 50 * 1024 // 50 MB
 )
 
 type ObjectMeta struct {
@@ -170,6 +170,9 @@ func NewVirtualApp(name, id string) *VirtualApp {
 }
 
 func NewCluster(name, id string) *Cluster {
+	glog.V(2).Infof("VM: CPUOverHead=%d MHz, MemOverHead=%d MB;", defaultOverheadVMCPU, defaultOverheadVMMem/1024)
+	glog.V(2).Infof("PM: CPUOverHead=%d MHz, MemOverHead=%d MB;", defaultOverheadPMCPU, defaultOverheadPMMem/1024)
+
 	return &Cluster{
 		ObjectMeta: ObjectMeta{
 			Kind: KindCluster,
