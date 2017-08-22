@@ -20,7 +20,7 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 	}
 
 	vappData := &proto.EntityDTO_VirtualApplicationData{
-		Type: &(vapp.Name),
+		ServiceType: &(vapp.Name),
 	}
 	vAppBuilder.VirtualApplicationData(vappData)
 
