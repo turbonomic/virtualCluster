@@ -10,6 +10,13 @@ const (
 )
 
 // no capacity for bought commodity
+func CreateResourceCommodityBoughtResize(res *Resource, ctype proto.CommodityDTO_CommodityType, resizeable bool) (*proto.CommodityDTO, error) {
+	return builder.NewCommodityDTOBuilder(ctype).
+		Used(res.Used).
+		Resizable(resizeable).
+		Create()
+}
+
 func CreateResourceCommodityBought(res *Resource, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.NewCommodityDTOBuilder(ctype).
 		Used(res.Used).
