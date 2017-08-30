@@ -75,11 +75,10 @@ func (docker *Container) createCommoditiesBought(podId string) ([]*proto.Commodi
 
 	var result []*proto.CommodityDTO
 
-	resizeable := true
-	cpuComm, _ := CreateResourceCommodityBoughtResize(&(docker.CPU), proto.CommodityDTO_VCPU, resizeable)
+	cpuComm, _ := CreateResourceCommodityBought(&(docker.CPU), proto.CommodityDTO_VCPU)
 	result = append(result, cpuComm)
 
-	memComm, _ := CreateResourceCommodityBoughtResize(&(docker.Memory), proto.CommodityDTO_VMEM, resizeable)
+	memComm, _ := CreateResourceCommodityBought(&(docker.Memory), proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
 	podComm, _ := CreateKeyCommodity(podId, proto.CommodityDTO_VMPM_ACCESS)
@@ -90,10 +89,12 @@ func (docker *Container) createCommoditiesBought(podId string) ([]*proto.Commodi
 func (docker *Container) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
-	cpuComm, _ := CreateResourceCommodity(&(docker.CPU), proto.CommodityDTO_VCPU)
+
+	resizeable := true
+	cpuComm, _ := CreateResourceCommodityResize(&(docker.CPU), proto.CommodityDTO_VCPU, resizeable)
 	result = append(result, cpuComm)
 
-	memComm, _ := CreateResourceCommodity(&(docker.Memory), proto.CommodityDTO_VMEM)
+	memComm, _ := CreateResourceCommodityResize(&(docker.Memory), proto.CommodityDTO_VMEM, resizeable)
 	result = append(result, memComm)
 
 	appComm, _ := CreateKeyCommodity(docker.UUID, proto.CommodityDTO_APPLICATION)
