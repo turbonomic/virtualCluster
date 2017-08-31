@@ -258,11 +258,11 @@ func (n *Node) AddVM(vnode *VNode) error {
 }
 
 func (c *Container) SetCapacity(cpu, memory float64) error {
-	if cpu > 0.0 {
+	if cpu > 0 {
 		c.CPU.Capacity = cpu
 	}
 
-	if memory > 0.0 {
+	if memory > 0 {
 		c.Memory.Capacity = memory
 	}
 	return nil

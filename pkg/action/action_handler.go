@@ -97,6 +97,7 @@ func (h *ActionHandler) ExecuteAction(
 	actionItems := actionDTO.GetActionItem()
 	action := actionItems[0]
 
+	glog.V(4).Infof("action:%+++v", action)
 	actionType, err := getActionType(action)
 	if err != nil {
 		msg := fmt.Sprintf("failed to get Action Type:%v", err.Error())
@@ -142,6 +143,7 @@ func getActionType(action *proto.ActionItemDTO) (TurboActionType, error) {
 
 	switch atype {
 	case proto.ActionItemDTO_MOVE:
+		glog.V(4).Infof("[%v] [%v]", atype, objectType)
 		// only support move Pod, and Virtual Machine
 		switch objectType {
 		case proto.EntityDTO_CONTAINER_POD:
@@ -149,15 +151,16 @@ func getActionType(action *proto.ActionItemDTO) (TurboActionType, error) {
 		case proto.EntityDTO_VIRTUAL_MACHINE:
 			return ActionMoveVM, nil
 		}
-	case proto.ActionItemDTO_RESIZE:
+	case proto.ActionItemDTO_RIGHT_SIZE:
+		// Other three RESIZEs are deprecated:
+		// ActionItemDTO_RESIZE, ActionItemDTO_RESIZE_FOR_EFFICIENCY, ActionItemDTO_RESIZE_FOR_PERFORMANCE
+		glog.V(4).Infof("[%v] [%v]", atype, objectType)
 		switch objectType {
 		case proto.EntityDTO_CONTAINER:
 			return ActionResizeContainer, nil
 		case proto.EntityDTO_VIRTUAL_MACHINE:
 			return ActionResizeVM, nil
 		}
-		//case proto.ActionItemDTO_PROVISION:
-		//	return ActionProvision, nil
 	}
 
 	err := fmt.Errorf("Action [%v-%v] is not supported.", atype, objectType)
