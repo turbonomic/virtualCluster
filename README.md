@@ -32,7 +32,7 @@ How to decide the amount of commodity bought and sold?
 |SE type| Move | Resize|
 |-|-|-|
 |ContainerPod| Yes | No |
-|Container | No | WIP |
+|Container | No | Yes |
 | VirtualMachine |Yes | WIP|
 
  (*WIP* = work in progress.)
