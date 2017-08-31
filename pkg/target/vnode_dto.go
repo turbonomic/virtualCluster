@@ -62,12 +62,13 @@ func (vnode *VNode) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 
 	var result []*proto.CommodityDTO
 
+	resizeable := true
 	cpu := &(vnode.CPU)
-	cpuComm, _ := CreateResourceCommodity(cpu, proto.CommodityDTO_VCPU)
+	cpuComm, _ := CreateResourceCommodityResize(cpu, proto.CommodityDTO_VCPU, resizeable)
 	result = append(result, cpuComm)
 
 	mem := &(vnode.Memory)
-	memComm, _ := CreateResourceCommodity(mem, proto.CommodityDTO_VMEM)
+	memComm, _ := CreateResourceCommodityResize(mem, proto.CommodityDTO_VMEM, resizeable)
 	result = append(result, memComm)
 
 	clusterComm, _ := CreateKeyCommodity(vnode.ClusterId, proto.CommodityDTO_CLUSTER)
