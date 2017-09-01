@@ -4,4 +4,4 @@ go:
   - 1.8
   - tip
 
-go_import_path: github.com/songbinliu/containerChain
+go_import_path: github.com/songbinliu/virtualCluster
