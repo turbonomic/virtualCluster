@@ -1,6 +1,7 @@
-# containerChain
+# VirtualCluster
 1. Generate a virtual cluster with physical machine, virtual machine, pod, container, and servies.
 2. Build a supply chain of *physical Node --> virtual Node --> pod --> container --> application --> virtualApplication*.
+3. Can execute actions from OpsMgr, and change the topology of this virtualCluster.
 
 # Overview
 <div >
