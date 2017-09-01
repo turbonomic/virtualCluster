@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/golang/glog"
 
-	"github.com/songbinliu/containerChain/pkg/registration"
-	"github.com/songbinliu/containerChain/pkg/target"
+	"github.com/songbinliu/virtualCluster/pkg/registration"
+	"github.com/songbinliu/virtualCluster/pkg/target"
 
 	sdkprobe "github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"

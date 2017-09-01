@@ -20,4 +20,4 @@ if [ $ret -ne 0 ] ; then
 fi
 
 #2. run it
-./_output/containerChain $options
+./_output/vCluster $options
