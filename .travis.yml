@@ -5,3 +5,8 @@ go:
   - tip
 
 go_import_path: github.com/songbinliu/virtualCluster
+
+
+script:
+  - make product
+  - make test    
