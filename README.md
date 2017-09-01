@@ -42,21 +42,21 @@ How to decide the amount of commodity bought and sold?
 
 ```console
 #1. get source code
-go get github.com/songbinliu/containerChain
+go get github.com/songbinliu/virtualCluster
 
 #2. compile it
-cd $GOPATH/src/github.com/songbinliu/containerChain
+cd $GOPATH/src/github.com/songbinliu/virtualCluster
 make build
 
 #3. run it
 turbo=./conf/turbo.json
 topology=./conf/topology.conf
 target=./conf/target.json
-./_output/containerChain --topologyConf $topology --turboConf $turbo --targetConf $target --logtostderr --v 3 
+./_output/vCluster --topologyConf $topology --turboConf $turbo --targetConf $target --logtostderr --v 3 
 ```
 
-**turbo** is a json file about the settings of the OpsMgr, [example](https://github.com/songbinliu/containerChain/blob/master/conf/turbo.json);
+**turbo** is a json file about the settings of the OpsMgr, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/turbo.json);
 
-**target** is a json file about settings of generated cluster for OpsMgr, [example](https://github.com/songbinliu/containerChain/blob/master/conf/target.json);
+**target** is a json file about settings of generated cluster for OpsMgr, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/target.json);
 
-**topology** is the configuration file about the virtual cluster to be generated, [example](https://github.com/songbinliu/containerChain/blob/master/conf/topology.conf).
+**topology** is the configuration file about the virtual cluster to be generated, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/topology.conf).
