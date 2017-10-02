@@ -97,7 +97,7 @@ func (h *ActionHandler) ExecuteAction(
 	actionItems := actionDTO.GetActionItem()
 	action := actionItems[0]
 
-	glog.V(4).Infof("action:%+++v", action)
+	glog.V(3).Infof("action:%+++v", action)
 	actionType, err := getActionType(action)
 	if err != nil {
 		msg := fmt.Sprintf("failed to get Action Type:%v", err.Error())
