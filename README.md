@@ -53,6 +53,9 @@ turbo=./conf/turbo.json
 topology=./conf/topology.conf
 target=./conf/target.json
 ./_output/vCluster --topologyConf $topology --turboConf $turbo --targetConf $target --logtostderr --v 3 
+
+Note: in case of updating dependency, run glide before compiling it:
+glide update --strip-vendor
 ```
 
 **turbo** is a json file about the settings of the OpsMgr, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/turbo.json);
