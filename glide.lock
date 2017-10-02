@@ -1,0 +1,29 @@
+hash: cd434210eabc96ce0b912f7cdfabbec718674bbd807516a96ab6bb9fd7726533
+updated: 2017-10-02T15:21:01.357370198-04:00
+imports:
+- name: github.com/golang/glog
+  version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
+- name: github.com/golang/protobuf
+  version: 8616e8ee5e20a1704615e6c8d7afcdac06087a67
+  subpackages:
+  - proto
+- name: github.com/turbonomic/turbo-api
+  version: f64fc5992be75359b1f8dc102f4ab1a658d78db3
+  subpackages:
+  - pkg/api
+  - pkg/client
+- name: github.com/turbonomic/turbo-go-sdk
+  version: 72f1a7a672eb7fb639e0b6d3d73362c719916323
+  subpackages:
+  - pkg/builder
+  - pkg/mediationcontainer
+  - pkg/probe
+  - pkg/proto
+  - pkg/service
+  - pkg/supplychain
+  - pkg/version
+- name: golang.org/x/net
+  version: e90d6d0afc4c315a0d87a568ae68577cc15149a0
+  subpackages:
+  - websocket
+testImports: []
