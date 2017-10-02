@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
+
 )
 
 type ExternalEntityLinkBuilder struct {

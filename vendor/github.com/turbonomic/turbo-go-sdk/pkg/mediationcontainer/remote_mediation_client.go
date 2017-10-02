@@ -113,17 +113,17 @@ func (remoteMediationClient *remoteMediationClient) Init(probeRegisteredMsgCh ch
 			case <-transport.NotifyClosed():
 				glog.V(2).Infof("[Reconnect] transport endpoint is closed, starting reconnect ...")
 
-				// stop server messages listener
+			// stop server messages listener
 				remoteMediationClient.stopMessageHandler()
-				// Reconnect
+			// Reconnect
 				err := transport.Connect()
-				// handle WebSocket creation errors
+			// handle WebSocket creation errors
 				if err != nil { //transport.ws == nil {
 					glog.Errorf("[Reconnect] Initialization of remote mediation client failed, null transport")
 					remoteMediationClient.Stop()
 					break
 				}
-				// sdk registration protocol
+			// sdk registration protocol
 				transportReady := make(chan bool, 1)
 				sdkProtocolHandler.handleClientProtocol(transport, transportReady)
 				endProtocol := <-transportReady
@@ -132,14 +132,14 @@ func (remoteMediationClient *remoteMediationClient) Init(probeRegisteredMsgCh ch
 					remoteMediationClient.Stop()
 					break
 				}
-				// start listener for server messages
+			// start listener for server messages
 				remoteMediationClient.stopMsgHandlerCh = make(chan bool)
 				go remoteMediationClient.RunServerMessageHandler(remoteMediationClient.Transport)
 				glog.V(3).Infof("[Reconnect] transport endpoint connect complete")
 			} //end select
 		} // end for
 	}() // end go routine
-
+	
 	// --------- Listen for server messages
 	remoteMediationClient.stopMsgHandlerCh = make(chan bool)
 	go remoteMediationClient.RunServerMessageHandler(remoteMediationClient.Transport)
@@ -207,7 +207,7 @@ func (remoteMediationClient *remoteMediationClient) RunServerMessageHandler(tran
 				glog.Errorf(logPrefix + "endpoint message channel is closed")
 				break // return or continue ?
 			}
-			glog.V(3).Infof(logPrefix+"received: %s\n", parsedMsg)
+			glog.V(3).Infof(logPrefix+"received: %++v\n", parsedMsg)
 
 			// Handler response - find the handler to handle the message
 			serverRequest := parsedMsg.ServerMsg
@@ -232,17 +232,12 @@ func (remoteMediationClient *remoteMediationClient) RunServerMessageHandler(tran
 func (remoteMediationClient *remoteMediationClient) runProbeCallback(endpoint ProtobufEndpoint) {
 	glog.V(4).Infof("[runProbeCallback] %s : ENTER  ", time.Now())
 	for {
-		glog.V(2).Infof("[probeCallback] waiting for probe responses")
-		glog.V(4).Infof("[probeCallback] waiting for probe responses ..... on  %v\n", remoteMediationClient.probeResponseChan)
+		glog.V(4).Infof("[probeCallback] waiting for probe responses")
 		select {
 		case <-remoteMediationClient.stopMsgHandlerCh:
 			glog.V(4).Infof("[probeCallback] Exit routine *************")
 			return
-		case msg, ok := <-remoteMediationClient.probeResponseChan:
-			if !ok {
-				glog.Errorf("[probeCallback] probe response channel is closed")
-				break
-			}
+		case msg:= <-remoteMediationClient.probeResponseChan:
 			glog.V(4).Infof("[probeCallback] received response on probe channel %v\n ", remoteMediationClient.probeResponseChan)
 			endMsg := &EndpointMessage{
 				ProtobufMessage: msg,
@@ -368,7 +363,7 @@ func (discReqHandler *DiscoveryRequestHandler) keepDiscoveryAlive(msgID int32, p
 
 	// Send the response on the callback channel to send to the server
 	probeMsgChan <- clientMsg // This will block till the channel is ready to receive
-	glog.V(3).Infof("Sent keep alive response ", clientMsg.GetMessageID())
+	glog.V(3).Infof("Sent keep alive response %d", clientMsg.GetMessageID())
 }
 
 // -------------------------------- Validation Request Handler -----------------------------------
@@ -396,7 +391,7 @@ func (valReqHandler *ValidationRequestHandler) HandleMessage(serverRequest proto
 
 	// Send the response on the callback channel to send to the server
 	probeMsgChan <- clientMsg // This will block till the channel is ready to receive
-	glog.V(3).Infof("Sent validation response ", clientMsg.GetMessageID())
+	glog.V(3).Infof("Sent validation response %d", clientMsg.GetMessageID())
 }
 
 // -------------------------------- Action Request Handler -----------------------------------

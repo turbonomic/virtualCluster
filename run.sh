@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 options="--logtostderr"
 options="$options --v 3"
 options="$options --topologyConf ./conf/topology.conf"
@@ -12,6 +10,8 @@ options="$options --clusterName myCluster"
 set -x
 
 #1. build it
+glide update --strip-vendor
+
 make build
 ret=$?
 if [ $ret -ne 0 ] ; then

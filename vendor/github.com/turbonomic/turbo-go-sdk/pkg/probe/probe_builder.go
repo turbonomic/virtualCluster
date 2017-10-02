@@ -10,7 +10,7 @@ type ProbeBuilder struct {
 	probeCategory      string
 	registrationClient TurboRegistrationClient
 	discoveryClientMap map[string]TurboDiscoveryClient
-	actionClient       TurboActionExecutorClient
+	actionClient	   TurboActionExecutorClient
 	builderError       error
 }
 
