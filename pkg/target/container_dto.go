@@ -75,10 +75,10 @@ func (docker *Container) createCommoditiesBought(podId string) ([]*proto.Commodi
 
 	var result []*proto.CommodityDTO
 
-	cpuComm, _ := CreateResourceCommodityBought(&(docker.CPU), proto.CommodityDTO_VCPU)
+	cpuComm, _ := CreateCommodityBoughtWithReservation(&(docker.CPU), docker.ReqCPU, proto.CommodityDTO_VCPU)
 	result = append(result, cpuComm)
 
-	memComm, _ := CreateResourceCommodityBought(&(docker.Memory), proto.CommodityDTO_VMEM)
+	memComm, _ := CreateCommodityBoughtWithReservation(&(docker.Memory), docker.ReqMemory, proto.CommodityDTO_VMEM)
 	result = append(result, memComm)
 
 	podComm, _ := CreateKeyCommodity(podId, proto.CommodityDTO_VMPM_ACCESS)

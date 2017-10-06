@@ -9,11 +9,10 @@ const (
 	defaultInfiniteCapacity = 1E10
 )
 
-// no capacity for bought commodity
-func CreateResourceCommodityBoughtResize(res *Resource, ctype proto.CommodityDTO_CommodityType, resizeable bool) (*proto.CommodityDTO, error) {
+func CreateCommodityBoughtWithReservation(res *Resource, reserved float64, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.NewCommodityDTOBuilder(ctype).
 		Used(res.Used).
-		Resizable(resizeable).
+	    Reservation(reserved).
 		Create()
 }
 
