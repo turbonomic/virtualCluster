@@ -63,3 +63,54 @@ glide update --strip-vendor
 **target** is a json file about settings of generated cluster for OpsMgr, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/target.json);
 
 **topology** is the configuration file about the virtual cluster to be generated, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/topology.conf).
+
+# Topologies
+Different topologies will trigger different actions from OpsMgr.
+
+## Resize Up containers
+```
+#1. define containers, container format:
+# container, <containerId>, <limitCPU>, <usedCPU>, <reqCPU>, <limityMem>, <usedMem>, <reqMem>, <limitQPS>, <usedQPS>;
+container, containerC, 1000, 900, 500, 1624, 224, 250, 100, 10
+container, containerD, 2900, 900, 500, 1024, 950, 250, 100, 20
+
+#2. define Pod, pod format:
+# pod, <podId>, <cotainerId1>, <containerId2>
+pod, pod-3, containerC
+pod, pod-4, containerD
+
+#3. define virtual machine (vnode), vnode format:
+# vnode, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <podId1>, <podId2>, ...
+vnode, vnode-3, 5200, 4096, 192.168.1.4, pod-4, pod-3
+
+#4. define the physical machine (node), node format:
+# node, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <vnodeId1>, <vnodeId2>, ...
+node, node-3, 10400, 16384, 200.0.0.2, vnode-3
+```
+In [this topology](https://github.com/songbinliu/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/resize.up.container.topology.conf#L13), the CPU utilization of `containerC` is high, so an action will be triggered to increase the CPU capacity of `containerC`; and another action to increase the Memory capacity for `containerD`.
+
+
+## Move Pods to an Idle VM
+```
+#1. define containers, container format:
+# container, <containerId>, <limitCPU>, <usedCPU>, <reqCPU>, <limityMem>, <usedMem>, <reqMem>, <limitQPS>, <usedQPS>;
+container, containerC, 2000, 950, 500, 2048, 1024, 250, 100, 10
+container, containerD, 2000, 850, 500, 2048, 800, 250, 100, 20
+
+#2. define Pod, pod format:
+# pod, <podId>, <cotainerId1>, <containerId2>
+pod, pod-3, containerC
+pod, pod-4, containerD
+pod, pod-5, containerC
+pod, pod-6, containerD
+
+#3. define virtual machine (vnode), vnode format:
+# vnode, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <podId1>, <podId2>, ...
+vnode, vnode-2, 4200, 4096, 192.168.1.3
+vnode, vnode-3, 4200, 4096, 192.168.1.4, pod-4, pod-3, pod-5, pod-6
+
+#4. define the physical machine (node), node format:
+# node, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <vnodeId1>, <vnodeId2>, ...
+node, node-3, 10400, 16384, 200.0.0.2, vnode-2, vnode-3
+```
+In [this topology](https://github.com/songbinliu/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/move.pod.topology.conf#L13), `vnode-3` is hosting four pods, and is highly utilized; on the other hand, `vnode-2` is idle. So actions will be triggered to move some pods from `vnode-3` to `vnode-2`.
