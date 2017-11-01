@@ -114,3 +114,33 @@ vnode, vnode-3, 4200, 4096, 192.168.1.4, pod-4, pod-3, pod-5, pod-6
 node, node-3, 10400, 16384, 200.0.0.2, vnode-2, vnode-3
 ```
 In [this topology](https://github.com/songbinliu/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/move.pod.topology.conf#L13), `vnode-3` is hosting four pods, and is highly utilized; on the other hand, `vnode-2` is idle. So actions will be triggered to move some pods from `vnode-3` to `vnode-2`.
+
+## Provision VM
+```
+#1. define containers, container format:
+# container, <containerId>, <limitCPU>, <usedCPU>, <reqCPU>, <limityMem>, <usedMem>, <reqMem>, <limitQPS>, <usedQPS>;
+container, containerA, 700, 700, 700, 700, 700, 100, 100, 0
+container, containerB, 2300, 2300, 2300, 2300, 2300, 100, 100, 0
+
+#2. define Pod, pod format:
+# pod, <podId>, <cotainerId1>, <containerId2>
+pod, pod-1, containerB
+pod, pod-1-2, containerA
+pod, pod-2, containerA
+
+#3. define virtual machine (vnode), vnode format:
+# vnode, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <podId1>, <podId2>, ...
+vnode, vnode-1, 3000, 3000, 192.168.1.2, pod-1, pod-1-2
+vnode, vnode-2, 1100, 1100, 192.168.1.3, pod-2
+
+#4. define the physical machine (node), node format:
+# node, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <vnodeId1>, <vnodeId2>, ...
+node, node-1, 3200, 3200, 200.0.0.1, vnode-1
+node, node-2, 2100, 2100, 200.0.0.2, vnode-2
+
+#4. define service, service format:
+# service, <serviceId>, <podId1>, <podId2>, ...
+service, service-1, pod-1, pod-2
+
+```
+In [this topology](./conf/provision.vm.topology.conf), `vnode-1` is hosting two pods, and is highly utilized; on the other hand, `vnode-2` does not have enough resource available for the pods hosted by `vnode-1` to move to. In such scenario, since `node-2` has sufficient resource available,  actions will be triggered to provision a VM in `node-2` so that one pod in `vnode-1` can move to the new VM to reduce its critical utilization.
