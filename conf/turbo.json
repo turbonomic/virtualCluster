@@ -1,7 +1,7 @@
 {
     "serverMeta": {
         "turboServer": "https://localhost:9400",
-        "version": "6.0.0-SNAPSHOT"
+        "version": "6.1.0-SNAPSHOT"
     },
     "restAPIConfig": {
         "opsManagerUserName": "administrator",

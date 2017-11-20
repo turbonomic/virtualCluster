@@ -13,6 +13,7 @@ func CreateCommodityBoughtWithReservation(res *Resource, reserved float64, ctype
 	return builder.NewCommodityDTOBuilder(ctype).
 		Used(res.Used).
 	    Reservation(reserved).
+	    Resizable(true).
 		Create()
 }
 
