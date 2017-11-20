@@ -12,8 +12,8 @@ const (
 func CreateCommodityBoughtWithReservation(res *Resource, reserved float64, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.NewCommodityDTOBuilder(ctype).
 		Used(res.Used).
-	    Reservation(reserved).
-	    Resizable(true).
+		Reservation(reserved).
+		Resizable(true).
 		Create()
 }
 

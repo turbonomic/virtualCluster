@@ -26,9 +26,9 @@ func (m *ContainerResizer) Execute(actionItem *proto.ActionItemDTO, progressTrac
 	podSE := actionItem.GetHostedBySE()
 	comm := actionItem.GetNewComm()
 	glog.V(2).Infof("begin to resize container[%s] hosted by pod[%s]\n comm:%++v",
-		              containerSE.GetDisplayName(),
-		              podSE.GetDisplayName(),
-					  comm)
+		containerSE.GetDisplayName(),
+		podSE.GetDisplayName(),
+		comm)
 
 	cpu := -1.0
 	mem := -1.0
