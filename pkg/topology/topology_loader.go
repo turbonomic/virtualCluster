@@ -201,7 +201,9 @@ func (t *TargetTopology) loadPod(fields []string) error {
 
 	key := fields[0]
 	if _, exist := t.PodTemplateMap[key]; exist {
-		fmt.Errorf("Pod[%s] already exist.")
+		err := fmt.Errorf("Pod[%s] already exist.", key)
+		glog.Error(err.Error())
+		return err
 	}
 
 	containers := []string{}
@@ -236,7 +238,9 @@ func (t *TargetTopology) loadVNode(fields []string) error {
 
 	key := fields[0]
 	if _, exist := t.VNodeTemplateMap[key]; exist {
-		fmt.Errorf("vnode [%s] already exist.")
+		err := fmt.Errorf("vnode [%s] already exist.", key)
+		glog.Error(err.Error())
+		return err
 	}
 
 	nums, err := parseFloatValues(fields[1:3])
@@ -284,7 +288,9 @@ func (t *TargetTopology) loadNode(fields []string) error {
 
 	key := fields[0]
 	if _, exist := t.NodeTemplateMap[key]; exist {
-		fmt.Errorf("node [%s] already exist.")
+		err := fmt.Errorf("node [%s] already exist.", key)
+		glog.Error(err.Error())
+		return err
 	}
 
 	nums, err := parseFloatValues(fields[1:3])
@@ -331,7 +337,9 @@ func (t *TargetTopology) loadService(fields []string) error {
 
 	key := fields[0]
 	if _, exist := t.ServiceTemplateMap[key]; exist {
-		fmt.Errorf("service[%s] already exist.")
+		err := fmt.Errorf("service[%s] already exist.", key)
+		glog.Error(err.Error())
+		return err
 	}
 
 	pods := []string{}
