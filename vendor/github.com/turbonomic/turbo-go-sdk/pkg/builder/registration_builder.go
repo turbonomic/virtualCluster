@@ -52,11 +52,13 @@ func NewProbeInfoBuilder(probeType, probeCat string,
 	supplyChainSet []*proto.TemplateDTO,
 	acctDef []*proto.AccountDefEntry) *ProbeInfoBuilder {
 	// New ProbeInfo protobuf with this input
+	interval := int32(180)
 	probeInfo := &proto.ProbeInfo{
 		ProbeType:                &probeType,
 		ProbeCategory:            &probeCat,
 		SupplyChainDefinitionSet: supplyChainSet,
 		AccountDefinition:        acctDef,
+		RediscoveryIntervalSeconds: &interval,
 	}
 	return &ProbeInfoBuilder{
 		probeInfo: probeInfo,
