@@ -1,7 +1,7 @@
 {
     "probeCategory": "Cloud Native",
     "targetType": "MockCloud",
-    "address": "https://127.0.0.1:8443",
+    "address": "my.vCluster",
     "username": "mocker",
     "password": "mocker"
 }
