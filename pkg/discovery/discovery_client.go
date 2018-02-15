@@ -85,7 +85,7 @@ func (dc *DiscoveryClient) Discover(accountValues []*proto.AccountValue) (*proto
 	}
 
 	glog.V(2).Infof("end of discoverying target. [%d]", len(resultDTOs))
-	glog.V(4).Infof("DTOs:\n%s", printDTOs(resultDTOs))
+	glog.V(3).Infof("DTOs:\n%s", printDTOs(resultDTOs))
 
 	response := &proto.DiscoveryResponse{
 		EntityDTO: resultDTOs,
