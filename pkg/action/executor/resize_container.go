@@ -37,8 +37,10 @@ func (m *ContainerResizer) Execute(actionItem *proto.ActionItemDTO, progressTrac
 	switch ctype {
 	case proto.CommodityDTO_VMEM:
 		mem = comm.GetCapacity()
+		glog.V(2).Infof("resize vmem to: %v", mem)
 	case proto.CommodityDTO_VCPU:
 		cpu = comm.GetCapacity()
+		glog.V(2).Infof("resize vcpu to: %v", cpu)
 	default:
 		glog.Errorf("unable to resize commodity type[%v] for container[%s].", ctype, containerSE.GetId())
 		return fmt.Errorf("unsupported commdity type [%v]", ctype)
@@ -55,6 +57,8 @@ func (m *ContainerResizer) Execute(actionItem *proto.ActionItemDTO, progressTrac
 		glog.Errorf("Failed to resize container[%s] capacity: %v", containerSE.GetId(), err)
 		return fmt.Errorf("failed to resize container capacity.")
 	}
+
+	glog.V(2).Infof("End of resizing container")
 
 	return nil
 }
