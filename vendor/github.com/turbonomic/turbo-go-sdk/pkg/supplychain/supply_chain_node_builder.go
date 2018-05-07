@@ -62,7 +62,7 @@ func (scnb *SupplyChainNodeBuilder) Sells(templateComm *proto.TemplateCommodity)
 
 // set the provider of the SupplyChainNode
 func (scnb *SupplyChainNodeBuilder) Provider(provider proto.EntityDTO_EntityType,
-						pType proto.Provider_ProviderType) *SupplyChainNodeBuilder {
+	pType proto.Provider_ProviderType) *SupplyChainNodeBuilder {
 	if scnb.err != nil {
 		return scnb
 	}
@@ -163,6 +163,14 @@ func (scnb *SupplyChainNodeBuilder) requireProvider() bool {
 		return false
 	}
 	return true
+}
+
+func (scnb *SupplyChainNodeBuilder) SetPriority(p int32) {
+	scnb.priority = &p
+}
+
+func (scnb *SupplyChainNodeBuilder) SetTemplateType(t proto.TemplateDTO_TemplateType) {
+	scnb.templateType = &t
 }
 
 func buildCommodityBought(

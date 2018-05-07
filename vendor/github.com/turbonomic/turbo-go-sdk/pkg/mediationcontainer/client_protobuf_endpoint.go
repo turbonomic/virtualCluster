@@ -79,7 +79,7 @@ func (endpoint *ClientProtobufEndpoint) Send(messageToSend *EndpointMessage) {
 	// Marshal protobuf message to raw bytes
 	msgMarshalled, err := goproto.Marshal(messageToSend.ProtobufMessage) // marshal to byte array
 	if err != nil {
-		glog.Errorf("[ClientProtobufEndpoint] during send - marshaling error: ", err)
+		glog.Errorf("[ClientProtobufEndpoint] during send - marshaling error: %s", err)
 		return
 	}
 	// Send using the underlying transport
@@ -88,7 +88,7 @@ func (endpoint *ClientProtobufEndpoint) Send(messageToSend *EndpointMessage) {
 	}
 	err = endpoint.transport.Send(tmsg)
 	if err != nil {
-		glog.Errorf("[ClientProtobufEndpoint] during send - transport error: ", err)
+		glog.Errorf("[ClientProtobufEndpoint] during send - transport error: %s", err)
 		return
 	}
 }
@@ -112,7 +112,7 @@ func (endpoint *ClientProtobufEndpoint) waitForServerMessage() {
 			case rawBytes, ok := <-endpoint.transport.RawMessageReceiver(): // block till  the message bytes from the transport channel,
 				if !ok {
 					glog.Errorf(logPrefix + "transport message channel is closed")
-					break
+					return
 				}
 				// Parse the input stream using the registered message handler
 				messageHandler := endpoint.GetMessageHandler()
