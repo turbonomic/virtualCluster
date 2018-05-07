@@ -5,11 +5,11 @@ import (
 )
 
 const (
-	PropertyUsed = "used"
-	PropertyCapacity = "capacity"
-	PropertyResizable = "resizable"
-	PropertyLimit = "limit"
-	PropertyPeak = "peak"
+	PropertyUsed        = "used"
+	PropertyCapacity    = "capacity"
+	PropertyResizable   = "resizable"
+	PropertyLimit       = "limit"
+	PropertyPeak        = "peak"
 	PropertyComputeUsed = "computeUsed"
 	PropertyReservation = "reservation"
 )
@@ -47,6 +47,11 @@ func (builder *ReplacementEntityMetaDataBuilder) Matching(property string) *Repl
 	return builder
 }
 
+func (builder *ReplacementEntityMetaDataBuilder) MatchingExternal(propertyDef *proto.ServerEntityPropDef) *ReplacementEntityMetaDataBuilder {
+	builder.metaData.ExtEntityPropDef = append(builder.metaData.GetExtEntityPropDef(), propertyDef)
+	return builder
+}
+
 // Set the commodity type whose metric values will be transferred to the entity
 // builder DTO will be replaced by.
 func (builder *ReplacementEntityMetaDataBuilder) PatchBuying(commType proto.CommodityDTO_CommodityType) *ReplacementEntityMetaDataBuilder {
@@ -57,7 +62,7 @@ func (builder *ReplacementEntityMetaDataBuilder) PatchBuyingWithProperty(commTyp
 	builder.metaData.BuyingCommTypes = append(builder.metaData.GetBuyingCommTypes(),
 		&proto.EntityDTO_ReplacementCommodityPropertyData{
 			CommodityType: &commType,
-			PropertyName: names,
+			PropertyName:  names,
 		})
 	return builder
 }
@@ -72,7 +77,7 @@ func (builder *ReplacementEntityMetaDataBuilder) PatchSellingWithProperty(commTy
 	builder.metaData.SellingCommTypes = append(builder.metaData.GetSellingCommTypes(),
 		&proto.EntityDTO_ReplacementCommodityPropertyData{
 			CommodityType: &commType,
-			PropertyName: names,
+			PropertyName:  names,
 		})
 
 	return builder

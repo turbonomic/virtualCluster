@@ -1,6 +1,6 @@
 {
     "probeCategory": "Cloud Native",
-    "targetType": "MockCloud",
+    "targetType": "MockCloud.1",
     "address": "my.vCluster",
     "username": "mocker",
     "password": "mocker"

@@ -1,4 +1,4 @@
 package: github.com/songbinliu/virtualCluster
 import:
 - package: github.com/turbonomic/turbo-go-sdk
-  version: 72f1a7a672eb7fb639e0b6d3d73362c719916323
+  version: 771c5767564845eda68aa5e8a545c6810f85d0ea

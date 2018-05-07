@@ -89,6 +89,7 @@ func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.
 
 	builder := probe.NewProbeBuilder(config.TargetType, config.ProbeCategory).
 		RegisteredBy(regClient).
+		WithActionPolicies(regClient).
 		DiscoversTarget(config.Address, discoveryClient).
 		ExecutesActionsBy(actionHandler)
 

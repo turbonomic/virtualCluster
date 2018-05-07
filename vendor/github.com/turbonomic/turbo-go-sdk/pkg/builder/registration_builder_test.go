@@ -2,6 +2,7 @@ package builder
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/turbonomic/turbo-go-sdk/pkg"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 	"github.com/turbonomic/turbo-go-sdk/util/rand"
 	"testing"
@@ -70,5 +71,85 @@ func TestProbeInfo_Create(t *testing.T) {
 	pi := builder.Create()
 	assert.Equal(probeinfo, pi)
 	assert.Equal(*probeinfo, *pi)
+}
 
+func TestProbeInfoBuilder(t *testing.T) {
+
+	table := []struct {
+		probeType     string
+		probeCategory string
+		full          int32
+		incremental   int32
+		performance   int32
+	}{
+		{"Type1", "Category1", 200, 10, 10},
+		{"Type2", "Category2", 200, 10, 10},
+		{"Type3", "Category3", -1, -1, -1},
+		{probeType: "Type4", probeCategory: "Category4"},
+	}
+
+	for _, item := range table {
+		builder := NewBasicProbeInfoBuilder(item.probeType, item.probeCategory)
+		builder.WithFullDiscoveryInterval(item.full)
+		builder.WithIncrementalDiscoveryInterval(item.incremental)
+		builder.WithPerformanceDiscoveryInterval(item.performance)
+		probeInfo := builder.Create()
+		assert.Equal(t, item.probeType, probeInfo.GetProbeType())
+		assert.Equal(t, item.probeCategory, probeInfo.GetProbeCategory())
+		if item.full < pkg.DEFAULT_MIN_DISCOVERY_IN_SECS {
+			assert.EqualValues(t, pkg.DEFAULT_MIN_DISCOVERY_IN_SECS, probeInfo.GetFullRediscoveryIntervalSeconds())
+		} else {
+			assert.EqualValues(t, item.full, probeInfo.GetFullRediscoveryIntervalSeconds())
+		}
+		if item.incremental <= pkg.DISCOVERY_NOT_SUPPORTED {
+			assert.EqualValues(t, 0, probeInfo.GetIncrementalRediscoveryIntervalSeconds())
+		} else {
+			assert.EqualValues(t, item.incremental, probeInfo.GetIncrementalRediscoveryIntervalSeconds())
+		}
+		if item.performance <= pkg.DISCOVERY_NOT_SUPPORTED {
+			assert.EqualValues(t, 0, probeInfo.GetPerformanceRediscoveryIntervalSeconds())
+		} else {
+			assert.EqualValues(t, item.performance, probeInfo.GetPerformanceRediscoveryIntervalSeconds())
+		}
+		assert.Nil(t, probeInfo.GetActionPolicy())
+		assert.Nil(t, probeInfo.GetEntityMetadata())
+	}
+}
+
+func TestActionPolicyBuilder(t *testing.T) {
+	var supported, notSupported proto.ActionPolicyDTO_ActionCapability
+	supported = proto.ActionPolicyDTO_SUPPORTED
+	notSupported = proto.ActionPolicyDTO_NOT_SUPPORTED
+
+	expectedMap := make(map[proto.EntityDTO_EntityType]map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
+	expectedMap[proto.EntityDTO_VIRTUAL_MACHINE] = map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability{
+		proto.ActionItemDTO_MOVE:      supported,
+		proto.ActionItemDTO_RESIZE:    supported,
+		proto.ActionItemDTO_PROVISION: notSupported,
+	}
+	expectedMap[proto.EntityDTO_CONTAINER_POD] = map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability{
+		proto.ActionItemDTO_MOVE:   supported,
+		proto.ActionItemDTO_RESIZE: notSupported,
+	}
+	expectedMap[proto.EntityDTO_CONTAINER] = map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability{
+		proto.ActionItemDTO_MOVE:   notSupported,
+		proto.ActionItemDTO_RESIZE: supported,
+	}
+
+	builder := NewActionPolicyBuilder()
+	for eType, itemMap := range expectedMap {
+		for aType, item := range itemMap {
+			builder.WithEntityActions(eType, aType, item)
+		}
+	}
+
+	actionPolicies := builder.Create()
+	for _, actionPolicy := range actionPolicies {
+		policies := actionPolicy.PolicyElement
+		expectedPolicies, exists := expectedMap[*actionPolicy.EntityType]
+		assert.True(t, exists)
+		for _, policyElement := range policies {
+			assert.EqualValues(t, expectedPolicies[*policyElement.ActionType], *policyElement.ActionCapability)
+		}
+	}
 }

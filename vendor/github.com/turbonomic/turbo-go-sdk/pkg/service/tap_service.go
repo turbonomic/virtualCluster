@@ -16,8 +16,11 @@ const (
 	defaultTurboAPIPath = "/vmturbo/rest"
 )
 
+// Turbonomic Automation Service that will discover the environment for the Turbo server
+// and receive recommendations to control the infrastructure environment
 type TAPService struct {
-	// Interface to the Turbo Server
+	// TurboProbe provides the communication interface between the Turbo server
+	// and the infrastructure environment
 	*probe.TurboProbe
 	*restclient.Client
 	disconnectFromTurbo chan struct{}
@@ -28,21 +31,28 @@ func (tapService *TAPService) DisconnectFromTurbo() {
 	close(tapService.disconnectFromTurbo)
 	glog.V(4).Infof("[DisconnectFromTurbo] End *********")
 }
-func (tapService *TAPService) ConnectToTurbo() {
-	glog.V(4).Infof("[ConnectToTurbo] Enter ******* ")
-	IsRegistered := make(chan bool, 1)
 
-	// start a separate go routine to connect to the Turbo server
-	go mediationcontainer.InitMediationContainer(IsRegistered)
+func (tapService *TAPService) addTarget(isRegistered chan bool) {
+	c := tapService.ProbeConfiguration
+	pinfo := c.ProbeCategory + "::" + c.ProbeType
 
-	// Wait for probe registration complete to create targets in turbo server
-	// Block till a message arrives on the channel
-	status := <-IsRegistered
-	if !status {
-		glog.Fatalf("Probe " + tapService.ProbeCategory + "::" + tapService.ProbeType + " is not registered")
+	//1. wait until probe is registered.
+	select {
+	case status := <-isRegistered:
+		if !status {
+			glog.Errorf("Probe %v registration failed.", pinfo)
+			close(tapService.disconnectFromTurbo)
+			glog.Errorf("Notified to close TAP service.")
+			return
+		}
+		break
+	case <-tapService.disconnectFromTurbo:
+		glog.V(2).Infof("Abort adding target: Kubeturbo service is stopped.")
 		return
 	}
-	glog.V(3).Infof("Probe " + tapService.ProbeCategory + "::" + tapService.ProbeType + " Registered : === Add Targets ===")
+
+	//2. register the targets
+	glog.V(2).Infof("Probe %v is registered. Begin to add targets.", pinfo)
 	targetInfos := tapService.GetProbeTargets()
 	for _, targetInfo := range targetInfos {
 		target := targetInfo.GetTargetInstance()
@@ -56,15 +66,24 @@ func (tapService *TAPService) ConnectToTurbo() {
 		}
 		glog.V(3).Infof("Successfully add target: %v", resp)
 	}
+}
 
-	close(IsRegistered)
-	glog.V(4).Infof("[ConnectToTurbo] End ******")
+func (tapService *TAPService) ConnectToTurbo() {
+	glog.V(4).Infof("[ConnectToTurbo] Enter ******* ")
+	tapService.disconnectFromTurbo = make(chan struct{})
+	isRegistered := make(chan bool, 1)
+	defer close(isRegistered)
+
+	// start a separate go routine to connect to the Turbo server
+	go mediationcontainer.InitMediationContainer(isRegistered)
+	go tapService.addTarget(isRegistered)
 
 	// Once connected the mediation container will keep running till a disconnect message is sent to the tap service
-	tapService.disconnectFromTurbo = make(chan struct{})
 	select {
 	case <-tapService.disconnectFromTurbo:
+		glog.V(1).Infof("Begin to stop TAP service.")
 		mediationcontainer.CloseMediationContainer()
+		glog.V(1).Infof("TAP service is stopped.")
 		return
 	}
 }
