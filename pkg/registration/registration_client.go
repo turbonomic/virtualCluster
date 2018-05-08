@@ -75,7 +75,7 @@ func (rClient *DemoRegistrationClient) GetActionPolicy() []*proto.ActionPolicyDT
 	container := proto.EntityDTO_CONTAINER
 	containerPolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
 	containerPolicy[proto.ActionItemDTO_RIGHT_SIZE] = supported
-	containerPolicy[proto.ActionItemDTO_RESIZE_CAPACITY] = supported
+	//containerPolicy[proto.ActionItemDTO_RESIZE_CAPACITY] = supported
 	containerPolicy[proto.ActionItemDTO_PROVISION] = recommend
 	containerPolicy[proto.ActionItemDTO_MOVE] = notSupported
 	addActionPolicy(ab, container, containerPolicy)
