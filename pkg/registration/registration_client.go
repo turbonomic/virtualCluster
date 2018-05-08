@@ -92,8 +92,8 @@ func (rClient *DemoRegistrationClient) GetActionPolicy() []*proto.ActionPolicyDT
 }
 
 func addActionPolicy(ab *builder.ActionPolicyBuilder,
-					 entity proto.EntityDTO_EntityType,
-					policies map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability) {
+	entity proto.EntityDTO_EntityType,
+	policies map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability) {
 
 	for action, policy := range policies {
 		ab.WithEntityActions(entity, action, policy)
