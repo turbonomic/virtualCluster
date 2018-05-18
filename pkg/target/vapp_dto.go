@@ -23,6 +23,7 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 		ServiceType: &(vapp.Name),
 	}
 	vAppBuilder.VirtualApplicationData(vappData)
+	vAppBuilder.WithPowerState(proto.EntityDTO_POWERED_ON)
 
 	entity, err := vAppBuilder.Create()
 	if err != nil {

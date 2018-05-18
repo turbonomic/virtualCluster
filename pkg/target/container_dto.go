@@ -59,6 +59,7 @@ func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {
 		Provider(provider).
 		BuysCommodities(bought).
 		SellsCommodities(sold).
+		WithPowerState(proto.EntityDTO_POWERED_ON).
 		Create()
 
 	if err != nil {

@@ -23,6 +23,7 @@ func (app *Application) BuildDTO(docker *Container, pod *Pod) (*proto.EntityDTO,
 		BuysCommodities(bought).
 		SellsCommodities(sold).
 		ApplicationData(appData).
+		WithPowerState(proto.EntityDTO_POWERED_ON).
 		Create()
 
 	if err != nil {
