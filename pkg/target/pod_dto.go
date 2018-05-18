@@ -19,6 +19,7 @@ func (pod *Pod) BuildDTO(host *VNode) (*proto.EntityDTO, error) {
 		Provider(provider).
 		BuysCommodities(bought).
 		SellsCommodities(sold).
+		WithPowerState(proto.EntityDTO_POWERED_ON).
 		Create()
 
 	if err != nil {
@@ -59,6 +60,19 @@ func (pod *Pod) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	result = append(result, podComm)
 
 	return result, nil
+}
+
+func (pod *Pod) createContainerPodData() *proto.EntityDTO_ContainerPodData {
+	// Add IP address in ContainerPodData. Some pods (system pods and daemonset pods) may use the host IP as the pod IP,
+	// in which case the IP address will not be unique (in the k8s cluster) and hence not populated in ContainerPodData.
+	fullName := pod.Name
+	ns := "ns"
+	return &proto.EntityDTO_ContainerPodData{
+		// Note the port needs to be set if needed
+		IpAddress: &fullName,
+		FullName:  &fullName,
+		Namespace: &ns,
+	}
 }
 
 func (pod *Pod) BuildContainerDTOs() ([]*proto.EntityDTO, error) {
