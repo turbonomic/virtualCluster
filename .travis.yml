@@ -1,12 +1,13 @@
 language: go
 
 go:
-  - 1.8
+  - "1.10"
   - tip
 
-go_import_path: github.com/songbinliu/virtualCluster
+go_import_path: github.com/turbonomic/virtualCluster
 
 
 script:
+  - make fmtcheck
   - make product
-  - make test    
+  - make test
