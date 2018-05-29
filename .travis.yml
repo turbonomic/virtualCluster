@@ -8,5 +8,6 @@ go_import_path: github.com/turbonomic/virtualCluster
 
 
 script:
+  - make fmtcheck
   - make product
   - make test
