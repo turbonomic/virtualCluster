@@ -12,26 +12,27 @@ const (
 	Password              string = "password"
 )
 
-type DemoRegistrationClient struct {
+type DemoRegClient struct {
 	stitchingType string
 }
 
-func NewRegistrationClient(stype string) *DemoRegistrationClient {
-	return &DemoRegistrationClient{
+func NewRegClient(stype string) *DemoRegClient {
+	return &DemoRegClient{
 		stitchingType: stype,
 	}
 }
 
-func (rClient *DemoRegistrationClient) GetSupplyChainDefinition() []*proto.TemplateDTO {
+func (rClient *DemoRegClient) GetSupplyChainDefinition() []*proto.TemplateDTO {
 	supplyChainFactory := NewSupplyChainFactory(rClient.stitchingType)
 	supplyChain, err := supplyChainFactory.createSupplyChain()
 	if err != nil {
 		// TODO error handling
 	}
+
 	return supplyChain
 }
 
-func (rClient *DemoRegistrationClient) GetAccountDefinition() []*proto.AccountDefEntry {
+func (rClient *DemoRegClient) GetAccountDefinition() []*proto.AccountDefEntry {
 	var acctDefProps []*proto.AccountDefEntry
 
 	// target ID
@@ -52,12 +53,12 @@ func (rClient *DemoRegistrationClient) GetAccountDefinition() []*proto.AccountDe
 	return acctDefProps
 }
 
-func (rClient *DemoRegistrationClient) GetIdentifyingFields() string {
+func (rClient *DemoRegClient) GetIdentifyingFields() string {
 	return TargetIdentifierField
 }
 
-func (rClient *DemoRegistrationClient) GetActionPolicy() []*proto.ActionPolicyDTO {
-	glog.V(2).Infof("Begin to build Action Policies")
+func (rClient *DemoRegClient) GetActionPolicy() []*proto.ActionPolicyDTO {
+	glog.V(3).Infof("Begin to build Action Policies")
 	ab := builder.NewActionPolicyBuilder()
 	supported := proto.ActionPolicyDTO_SUPPORTED
 	recommend := proto.ActionPolicyDTO_NOT_EXECUTABLE
@@ -69,7 +70,7 @@ func (rClient *DemoRegistrationClient) GetActionPolicy() []*proto.ActionPolicyDT
 	podCap[proto.ActionItemDTO_MOVE] = supported
 	podCap[proto.ActionItemDTO_PROVISION] = supported
 	podCap[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
-	addActionPolicy(ab, pod, podCap)
+	rClient.addActionPolicy(ab, pod, podCap)
 
 	//2. container: support resize; recommend provision; not move;
 	container := proto.EntityDTO_CONTAINER
@@ -78,7 +79,7 @@ func (rClient *DemoRegistrationClient) GetActionPolicy() []*proto.ActionPolicyDT
 	//containerPolicy[proto.ActionItemDTO_RESIZE_CAPACITY] = supported
 	containerPolicy[proto.ActionItemDTO_PROVISION] = recommend
 	containerPolicy[proto.ActionItemDTO_MOVE] = notSupported
-	addActionPolicy(ab, container, containerPolicy)
+	rClient.addActionPolicy(ab, container, containerPolicy)
 
 	//3. application: only recommend provision; all else are not supported
 	app := proto.EntityDTO_APPLICATION
@@ -86,16 +87,57 @@ func (rClient *DemoRegistrationClient) GetActionPolicy() []*proto.ActionPolicyDT
 	appPolicy[proto.ActionItemDTO_PROVISION] = recommend
 	appPolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
 	appPolicy[proto.ActionItemDTO_MOVE] = notSupported
-	addActionPolicy(ab, app, appPolicy)
+	rClient.addActionPolicy(ab, app, appPolicy)
 
 	return ab.Create()
 }
 
-func addActionPolicy(ab *builder.ActionPolicyBuilder,
+func (rClient *DemoRegClient) addActionPolicy(ab *builder.ActionPolicyBuilder,
 	entity proto.EntityDTO_EntityType,
 	policies map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability) {
 
 	for action, policy := range policies {
 		ab.WithEntityActions(entity, action, policy)
 	}
+}
+
+func (rclient *DemoRegClient) GetEntityMetadata() []*proto.EntityIdentityMetadata {
+	glog.V(3).Infof("Begin to build EntityIdentityMetadata")
+
+	result := []*proto.EntityIdentityMetadata{}
+
+	entities := []proto.EntityDTO_EntityType{
+		proto.EntityDTO_PHYSICAL_MACHINE,
+		proto.EntityDTO_VIRTUAL_MACHINE,
+		proto.EntityDTO_CONTAINER_POD,
+		proto.EntityDTO_CONTAINER,
+		proto.EntityDTO_APPLICATION,
+		proto.EntityDTO_VIRTUAL_APPLICATION,
+	}
+
+	for _, etype := range entities {
+		meta := rclient.newIdMetaData(etype, []string{"id"})
+		result = append(result, meta)
+	}
+
+	glog.V(4).Infof("EntityIdentityMetaData: %++v", result)
+
+	return result
+}
+
+func (rclient *DemoRegClient) newIdMetaData(etype proto.EntityDTO_EntityType, names []string) *proto.EntityIdentityMetadata {
+	data := []*proto.EntityIdentityMetadata_PropertyMetadata{}
+	for _, name := range names {
+		dat := &proto.EntityIdentityMetadata_PropertyMetadata{
+			Name: &name,
+		}
+		data = append(data, dat)
+	}
+
+	result := &proto.EntityIdentityMetadata{
+		EntityType:            &etype,
+		NonVolatileProperties: data,
+	}
+
+	return result
 }

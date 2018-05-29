@@ -83,13 +83,14 @@ func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.
 		return nil, fmt.Errorf("failed to load json conf:%v", err.Error())
 	}
 
-	regClient := registration.NewRegistrationClient(stype)
+	regClient := registration.NewRegClient(stype)
 	discoveryClient := discovery.NewDiscoveryClient(config, clusterHandler)
 	actionHandler := action.NewActionHandler(clusterHandler, stop)
 
 	builder := probe.NewProbeBuilder(config.TargetType, config.ProbeCategory).
 		RegisteredBy(regClient).
 		WithActionPolicies(regClient).
+		WithEntityMetadata(regClient).
 		DiscoversTarget(config.Address, discoveryClient).
 		ExecutesActionsBy(actionHandler)
 

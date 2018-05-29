@@ -30,7 +30,7 @@ func xcheck(expected map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_Ac
 }
 
 func TestK8sRegistrationClient_GetActionPolicy(t *testing.T) {
-	reg := NewRegistrationClient("mock")
+	reg := NewRegClient("mock")
 
 	supported := proto.ActionPolicyDTO_SUPPORTED
 	recommend := proto.ActionPolicyDTO_NOT_EXECUTABLE
