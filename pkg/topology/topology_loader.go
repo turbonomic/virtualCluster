@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/golang/glog"
-	"github.com/songbinliu/virtualCluster/pkg/target"
+	"github.com/turbonomic/virtualCluster/pkg/target"
 	"os"
 	"strconv"
 	"strings"

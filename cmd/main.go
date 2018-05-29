@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/golang/glog"
 
-	"github.com/songbinliu/virtualCluster/pkg/action"
-	"github.com/songbinliu/virtualCluster/pkg/discovery"
-	"github.com/songbinliu/virtualCluster/pkg/registration"
-	"github.com/songbinliu/virtualCluster/pkg/target"
-	"github.com/songbinliu/virtualCluster/pkg/topology"
+	"github.com/turbonomic/virtualCluster/pkg/action"
+	"github.com/turbonomic/virtualCluster/pkg/discovery"
+	"github.com/turbonomic/virtualCluster/pkg/registration"
+	"github.com/turbonomic/virtualCluster/pkg/target"
+	"github.com/turbonomic/virtualCluster/pkg/topology"
 
 	"github.com/turbonomic/turbo-go-sdk/pkg/probe"
 	"github.com/turbonomic/turbo-go-sdk/pkg/service"

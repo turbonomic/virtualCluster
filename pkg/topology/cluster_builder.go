@@ -3,7 +3,7 @@ package topology
 import (
 	"fmt"
 	"github.com/golang/glog"
-	"github.com/songbinliu/virtualCluster/pkg/target"
+	"github.com/turbonomic/virtualCluster/pkg/target"
 )
 
 type ClusterBuilder struct {
