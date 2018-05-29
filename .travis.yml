@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - 1.9
+  - "1.10"
   - tip
 
 go_import_path: github.com/turbonomic/virtualCluster
@@ -9,4 +9,4 @@ go_import_path: github.com/turbonomic/virtualCluster
 
 script:
   - make product
-  - make test    
+  - make test -race -v 
