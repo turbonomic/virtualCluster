@@ -9,4 +9,4 @@ go_import_path: github.com/turbonomic/virtualCluster
 
 script:
   - make product
-  - make test -race -v 
+  - make test
