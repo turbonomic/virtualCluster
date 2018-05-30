@@ -6,9 +6,9 @@ import (
 	"github.com/golang/glog"
 	"github.com/turbonomic/virtualCluster/pkg/target"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
-	"regexp"
 )
 
 const (
@@ -22,7 +22,7 @@ type containerTemplate struct {
 	ReqCPU float64
 	ReqMem float64
 
-	QPS target.Resource
+	QPS          target.Resource
 	ResponseTime *target.Resource
 }
 
@@ -254,11 +254,11 @@ func loadService(t *TargetTopology, input *InputLine) error {
 }
 
 type InputLine struct {
-	err error
-	line string			// original line
-	key string
-	fields []string
-	command string
+	err      error
+	line     string // original line
+	key      string
+	fields   []string
+	command  string
 	fieldNum int
 }
 
@@ -267,7 +267,7 @@ type InputLine struct {
  */
 var commentPattern = regexp.MustCompile("#.*")
 
-func makeInputLine (line string) (*InputLine, error) {
+func makeInputLine(line string) (*InputLine, error) {
 	var err error
 	il := InputLine{line: line}
 	commentsRemoved := commentPattern.ReplaceAllString(line, "")
@@ -278,7 +278,7 @@ func makeInputLine (line string) (*InputLine, error) {
 	for i, field := range strings.Split(commentsRemoved, ",") {
 		trimmed := strings.TrimSpace(field)
 		if len(trimmed) == 0 {
-			err = fmt.Errorf("field %d is empty", i + 1)
+			err = fmt.Errorf("field %d is empty", i+1)
 			break
 		}
 		il.fields = append(il.fields, trimmed)
@@ -325,18 +325,21 @@ func (l *InputLine) GetRestOfFields() []string {
 	return strlist
 }
 
-type HandlerFunction func(*TargetTopology, *InputLine)error
+type HandlerFunction func(*TargetTopology, *InputLine) error
+
 func noop(_ *TargetTopology, _ *InputLine) error {
 	return nil
 }
+
 var loadHandlers = map[string]HandlerFunction{
 	"container": loadContainer,
-	"pod": loadPod,
-	"vnode": loadVNode,
-	"node": loadNode,
-	"service": loadService,
-	"comment": noop,
+	"pod":       loadPod,
+	"vnode":     loadVNode,
+	"node":      loadNode,
+	"service":   loadService,
+	"comment":   noop,
 }
+
 func (t *TargetTopology) parseLine(lineNum int, input *InputLine) error {
 	var err error
 	handler := loadHandlers[input.command]

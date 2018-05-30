@@ -15,21 +15,21 @@ var (
 	clusterType proto.CommodityDTO_CommodityType = proto.CommodityDTO_CLUSTER
 
 	// Application Commodity is an AccessCommodity, bind the seller to the buyer
-	appCommType     proto.CommodityDTO_CommodityType = proto.CommodityDTO_APPLICATION
-	transactionType proto.CommodityDTO_CommodityType = proto.CommodityDTO_TRANSACTION
-	vmPMAccessType  proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMPM_ACCESS
+	appCommType      proto.CommodityDTO_CommodityType = proto.CommodityDTO_APPLICATION
+	transactionType  proto.CommodityDTO_CommodityType = proto.CommodityDTO_TRANSACTION
+	vmPMAccessType   proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMPM_ACCESS
 	responseTimeType proto.CommodityDTO_CommodityType = proto.CommodityDTO_RESPONSE_TIME
 
 	fakeKey string = "fake"
 
-	CpuTemplateComm         *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &cpuType}
-	MemTemplateComm         *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &memType}
-	vCpuTemplateComm        *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &vCpuType}
-	vMemTemplateComm        *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &vMemType}
-	clusterTemplateComm     *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &clusterType}
-	applicationTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &appCommType}
-	transactionTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &transactionType}
-	vmpmAccessTemplateComm  *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &vmPMAccessType}
+	CpuTemplateComm          *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &cpuType}
+	MemTemplateComm          *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &memType}
+	vCpuTemplateComm         *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &vCpuType}
+	vMemTemplateComm         *proto.TemplateCommodity = &proto.TemplateCommodity{CommodityType: &vMemType}
+	clusterTemplateComm      *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &clusterType}
+	applicationTemplateComm  *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &appCommType}
+	transactionTemplateComm  *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &transactionType}
+	vmpmAccessTemplateComm   *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &vmPMAccessType}
 	responseTimeTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &responseTimeType}
 )
 

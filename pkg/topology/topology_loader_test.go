@@ -1,10 +1,10 @@
 package topology
 
 import (
-	"testing"
+	"bytes"
 	"fmt"
 	"github.com/turbonomic/virtualCluster/pkg/util"
-	"bytes"
+	"testing"
 )
 
 func TestTargetTopology_LoadTopology(t *testing.T) {
@@ -35,7 +35,7 @@ var expected []string = []string{
 func dumplist(strlist []string) string {
 	var buf bytes.Buffer
 	for _, s := range strlist {
-		fmt.Fprint(&buf, "  %s\n", s)
+		fmt.Fprintf(&buf, "  %s\n", s)
 	}
 	return buf.String()
 }

@@ -23,9 +23,9 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 	// For now, just used the average of the underlying Transaction and ResponseTime commodities.
 	var commsSold []*proto.CommodityDTO
 	transComm, _ := CreateTransactionCommodity(vapp.UUID, &Resource{Used: qpsused, Capacity: qpscap},
-			proto.CommodityDTO_TRANSACTION)
+		proto.CommodityDTO_TRANSACTION)
 	rtComm, _ := CreateResponseTimeCommodity(vapp.UUID, &Resource{Used: rtused, Capacity: rtcap},
-			proto.CommodityDTO_RESPONSE_TIME)
+		proto.CommodityDTO_RESPONSE_TIME)
 	commsSold = append(commsSold, rtComm, transComm)
 	vAppBuilder.SellsCommodities(commsSold)
 
@@ -47,8 +47,8 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 }
 
 func (vapp *VirtualApp) createAppCommodity(pod *Pod, container *Container,
-		commodityType proto.CommodityDTO_CommodityType,
-		used float64, capacity float64) (*proto.CommodityDTO, error) {
+	commodityType proto.CommodityDTO_CommodityType,
+	used float64, capacity float64) (*proto.CommodityDTO, error) {
 	app := container.App
 	appCommodity, err := builder.NewCommodityDTOBuilder(commodityType).
 		Key(app.UUID).

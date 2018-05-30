@@ -70,4 +70,3 @@ func CreateResponseTimeCommodity(key string, qps *Resource, ctype proto.Commodit
 		Used(qps.Used).
 		Create()
 }
-
