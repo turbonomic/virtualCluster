@@ -3,7 +3,7 @@ package topology
 import (
 	"testing"
 	"fmt"
-	"github.com/songbinliu/virtualCluster/pkg/util"
+	"github.com/turbonomic/virtualCluster/pkg/util"
 	"bytes"
 )
 
