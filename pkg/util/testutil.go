@@ -49,6 +49,8 @@ func GetOutputAsList(fn func(), prefix int) ([]string, error) {
 	for i := 0; i < len(strlist); i++ {
 		if len(strlist[i]) > prefix {
 			strlist[i] = strlist[i][prefix:]
+		} else {
+			strlist[i] = ""
 		}
 	}
 	return strlist, err
