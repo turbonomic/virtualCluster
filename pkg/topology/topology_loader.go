@@ -91,12 +91,8 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 // load containerTemplate from a line
 // fields: containerName, req_cpu, used_cpu, req_memory, used_mem [, qpsLimit, qpsUsed [, responseTimeCap, responseTimeUsed ] ]
 func loadContainer(t *TargetTopology, input *InputLine) error {
-	key := input.getString()
-	if input.err != nil {
-		return input.err
-	}
-	if _, exist := t.ContainerTemplateMap[key]; exist {
-		return fmt.Errorf("container[%s] already exists.", key)
+	if _, exist := t.ContainerTemplateMap[input.key]; exist {
+		return fmt.Errorf("container[%s] already exists.", input.key)
 	}
 
 	// CPU amount
@@ -124,7 +120,7 @@ func loadContainer(t *TargetTopology, input *InputLine) error {
 	}
 
 	container := &containerTemplate{
-		Key: key,
+		Key: input.key,
 		CPU: target.Resource{
 			Capacity: limitCPU,
 			Used:     usedCPU,
@@ -146,21 +142,17 @@ func loadContainer(t *TargetTopology, input *InputLine) error {
 	}
 
 	if input.err == nil {
-		t.ContainerTemplateMap[key] = container
+		t.ContainerTemplateMap[input.key] = container
 		glog.V(4).Infof("[container] %+v", container)
 	}
 	return input.err
 }
 
 // load podTemplate from a line
-// pod.key, container1, container2, ...
+// pod, key, container1, container2, ...
 func loadPod(t *TargetTopology, input *InputLine) error {
-	key := input.getString()
-	if input.err != nil {
-		return input.err
-	}
-	if _, exist := t.PodTemplateMap[key]; exist {
-		err := fmt.Errorf("Pod[%s] already exists", key)
+	if _, exist := t.PodTemplateMap[input.key]; exist {
+		err := fmt.Errorf("Pod[%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
@@ -169,11 +161,11 @@ func loadPod(t *TargetTopology, input *InputLine) error {
 		return fmt.Errorf("missing container list in pod declaration")
 	}
 	pod := &podTemplate{
-		Key:        key,
+		Key:        input.key,
 		Containers: input.GetRestOfFields(),
 	}
 
-	t.PodTemplateMap[key] = pod
+	t.PodTemplateMap[input.key] = pod
 	glog.V(4).Infof("[pod] %+v", pod)
 	return nil
 }
@@ -181,13 +173,8 @@ func loadPod(t *TargetTopology, input *InputLine) error {
 // load vnodeTemplate from a line
 // vnode.key, cpu, memory, IP, pod1, pod2, ...
 func loadVNode(t *TargetTopology, input *InputLine) error {
-	// TODO - key extraction should be done in the InputLine constructor
-	key := input.getString()
-	if input.err != nil {
-		return input.err
-	}
-	if _, exist := t.VNodeTemplateMap[key]; exist {
-		err := fmt.Errorf("vnode [%s] already exists", key)
+	if _, exist := t.VNodeTemplateMap[input.key]; exist {
+		err := fmt.Errorf("vnode [%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
@@ -201,14 +188,14 @@ func loadVNode(t *TargetTopology, input *InputLine) error {
 	}
 
 	vnode := &vnodeTemplate{
-		Key:    key,
+		Key:    input.key,
 		CPU:    cpu,
 		Memory: mem * 1024.0,
 		IP:     ip,
 		Pods:   input.GetRestOfFields(),
 	}
 
-	t.VNodeTemplateMap[key] = vnode
+	t.VNodeTemplateMap[input.key] = vnode
 	glog.V(4).Infof("[vnode] %+v", vnode)
 	return nil
 }
@@ -216,13 +203,8 @@ func loadVNode(t *TargetTopology, input *InputLine) error {
 // load nodeTemplate from a line
 // node.key, cpu, memory, IP, vnode1, vnode2, ...
 func loadNode(t *TargetTopology, input *InputLine) error {
-	key := input.getString()
-	if input.err != nil {
-		return input.err
-	}
-
-	if _, exist := t.NodeTemplateMap[key]; exist {
-		err := fmt.Errorf("node [%s] already exists", key)
+	if _, exist := t.NodeTemplateMap[input.key]; exist {
+		err := fmt.Errorf("node [%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
@@ -236,14 +218,14 @@ func loadNode(t *TargetTopology, input *InputLine) error {
 	}
 
 	node := &nodeTemplate{
-		Key:    key,
+		Key:    input.key,
 		CPU:    cpu,
 		Memory: mem * 1024,
 		IP:     ip,
 		VMs:    input.GetRestOfFields(),
 	}
 
-	t.NodeTemplateMap[key] = node
+	t.NodeTemplateMap[input.key] = node
 	glog.V(4).Infof("[node] %+v", node)
 	return nil
 }
@@ -251,12 +233,8 @@ func loadNode(t *TargetTopology, input *InputLine) error {
 // load serviceTemplate from a line
 // service-key, pod1, pod2, ...
 func loadService(t *TargetTopology, input *InputLine) error {
-	key := input.getString()
-	if input.err != nil {
-		return input.err
-	}
-	if _, exist := t.ServiceTemplateMap[key]; exist {
-		err := fmt.Errorf("service[%s] already exists", key)
+	if _, exist := t.ServiceTemplateMap[input.key]; exist {
+		err := fmt.Errorf("service[%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
@@ -266,11 +244,11 @@ func loadService(t *TargetTopology, input *InputLine) error {
 	}
 
 	service := &serviceTemplate{
-		Key:  key,
+		Key:  input.key,
 		Pods: input.GetRestOfFields(),
 	}
 
-	t.ServiceTemplateMap[key] = service
+	t.ServiceTemplateMap[input.key] = service
 	glog.V(4).Infof("[service] %+v", service)
 	return nil
 }
@@ -278,6 +256,7 @@ func loadService(t *TargetTopology, input *InputLine) error {
 type InputLine struct {
 	err error
 	line string			// original line
+	key string
 	fields []string
 	command string
 	fieldNum int
@@ -294,7 +273,7 @@ func makeInputLine (line string) (*InputLine, error) {
 	commentsRemoved := commentPattern.ReplaceAllString(line, "")
 	if len(commentsRemoved) == 0 {
 		// A line with only a comment has a pseudo entity type of "comment"
-		commentsRemoved = "comment"
+		commentsRemoved = "comment, key"
 	}
 	for i, field := range strings.Split(commentsRemoved, ",") {
 		trimmed := strings.TrimSpace(field)
@@ -305,6 +284,10 @@ func makeInputLine (line string) (*InputLine, error) {
 		il.fields = append(il.fields, trimmed)
 	}
 	il.command = il.getString()
+	il.key = il.getString()
+	if il.err != nil && err == nil {
+		err = fmt.Errorf("missing key field")
+	}
 	return &il, err
 }
 
