@@ -18,6 +18,7 @@ var (
 	appCommType     proto.CommodityDTO_CommodityType = proto.CommodityDTO_APPLICATION
 	transactionType proto.CommodityDTO_CommodityType = proto.CommodityDTO_TRANSACTION
 	vmPMAccessType  proto.CommodityDTO_CommodityType = proto.CommodityDTO_VMPM_ACCESS
+	responseTimeType proto.CommodityDTO_CommodityType = proto.CommodityDTO_RESPONSE_TIME
 
 	fakeKey string = "fake"
 
@@ -29,6 +30,7 @@ var (
 	applicationTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &appCommType}
 	transactionTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &transactionType}
 	vmpmAccessTemplateComm  *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &vmPMAccessType}
+	responseTimeTemplateComm *proto.TemplateCommodity = &proto.TemplateCommodity{Key: &fakeKey, CommodityType: &responseTimeType}
 )
 
 type SupplyChainFactory struct {
@@ -148,6 +150,7 @@ func (f *SupplyChainFactory) buildApplicationSupply() (*proto.TemplateDTO, error
 	appSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_APPLICATION)
 	appSupplyChainNodeBuilder = appSupplyChainNodeBuilder.
 		Sells(transactionTemplateComm).
+		Sells(responseTimeTemplateComm).
 		Provider(proto.EntityDTO_CONTAINER, proto.Provider_HOSTING).
 		Buys(vCpuTemplateComm).
 		Buys(vMemTemplateComm).
@@ -159,7 +162,10 @@ func (f *SupplyChainFactory) buildApplicationSupply() (*proto.TemplateDTO, error
 func (f *SupplyChainFactory) buildVirtualApplicationSupply() (*proto.TemplateDTO, error) {
 	vAppSupplyChainNodeBuilder := supplychain.NewSupplyChainNodeBuilder(proto.EntityDTO_VIRTUAL_APPLICATION)
 	vAppSupplyChainNodeBuilder = vAppSupplyChainNodeBuilder.
+		Sells(transactionTemplateComm).
+		Sells(responseTimeTemplateComm).
 		Provider(proto.EntityDTO_APPLICATION, proto.Provider_LAYERED_OVER).
-		Buys(transactionTemplateComm)
+		Buys(transactionTemplateComm).
+		Buys(responseTimeTemplateComm)
 	return vAppSupplyChainNodeBuilder.Create()
 }

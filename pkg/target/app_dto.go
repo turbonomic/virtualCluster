@@ -64,5 +64,10 @@ func (app *Application) createCommoditiesSold() ([]*proto.CommodityDTO, error) {
 	appComm, _ := CreateTransactionCommodity(app.UUID, &(app.QPS), proto.CommodityDTO_TRANSACTION)
 	result = append(result, appComm)
 
+	if app.ResponseTime != nil {
+		rtComm, _ := CreateResponseTimeCommodity(app.UUID, app.ResponseTime, proto.CommodityDTO_RESPONSE_TIME)
+		result = append(result, rtComm)
+	}
+
 	return result, nil
 }

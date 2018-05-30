@@ -19,6 +19,15 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 		return nil, nerr
 	}
 
+	// For now, just add dummy Transaction and ResponseTime commodities.
+	// TODO Only add a commodity if at least one underlying Application provides it.
+	dummyResource := &Resource{Used: 0.0, Capacity: 0.0}
+	var commsSold []*proto.CommodityDTO
+	transComm, _ := CreateTransactionCommodity(vapp.UUID, dummyResource, proto.CommodityDTO_TRANSACTION)
+	rtComm, _ := CreateResponseTimeCommodity(vapp.UUID, dummyResource, proto.CommodityDTO_RESPONSE_TIME)
+	commsSold = append(commsSold, rtComm, transComm)
+	vAppBuilder.SellsCommodities(commsSold)
+
 	vappData := &proto.EntityDTO_VirtualApplicationData{
 		ServiceType: &(vapp.Name),
 	}
@@ -36,6 +45,21 @@ func (vapp *VirtualApp) BuildDTO() (*proto.EntityDTO, error) {
 	return entity, nil
 }
 
+func (vapp *VirtualApp) createAppCommodity(pod *Pod, container *Container,
+		commodityType proto.CommodityDTO_CommodityType,
+		used float64) (*proto.CommodityDTO, error) {
+	app := container.App
+	appCommodity, err := builder.NewCommodityDTOBuilder(commodityType).
+		Key(app.UUID).
+		Used(used).
+		Create()
+	if err != nil {
+		glog.Errorf("failed to create commodity bought for VirtualApp[%s]-pod[%s]-container[%s]-app[%s]",
+			vapp.Name, pod.Name, container.Name, app.Name)
+	}
+	return appCommodity, err
+}
+
 func (vapp *VirtualApp) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuilder) error {
 	i := 0
 
@@ -48,17 +72,19 @@ func (vapp *VirtualApp) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuild
 			}
 
 			app := container.App
-			appCommodity, err := builder.NewCommodityDTOBuilder(proto.CommodityDTO_TRANSACTION).
-				Key(app.UUID).
-				Used(app.QPS.Used).
-				Create()
+			appCommodity, err := vapp.createAppCommodity(pod, container, proto.CommodityDTO_TRANSACTION, app.QPS.Used)
 			if err != nil {
-				glog.Errorf("failed to create commodity bought for VirtualApp[%s]-pod[%s]-container[%s]-app[%s]",
-					vapp.Name, pod.Name, container.Name, app.Name)
 				continue
 			}
-
 			bought := []*proto.CommodityDTO{appCommodity}
+
+			if app.ResponseTime != nil {
+				appCommodity, err := vapp.createAppCommodity(pod, container, proto.CommodityDTO_RESPONSE_TIME,
+					app.ResponseTime.Used)
+				if err == nil {
+					bought = append(bought, appCommodity)
+				}
+			}
 
 			appProvider := builder.CreateProvider(proto.EntityDTO_APPLICATION, app.UUID)
 			vAppBuilder.Provider(appProvider).BuysCommodities(bought)
@@ -72,37 +98,3 @@ func (vapp *VirtualApp) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuild
 
 	return nil
 }
-
-/*
-func (vapp *VirtualApp) getCommodityBought(appDTO *proto.EntityDTO)([]*proto.CommodityDTO, error) {
-	var result []*proto.CommodityDTO
-
-	hmap := make(map[proto.CommodityDTO_CommodityType]struct{})
-	hmap[proto.EntityDTO_APPLICATION] = struct{}{}
-
-	sold := appDTO.GetCommoditiesSold()
-	for _, comm := range sold {
-		if _, exist := hmap[comm.GetCommodityType()]; !exist {
-			continue
-		}
-
-		commBought, err := builder.NewCommodityDTOBuilder(comm.GetCommodityType()).
-		                      Key(comm.GetKey()).
-							  Used(comm.GetUsed()).
-		                      Create()
-		if err != nil {
-			glog.Warning("failed to create commodity.")
-			continue
-		}
-
-		result = append(result, commBought)
-	}
-
-	if len(result) < 1 {
-		err := fmt.Errorf("cannot find commdity for VApplication.")
-		glog.Error(err.Error())
-		return result, err
-	}
-
-	return result, nil
-}*/
