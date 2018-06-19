@@ -42,10 +42,10 @@ How to decide the amount of commodity bought and sold?
 
 ```console
 #1. get source code
-go get github.com/songbinliu/virtualCluster
+go get github.com/turbonomic/virtualCluster
 
 #2. compile it
-cd $GOPATH/src/github.com/songbinliu/virtualCluster
+cd $GOPATH/src/github.com/turbonomic/virtualCluster
 make build
 
 #3. run it
@@ -55,14 +55,15 @@ target=./conf/target.json
 ./_output/vCluster --topologyConf $topology --turboConf $turbo --targetConf $target --logtostderr --v 3 
 
 Note: in case of updating dependency, run glide before compiling it:
+## update the version of turbo-go-sdk in glide.yaml first if necessary
 glide update --strip-vendor
 ```
 
-**turbo** is a json file about the settings of the OpsMgr, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/turbo.json);
+**turbo** is a json file about the settings of the OpsMgr, [example](https://github.com/turbonomic/virtualCluster/blob/master/conf/turbo.json);
 
-**target** is a json file about settings of generated cluster for OpsMgr, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/target.json);
+**target** is a json file about settings of generated cluster for OpsMgr, [example](https://github.com/turbonomic/virtualCluster/blob/master/conf/target.json);
 
-**topology** is the configuration file about the virtual cluster to be generated, [example](https://github.com/songbinliu/virtualCluster/blob/master/conf/topology.conf).
+**topology** is the configuration file about the virtual cluster to be generated, [example](https://github.com/turbonomic/virtualCluster/blob/master/conf/topology.conf).
 
 # Topologies
 Different topologies will trigger different actions from OpsMgr.
@@ -87,7 +88,7 @@ vnode, vnode-3, 5200, 4096, 192.168.1.4, pod-4, pod-3
 # node, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <vnodeId1>, <vnodeId2>, ...
 node, node-3, 10400, 16384, 200.0.0.2, vnode-3
 ```
-In [this topology](https://github.com/songbinliu/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/resize.up.container.topology.conf#L13), the CPU utilization of `containerC` is high, so an action will be triggered to increase the CPU capacity of `containerC`; and another action to increase the Memory capacity for `containerD`.
+In [this topology](https://github.com/turbonomic/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/resize.up.container.topology.conf#L13), the CPU utilization of `containerC` is high, so an action will be triggered to increase the CPU capacity of `containerC`; and another action to increase the Memory capacity for `containerD`.
 
 
 ## Move Pods to an Idle VM
@@ -113,7 +114,7 @@ vnode, vnode-3, 4200, 4096, 192.168.1.4, pod-4, pod-3, pod-5, pod-6
 # node, <nodeId>, <cpu_capacity>, <mem_capacity>, <IP>, <vnodeId1>, <vnodeId2>, ...
 node, node-3, 10400, 16384, 200.0.0.2, vnode-2, vnode-3
 ```
-In [this topology](https://github.com/songbinliu/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/move.pod.topology.conf#L13), `vnode-3` is hosting four pods, and is highly utilized; on the other hand, `vnode-2` is idle. So actions will be triggered to move some pods from `vnode-3` to `vnode-2`.
+In [this topology](https://github.com/turbonomic/virtualCluster/blob/3a2153cb3eef21fc6cdb20945eee5d971e671b36/conf/move.pod.topology.conf#L13), `vnode-3` is hosting four pods, and is highly utilized; on the other hand, `vnode-2` is idle. So actions will be triggered to move some pods from `vnode-3` to `vnode-2`.
 
 ## Provision VM
 ```
