@@ -23,7 +23,7 @@ type containerTemplate struct {
 	ReqMem float64
 
 	QPS          target.Resource
-	ResponseTime *target.Resource
+	ResponseTime target.Resource
 }
 
 type podTemplate struct {
@@ -89,7 +89,7 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 }
 
 // load containerTemplate from a line
-// fields: containerName, req_cpu, used_cpu, req_memory, used_mem [, qpsLimit, qpsUsed [, responseTimeCap, responseTimeUsed ] ]
+// fields: containerName, req_cpu, used_cpu, req_memory, used_mem, qpsLimit, qpsUsed, responseTimeCap, responseTimeUsed
 func loadContainer(t *TargetTopology, input *InputLine) error {
 	if _, exist := t.ContainerTemplateMap[input.key]; exist {
 		return fmt.Errorf("container[%s] already exists.", input.key)
@@ -105,19 +105,12 @@ func loadContainer(t *TargetTopology, input *InputLine) error {
 	reqMem := input.getFloat()
 
 	// QPS amount
-	limitQPS := defaultQPSLimit
-	usedQPS := 0.0
-	if input.RemainingFieldCount() >= 1 {
-		limitQPS = input.getFloat()
-		usedQPS = input.getFloat()
-	}
+	limitQPS := input.getFloat()
+	usedQPS := input.getFloat()
 
-	var responseTimeCommodity *target.Resource
-	if input.RemainingFieldCount() >= 1 {
-		responseTimeCommodity = &target.Resource{}
-		responseTimeCommodity.Capacity = input.getFloat()
-		responseTimeCommodity.Used = input.getFloat()
-	}
+	// ResponseTime
+	limitResponseTime := input.getFloat()
+	usedResponseTime := input.getFloat()
 
 	container := &containerTemplate{
 		Key: input.key,
@@ -138,7 +131,10 @@ func loadContainer(t *TargetTopology, input *InputLine) error {
 			Capacity: limitQPS,
 			Used:     usedQPS,
 		},
-		ResponseTime: responseTimeCommodity,
+		ResponseTime: target.Resource{
+			Capacity: limitResponseTime,
+			Used: usedResponseTime,
+		},
 	}
 
 	if input.err == nil {
@@ -254,12 +250,12 @@ func loadService(t *TargetTopology, input *InputLine) error {
 }
 
 type InputLine struct {
-	err      error
-	line     string // original line
-	key      string
-	fields   []string
-	command  string
-	fieldNum int
+	err        error
+	line       string // original line
+	key        string
+	fields     []string
+	command    string
+	fieldIndex int
 }
 
 /*
@@ -294,11 +290,11 @@ func makeInputLine(line string) (*InputLine, error) {
 func (l *InputLine) getString() string {
 	value := ""
 	if l.err == nil {
-		if l.fieldNum >= len(l.fields) {
+		if l.fieldIndex >= len(l.fields) {
 			l.err = fmt.Errorf("input line '%s' has insufficient fields", l.line)
 		} else {
-			value = l.fields[l.fieldNum]
-			l.fieldNum++
+			value = l.fields[l.fieldIndex]
+			l.fieldIndex++
 		}
 	}
 	return value
@@ -310,18 +306,18 @@ func (l *InputLine) getFloat() float64 {
 	s := l.getString()
 	if l.err == nil {
 		if value, err = strconv.ParseFloat(s, 64); err != nil {
-			l.err = fmt.Errorf("invalid float value '%s' at field %d", s, l.fieldNum)
+			l.err = fmt.Errorf("invalid float value '%s' at field %d", s, l.fieldIndex)
 		}
 	}
 	return value
 }
 func (l *InputLine) RemainingFieldCount() int {
-	return len(l.fields) - l.fieldNum
+	return len(l.fields) - l.fieldIndex
 }
 
 func (l *InputLine) GetRestOfFields() []string {
-	strlist := l.fields[l.fieldNum:]
-	l.fieldNum = len(l.fields)
+	strlist := l.fields[l.fieldIndex:]
+	l.fieldIndex = len(l.fields)
 	return strlist
 }
 

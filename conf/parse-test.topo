@@ -9,8 +9,6 @@ container, container-2d, 1010.0, 911.0, 512.0, 613.000000, 614.000000, 215.00000
 # Blank line above (this is allowed)
 # Good with response time.  Comment on same line
 container, container-1, 1001.0, 992.0, 503.0, 1624.000000, 225.000000, 256.000000, 107.0, 18.0, 500, 100  # this is a comment
-# Good without response time
-container, container-2, 1010.0, 911.0, 512.0, 613.000000, 614.000000, 215.000000, 116.0, 17.0
 # bad entity type
 foo, container-3, 1010.0, 911.0, 512.0, 613.000000, 614.000000, 215.000000, 116.1, 17.1, 500, 30
 # bad float

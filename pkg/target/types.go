@@ -43,7 +43,7 @@ type Application struct {
 	CPU          Resource
 	Memory       Resource
 	QPS          Resource  //This field is copied from Container.QPS
-	ResponseTime *Resource //This field is copied from Container.ResponseTime
+	ResponseTime Resource //This field is copied from Container.ResponseTime
 }
 
 type Container struct {
@@ -55,7 +55,7 @@ type Container struct {
 	ReqMemory float64
 
 	QPS          Resource
-	ResponseTime *Resource
+	ResponseTime Resource
 
 	App *Application
 }
