@@ -5,8 +5,8 @@ import (
 	"github.com/golang/glog"
 	"io"
 	"os"
-	"strings"
 	"path"
+	"strings"
 )
 
 // Normalize a local path to point to an absolute path

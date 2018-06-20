@@ -116,5 +116,5 @@ func (vapp *VirtualApp) getCommoditiesBought(vAppBuilder *builder.EntityDTOBuild
 		weightedResponseTime = weightedRT / qpsused
 	}
 	return nil, Resource{Capacity: qpscap, Used: qpsused},
-				Resource{Capacity: rtcap / fi, Used: weightedResponseTime}
+		Resource{Capacity: rtcap / fi, Used: weightedResponseTime}
 }

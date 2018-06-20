@@ -133,7 +133,7 @@ func loadContainer(t *TargetTopology, input *InputLine) error {
 		},
 		ResponseTime: target.Resource{
 			Capacity: limitResponseTime,
-			Used: usedResponseTime,
+			Used:     usedResponseTime,
 		},
 	}
 

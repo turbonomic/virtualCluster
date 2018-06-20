@@ -1,11 +1,11 @@
 package topology
 
 import (
-	"testing"
 	"fmt"
-	"github.com/turbonomic/virtualCluster/pkg/util"
-	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 	"github.com/stretchr/testify/assert"
+	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
+	"github.com/turbonomic/virtualCluster/pkg/util"
+	"testing"
 )
 
 func generateTestCluster() ([]*proto.EntityDTO, string) {
@@ -29,14 +29,14 @@ func generateTestCluster() ([]*proto.EntityDTO, string) {
 
 func TestNewClusterBuilder(t *testing.T) {
 	_, err := generateTestCluster()
-	if (err != "") {
+	if err != "" {
 		t.Error(err)
 	}
 }
 
 func TestResponseTimeCalculation(t *testing.T) {
 	dtoList, err := generateTestCluster()
-	if (err != "") {
+	if err != "" {
 		t.Error(err)
 	}
 	/* We know that the weighted response time average offered by service-2 is 48:
@@ -47,15 +47,15 @@ func TestResponseTimeCalculation(t *testing.T) {
 	 * Total transactions = 131, total response time = 6288, average = 48
 	 */
 
-	 for _, dto := range dtoList {
-	 	if ("service-2" == *dto.Id) {
-	 		for _, comm := range dto.CommoditiesSold {
-	 			if (*comm.CommodityType == proto.CommodityDTO_RESPONSE_TIME) {
-	 					assert.Equal(t, *comm.Used, 48.0)
-	 					return
+	for _, dto := range dtoList {
+		if "service-2" == *dto.Id {
+			for _, comm := range dto.CommoditiesSold {
+				if *comm.CommodityType == proto.CommodityDTO_RESPONSE_TIME {
+					assert.Equal(t, *comm.Used, 48.0)
+					return
 				}
 			}
 		}
 	}
-	 t.Error("Could not locate ResponseTime commodity sold in service-2")
+	t.Error("Could not locate ResponseTime commodity sold in service-2")
 }
