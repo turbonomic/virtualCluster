@@ -2,7 +2,6 @@ package topology
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 	"github.com/turbonomic/virtualCluster/pkg/util"
 	"testing"
@@ -51,7 +50,9 @@ func TestResponseTimeCalculation(t *testing.T) {
 		if "service-2" == *dto.Id {
 			for _, comm := range dto.CommoditiesSold {
 				if *comm.CommodityType == proto.CommodityDTO_RESPONSE_TIME {
-					assert.Equal(t, *comm.Used, 48.0)
+					if *comm.Used != 48.0 {
+						t.Errorf("ResponseTime commodity sold in service-2 should be 48.0, but instead is %f", *comm.Used)
+					}
 					return
 				}
 			}
