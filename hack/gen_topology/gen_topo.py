@@ -3,10 +3,10 @@
   Input: The input is the definition of the entities and their amount in the cluster.
         Each line of the input is a json string; Example of the input file:
 ----the content of an example input file begins----
-container, {"kind": "container", "key": "container-cpu", "cpu":[800, 500, 600], "mem": [100, 50, 60], "qps": [120, 50]}
-container, {"kind": "container", "key": "container-mem", "cpu":[100, 50, 60], "mem": [800, 500, 600], "qps": [120, 50]}
-container, {"kind": "container", "key": "container-cpu-mem", "cpu":[800, 500, 600], "mem": [800, 500, 600], "qps": [120, 90]}
-container, {"kind": "container", "key": "container-log", "cpu":[100, 50, 60], "mem": [100, 50, 60], "qps": [120, 1]}
+container, {"kind": "container", "key": "container-cpu", "cpu":[900, 530, 600], "mem": [100, 50, 60], "qps": [120, 50], "rt": [500, 0]}
+container, {"kind": "container", "key": "container-mem", "cpu":[100, 50, 60], "mem": [950, 620, 600], "qps": [120, 50], "rt": [500, 0]}
+container, {"kind": "container", "key": "container-cpu-mem", "cpu":[850, 600, 500], "mem": [850, 530, 600], "qps": [120, 90], "rt": [500, 0]}
+container, {"kind": "container", "key": "container-log", "cpu":[100, 50, 60], "mem": [110, 55, 60], "qps": [120, 1], "rt": [500, 0]}
 
 pod, {"kind": "pod", "key": "pod1", "containers":["container-cpu"]}
 pod, {"kind": "pod", "key": "pod2", "containers":["container-mem"]}
@@ -25,8 +25,8 @@ node, {"kind": "node", "key": "node2", "cpu": 10400, "mem": 16384, "vnodes": ["v
 
 ----- output example begins ------
 #1. define containers, container format:
-# container, <containerId>, <limitCPU>, <usedCPU>, <reqCPU>, <limityMem>, <usedMem>, <reqMem>, <limitQPS>, <usedQPS>;
-container, containerC, 300, 180, 100, 400, 350, 250, 100, 80
+# container, <containerId>, <limitCPU>, <usedCPU>, <reqCPU>, <limityMem>, <usedMem>, <reqMem>, <limitQPS>, <usedQPS>, <limitResponseTime>, <usedResponseTime>;
+container, containerC, 300, 180, 100, 400, 350, 250, 100, 80, 500, 0
 
 #2. define Pod, pod format:
 # pod, <podId>, <cotainerId1>, <containerId2>
@@ -71,6 +71,9 @@ class Container:
         self.qps_limit = 0
         self.qps_used = 0
 
+        self.rt_limit = 0
+        self.rt_used = 0
+
         self.index = 0
         return
 
@@ -79,8 +82,9 @@ class Container:
         cpu = "%s, %s, %s" % (self.cpu_limit, self.cpu_used, self.cpu_req)
         mem = "%s, %s, %s" % (self.mem_limit, self.mem_used, self.mem_req)
         qps = "%s, %s" % (self.qps_limit, self.qps_used)
+        rt = "%s, %s" % (self.rt_limit, self.rt_used)
 
-        line = "%s, %s, %s, %s" % (head, cpu, mem, qps)
+        line = "%s, %s, %s, %s, %s" % (head, cpu, mem, qps, rt)
         return line
 
     def assign(self, entity):
@@ -104,6 +108,10 @@ class Container:
         qps = entity['qps']
         self.qps_limit = qps[0]
         self.qps_used = qps[1]
+
+        rt = entity['rt']
+        self.rt_limit = rt[0]
+        self.rt_used = rt[1]
         return 0
 
 
@@ -347,7 +355,7 @@ def gen_topology(fname_in, fname_out):
         entity = json.loads(jstr)
         template.add(entity)
 
-    template.printContent()
+    # template.printContent()
     gen_entities(template, fout)
     fout.close()
     fin.close()
@@ -399,7 +407,7 @@ def gen_entities(template, fout):
     context = Context(vmIP, pmIP)
 
     for nodeEntity in template.nodes.itervalues():
-        print("node-%s num %s"% (nodeEntity['key'], nodeEntity['num']))
+        # print("node-%s num %s"% (nodeEntity['key'], nodeEntity['num']))
         for i in range(nodeEntity['num']):
             vnodeIDs = []
 
@@ -416,9 +424,9 @@ def gen_entities(template, fout):
 
 
 def main(args):
-    print("%s" % (args))
+    # print("%s" % (args))
     if len(args) < 3:
-        print("Usage:%s <input> <output>" % (args[0]))
+        print("Usage: %s <input> <output>" % (args[0]))
         return -1 
 
     fname_in = args[1]

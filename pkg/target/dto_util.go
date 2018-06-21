@@ -53,7 +53,7 @@ func CreateKeyCommodityBought(key string, ctype proto.CommodityDTO_CommodityType
 		Create()
 }
 
-func CreateTransactionCommodity(key string, qps *Resource, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
+func CreateCapacityUsedCommodity(key string, qps *Resource, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {
 	return builder.
 		NewCommodityDTOBuilder(ctype).
 		Key(key).

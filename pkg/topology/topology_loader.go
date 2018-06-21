@@ -6,6 +6,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/turbonomic/virtualCluster/pkg/target"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -21,7 +22,8 @@ type containerTemplate struct {
 	ReqCPU float64
 	ReqMem float64
 
-	QPS target.Resource
+	QPS          target.Resource
+	ResponseTime target.Resource
 }
 
 type podTemplate struct {
@@ -86,80 +88,32 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 	return topo
 }
 
-func parseFloatValues(fields []string) ([]float64, error) {
-	result := []float64{}
-	for _, field := range fields {
-		value, err := strconv.ParseFloat(field, 64)
-		if err != nil {
-			return result, fmt.Errorf("parse field failed: %s: %v", field, err)
-		}
-
-		result = append(result, value)
-	}
-	return result, nil
-}
-
 // load containerTemplate from a line
-//fields: containerName, req_cpu, used_cpu, req_memory, used_mem
-func (t *TargetTopology) loadContainer(fields []string) error {
-	expectNumFields := 7
-	if len(fields) < expectNumFields {
-		return fmt.Errorf("fields num mismatch [%d Vs. %d]", len(fields), expectNumFields)
-	}
-	for i := range fields {
-		fields[i] = strings.TrimSpace(fields[i])
-		if len(fields[i]) < 1 {
-			return fmt.Errorf("field[%d] of fields-%v is empty", i+1, fields)
-		}
-	}
-
-	key := fields[0]
-	if _, exist := t.ContainerTemplateMap[key]; exist {
-		return fmt.Errorf("container[%s] already exists.", key)
+// fields: containerName, req_cpu, used_cpu, req_memory, used_mem, qpsLimit, qpsUsed, responseTimeCap, responseTimeUsed
+func loadContainer(t *TargetTopology, input *InputLine) error {
+	if _, exist := t.ContainerTemplateMap[input.key]; exist {
+		return fmt.Errorf("container[%s] already exists.", input.key)
 	}
 
 	// CPU amount
-	cpuNums, err := parseFloatValues(fields[1:4])
-	if err != nil {
-		glog.Error(err.Error())
-		return err
-	}
-	limitCPU := cpuNums[0]
-	usedCPU := cpuNums[1]
-	reqCPU := cpuNums[2]
+	limitCPU := input.getFloat()
+	usedCPU := input.getFloat()
+	reqCPU := input.getFloat()
 
-	// Memory amount
-	memNums, err := parseFloatValues(fields[4:7])
-	if err != nil {
-		glog.Error(err.Error())
-		return err
-	}
-	limitMem := memNums[0]
-	usedMem := memNums[1]
-	reqMem := memNums[2]
+	limitMem := input.getFloat()
+	usedMem := input.getFloat()
+	reqMem := input.getFloat()
 
 	// QPS amount
-	limitQPS := defaultQPSLimit
-	usedQPS := 0.0
-	i := 7
-	if len(fields) > i {
-		limitQPS, err = strconv.ParseFloat(fields[i], 64)
-		i++
-		if err != nil {
-			return fmt.Errorf("limit_qps field-%d-[%s] should be a float number.", i, fields[i-1])
-		}
-	}
+	limitQPS := input.getFloat()
+	usedQPS := input.getFloat()
 
-	if len(fields) > i {
-		usedQPS, err = strconv.ParseFloat(fields[i], 64)
-		i++
-		if err != nil {
-			return fmt.Errorf("used_qps field-%d-[%s] should be a float number.", i, fields[i-1])
-		}
-	}
+	// ResponseTime
+	limitResponseTime := input.getFloat()
+	usedResponseTime := input.getFloat()
 
 	container := &containerTemplate{
-		Key: key,
+		Key: input.key,
 		CPU: target.Resource{
 			Capacity: limitCPU,
 			Used:     usedCPU,
@@ -177,215 +131,225 @@ func (t *TargetTopology) loadContainer(fields []string) error {
 			Capacity: limitQPS,
 			Used:     usedQPS,
 		},
+		ResponseTime: target.Resource{
+			Capacity: limitResponseTime,
+			Used:     usedResponseTime,
+		},
 	}
 
-	t.ContainerTemplateMap[key] = container
-	glog.V(4).Infof("[container] %+v", container)
-	return nil
+	if input.err == nil {
+		t.ContainerTemplateMap[input.key] = container
+		glog.V(4).Infof("[container] %+v", container)
+	}
+	return input.err
 }
 
 // load podTemplate from a line
-// pod.key, container1, container2, ...
-func (t *TargetTopology) loadPod(fields []string) error {
-	expectNumFields := 2
-	if len(fields) < expectNumFields {
-		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
-	}
-
-	for i := range fields {
-		fields[i] = strings.TrimSpace(fields[i])
-		if len(fields[i]) < 1 {
-			return fmt.Errorf("field[%d] of fields-%v is empty", i+1, fields)
-		}
-	}
-
-	key := fields[0]
-	if _, exist := t.PodTemplateMap[key]; exist {
-		err := fmt.Errorf("Pod[%s] already exist.", key)
+// pod, key, container1, container2, ...
+func loadPod(t *TargetTopology, input *InputLine) error {
+	if _, exist := t.PodTemplateMap[input.key]; exist {
+		err := fmt.Errorf("Pod[%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
 
-	containers := []string{}
-	for i := 1; i < len(fields); i++ {
-		containers = append(containers, fields[i])
+	if input.RemainingFieldCount() < 1 {
+		return fmt.Errorf("missing container list in pod declaration")
 	}
-
 	pod := &podTemplate{
-		Key:        key,
-		Containers: containers,
+		Key:        input.key,
+		Containers: input.GetRestOfFields(),
 	}
 
-	t.PodTemplateMap[key] = pod
+	t.PodTemplateMap[input.key] = pod
 	glog.V(4).Infof("[pod] %+v", pod)
 	return nil
 }
 
 // load vnodeTemplate from a line
 // vnode.key, cpu, memory, IP, pod1, pod2, ...
-func (t *TargetTopology) loadVNode(fields []string) error {
-	expectNumFields := 4
-	if len(fields) < expectNumFields {
-		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
-	}
-
-	for i := range fields {
-		fields[i] = strings.TrimSpace(fields[i])
-		if len(fields[i]) < 1 {
-			return fmt.Errorf("field[%d] of fields-%v is empty", i+1, fields)
-		}
-	}
-
-	key := fields[0]
-	if _, exist := t.VNodeTemplateMap[key]; exist {
-		err := fmt.Errorf("vnode [%s] already exist.", key)
+func loadVNode(t *TargetTopology, input *InputLine) error {
+	if _, exist := t.VNodeTemplateMap[input.key]; exist {
+		err := fmt.Errorf("vnode [%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
 
-	nums, err := parseFloatValues(fields[1:3])
-	if err != nil {
-		glog.Error(err.Error())
-		return err
-	}
-	cpu := nums[0]
-	mem := nums[1]
+	cpu := input.getFloat()
+	mem := input.getFloat()
+	ip := input.getString()
 
-	ip := fields[3]
-
-	pods := []string{}
-	for i := 4; i < len(fields); i++ {
-		pods = append(pods, fields[i])
+	if input.RemainingFieldCount() < 1 {
+		return fmt.Errorf("missing pod list in vnode declaration")
 	}
 
 	vnode := &vnodeTemplate{
-		Key:    key,
+		Key:    input.key,
 		CPU:    cpu,
 		Memory: mem * 1024.0,
 		IP:     ip,
-		Pods:   pods,
+		Pods:   input.GetRestOfFields(),
 	}
 
-	t.VNodeTemplateMap[key] = vnode
+	t.VNodeTemplateMap[input.key] = vnode
 	glog.V(4).Infof("[vnode] %+v", vnode)
 	return nil
 }
 
 // load nodeTemplate from a line
 // node.key, cpu, memory, IP, vnode1, vnode2, ...
-func (t *TargetTopology) loadNode(fields []string) error {
-	expectNumFields := 4
-	if len(fields) < expectNumFields {
-		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
-	}
-
-	for i := range fields {
-		fields[i] = strings.TrimSpace(fields[i])
-		if len(fields[i]) < 1 {
-			return fmt.Errorf("field[%d] of fields-%v is empty", i+1, fields)
-		}
-	}
-
-	key := fields[0]
-	if _, exist := t.NodeTemplateMap[key]; exist {
-		err := fmt.Errorf("node [%s] already exist.", key)
+func loadNode(t *TargetTopology, input *InputLine) error {
+	if _, exist := t.NodeTemplateMap[input.key]; exist {
+		err := fmt.Errorf("node [%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
 
-	nums, err := parseFloatValues(fields[1:3])
-	if err != nil {
-		glog.Error(err.Error())
-		return err
-	}
-	cpu := nums[0]
-	mem := nums[1]
-	ip := fields[3]
+	cpu := input.getFloat()
+	mem := input.getFloat()
+	ip := input.getString()
 
-	vms := []string{}
-	for i := 4; i < len(fields); i++ {
-		vms = append(vms, fields[i])
+	if input.RemainingFieldCount() < 1 {
+		return fmt.Errorf("missing vnode list in node declaration")
 	}
 
 	node := &nodeTemplate{
-		Key:    key,
+		Key:    input.key,
 		CPU:    cpu,
 		Memory: mem * 1024,
 		IP:     ip,
-		VMs:    vms,
+		VMs:    input.GetRestOfFields(),
 	}
 
-	t.NodeTemplateMap[key] = node
+	t.NodeTemplateMap[input.key] = node
 	glog.V(4).Infof("[node] %+v", node)
 	return nil
 }
 
 // load serviceTemplate from a line
 // service-key, pod1, pod2, ...
-func (t *TargetTopology) loadService(fields []string) error {
-	expectNumFields := 2
-	if len(fields) < expectNumFields {
-		return fmt.Errorf("fields too fewer [%d Vs. %d]", len(fields), expectNumFields)
-	}
-
-	for i := range fields {
-		fields[i] = strings.TrimSpace(fields[i])
-		if len(fields[i]) < 1 {
-			return fmt.Errorf("field[%d] of fields-%v is empty", i+1, fields)
-		}
-	}
-
-	key := fields[0]
-	if _, exist := t.ServiceTemplateMap[key]; exist {
-		err := fmt.Errorf("service[%s] already exist.", key)
+func loadService(t *TargetTopology, input *InputLine) error {
+	if _, exist := t.ServiceTemplateMap[input.key]; exist {
+		err := fmt.Errorf("service[%s] already exists", input.key)
 		glog.Error(err.Error())
 		return err
 	}
 
-	pods := []string{}
-	for i := 1; i < len(fields); i++ {
-		pods = append(pods, fields[i])
+	if input.RemainingFieldCount() < 1 {
+		return fmt.Errorf("missing pod list in service declaration")
 	}
 
 	service := &serviceTemplate{
-		Key:  key,
-		Pods: pods,
+		Key:  input.key,
+		Pods: input.GetRestOfFields(),
 	}
 
-	t.ServiceTemplateMap[key] = service
+	t.ServiceTemplateMap[input.key] = service
 	glog.V(4).Infof("[service] %+v", service)
 	return nil
 }
 
-func (t *TargetTopology) parseLine(lineNum int, line string, fields []string) error {
-	entityType := strings.TrimSpace(fields[0])
+type InputLine struct {
+	err        error
+	line       string // original line
+	key        string
+	fields     []string
+	command    string
+	fieldIndex int
+}
 
+/*
+ * Prepare a line from a topology definition file for parsing
+ */
+var commentPattern = regexp.MustCompile("#.*")
+
+func makeInputLine(line string) (*InputLine, error) {
 	var err error
-	switch entityType {
-	case "container":
-		glog.V(4).Infof("begin to build a container [%d]: %s", lineNum, line)
-		err = t.loadContainer(fields[1:])
-	case "pod":
-		glog.V(4).Infof("begin to build a pod [%d]: %s", lineNum, line)
-		err = t.loadPod(fields[1:])
-	case "vnode":
-		glog.V(4).Infof("begin to build a vnode [%d]: %s", lineNum, line)
-		err = t.loadVNode(fields[1:])
-	case "node":
-		glog.V(4).Infof("begin to build a node [%d]: %s", lineNum, line)
-		err = t.loadNode(fields[1:])
-	case "service":
-		glog.V(4).Infof("begin to build a service [%d]: %s", lineNum, line)
-		err = t.loadService(fields[1:])
-	default:
-		err = fmt.Errorf("wrong EntityType[%s]", fields[0])
+	il := InputLine{line: line}
+	commentsRemoved := commentPattern.ReplaceAllString(line, "")
+	if len(commentsRemoved) == 0 {
+		// A line with only a comment has a pseudo entity type of "comment"
+		commentsRemoved = "comment, key"
 	}
-
-	if err != nil {
-		return fmt.Errorf("build %s failed: %v", entityType, err)
+	for i, field := range strings.Split(commentsRemoved, ",") {
+		trimmed := strings.TrimSpace(field)
+		if len(trimmed) == 0 {
+			err = fmt.Errorf("field %d is empty", i+1)
+			break
+		}
+		il.fields = append(il.fields, trimmed)
 	}
+	il.command = il.getString()
+	il.key = il.getString()
+	if il.err != nil && err == nil {
+		err = fmt.Errorf("missing key field")
+	}
+	return &il, err
+}
 
+func (l *InputLine) getString() string {
+	value := ""
+	if l.err == nil {
+		if l.fieldIndex >= len(l.fields) {
+			l.err = fmt.Errorf("input line '%s' has insufficient fields", l.line)
+		} else {
+			value = l.fields[l.fieldIndex]
+			l.fieldIndex++
+		}
+	}
+	return value
+}
+
+func (l *InputLine) getFloat() float64 {
+	value := 0.0
+	var err error
+	s := l.getString()
+	if l.err == nil {
+		if value, err = strconv.ParseFloat(s, 64); err != nil {
+			l.err = fmt.Errorf("invalid float value '%s' at field %d", s, l.fieldIndex)
+		}
+	}
+	return value
+}
+func (l *InputLine) RemainingFieldCount() int {
+	return len(l.fields) - l.fieldIndex
+}
+
+func (l *InputLine) GetRestOfFields() []string {
+	strlist := l.fields[l.fieldIndex:]
+	l.fieldIndex = len(l.fields)
+	return strlist
+}
+
+type HandlerFunction func(*TargetTopology, *InputLine) error
+
+func noop(_ *TargetTopology, _ *InputLine) error {
 	return nil
+}
+
+var loadHandlers = map[string]HandlerFunction{
+	"container": loadContainer,
+	"pod":       loadPod,
+	"vnode":     loadVNode,
+	"node":      loadNode,
+	"service":   loadService,
+	"comment":   noop,
+}
+
+func (t *TargetTopology) parseLine(lineNum int, input *InputLine) error {
+	var err error
+	handler := loadHandlers[input.command]
+	if handler != nil {
+		glog.V(4).Infof("begin to build a container [%d]: %s", lineNum, input.line)
+		err = handler(t, input)
+		if err == nil && input.RemainingFieldCount() > 0 {
+			err = fmt.Errorf("line %d has unused fields", lineNum)
+		}
+	} else {
+		err = fmt.Errorf("invalid EntityType[%s]", input.command)
+	}
+
+	return err
 }
 
 func (t *TargetTopology) CheckTemplateEmpty() error {
@@ -439,21 +403,13 @@ func (t *TargetTopology) LoadTopology(fname string) error {
 	scanner := bufio.NewScanner(file)
 	lineNum := 0
 	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
 		lineNum += 1
-
-		if len(line) < 1 || line[0] == '#' {
-			glog.V(4).Infof("skip file[%s] line#%d", fname, lineNum)
-			continue
+		input, err := makeInputLine(scanner.Text())
+		if err == nil {
+			err = t.parseLine(lineNum, input)
 		}
-
-		segs := strings.Split(line, ",")
-		if len(segs) < 1 {
-			glog.V(2).Infof("Invalid file[%s] line#%d", fname, lineNum)
-		}
-
-		if err := t.parseLine(lineNum, line, segs); err != nil {
-			glog.Errorf("parse [%s/%d] line[%s] failed: %v", fname, lineNum, line, err)
+		if err != nil {
+			glog.Errorf("parse [%s/%d] line[%s] failed: %v", fname, lineNum, input.line, err)
 		}
 	}
 

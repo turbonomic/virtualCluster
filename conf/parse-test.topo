@@ -1,0 +1,28 @@
+# not enough arguments
+container, container-2b, 1010.0, 911.0, 512.0, 613.000000, 614.000000, 215.000000, 116.0
+# empty field
+pod, pod-2, container-2,,foo
+,pod, pod-x, container-2
+# too many arguments
+container, container-2d, 1010.0, 911.0, 512.0, 613.000000, 614.000000, 215.000000, 116.0, 17.0, 1, 2, 3, 4
+
+# Blank line above (this is allowed)
+# Good with response time.  Comment on same line
+container, container-1, 1001.0, 992.0, 503.0, 1624.000000, 225.000000, 256.000000, 107.0, 18.0, 500, 100  # this is a comment
+# bad entity type
+foo, container-3, 1010.0, 911.0, 512.0, 613.000000, 614.000000, 215.000000, 116.1, 17.1, 500, 30
+# bad float
+container, container-2c, 1010.0, 91z.0, 512.0, 613.000000, 614.000000, 215.000000, 116.0, 17.0
+# not enough arguments
+pod, bad-pod
+# not enough arguments when including an optional pair
+container, container-1b, 1001.0, 992.0, 503.0, 1624.000000, 225.000000, 256.000000, 107.0, 18.0, 500
+# duplicate key
+pod, pod-1, container-1
+pod, pod-1, container-1
+
+# The following all parse successfully
+pod, pod-3, container-3
+vnode, vnode-1, 5200.0, 4096.000000, 192.168.1.4, pod-1, pod-2, pod-3
+node, node-1, 10400.0, 16384.0, 172.16.1.1, vnode-1
+service, service-1, pod-1, pod-2, pod-3

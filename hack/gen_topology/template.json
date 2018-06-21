@@ -1,8 +1,8 @@
 
-container, {"kind": "container", "key": "container-cpu", "cpu":[900, 530, 600], "mem": [100, 50, 60], "qps": [120, 50]}
-container, {"kind": "container", "key": "container-mem", "cpu":[100, 50, 60], "mem": [950, 620, 600], "qps": [120, 50]}
-container, {"kind": "container", "key": "container-cpu-mem", "cpu":[850, 600, 500], "mem": [850, 530, 600], "qps": [120, 90]}
-container, {"kind": "container", "key": "container-log", "cpu":[100, 50, 60], "mem": [110, 55, 60], "qps": [120, 1]}
+container, {"kind": "container", "key": "container-cpu", "cpu":[900, 530, 600], "mem": [100, 50, 60], "qps": [120, 50], "rt": [500, 0]}
+container, {"kind": "container", "key": "container-mem", "cpu":[100, 50, 60], "mem": [950, 620, 600], "qps": [120, 50], "rt": [500, 0]}
+container, {"kind": "container", "key": "container-cpu-mem", "cpu":[850, 600, 500], "mem": [850, 530, 600], "qps": [120, 90], "rt": [500, 0]}
+container, {"kind": "container", "key": "container-log", "cpu":[100, 50, 60], "mem": [110, 55, 60], "qps": [120, 1], "rt": [500, 0]}
 
 pod, {"kind": "pod", "key": "pod1", "containers":["container-cpu"]}
 pod, {"kind": "pod", "key": "pod2", "containers":["container-mem"]}

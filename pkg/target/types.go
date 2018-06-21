@@ -40,9 +40,10 @@ type Resource struct {
 type Application struct {
 	ObjectMeta
 
-	CPU    Resource
-	Memory Resource
-	QPS    Resource //This field is copied from Container.QPS
+	CPU          Resource
+	Memory       Resource
+	QPS          Resource //This field is copied from Container.QPS
+	ResponseTime Resource //This field is copied from Container.ResponseTime
 }
 
 type Container struct {
@@ -53,7 +54,8 @@ type Container struct {
 	ReqCPU    float64
 	ReqMemory float64
 
-	QPS Resource
+	QPS          Resource
+	ResponseTime Resource
 
 	App *Application
 }
