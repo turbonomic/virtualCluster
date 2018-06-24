@@ -1,5 +1,5 @@
-hash: 26a8f03d8f8c13e1b600e8db0169754d6414ebbea551c372b71c5f75e69ec834
-updated: 2018-06-19T11:33:26.80697-04:00
+hash: 687fd5769179852bd6d7e4d52a2f664df488228b4fa5181a2f0d6aabfa1cab5a
+updated: 2018-06-24T11:07:38.981537-04:00
 imports:
 - name: github.com/golang/glog
   version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
@@ -15,7 +15,7 @@ imports:
   - pkg/api
   - pkg/client
 - name: github.com/turbonomic/turbo-go-sdk
-  version: 2481270ab54a9b975fbc9b875ecad8d436a89f81
+  version: 380b8f2f8351e8ef68ea5094f34c247588b750d7
   subpackages:
   - pkg
   - pkg/builder
