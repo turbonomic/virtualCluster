@@ -123,7 +123,7 @@ func (endpoint *ClientProtobufEndpoint) waitForServerMessage() {
 					continue
 				}
 
-				glog.V(3).Infof(logPrefix+"received message is: %++v\n", parsedMsg.ServerMsg.GetMediationServerMessage())
+				glog.V(3).Infof(logPrefix+"received message: %+v", parsedMsg.ServerMsg.GetMediationServerMessage())
 
 				// Put the parsed message on the endpoint's channel
 				// - this will block till the upper layer receives this message
@@ -157,7 +157,7 @@ func (endpoint *ClientProtobufEndpoint) waitForSingleServerMessage() {
 			parsedMsg = &ParsedMessage{} //create empty message
 		}
 
-		glog.V(4).Infof("["+endpoint.Name+"][waitForSingleServerMessage] : Received: %s\n", parsedMsg)
+		glog.V(4).Infof("["+endpoint.Name+"][waitForSingleServerMessage] : Received: %+v", parsedMsg)
 
 		// - this will block till the upper layer receives this message
 		msgChannel := endpoint.MessageReceiver()

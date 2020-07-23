@@ -10,12 +10,12 @@ imports:
 - name: github.com/gorilla/websocket
   version: 6f34763140ed8887aed6a044912009832b4733d7
 - name: github.com/turbonomic/turbo-api
-  version: f64fc5992be75359b1f8dc102f4ab1a658d78db3
+  version: 3bef8fb11708371b145fa956758b5ed2830c6a41
   subpackages:
   - pkg/api
   - pkg/client
 - name: github.com/turbonomic/turbo-go-sdk
-  version: 2481270ab54a9b975fbc9b875ecad8d436a89f81
+  version: 0fd6c38a54e7b86cf146217c182f2c3b7fbf8fd8
   subpackages:
   - pkg
   - pkg/builder

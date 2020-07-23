@@ -1,0 +1,25 @@
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
+# github.com/deckarep/golang-set v1.7.1
+github.com/deckarep/golang-set
+# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+## explicit
+github.com/golang/glog
+# github.com/golang/protobuf v1.3.1
+github.com/golang/protobuf/proto
+# github.com/gorilla/websocket v1.2.1-0.20170914051154-6f34763140ed
+## explicit
+github.com/gorilla/websocket
+# github.com/turbonomic/turbo-api v0.0.0-20200413140231-3bef8fb11708
+github.com/turbonomic/turbo-api/pkg/api
+github.com/turbonomic/turbo-api/pkg/client
+# github.com/turbonomic/turbo-go-sdk v0.0.0-20200619031438-0fd6c38a54e7
+## explicit
+github.com/turbonomic/turbo-go-sdk/pkg
+github.com/turbonomic/turbo-go-sdk/pkg/builder
+github.com/turbonomic/turbo-go-sdk/pkg/mediationcontainer
+github.com/turbonomic/turbo-go-sdk/pkg/probe
+github.com/turbonomic/turbo-go-sdk/pkg/proto
+github.com/turbonomic/turbo-go-sdk/pkg/service
+github.com/turbonomic/turbo-go-sdk/pkg/supplychain
+github.com/turbonomic/turbo-go-sdk/pkg/version

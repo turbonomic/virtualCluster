@@ -2,8 +2,18 @@ package builder
 
 import (
 	"fmt"
-
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
+)
+
+// The actions in the Action Eligibility settings section of the EntityDTO
+type ActionEligibilityField string
+
+const (
+	SUSPEND   ActionEligibilityField = "suspend"
+	PROVISION ActionEligibilityField = "provision"
+	MOVE      ActionEligibilityField = "move"
+	SCALE     ActionEligibilityField = "scale"
+	START     ActionEligibilityField = "start"
 )
 
 type ProviderDTO struct {
@@ -26,24 +36,59 @@ func (pDto *ProviderDTO) GetId() string {
 	return pDto.id
 }
 
+// Action Eligibility settings section in the EntityDTO
+type ActionEligibility struct {
+	// These two settings will have an effect on the entity
+	// setting for provision action, if entity is eligible for provision actions
+	isProvisionable *bool
+	// setting for suspend action, if the entity is eligible for suspend actions
+	isSuspendable *bool
+
+	// Settings for action that will be have an effect on the entity and a type of provider
+	actionEligibilityByProviderMap map[proto.EntityDTO_EntityType]*ActionEligibilityByProvider
+}
+
+// ActionEligibilityByProvider settings section in the EntityDTO
+type ActionEligibilityByProvider struct {
+	// provider type
+	pType proto.EntityDTO_EntityType
+	// setting for move action, if the entity can move across on the providers of the given type
+	isMovable *bool
+	// setting for scale action, if the entity can be scaled on the providers of the given type
+	isScalable *bool
+	// setting for start action, if the entity can start on the providers of the given type
+	isStartable *bool
+}
+
 type EntityDTOBuilder struct {
-	entityType                   *proto.EntityDTO_EntityType
-	id                           *string
-	displayName                  *string
-	commoditiesSold              []*proto.CommodityDTO
+	entityType      *proto.EntityDTO_EntityType
+	id              *string
+	displayName     *string
+	commoditiesSold []*proto.CommodityDTO
+
+	underlying            []string
+	entityProperties      []*proto.EntityDTO_EntityProperty
+	origin                *proto.EntityDTO_EntityOrigin
+	replacementEntityData *proto.EntityDTO_ReplacementEntityMetaData
+	monitored             *bool
+	powerState            *proto.EntityDTO_PowerState
+	consumerPolicy        *proto.EntityDTO_ConsumerPolicy
+	providerPolicy        *proto.EntityDTO_ProviderPolicy
+	ownedBy               *string
+	notification          []*proto.NotificationDTO
+	keepStandalone        *bool
+	profileID             *string
+	layeredOver           []string
+	consistsOf            []string
+	connectedEntities     []*proto.ConnectedEntity
+	// Action Eligibility related
+	actionEligibility *ActionEligibility
+
+	// Bought Commodity related
+	// map of provider id and its entity type
+	providerMap map[string]proto.EntityDTO_EntityType
+	// map of provider and the list of commodities bought from it
 	commoditiesBoughtProviderMap map[string][]*proto.CommodityDTO
-	underlying                   []string
-	entityProperties             []*proto.EntityDTO_EntityProperty
-	origin                       *proto.EntityDTO_EntityOrigin
-	replacementEntityData        *proto.EntityDTO_ReplacementEntityMetaData
-	monitored                    *bool
-	powerState                   *proto.EntityDTO_PowerState
-	consumerPolicy               *proto.EntityDTO_ConsumerPolicy
-	providerPolicy               *proto.EntityDTO_ProviderPolicy
-	ownedBy                      *string
-	notification                 []*proto.NotificationDTO
-	keepStandalone               *bool
-	profileID                    *string
 
 	storageData            *proto.EntityDTO_StorageData
 	diskArrayData          *proto.EntityDTO_DiskArrayData
@@ -53,9 +98,10 @@ type EntityDTOBuilder struct {
 	virtualDataCenterData  *proto.EntityDTO_VirtualDatacenterData
 	storageControllerData  *proto.EntityDTO_StorageControllerData
 	logicalPoolData        *proto.EntityDTO_LogicalPoolData
-	virtualApplicationData *proto.EntityDTO_VirtualApplicationData
+	serviceData            *proto.EntityDTO_ServiceData
 	containerPodData       *proto.EntityDTO_ContainerPodData
 	containerData          *proto.EntityDTO_ContainerData
+	workloadControllerData *proto.EntityDTO_WorkloadControllerData
 
 	virtualMachineRelatedData    *proto.EntityDTO_VirtualMachineRelatedData
 	physicalMachineRelatedData   *proto.EntityDTO_PhysicalMachineRelatedData
@@ -71,6 +117,10 @@ func NewEntityDTOBuilder(eType proto.EntityDTO_EntityType, id string) *EntityDTO
 	return &EntityDTOBuilder{
 		entityType: &eType,
 		id:         &id,
+		actionEligibility: &ActionEligibility{
+			actionEligibilityByProviderMap: make(map[proto.EntityDTO_EntityType]*ActionEligibilityByProvider),
+		},
+		providerMap: make(map[string]proto.EntityDTO_EntityType),
 	}
 }
 
@@ -84,7 +134,6 @@ func (eb *EntityDTOBuilder) Create() (*proto.EntityDTO, error) {
 		Id:                    eb.id,
 		DisplayName:           eb.displayName,
 		CommoditiesSold:       eb.commoditiesSold,
-		CommoditiesBought:     buildCommodityBoughtFromMap(eb.commoditiesBoughtProviderMap),
 		Underlying:            eb.underlying,
 		EntityProperties:      eb.entityProperties,
 		Origin:                eb.origin,
@@ -95,6 +144,9 @@ func (eb *EntityDTOBuilder) Create() (*proto.EntityDTO, error) {
 		ProviderPolicy:        eb.providerPolicy,
 		OwnedBy:               eb.ownedBy,
 		Notification:          eb.notification,
+		LayeredOver:           eb.layeredOver,
+		ConsistsOf:            eb.consistsOf,
+		ConnectedEntities:     eb.connectedEntities,
 	}
 	if eb.storageData != nil {
 		entityDTO.EntityData = &proto.EntityDTO_StorageData_{eb.storageData}
@@ -112,12 +164,14 @@ func (eb *EntityDTOBuilder) Create() (*proto.EntityDTO, error) {
 		entityDTO.EntityData = &proto.EntityDTO_StorageControllerData_{eb.storageControllerData}
 	} else if eb.logicalPoolData != nil {
 		entityDTO.EntityData = &proto.EntityDTO_LogicalPoolData_{eb.logicalPoolData}
-	} else if eb.virtualApplicationData != nil {
-		entityDTO.EntityData = &proto.EntityDTO_VirtualApplicationData_{eb.virtualApplicationData}
+	} else if eb.serviceData != nil {
+		entityDTO.EntityData = &proto.EntityDTO_ServiceData_{eb.serviceData}
 	} else if eb.containerPodData != nil {
 		entityDTO.EntityData = &proto.EntityDTO_ContainerPodData_{eb.containerPodData}
 	} else if eb.containerData != nil {
 		entityDTO.EntityData = &proto.EntityDTO_ContainerData_{eb.containerData}
+	} else if eb.workloadControllerData != nil {
+		entityDTO.EntityData = &proto.EntityDTO_WorkloadControllerData_{eb.workloadControllerData}
 	}
 
 	if eb.virtualMachineRelatedData != nil {
@@ -127,6 +181,25 @@ func (eb *EntityDTOBuilder) Create() (*proto.EntityDTO, error) {
 	} else if eb.storageControllerRelatedData != nil {
 		entityDTO.RelatedEntityData = &proto.EntityDTO_StorageControllerRelatedData_{eb.storageControllerRelatedData}
 	}
+
+	// Create the action eligibility spec for the entity
+	if eb.actionEligibility != nil {
+		ae := eb.actionEligibility
+		entityActionEligibility := &proto.EntityDTO_ActionEligibility{}
+		// Is the provisionable setting available
+		if ae.isProvisionable != nil {
+			entityActionEligibility.Cloneable = ae.isProvisionable
+		}
+		// Is the suspendable setting available
+		if ae.isSuspendable != nil {
+			entityActionEligibility.Suspendable = ae.isSuspendable
+		}
+
+		entityDTO.ActionEligibility = entityActionEligibility
+	}
+
+	// Create the bought commodities
+	entityDTO.CommoditiesBought = eb.buildCommodityBoughtFromMap()
 
 	return entityDTO, nil
 }
@@ -166,6 +239,8 @@ func (eb *EntityDTOBuilder) Provider(provider *ProviderDTO) *EntityDTOBuilder {
 		return eb
 	}
 	eb.currentProvider = provider
+	// Save the current provider type
+	eb.providerMap[provider.id] = provider.providerType
 	return eb
 }
 
@@ -175,7 +250,7 @@ func (eb *EntityDTOBuilder) BuysCommodities(commDTOs []*proto.CommodityDTO) *Ent
 		return eb
 	}
 	if eb.currentProvider == nil {
-		eb.err = fmt.Errorf("Porvider has not been set for current list of commodities: %++v", commDTOs)
+		eb.err = fmt.Errorf("Provider has not been set for current list of commodities: %++v", commDTOs)
 		return eb
 	}
 	for _, commDTO := range commDTOs {
@@ -267,6 +342,90 @@ func (eb *EntityDTOBuilder) Monitored(monitored bool) *EntityDTOBuilder {
 	return eb
 }
 
+func (eb *EntityDTOBuilder) ConsumerPolicy(cp *proto.EntityDTO_ConsumerPolicy) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	eb.consumerPolicy = cp
+	return eb
+}
+
+func (eb *EntityDTOBuilder) LayeredOver(layeredOver []string) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	eb.layeredOver = layeredOver
+	return eb
+}
+
+func (eb *EntityDTOBuilder) ConsistsOf(consistsOf []string) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	eb.consistsOf = consistsOf
+	return eb
+}
+
+func (eb *EntityDTOBuilder) ConnectedTo(connectedEntityId string) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	if eb.connectedEntities == nil {
+		eb.connectedEntities = []*proto.ConnectedEntity{}
+	}
+	controllerType := proto.ConnectedEntity_NORMAL_CONNECTION
+	eb.connectedEntities = append(eb.connectedEntities, &proto.ConnectedEntity{
+		ConnectedEntityId: &connectedEntityId,
+		ConnectionType:    &controllerType,
+	})
+	return eb
+}
+
+func (eb *EntityDTOBuilder) ControlledBy(controllerId string) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	if eb.connectedEntities == nil {
+		eb.connectedEntities = []*proto.ConnectedEntity{}
+	}
+	controllerType := proto.ConnectedEntity_CONTROLLED_BY_CONNECTION
+	eb.connectedEntities = append(eb.connectedEntities, &proto.ConnectedEntity{
+		ConnectedEntityId: &controllerId,
+		ConnectionType:    &controllerType,
+	})
+	return eb
+}
+
+func (eb *EntityDTOBuilder) Owns(ownedEntityId string) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	if eb.connectedEntities == nil {
+		eb.connectedEntities = []*proto.ConnectedEntity{}
+	}
+	controllerType := proto.ConnectedEntity_OWNS_CONNECTION
+	eb.connectedEntities = append(eb.connectedEntities, &proto.ConnectedEntity{
+		ConnectedEntityId: &ownedEntityId,
+		ConnectionType:    &controllerType,
+	})
+	return eb
+}
+
+func (eb *EntityDTOBuilder) AggregatedBy(aggregatorId string) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	if eb.connectedEntities == nil {
+		eb.connectedEntities = []*proto.ConnectedEntity{}
+	}
+	controllerType := proto.ConnectedEntity_AGGREGATED_BY_CONNECTION
+	eb.connectedEntities = append(eb.connectedEntities, &proto.ConnectedEntity{
+		ConnectedEntityId: &aggregatorId,
+		ConnectionType:    &controllerType,
+	})
+	return eb
+}
+
 func (eb *EntityDTOBuilder) ApplicationData(appData *proto.EntityDTO_ApplicationData) *EntityDTOBuilder {
 	if eb.err != nil {
 		return eb
@@ -323,31 +482,155 @@ func (eb *EntityDTOBuilder) ContainerData(containerData *proto.EntityDTO_Contain
 	return eb
 }
 
-func (eb *EntityDTOBuilder) VirtualApplicationData(vAppData *proto.EntityDTO_VirtualApplicationData) *EntityDTOBuilder {
+func (eb *EntityDTOBuilder) ServiceData(serviceData *proto.EntityDTO_ServiceData) *EntityDTOBuilder {
 	if eb.err != nil {
 		return eb
 	}
 	if eb.entityDataHasSet {
-		eb.err = fmt.Errorf("EntityData has already been set. Cannot use %v as entity data.", vAppData)
+		eb.err = fmt.Errorf("EntityData has already been set. Cannot use %v as entity data.", serviceData)
 
 		return eb
 	}
-	eb.virtualApplicationData = vAppData
+	eb.serviceData = serviceData
 	eb.entityDataHasSet = true
 	return eb
 }
 
-func buildCommodityBoughtFromMap(providerCommoditiesMap map[string][]*proto.CommodityDTO) []*proto.EntityDTO_CommodityBought {
+func (eb *EntityDTOBuilder) WorkloadControllerData(workloadControllerData *proto.EntityDTO_WorkloadControllerData) *EntityDTOBuilder {
+	if eb.err != nil {
+		return eb
+	}
+	if eb.entityDataHasSet {
+		eb.err = fmt.Errorf("EntityData has already been set. Cannot use %v as entity data.", workloadControllerData)
+		return eb
+	}
+	eb.workloadControllerData = workloadControllerData
+	eb.entityDataHasSet = true
+	return eb
+}
+
+// Build the commodity DTOs for the commodity bought from different providers
+func (eb *EntityDTOBuilder) buildCommodityBoughtFromMap() []*proto.EntityDTO_CommodityBought {
 	var commoditiesBought []*proto.EntityDTO_CommodityBought
-	if len(providerCommoditiesMap) == 0 {
+
+	if len(eb.commoditiesBoughtProviderMap) == 0 {
 		return commoditiesBought
 	}
-	for providerId, commodities := range providerCommoditiesMap {
+
+	var actionEligibilityByProviderMap map[proto.EntityDTO_EntityType]*ActionEligibilityByProvider
+	if eb.actionEligibility != nil {
+		actionEligibilityByProviderMap = eb.actionEligibility.actionEligibilityByProviderMap
+	}
+
+	// Create CommodityBought for each provider
+	for providerId, commodities := range eb.commoditiesBoughtProviderMap {
+		// Commodity bought per provider
 		p := providerId
-		commoditiesBought = append(commoditiesBought, &proto.EntityDTO_CommodityBought{
+
+		commodityBought := &proto.EntityDTO_CommodityBought{
 			ProviderId: &p,
 			Bought:     commodities,
-		})
+		}
+
+		// update provider type and the action eligibility of the entity across that provider type
+		providerType, providerTypeExists := eb.providerMap[p]
+		if providerTypeExists {
+
+			commodityBought.ProviderType = &providerType
+			aeByProvider, exists := actionEligibilityByProviderMap[providerType]
+			if exists {
+				commodityBought.ActionEligibility = &proto.EntityDTO_ActionOnProviderEligibility{}
+				if aeByProvider.isMovable != nil {
+					commodityBought.ActionEligibility.Movable = aeByProvider.isMovable
+				}
+				if aeByProvider.isStartable != nil {
+					commodityBought.ActionEligibility.Startable = aeByProvider.isStartable
+				}
+				if aeByProvider.isScalable != nil {
+					commodityBought.ActionEligibility.Scalable = aeByProvider.isScalable
+				}
+			}
+		}
+
+		commoditiesBought = append(commoditiesBought, commodityBought)
 	}
+
 	return commoditiesBought
+}
+
+// Specifies if the entity is eligible to be cloned by Turbonomic analysis
+func (eb *EntityDTOBuilder) IsProvisionable(provisionable bool) *EntityDTOBuilder {
+	eb.actionEligibility.isProvisionable = &provisionable
+	return eb
+}
+
+// Specifies if the entity is eligible to be suspended by Turbonomic analysis
+func (eb *EntityDTOBuilder) IsSuspendable(suspendable bool) *EntityDTOBuilder {
+	eb.actionEligibility.isSuspendable = &suspendable
+	return eb
+}
+
+// Specifies if the entity is eligible to move across the given provider
+func (eb *EntityDTOBuilder) IsMovable(providerType proto.EntityDTO_EntityType, movable bool) *EntityDTOBuilder {
+	eb.setActionEligibilityByProviderField(providerType, "move", movable)
+	return eb
+}
+
+// Specifies if the entity is eligible to scale on the given provider
+func (eb *EntityDTOBuilder) IsScalable(providerType proto.EntityDTO_EntityType, scalable bool) *EntityDTOBuilder {
+	eb.setActionEligibilityByProviderField(providerType, "scale", scalable)
+	return eb
+}
+
+// Specifies if the entity is eligible to scale on the given provider
+func (eb *EntityDTOBuilder) IsStartable(providerType proto.EntityDTO_EntityType, startable bool) *EntityDTOBuilder {
+	eb.setActionEligibilityByProviderField(providerType, "start", startable)
+	return eb
+}
+
+func (eb *EntityDTOBuilder) setActionEligibilityFlag(flagName ActionEligibilityField, flagVal bool) {
+	// Create action eligibility if null
+	ae := eb.actionEligibility
+	if ae == nil {
+		ae = &ActionEligibility{
+			actionEligibilityByProviderMap: make(map[proto.EntityDTO_EntityType]*ActionEligibilityByProvider),
+		}
+		eb.actionEligibility = ae
+	}
+
+	switch flagName {
+	case SUSPEND:
+		ae.isSuspendable = &flagVal
+	case PROVISION:
+		ae.isProvisionable = &flagVal
+	default:
+	}
+}
+
+func (eb *EntityDTOBuilder) setActionEligibilityByProviderField(providerType proto.EntityDTO_EntityType,
+	flagName ActionEligibilityField, flagVal bool) {
+	// Create action eligibility if null
+	ae := eb.actionEligibility
+	if ae == nil {
+		ae = &ActionEligibility{
+			actionEligibilityByProviderMap: make(map[proto.EntityDTO_EntityType]*ActionEligibilityByProvider),
+		}
+		eb.actionEligibility = ae
+	}
+
+	actionEligibilityByProvider, exists := ae.actionEligibilityByProviderMap[providerType]
+	if !exists {
+		ae.actionEligibilityByProviderMap[providerType] = &ActionEligibilityByProvider{}
+		actionEligibilityByProvider = ae.actionEligibilityByProviderMap[providerType]
+	}
+
+	switch flagName {
+	case MOVE:
+		actionEligibilityByProvider.isMovable = &flagVal
+	case SCALE:
+		actionEligibilityByProvider.isScalable = &flagVal
+	case START:
+		actionEligibilityByProvider.isStartable = &flagVal
+	default:
+	}
 }

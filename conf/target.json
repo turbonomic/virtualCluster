@@ -1,7 +1,8 @@
 {
-    "probeCategory": "Cloud Native",
-    "targetType": "MockCloud.1",
     "address": "my.vCluster",
-    "username": "mocker",
-    "password": "mocker"
+    "username": "vCluster.user",
+    "password": "vCluster.password",
+    "probeCategory": "Cloud Native",
+    "targetType": "vCluster.1",
+    "probeUICategory": "Cloud Native"
 }

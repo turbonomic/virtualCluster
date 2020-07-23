@@ -1,4 +1,4 @@
 package: github.com/turbonomic/virtualCluster
 import:
 - package: github.com/turbonomic/turbo-go-sdk
-  version: 2481270ab54a9b975fbc9b875ecad8d436a89f81
+  version: 0fd6c38a54e7b86cf146217c182f2c3b7fbf8fd8

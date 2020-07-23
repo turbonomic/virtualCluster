@@ -3,14 +3,22 @@
 
 package proto
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
+import (
+	"fmt"
+	"github.com/golang/protobuf/proto"
+	"math"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Enumerates supported DTO types
 type UpdateType int32
@@ -21,15 +29,20 @@ const (
 	// Entity was deleted. DTO must contain only identifying property that are necessary
 	// to locate the entity on the server side.
 	UpdateType_DELETED UpdateType = 1
+	// The DTO represents partial data (related to performance) for existing entities.
+	UpdateType_PARTIAL UpdateType = 2
 )
 
 var UpdateType_name = map[int32]string{
 	0: "UPDATED",
 	1: "DELETED",
+	2: "PARTIAL",
 }
+
 var UpdateType_value = map[string]int32{
 	"UPDATED": 0,
 	"DELETED": 1,
+	"PARTIAL": 2,
 }
 
 func (x UpdateType) Enum() *UpdateType {
@@ -37,9 +50,11 @@ func (x UpdateType) Enum() *UpdateType {
 	*p = x
 	return p
 }
+
 func (x UpdateType) String() string {
 	return proto.EnumName(UpdateType_name, int32(x))
 }
+
 func (x *UpdateType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(UpdateType_value, data, "UpdateType")
 	if err != nil {
@@ -48,38 +63,42 @@ func (x *UpdateType) UnmarshalJSON(data []byte) error {
 	*x = UpdateType(value)
 	return nil
 }
-func (UpdateType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+
+func (UpdateType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0}
+}
 
 type EntityDTO_EntityType int32
 
 const (
-	EntityDTO_SWITCH                          EntityDTO_EntityType = 0
-	EntityDTO_VIRTUAL_DATACENTER              EntityDTO_EntityType = 1
-	EntityDTO_STORAGE                         EntityDTO_EntityType = 2
-	EntityDTO_SERVICE                         EntityDTO_EntityType = 3
-	EntityDTO_DATABASE_SERVER                 EntityDTO_EntityType = 4
-	EntityDTO_SAVINGS                         EntityDTO_EntityType = 5
-	EntityDTO_OPERATOR                        EntityDTO_EntityType = 6
-	EntityDTO_WEB_SERVER                      EntityDTO_EntityType = 7
-	EntityDTO_RIGHT_SIZER                     EntityDTO_EntityType = 8
-	EntityDTO_THREE_TIER_APPLICATION          EntityDTO_EntityType = 9
-	EntityDTO_VIRTUAL_MACHINE                 EntityDTO_EntityType = 10
-	EntityDTO_DISK_ARRAY                      EntityDTO_EntityType = 11
-	EntityDTO_DATACENTER                      EntityDTO_EntityType = 12
-	EntityDTO_INFRASTRUCTURE                  EntityDTO_EntityType = 13
-	EntityDTO_PHYSICAL_MACHINE                EntityDTO_EntityType = 14
-	EntityDTO_CHASSIS                         EntityDTO_EntityType = 15
-	EntityDTO_LICENSING_SERVICE               EntityDTO_EntityType = 16
-	EntityDTO_BUSINESS_USER                   EntityDTO_EntityType = 17
-	EntityDTO_STORAGE_CONTROLLER              EntityDTO_EntityType = 18
-	EntityDTO_HYPERVISOR                      EntityDTO_EntityType = 19
-	EntityDTO_BUSINESS_ENTITY                 EntityDTO_EntityType = 20
-	EntityDTO_IO_MODULE                       EntityDTO_EntityType = 21
-	EntityDTO_ACTION_MANAGER                  EntityDTO_EntityType = 22
-	EntityDTO_VLAN                            EntityDTO_EntityType = 23
-	EntityDTO_APPLICATION_SERVER              EntityDTO_EntityType = 24
-	EntityDTO_BUSINESS                        EntityDTO_EntityType = 25
-	EntityDTO_VIRTUAL_APPLICATION             EntityDTO_EntityType = 26
+	EntityDTO_SWITCH                 EntityDTO_EntityType = 0
+	EntityDTO_VIRTUAL_DATACENTER     EntityDTO_EntityType = 1
+	EntityDTO_STORAGE                EntityDTO_EntityType = 2
+	EntityDTO_SERVICE                EntityDTO_EntityType = 3
+	EntityDTO_DATABASE_SERVER        EntityDTO_EntityType = 4
+	EntityDTO_SAVINGS                EntityDTO_EntityType = 5
+	EntityDTO_OPERATOR               EntityDTO_EntityType = 6
+	EntityDTO_WEB_SERVER             EntityDTO_EntityType = 7
+	EntityDTO_RIGHT_SIZER            EntityDTO_EntityType = 8
+	EntityDTO_THREE_TIER_APPLICATION EntityDTO_EntityType = 9
+	EntityDTO_VIRTUAL_MACHINE        EntityDTO_EntityType = 10
+	EntityDTO_DISK_ARRAY             EntityDTO_EntityType = 11
+	EntityDTO_DATACENTER             EntityDTO_EntityType = 12
+	EntityDTO_INFRASTRUCTURE         EntityDTO_EntityType = 13
+	EntityDTO_PHYSICAL_MACHINE       EntityDTO_EntityType = 14
+	EntityDTO_CHASSIS                EntityDTO_EntityType = 15
+	EntityDTO_LICENSING_SERVICE      EntityDTO_EntityType = 16
+	EntityDTO_BUSINESS_USER          EntityDTO_EntityType = 17
+	EntityDTO_STORAGE_CONTROLLER     EntityDTO_EntityType = 18
+	EntityDTO_HYPERVISOR_SERVER      EntityDTO_EntityType = 19
+	EntityDTO_BUSINESS_ENTITY        EntityDTO_EntityType = 20
+	EntityDTO_IO_MODULE              EntityDTO_EntityType = 21
+	EntityDTO_ACTION_MANAGER         EntityDTO_EntityType = 22
+	EntityDTO_VLAN                   EntityDTO_EntityType = 23
+	EntityDTO_APPLICATION_SERVER     EntityDTO_EntityType = 24
+	EntityDTO_BUSINESS               EntityDTO_EntityType = 25
+	// Should be used SERVICE instead.
+	EntityDTO_VIRTUAL_APPLICATION             EntityDTO_EntityType = 26 // Deprecated: Do not use.
 	EntityDTO_NETWORKING_ENDPOINT             EntityDTO_EntityType = 27
 	EntityDTO_BUSINESS_ACCOUNT                EntityDTO_EntityType = 28
 	EntityDTO_IP                              EntityDTO_EntityType = 29
@@ -107,6 +126,23 @@ const (
 	EntityDTO_RESERVED_INSTANCE               EntityDTO_EntityType = 51
 	EntityDTO_RESERVED_INSTANCE_SPECIFICATION EntityDTO_EntityType = 52
 	EntityDTO_DESIRED_RESERVED_INSTANCE       EntityDTO_EntityType = 53
+	EntityDTO_REGION                          EntityDTO_EntityType = 54
+	EntityDTO_AVAILABILITY_ZONE               EntityDTO_EntityType = 55
+	EntityDTO_COMPUTE_TIER                    EntityDTO_EntityType = 56
+	EntityDTO_STORAGE_TIER                    EntityDTO_EntityType = 57
+	EntityDTO_DATABASE_TIER                   EntityDTO_EntityType = 58
+	EntityDTO_DATABASE_SERVER_TIER            EntityDTO_EntityType = 59
+	EntityDTO_VIRTUAL_VOLUME                  EntityDTO_EntityType = 60
+	EntityDTO_VIEW_POD                        EntityDTO_EntityType = 61
+	EntityDTO_DESKTOP_POOL                    EntityDTO_EntityType = 62
+	EntityDTO_SERVICE_PROVIDER                EntityDTO_EntityType = 63
+	EntityDTO_NAMESPACE                       EntityDTO_EntityType = 64
+	EntityDTO_WORKLOAD_CONTROLLER             EntityDTO_EntityType = 65
+	EntityDTO_CONTAINER_SPEC                  EntityDTO_EntityType = 66
+	EntityDTO_HCI_PHYSICAL_MACHINE            EntityDTO_EntityType = 67
+	EntityDTO_BUSINESS_TRANSACTION            EntityDTO_EntityType = 68
+	EntityDTO_APPLICATION_COMPONENT           EntityDTO_EntityType = 69
+	EntityDTO_VM_SPEC                         EntityDTO_EntityType = 70
 	// 2047 is the largest tag value encoded in 2 bytes
 	EntityDTO_UNKNOWN EntityDTO_EntityType = 2047
 )
@@ -131,7 +167,7 @@ var EntityDTO_EntityType_name = map[int32]string{
 	16:   "LICENSING_SERVICE",
 	17:   "BUSINESS_USER",
 	18:   "STORAGE_CONTROLLER",
-	19:   "HYPERVISOR",
+	19:   "HYPERVISOR_SERVER",
 	20:   "BUSINESS_ENTITY",
 	21:   "IO_MODULE",
 	22:   "ACTION_MANAGER",
@@ -166,48 +202,66 @@ var EntityDTO_EntityType_name = map[int32]string{
 	51:   "RESERVED_INSTANCE",
 	52:   "RESERVED_INSTANCE_SPECIFICATION",
 	53:   "DESIRED_RESERVED_INSTANCE",
+	54:   "REGION",
+	55:   "AVAILABILITY_ZONE",
+	56:   "COMPUTE_TIER",
+	57:   "STORAGE_TIER",
+	58:   "DATABASE_TIER",
+	59:   "DATABASE_SERVER_TIER",
+	60:   "VIRTUAL_VOLUME",
+	61:   "VIEW_POD",
+	62:   "DESKTOP_POOL",
+	63:   "SERVICE_PROVIDER",
+	64:   "NAMESPACE",
+	65:   "WORKLOAD_CONTROLLER",
+	66:   "CONTAINER_SPEC",
+	67:   "HCI_PHYSICAL_MACHINE",
+	68:   "BUSINESS_TRANSACTION",
+	69:   "APPLICATION_COMPONENT",
+	70:   "VM_SPEC",
 	2047: "UNKNOWN",
 }
+
 var EntityDTO_EntityType_value = map[string]int32{
-	"SWITCH":                 0,
-	"VIRTUAL_DATACENTER":     1,
-	"STORAGE":                2,
-	"SERVICE":                3,
-	"DATABASE_SERVER":        4,
-	"SAVINGS":                5,
-	"OPERATOR":               6,
-	"WEB_SERVER":             7,
-	"RIGHT_SIZER":            8,
-	"THREE_TIER_APPLICATION": 9,
-	"VIRTUAL_MACHINE":        10,
-	"DISK_ARRAY":             11,
-	"DATACENTER":             12,
-	"INFRASTRUCTURE":         13,
-	"PHYSICAL_MACHINE":       14,
-	"CHASSIS":                15,
-	"LICENSING_SERVICE":      16,
-	"BUSINESS_USER":          17,
-	"STORAGE_CONTROLLER":     18,
-	"HYPERVISOR":             19,
-	"BUSINESS_ENTITY":        20,
-	"IO_MODULE":              21,
-	"ACTION_MANAGER":         22,
-	"VLAN":                   23,
-	"APPLICATION_SERVER":     24,
-	"BUSINESS":               25,
-	"VIRTUAL_APPLICATION":    26,
-	"NETWORKING_ENDPOINT":    27,
-	"BUSINESS_ACCOUNT":       28,
-	"IP":                     29,
-	"SERVICE_ENTITY_TEMPLATE": 30,
-	"PORT":             31,
-	"NETWORK":          32,
-	"APPLICATION":      33,
-	"THIS_ENTITY":      34,
-	"COMPUTE_RESOURCE": 35,
-	"MAC":              36,
-	"INTERNET":         37,
-	"MOVER":            38,
+	"SWITCH":                          0,
+	"VIRTUAL_DATACENTER":              1,
+	"STORAGE":                         2,
+	"SERVICE":                         3,
+	"DATABASE_SERVER":                 4,
+	"SAVINGS":                         5,
+	"OPERATOR":                        6,
+	"WEB_SERVER":                      7,
+	"RIGHT_SIZER":                     8,
+	"THREE_TIER_APPLICATION":          9,
+	"VIRTUAL_MACHINE":                 10,
+	"DISK_ARRAY":                      11,
+	"DATACENTER":                      12,
+	"INFRASTRUCTURE":                  13,
+	"PHYSICAL_MACHINE":                14,
+	"CHASSIS":                         15,
+	"LICENSING_SERVICE":               16,
+	"BUSINESS_USER":                   17,
+	"STORAGE_CONTROLLER":              18,
+	"HYPERVISOR_SERVER":               19,
+	"BUSINESS_ENTITY":                 20,
+	"IO_MODULE":                       21,
+	"ACTION_MANAGER":                  22,
+	"VLAN":                            23,
+	"APPLICATION_SERVER":              24,
+	"BUSINESS":                        25,
+	"VIRTUAL_APPLICATION":             26,
+	"NETWORKING_ENDPOINT":             27,
+	"BUSINESS_ACCOUNT":                28,
+	"IP":                              29,
+	"SERVICE_ENTITY_TEMPLATE":         30,
+	"PORT":                            31,
+	"NETWORK":                         32,
+	"APPLICATION":                     33,
+	"THIS_ENTITY":                     34,
+	"COMPUTE_RESOURCE":                35,
+	"MAC":                             36,
+	"INTERNET":                        37,
+	"MOVER":                           38,
 	"DISTRIBUTED_VIRTUAL_PORTGROUP":   39,
 	"CONTAINER":                       40,
 	"CONTAINER_POD":                   41,
@@ -223,6 +277,23 @@ var EntityDTO_EntityType_value = map[string]int32{
 	"RESERVED_INSTANCE":               51,
 	"RESERVED_INSTANCE_SPECIFICATION": 52,
 	"DESIRED_RESERVED_INSTANCE":       53,
+	"REGION":                          54,
+	"AVAILABILITY_ZONE":               55,
+	"COMPUTE_TIER":                    56,
+	"STORAGE_TIER":                    57,
+	"DATABASE_TIER":                   58,
+	"DATABASE_SERVER_TIER":            59,
+	"VIRTUAL_VOLUME":                  60,
+	"VIEW_POD":                        61,
+	"DESKTOP_POOL":                    62,
+	"SERVICE_PROVIDER":                63,
+	"NAMESPACE":                       64,
+	"WORKLOAD_CONTROLLER":             65,
+	"CONTAINER_SPEC":                  66,
+	"HCI_PHYSICAL_MACHINE":            67,
+	"BUSINESS_TRANSACTION":            68,
+	"APPLICATION_COMPONENT":           69,
+	"VM_SPEC":                         70,
 	"UNKNOWN":                         2047,
 }
 
@@ -231,9 +302,11 @@ func (x EntityDTO_EntityType) Enum() *EntityDTO_EntityType {
 	*p = x
 	return p
 }
+
 func (x EntityDTO_EntityType) String() string {
 	return proto.EnumName(EntityDTO_EntityType_name, int32(x))
 }
+
 func (x *EntityDTO_EntityType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_EntityType_value, data, "EntityDTO_EntityType")
 	if err != nil {
@@ -242,7 +315,10 @@ func (x *EntityDTO_EntityType) UnmarshalJSON(data []byte) error {
 	*x = EntityDTO_EntityType(value)
 	return nil
 }
-func (EntityDTO_EntityType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 0} }
+
+func (EntityDTO_EntityType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 0}
+}
 
 // Enum for power state.
 type EntityDTO_PowerState int32
@@ -260,6 +336,7 @@ var EntityDTO_PowerState_name = map[int32]string{
 	3: "SUSPENDED",
 	4: "POWERSTATE_UNKNOWN",
 }
+
 var EntityDTO_PowerState_value = map[string]int32{
 	"POWERED_ON":         1,
 	"POWERED_OFF":        2,
@@ -272,9 +349,11 @@ func (x EntityDTO_PowerState) Enum() *EntityDTO_PowerState {
 	*p = x
 	return p
 }
+
 func (x EntityDTO_PowerState) String() string {
 	return proto.EnumName(EntityDTO_PowerState_name, int32(x))
 }
+
 func (x *EntityDTO_PowerState) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_PowerState_value, data, "EntityDTO_PowerState")
 	if err != nil {
@@ -283,7 +362,56 @@ func (x *EntityDTO_PowerState) UnmarshalJSON(data []byte) error {
 	*x = EntityDTO_PowerState(value)
 	return nil
 }
-func (EntityDTO_PowerState) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 1} }
+
+func (EntityDTO_PowerState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 1}
+}
+
+type EntityDTO_StorageRedundancyMethod int32
+
+const (
+	EntityDTO_RAID0 EntityDTO_StorageRedundancyMethod = 0
+	EntityDTO_RAID1 EntityDTO_StorageRedundancyMethod = 1
+	EntityDTO_RAID5 EntityDTO_StorageRedundancyMethod = 5
+	EntityDTO_RAID6 EntityDTO_StorageRedundancyMethod = 6
+)
+
+var EntityDTO_StorageRedundancyMethod_name = map[int32]string{
+	0: "RAID0",
+	1: "RAID1",
+	5: "RAID5",
+	6: "RAID6",
+}
+
+var EntityDTO_StorageRedundancyMethod_value = map[string]int32{
+	"RAID0": 0,
+	"RAID1": 1,
+	"RAID5": 5,
+	"RAID6": 6,
+}
+
+func (x EntityDTO_StorageRedundancyMethod) Enum() *EntityDTO_StorageRedundancyMethod {
+	p := new(EntityDTO_StorageRedundancyMethod)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_StorageRedundancyMethod) String() string {
+	return proto.EnumName(EntityDTO_StorageRedundancyMethod_name, int32(x))
+}
+
+func (x *EntityDTO_StorageRedundancyMethod) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_StorageRedundancyMethod_value, data, "EntityDTO_StorageRedundancyMethod")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_StorageRedundancyMethod(value)
+	return nil
+}
+
+func (EntityDTO_StorageRedundancyMethod) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 2}
+}
 
 // Enum for storage type.
 type EntityDTO_StorageType int32
@@ -300,6 +428,7 @@ const (
 	EntityDTO_LOCAL               EntityDTO_StorageType = 9
 	EntityDTO_OTHER               EntityDTO_StorageType = 10
 	EntityDTO_VMFS                EntityDTO_StorageType = 11
+	EntityDTO_VSAN                EntityDTO_StorageType = 12
 )
 
 var EntityDTO_StorageType_name = map[int32]string{
@@ -314,7 +443,9 @@ var EntityDTO_StorageType_name = map[int32]string{
 	9:  "LOCAL",
 	10: "OTHER",
 	11: "VMFS",
+	12: "VSAN",
 }
+
 var EntityDTO_StorageType_value = map[string]int32{
 	"GENERIC_BLOCK":       1,
 	"ISCSI":               2,
@@ -322,11 +453,12 @@ var EntityDTO_StorageType_value = map[string]int32{
 	"FCOE":                4,
 	"OBJECT":              5,
 	"GENERIC_FILE_SYSTEM": 6,
-	"NFS":      7,
-	"CIFS_SMB": 8,
-	"LOCAL":    9,
-	"OTHER":    10,
-	"VMFS":     11,
+	"NFS":                 7,
+	"CIFS_SMB":            8,
+	"LOCAL":               9,
+	"OTHER":               10,
+	"VMFS":                11,
+	"VSAN":                12,
 }
 
 func (x EntityDTO_StorageType) Enum() *EntityDTO_StorageType {
@@ -334,9 +466,11 @@ func (x EntityDTO_StorageType) Enum() *EntityDTO_StorageType {
 	*p = x
 	return p
 }
+
 func (x EntityDTO_StorageType) String() string {
 	return proto.EnumName(EntityDTO_StorageType_name, int32(x))
 }
+
 func (x *EntityDTO_StorageType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_StorageType_value, data, "EntityDTO_StorageType")
 	if err != nil {
@@ -345,7 +479,10 @@ func (x *EntityDTO_StorageType) UnmarshalJSON(data []byte) error {
 	*x = EntityDTO_StorageType(value)
 	return nil
 }
-func (EntityDTO_StorageType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 2} }
+
+func (EntityDTO_StorageType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 3}
+}
 
 // Type of a file in use by the virtual machine
 type EntityDTO_VirtualMachineFileType int32
@@ -371,6 +508,7 @@ var EntityDTO_VirtualMachineFileType_name = map[int32]string{
 	7: "ISO",
 	8: "ESXCONSOLE",
 }
+
 var EntityDTO_VirtualMachineFileType_value = map[string]int32{
 	"CONFIGURATION": 1,
 	"DISK":          2,
@@ -387,9 +525,11 @@ func (x EntityDTO_VirtualMachineFileType) Enum() *EntityDTO_VirtualMachineFileTy
 	*p = x
 	return p
 }
+
 func (x EntityDTO_VirtualMachineFileType) String() string {
 	return proto.EnumName(EntityDTO_VirtualMachineFileType_name, int32(x))
 }
+
 func (x *EntityDTO_VirtualMachineFileType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_VirtualMachineFileType_value, data, "EntityDTO_VirtualMachineFileType")
 	if err != nil {
@@ -398,8 +538,114 @@ func (x *EntityDTO_VirtualMachineFileType) UnmarshalJSON(data []byte) error {
 	*x = EntityDTO_VirtualMachineFileType(value)
 	return nil
 }
+
 func (EntityDTO_VirtualMachineFileType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 3}
+	return fileDescriptor_2233245ab49fede8, []int{0, 4}
+}
+
+// disk type for Ephemeral storages
+type EntityDTO_InstanceDiskType int32
+
+const (
+	EntityDTO_NONE EntityDTO_InstanceDiskType = 1
+	// AWS HDD
+	EntityDTO_HDD EntityDTO_InstanceDiskType = 2
+	// AWS SSD
+	EntityDTO_SSD EntityDTO_InstanceDiskType = 3
+	// AWS  non-volatile memory express
+	EntityDTO_NVME_SSD EntityDTO_InstanceDiskType = 4
+	// Azure standard storage (inaccurate legacy name -- can now be either Standard HDD or SSD)
+	EntityDTO_AZURE_HDD EntityDTO_InstanceDiskType = 10
+	// Azure premium storage (inaccurate legacy name -- there are other kinds of SSD)
+	EntityDTO_AZURE_SSD EntityDTO_InstanceDiskType = 11
+	// Azure ultra storage
+	EntityDTO_AZURE_ULTRA EntityDTO_InstanceDiskType = 12
+)
+
+var EntityDTO_InstanceDiskType_name = map[int32]string{
+	1:  "NONE",
+	2:  "HDD",
+	3:  "SSD",
+	4:  "NVME_SSD",
+	10: "AZURE_HDD",
+	11: "AZURE_SSD",
+	12: "AZURE_ULTRA",
+}
+
+var EntityDTO_InstanceDiskType_value = map[string]int32{
+	"NONE":        1,
+	"HDD":         2,
+	"SSD":         3,
+	"NVME_SSD":    4,
+	"AZURE_HDD":   10,
+	"AZURE_SSD":   11,
+	"AZURE_ULTRA": 12,
+}
+
+func (x EntityDTO_InstanceDiskType) Enum() *EntityDTO_InstanceDiskType {
+	p := new(EntityDTO_InstanceDiskType)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_InstanceDiskType) String() string {
+	return proto.EnumName(EntityDTO_InstanceDiskType_name, int32(x))
+}
+
+func (x *EntityDTO_InstanceDiskType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_InstanceDiskType_value, data, "EntityDTO_InstanceDiskType")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_InstanceDiskType(value)
+	return nil
+}
+
+func (EntityDTO_InstanceDiskType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 5}
+}
+
+// Type of license model (BYOL or license included)
+type EntityDTO_LicenseModel int32
+
+const (
+	// the license price is included in the total compute price
+	EntityDTO_LICENSE_INCLUDED EntityDTO_LicenseModel = 1
+	// Azure Hybrid Benefit - Windows Bring Your Own License
+	EntityDTO_AHUB EntityDTO_LicenseModel = 2
+)
+
+var EntityDTO_LicenseModel_name = map[int32]string{
+	1: "LICENSE_INCLUDED",
+	2: "AHUB",
+}
+
+var EntityDTO_LicenseModel_value = map[string]int32{
+	"LICENSE_INCLUDED": 1,
+	"AHUB":             2,
+}
+
+func (x EntityDTO_LicenseModel) Enum() *EntityDTO_LicenseModel {
+	p := new(EntityDTO_LicenseModel)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_LicenseModel) String() string {
+	return proto.EnumName(EntityDTO_LicenseModel_name, int32(x))
+}
+
+func (x *EntityDTO_LicenseModel) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_LicenseModel_value, data, "EntityDTO_LicenseModel")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_LicenseModel(value)
+	return nil
+}
+
+func (EntityDTO_LicenseModel) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 6}
 }
 
 // A virtual datacenter may be either a consumer or producer
@@ -414,6 +660,7 @@ var EntityDTO_VirtualDatacenterRole_name = map[int32]string{
 	1: "CONSUMER",
 	2: "PRODUCER",
 }
+
 var EntityDTO_VirtualDatacenterRole_value = map[string]int32{
 	"CONSUMER": 1,
 	"PRODUCER": 2,
@@ -424,9 +671,11 @@ func (x EntityDTO_VirtualDatacenterRole) Enum() *EntityDTO_VirtualDatacenterRole
 	*p = x
 	return p
 }
+
 func (x EntityDTO_VirtualDatacenterRole) String() string {
 	return proto.EnumName(EntityDTO_VirtualDatacenterRole_name, int32(x))
 }
+
 func (x *EntityDTO_VirtualDatacenterRole) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_VirtualDatacenterRole_value, data, "EntityDTO_VirtualDatacenterRole")
 	if err != nil {
@@ -435,8 +684,9 @@ func (x *EntityDTO_VirtualDatacenterRole) UnmarshalJSON(data []byte) error {
 	*x = EntityDTO_VirtualDatacenterRole(value)
 	return nil
 }
+
 func (EntityDTO_VirtualDatacenterRole) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 4}
+	return fileDescriptor_2233245ab49fede8, []int{0, 7}
 }
 
 // A virtual datacenter allocation model may be either allocationpool, payasyougo, or
@@ -454,6 +704,7 @@ var EntityDTO_VirtualDatacenterAllocationModel_name = map[int32]string{
 	2: "PAY_AS_YOU_GO",
 	3: "RESERVATION_POOL",
 }
+
 var EntityDTO_VirtualDatacenterAllocationModel_value = map[string]int32{
 	"ALLOCATION_POOL":  1,
 	"PAY_AS_YOU_GO":    2,
@@ -465,9 +716,11 @@ func (x EntityDTO_VirtualDatacenterAllocationModel) Enum() *EntityDTO_VirtualDat
 	*p = x
 	return p
 }
+
 func (x EntityDTO_VirtualDatacenterAllocationModel) String() string {
 	return proto.EnumName(EntityDTO_VirtualDatacenterAllocationModel_name, int32(x))
 }
+
 func (x *EntityDTO_VirtualDatacenterAllocationModel) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_VirtualDatacenterAllocationModel_value, data, "EntityDTO_VirtualDatacenterAllocationModel")
 	if err != nil {
@@ -476,58 +729,114 @@ func (x *EntityDTO_VirtualDatacenterAllocationModel) UnmarshalJSON(data []byte) 
 	*x = EntityDTO_VirtualDatacenterAllocationModel(value)
 	return nil
 }
+
 func (EntityDTO_VirtualDatacenterAllocationModel) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 5}
+	return fileDescriptor_2233245ab49fede8, []int{0, 8}
+}
+
+// Represents the role of a disk in providing actual storage capacity or
+// providing cache.  Only capacity disk will increase the capacity of the
+// Storage array.
+type EntityDTO_DiskRole int32
+
+const (
+	// This is a cache disk
+	EntityDTO_ROLE_CACHE EntityDTO_DiskRole = 1
+	// This is a capacity disk
+	EntityDTO_ROLE_CAPACITY EntityDTO_DiskRole = 2
+)
+
+var EntityDTO_DiskRole_name = map[int32]string{
+	1: "ROLE_CACHE",
+	2: "ROLE_CAPACITY",
+}
+
+var EntityDTO_DiskRole_value = map[string]int32{
+	"ROLE_CACHE":    1,
+	"ROLE_CAPACITY": 2,
+}
+
+func (x EntityDTO_DiskRole) Enum() *EntityDTO_DiskRole {
+	p := new(EntityDTO_DiskRole)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_DiskRole) String() string {
+	return proto.EnumName(EntityDTO_DiskRole_name, int32(x))
+}
+
+func (x *EntityDTO_DiskRole) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_DiskRole_value, data, "EntityDTO_DiskRole")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_DiskRole(value)
+	return nil
+}
+
+func (EntityDTO_DiskRole) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 9}
 }
 
 // Names for communicating the number of various types of disks.
-type EntityDTO_NumDiskNames int32
+type EntityDTO_IopsItemNames int32
 
 const (
 	// Number of discovered solid state drives.
-	EntityDTO_NUM_SSD EntityDTO_NumDiskNames = 1
+	EntityDTO_NUM_SSD EntityDTO_IopsItemNames = 1
 	// Number of discovered 7200 RPM disks.
-	EntityDTO_NUM_7200_DISKS EntityDTO_NumDiskNames = 2
+	EntityDTO_NUM_7200_DISKS EntityDTO_IopsItemNames = 2
 	// Number of discovered 10000 RPM disks.
-	EntityDTO_NUM_10K_DISKS EntityDTO_NumDiskNames = 3
+	EntityDTO_NUM_10K_DISKS EntityDTO_IopsItemNames = 3
 	// Number of discovered 15000 RPM disks.
-	EntityDTO_NUM_15K_DISKS EntityDTO_NumDiskNames = 4
+	EntityDTO_NUM_15K_DISKS EntityDTO_IopsItemNames = 4
 	// Number of discovered VSeries disks.
-	EntityDTO_NUM_VSERIES_DISKS EntityDTO_NumDiskNames = 5
+	EntityDTO_NUM_VSERIES_DISKS EntityDTO_IopsItemNames = 5
+	// Number of IOPS Supported, as discovered by probe, to replace old iopsCapacity field
+	EntityDTO_NUM_IOPS_SUPPORTED EntityDTO_IopsItemNames = 6
 )
 
-var EntityDTO_NumDiskNames_name = map[int32]string{
+var EntityDTO_IopsItemNames_name = map[int32]string{
 	1: "NUM_SSD",
 	2: "NUM_7200_DISKS",
 	3: "NUM_10K_DISKS",
 	4: "NUM_15K_DISKS",
 	5: "NUM_VSERIES_DISKS",
-}
-var EntityDTO_NumDiskNames_value = map[string]int32{
-	"NUM_SSD":           1,
-	"NUM_7200_DISKS":    2,
-	"NUM_10K_DISKS":     3,
-	"NUM_15K_DISKS":     4,
-	"NUM_VSERIES_DISKS": 5,
+	6: "NUM_IOPS_SUPPORTED",
 }
 
-func (x EntityDTO_NumDiskNames) Enum() *EntityDTO_NumDiskNames {
-	p := new(EntityDTO_NumDiskNames)
+var EntityDTO_IopsItemNames_value = map[string]int32{
+	"NUM_SSD":            1,
+	"NUM_7200_DISKS":     2,
+	"NUM_10K_DISKS":      3,
+	"NUM_15K_DISKS":      4,
+	"NUM_VSERIES_DISKS":  5,
+	"NUM_IOPS_SUPPORTED": 6,
+}
+
+func (x EntityDTO_IopsItemNames) Enum() *EntityDTO_IopsItemNames {
+	p := new(EntityDTO_IopsItemNames)
 	*p = x
 	return p
 }
-func (x EntityDTO_NumDiskNames) String() string {
-	return proto.EnumName(EntityDTO_NumDiskNames_name, int32(x))
+
+func (x EntityDTO_IopsItemNames) String() string {
+	return proto.EnumName(EntityDTO_IopsItemNames_name, int32(x))
 }
-func (x *EntityDTO_NumDiskNames) UnmarshalJSON(data []byte) error {
-	value, err := proto.UnmarshalJSONEnum(EntityDTO_NumDiskNames_value, data, "EntityDTO_NumDiskNames")
+
+func (x *EntityDTO_IopsItemNames) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_IopsItemNames_value, data, "EntityDTO_IopsItemNames")
 	if err != nil {
 		return err
 	}
-	*x = EntityDTO_NumDiskNames(value)
+	*x = EntityDTO_IopsItemNames(value)
 	return nil
 }
-func (EntityDTO_NumDiskNames) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 6} }
+
+func (EntityDTO_IopsItemNames) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 10}
+}
 
 // Specifies the origin of an entity, either DISCOVERED or PROXY
 // DISCOVERED: An entity discovered by the probe that maps to a real resource found
@@ -549,6 +858,7 @@ var EntityDTO_EntityOrigin_name = map[int32]string{
 	2: "PROXY",
 	3: "REPLACEABLE",
 }
+
 var EntityDTO_EntityOrigin_value = map[string]int32{
 	"DISCOVERED":  1,
 	"PROXY":       2,
@@ -560,9 +870,11 @@ func (x EntityDTO_EntityOrigin) Enum() *EntityDTO_EntityOrigin {
 	*p = x
 	return p
 }
+
 func (x EntityDTO_EntityOrigin) String() string {
 	return proto.EnumName(EntityDTO_EntityOrigin_name, int32(x))
 }
+
 func (x *EntityDTO_EntityOrigin) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_EntityOrigin_value, data, "EntityDTO_EntityOrigin")
 	if err != nil {
@@ -571,7 +883,155 @@ func (x *EntityDTO_EntityOrigin) UnmarshalJSON(data []byte) error {
 	*x = EntityDTO_EntityOrigin(value)
 	return nil
 }
-func (EntityDTO_EntityOrigin) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 7} }
+
+func (EntityDTO_EntityOrigin) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 11}
+}
+
+type EntityDTO_ComputeTierData_DedicatedStorageNetworkState int32
+
+const (
+	// Dedicated storage network is not supported by compute tier
+	EntityDTO_ComputeTierData_NOT_SUPPORTED EntityDTO_ComputeTierData_DedicatedStorageNetworkState = 1
+	// Dedicated storage network is supported by compute tier and is configured as disabled.
+	EntityDTO_ComputeTierData_CONFIGURED_DISABLED EntityDTO_ComputeTierData_DedicatedStorageNetworkState = 2
+	// Dedicated storage network is supported by compute tier and is configured as enabled.
+	EntityDTO_ComputeTierData_CONFIGURED_ENABLED EntityDTO_ComputeTierData_DedicatedStorageNetworkState = 3
+	// Dedicated storage network is enabled by compute tier by default and is not changeable.
+	EntityDTO_ComputeTierData_ENABLED_BY_DEFAULT EntityDTO_ComputeTierData_DedicatedStorageNetworkState = 4
+)
+
+var EntityDTO_ComputeTierData_DedicatedStorageNetworkState_name = map[int32]string{
+	1: "NOT_SUPPORTED",
+	2: "CONFIGURED_DISABLED",
+	3: "CONFIGURED_ENABLED",
+	4: "ENABLED_BY_DEFAULT",
+}
+
+var EntityDTO_ComputeTierData_DedicatedStorageNetworkState_value = map[string]int32{
+	"NOT_SUPPORTED":       1,
+	"CONFIGURED_DISABLED": 2,
+	"CONFIGURED_ENABLED":  3,
+	"ENABLED_BY_DEFAULT":  4,
+}
+
+func (x EntityDTO_ComputeTierData_DedicatedStorageNetworkState) Enum() *EntityDTO_ComputeTierData_DedicatedStorageNetworkState {
+	p := new(EntityDTO_ComputeTierData_DedicatedStorageNetworkState)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_ComputeTierData_DedicatedStorageNetworkState) String() string {
+	return proto.EnumName(EntityDTO_ComputeTierData_DedicatedStorageNetworkState_name, int32(x))
+}
+
+func (x *EntityDTO_ComputeTierData_DedicatedStorageNetworkState) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_ComputeTierData_DedicatedStorageNetworkState_value, data, "EntityDTO_ComputeTierData_DedicatedStorageNetworkState")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_ComputeTierData_DedicatedStorageNetworkState(value)
+	return nil
+}
+
+func (EntityDTO_ComputeTierData_DedicatedStorageNetworkState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 14, 0}
+}
+
+// Description of a volume's relationship with VM or lack thereof
+type EntityDTO_VirtualVolumeData_AttachmentState int32
+
+const (
+	// in use by a (potentially undiscovered) VM
+	EntityDTO_VirtualVolumeData_ATTACHED EntityDTO_VirtualVolumeData_AttachmentState = 0
+	// unused by any VM
+	EntityDTO_VirtualVolumeData_UNATTACHED EntityDTO_VirtualVolumeData_AttachmentState = 1
+)
+
+var EntityDTO_VirtualVolumeData_AttachmentState_name = map[int32]string{
+	0: "ATTACHED",
+	1: "UNATTACHED",
+}
+
+var EntityDTO_VirtualVolumeData_AttachmentState_value = map[string]int32{
+	"ATTACHED":   0,
+	"UNATTACHED": 1,
+}
+
+func (x EntityDTO_VirtualVolumeData_AttachmentState) Enum() *EntityDTO_VirtualVolumeData_AttachmentState {
+	p := new(EntityDTO_VirtualVolumeData_AttachmentState)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_VirtualVolumeData_AttachmentState) String() string {
+	return proto.EnumName(EntityDTO_VirtualVolumeData_AttachmentState_name, int32(x))
+}
+
+func (x *EntityDTO_VirtualVolumeData_AttachmentState) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_VirtualVolumeData_AttachmentState_value, data, "EntityDTO_VirtualVolumeData_AttachmentState")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_VirtualVolumeData_AttachmentState(value)
+	return nil
+}
+
+func (EntityDTO_VirtualVolumeData_AttachmentState) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 15, 0}
+}
+
+// different replication options supported by Azure storage, more details:
+// https://docs.microsoft.com/en-us/azure/storage/common/storage-redundancy
+type EntityDTO_VirtualVolumeData_RedundancyType int32
+
+const (
+	// Locally redundant storage
+	EntityDTO_VirtualVolumeData_LRS EntityDTO_VirtualVolumeData_RedundancyType = 1
+	// Zone-redundant storage
+	EntityDTO_VirtualVolumeData_ZRS EntityDTO_VirtualVolumeData_RedundancyType = 2
+	// Geo-redundant storage
+	EntityDTO_VirtualVolumeData_GRS EntityDTO_VirtualVolumeData_RedundancyType = 3
+	// Read-access geo-redundant storage
+	EntityDTO_VirtualVolumeData_RAGRS EntityDTO_VirtualVolumeData_RedundancyType = 4
+)
+
+var EntityDTO_VirtualVolumeData_RedundancyType_name = map[int32]string{
+	1: "LRS",
+	2: "ZRS",
+	3: "GRS",
+	4: "RAGRS",
+}
+
+var EntityDTO_VirtualVolumeData_RedundancyType_value = map[string]int32{
+	"LRS":   1,
+	"ZRS":   2,
+	"GRS":   3,
+	"RAGRS": 4,
+}
+
+func (x EntityDTO_VirtualVolumeData_RedundancyType) Enum() *EntityDTO_VirtualVolumeData_RedundancyType {
+	p := new(EntityDTO_VirtualVolumeData_RedundancyType)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_VirtualVolumeData_RedundancyType) String() string {
+	return proto.EnumName(EntityDTO_VirtualVolumeData_RedundancyType_name, int32(x))
+}
+
+func (x *EntityDTO_VirtualVolumeData_RedundancyType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_VirtualVolumeData_RedundancyType_value, data, "EntityDTO_VirtualVolumeData_RedundancyType")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_VirtualVolumeData_RedundancyType(value)
+	return nil
+}
+
+func (EntityDTO_VirtualVolumeData_RedundancyType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 15, 1}
+}
 
 type EntityDTO_VirtualMachineData_VMBillingType int32
 
@@ -603,6 +1063,7 @@ var EntityDTO_VirtualMachineData_VMBillingType_name = map[int32]string{
 	3: "RESERVED",
 	4: "HYBRID",
 }
+
 var EntityDTO_VirtualMachineData_VMBillingType_value = map[string]int32{
 	"ONDEMAND":  0,
 	"BIDDING":   1,
@@ -616,9 +1077,11 @@ func (x EntityDTO_VirtualMachineData_VMBillingType) Enum() *EntityDTO_VirtualMac
 	*p = x
 	return p
 }
+
 func (x EntityDTO_VirtualMachineData_VMBillingType) String() string {
 	return proto.EnumName(EntityDTO_VirtualMachineData_VMBillingType_name, int32(x))
 }
+
 func (x *EntityDTO_VirtualMachineData_VMBillingType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_VirtualMachineData_VMBillingType_value, data, "EntityDTO_VirtualMachineData_VMBillingType")
 	if err != nil {
@@ -627,8 +1090,139 @@ func (x *EntityDTO_VirtualMachineData_VMBillingType) UnmarshalJSON(data []byte) 
 	*x = EntityDTO_VirtualMachineData_VMBillingType(value)
 	return nil
 }
+
 func (EntityDTO_VirtualMachineData_VMBillingType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 7, 0}
+	return fileDescriptor_2233245ab49fede8, []int{0, 16, 0}
+}
+
+// when desktops are created
+type EntityDTO_DesktopPoolData_DesktopPoolProvisionType int32
+
+const (
+	// when users connect
+	EntityDTO_DesktopPoolData_ON_DEMAND EntityDTO_DesktopPoolData_DesktopPoolProvisionType = 0
+	// when pool is created
+	EntityDTO_DesktopPoolData_UPFRONT EntityDTO_DesktopPoolData_DesktopPoolProvisionType = 1
+)
+
+var EntityDTO_DesktopPoolData_DesktopPoolProvisionType_name = map[int32]string{
+	0: "ON_DEMAND",
+	1: "UPFRONT",
+}
+
+var EntityDTO_DesktopPoolData_DesktopPoolProvisionType_value = map[string]int32{
+	"ON_DEMAND": 0,
+	"UPFRONT":   1,
+}
+
+func (x EntityDTO_DesktopPoolData_DesktopPoolProvisionType) Enum() *EntityDTO_DesktopPoolData_DesktopPoolProvisionType {
+	p := new(EntityDTO_DesktopPoolData_DesktopPoolProvisionType)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_DesktopPoolData_DesktopPoolProvisionType) String() string {
+	return proto.EnumName(EntityDTO_DesktopPoolData_DesktopPoolProvisionType_name, int32(x))
+}
+
+func (x *EntityDTO_DesktopPoolData_DesktopPoolProvisionType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_DesktopPoolData_DesktopPoolProvisionType_value, data, "EntityDTO_DesktopPoolData_DesktopPoolProvisionType")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_DesktopPoolData_DesktopPoolProvisionType(value)
+	return nil
+}
+
+func (EntityDTO_DesktopPoolData_DesktopPoolProvisionType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 37, 0}
+}
+
+// type (engine) of a desktop created in the pool
+type EntityDTO_DesktopPoolData_DesktopPoolCloneType int32
+
+const (
+	EntityDTO_DesktopPoolData_FULL    EntityDTO_DesktopPoolData_DesktopPoolCloneType = 0
+	EntityDTO_DesktopPoolData_LINKED  EntityDTO_DesktopPoolData_DesktopPoolCloneType = 1
+	EntityDTO_DesktopPoolData_INSTANT EntityDTO_DesktopPoolData_DesktopPoolCloneType = 2
+)
+
+var EntityDTO_DesktopPoolData_DesktopPoolCloneType_name = map[int32]string{
+	0: "FULL",
+	1: "LINKED",
+	2: "INSTANT",
+}
+
+var EntityDTO_DesktopPoolData_DesktopPoolCloneType_value = map[string]int32{
+	"FULL":    0,
+	"LINKED":  1,
+	"INSTANT": 2,
+}
+
+func (x EntityDTO_DesktopPoolData_DesktopPoolCloneType) Enum() *EntityDTO_DesktopPoolData_DesktopPoolCloneType {
+	p := new(EntityDTO_DesktopPoolData_DesktopPoolCloneType)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_DesktopPoolData_DesktopPoolCloneType) String() string {
+	return proto.EnumName(EntityDTO_DesktopPoolData_DesktopPoolCloneType_name, int32(x))
+}
+
+func (x *EntityDTO_DesktopPoolData_DesktopPoolCloneType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_DesktopPoolData_DesktopPoolCloneType_value, data, "EntityDTO_DesktopPoolData_DesktopPoolCloneType")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_DesktopPoolData_DesktopPoolCloneType(value)
+	return nil
+}
+
+func (EntityDTO_DesktopPoolData_DesktopPoolCloneType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 37, 1}
+}
+
+// how desktops are allocated to users
+type EntityDTO_DesktopPoolData_DesktopPoolAssignmentType int32
+
+const (
+	// random desktop is assigned
+	EntityDTO_DesktopPoolData_DYNAMIC EntityDTO_DesktopPoolData_DesktopPoolAssignmentType = 0
+	// same desktop every time after re-connect
+	EntityDTO_DesktopPoolData_PERSISTENT EntityDTO_DesktopPoolData_DesktopPoolAssignmentType = 1
+)
+
+var EntityDTO_DesktopPoolData_DesktopPoolAssignmentType_name = map[int32]string{
+	0: "DYNAMIC",
+	1: "PERSISTENT",
+}
+
+var EntityDTO_DesktopPoolData_DesktopPoolAssignmentType_value = map[string]int32{
+	"DYNAMIC":    0,
+	"PERSISTENT": 1,
+}
+
+func (x EntityDTO_DesktopPoolData_DesktopPoolAssignmentType) Enum() *EntityDTO_DesktopPoolData_DesktopPoolAssignmentType {
+	p := new(EntityDTO_DesktopPoolData_DesktopPoolAssignmentType)
+	*p = x
+	return p
+}
+
+func (x EntityDTO_DesktopPoolData_DesktopPoolAssignmentType) String() string {
+	return proto.EnumName(EntityDTO_DesktopPoolData_DesktopPoolAssignmentType_name, int32(x))
+}
+
+func (x *EntityDTO_DesktopPoolData_DesktopPoolAssignmentType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(EntityDTO_DesktopPoolData_DesktopPoolAssignmentType_value, data, "EntityDTO_DesktopPoolData_DesktopPoolAssignmentType")
+	if err != nil {
+		return err
+	}
+	*x = EntityDTO_DesktopPoolData_DesktopPoolAssignmentType(value)
+	return nil
+}
+
+func (EntityDTO_DesktopPoolData_DesktopPoolAssignmentType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 37, 2}
 }
 
 type EntityDTO_ReservedInstanceData_InstanceTenancy int32
@@ -644,6 +1238,7 @@ var EntityDTO_ReservedInstanceData_InstanceTenancy_name = map[int32]string{
 	2: "DEDICATED",
 	3: "HOST",
 }
+
 var EntityDTO_ReservedInstanceData_InstanceTenancy_value = map[string]int32{
 	"DEFAULT":   1,
 	"DEDICATED": 2,
@@ -655,9 +1250,11 @@ func (x EntityDTO_ReservedInstanceData_InstanceTenancy) Enum() *EntityDTO_Reserv
 	*p = x
 	return p
 }
+
 func (x EntityDTO_ReservedInstanceData_InstanceTenancy) String() string {
 	return proto.EnumName(EntityDTO_ReservedInstanceData_InstanceTenancy_name, int32(x))
 }
+
 func (x *EntityDTO_ReservedInstanceData_InstanceTenancy) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_ReservedInstanceData_InstanceTenancy_value, data, "EntityDTO_ReservedInstanceData_InstanceTenancy")
 	if err != nil {
@@ -666,8 +1263,9 @@ func (x *EntityDTO_ReservedInstanceData_InstanceTenancy) UnmarshalJSON(data []by
 	*x = EntityDTO_ReservedInstanceData_InstanceTenancy(value)
 	return nil
 }
+
 func (EntityDTO_ReservedInstanceData_InstanceTenancy) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 31, 0}
+	return fileDescriptor_2233245ab49fede8, []int{0, 55, 0}
 }
 
 type EntityDTO_ReservedInstanceData_OfferingClass int32
@@ -681,6 +1279,7 @@ var EntityDTO_ReservedInstanceData_OfferingClass_name = map[int32]string{
 	1: "STANDARD",
 	2: "CONVERTIBLE",
 }
+
 var EntityDTO_ReservedInstanceData_OfferingClass_value = map[string]int32{
 	"STANDARD":    1,
 	"CONVERTIBLE": 2,
@@ -691,9 +1290,11 @@ func (x EntityDTO_ReservedInstanceData_OfferingClass) Enum() *EntityDTO_Reserved
 	*p = x
 	return p
 }
+
 func (x EntityDTO_ReservedInstanceData_OfferingClass) String() string {
 	return proto.EnumName(EntityDTO_ReservedInstanceData_OfferingClass_name, int32(x))
 }
+
 func (x *EntityDTO_ReservedInstanceData_OfferingClass) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_ReservedInstanceData_OfferingClass_value, data, "EntityDTO_ReservedInstanceData_OfferingClass")
 	if err != nil {
@@ -702,8 +1303,9 @@ func (x *EntityDTO_ReservedInstanceData_OfferingClass) UnmarshalJSON(data []byte
 	*x = EntityDTO_ReservedInstanceData_OfferingClass(value)
 	return nil
 }
+
 func (EntityDTO_ReservedInstanceData_OfferingClass) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 31, 1}
+	return fileDescriptor_2233245ab49fede8, []int{0, 55, 1}
 }
 
 type EntityDTO_ReservedInstanceData_OfferingType int32
@@ -719,6 +1321,7 @@ var EntityDTO_ReservedInstanceData_OfferingType_name = map[int32]string{
 	2: "PARTIAL_UPFRONT",
 	3: "NO_UPFRONT",
 }
+
 var EntityDTO_ReservedInstanceData_OfferingType_value = map[string]int32{
 	"ALL_UPFRONT":     1,
 	"PARTIAL_UPFRONT": 2,
@@ -730,9 +1333,11 @@ func (x EntityDTO_ReservedInstanceData_OfferingType) Enum() *EntityDTO_ReservedI
 	*p = x
 	return p
 }
+
 func (x EntityDTO_ReservedInstanceData_OfferingType) String() string {
 	return proto.EnumName(EntityDTO_ReservedInstanceData_OfferingType_name, int32(x))
 }
+
 func (x *EntityDTO_ReservedInstanceData_OfferingType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_ReservedInstanceData_OfferingType_value, data, "EntityDTO_ReservedInstanceData_OfferingType")
 	if err != nil {
@@ -741,42 +1346,53 @@ func (x *EntityDTO_ReservedInstanceData_OfferingType) UnmarshalJSON(data []byte)
 	*x = EntityDTO_ReservedInstanceData_OfferingType(value)
 	return nil
 }
+
 func (EntityDTO_ReservedInstanceData_OfferingType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 31, 2}
+	return fileDescriptor_2233245ab49fede8, []int{0, 55, 2}
 }
 
 type EntityDTO_ReservedInstanceData_Platform int32
 
 const (
-	EntityDTO_ReservedInstanceData_UNKNOWN                       EntityDTO_ReservedInstanceData_Platform = 1
-	EntityDTO_ReservedInstanceData_LINUX                         EntityDTO_ReservedInstanceData_Platform = 2
-	EntityDTO_ReservedInstanceData_RHEL                          EntityDTO_ReservedInstanceData_Platform = 3
-	EntityDTO_ReservedInstanceData_SUSE                          EntityDTO_ReservedInstanceData_Platform = 4
-	EntityDTO_ReservedInstanceData_WINDOWS                       EntityDTO_ReservedInstanceData_Platform = 5
-	EntityDTO_ReservedInstanceData_WINDOWS_SQL_STANDARD          EntityDTO_ReservedInstanceData_Platform = 6
-	EntityDTO_ReservedInstanceData_WINDOWS_SQL_WEB               EntityDTO_ReservedInstanceData_Platform = 7
-	EntityDTO_ReservedInstanceData_WINDOWS_SQL_SERVER_ENTERPRISE EntityDTO_ReservedInstanceData_Platform = 8
+	EntityDTO_ReservedInstanceData_UNKNOWN                            EntityDTO_ReservedInstanceData_Platform = 1
+	EntityDTO_ReservedInstanceData_LINUX                              EntityDTO_ReservedInstanceData_Platform = 2
+	EntityDTO_ReservedInstanceData_RHEL                               EntityDTO_ReservedInstanceData_Platform = 3
+	EntityDTO_ReservedInstanceData_SUSE                               EntityDTO_ReservedInstanceData_Platform = 4
+	EntityDTO_ReservedInstanceData_WINDOWS                            EntityDTO_ReservedInstanceData_Platform = 5
+	EntityDTO_ReservedInstanceData_WINDOWS_WITH_SQL_STANDARD          EntityDTO_ReservedInstanceData_Platform = 6
+	EntityDTO_ReservedInstanceData_WINDOWS_WITH_SQL_WEB               EntityDTO_ReservedInstanceData_Platform = 7
+	EntityDTO_ReservedInstanceData_WINDOWS_WITH_SQL_SERVER_ENTERPRISE EntityDTO_ReservedInstanceData_Platform = 8
+	EntityDTO_ReservedInstanceData_LINUX_WITH_SQL_STANDARD            EntityDTO_ReservedInstanceData_Platform = 9
+	EntityDTO_ReservedInstanceData_LINUX_WITH_SQL_WEB                 EntityDTO_ReservedInstanceData_Platform = 10
+	EntityDTO_ReservedInstanceData_LINUX_WITH_SQL_SERVER_ENTERPRISE   EntityDTO_ReservedInstanceData_Platform = 11
 )
 
 var EntityDTO_ReservedInstanceData_Platform_name = map[int32]string{
-	1: "UNKNOWN",
-	2: "LINUX",
-	3: "RHEL",
-	4: "SUSE",
-	5: "WINDOWS",
-	6: "WINDOWS_SQL_STANDARD",
-	7: "WINDOWS_SQL_WEB",
-	8: "WINDOWS_SQL_SERVER_ENTERPRISE",
+	1:  "UNKNOWN",
+	2:  "LINUX",
+	3:  "RHEL",
+	4:  "SUSE",
+	5:  "WINDOWS",
+	6:  "WINDOWS_WITH_SQL_STANDARD",
+	7:  "WINDOWS_WITH_SQL_WEB",
+	8:  "WINDOWS_WITH_SQL_SERVER_ENTERPRISE",
+	9:  "LINUX_WITH_SQL_STANDARD",
+	10: "LINUX_WITH_SQL_WEB",
+	11: "LINUX_WITH_SQL_SERVER_ENTERPRISE",
 }
+
 var EntityDTO_ReservedInstanceData_Platform_value = map[string]int32{
-	"UNKNOWN":                       1,
-	"LINUX":                         2,
-	"RHEL":                          3,
-	"SUSE":                          4,
-	"WINDOWS":                       5,
-	"WINDOWS_SQL_STANDARD":          6,
-	"WINDOWS_SQL_WEB":               7,
-	"WINDOWS_SQL_SERVER_ENTERPRISE": 8,
+	"UNKNOWN":                            1,
+	"LINUX":                              2,
+	"RHEL":                               3,
+	"SUSE":                               4,
+	"WINDOWS":                            5,
+	"WINDOWS_WITH_SQL_STANDARD":          6,
+	"WINDOWS_WITH_SQL_WEB":               7,
+	"WINDOWS_WITH_SQL_SERVER_ENTERPRISE": 8,
+	"LINUX_WITH_SQL_STANDARD":            9,
+	"LINUX_WITH_SQL_WEB":                 10,
+	"LINUX_WITH_SQL_SERVER_ENTERPRISE":   11,
 }
 
 func (x EntityDTO_ReservedInstanceData_Platform) Enum() *EntityDTO_ReservedInstanceData_Platform {
@@ -784,9 +1400,11 @@ func (x EntityDTO_ReservedInstanceData_Platform) Enum() *EntityDTO_ReservedInsta
 	*p = x
 	return p
 }
+
 func (x EntityDTO_ReservedInstanceData_Platform) String() string {
 	return proto.EnumName(EntityDTO_ReservedInstanceData_Platform_name, int32(x))
 }
+
 func (x *EntityDTO_ReservedInstanceData_Platform) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(EntityDTO_ReservedInstanceData_Platform_value, data, "EntityDTO_ReservedInstanceData_Platform")
 	if err != nil {
@@ -795,8 +1413,167 @@ func (x *EntityDTO_ReservedInstanceData_Platform) UnmarshalJSON(data []byte) err
 	*x = EntityDTO_ReservedInstanceData_Platform(value)
 	return nil
 }
+
 func (EntityDTO_ReservedInstanceData_Platform) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 31, 3}
+	return fileDescriptor_2233245ab49fede8, []int{0, 55, 3}
+}
+
+// Type of connection that this message is representing. Different types means different
+// semantics
+type ConnectedEntity_ConnectionType int32
+
+const (
+	// Normal connection is a basic topology connection between two entities,
+	// which only serves the purpose of traversability from the one to the other.
+	// No other more precise semantics is implied.
+	//
+	// There is no direction in this connection; it should be understood as symmetrical.
+	// Examples of normal connections:
+	// (a) the connection between a compute tier and a storage tier
+	// (b) the connection between a VM and a virtual volume
+	// (c) the connection between a virtual volume and the availability zone it resides in
+	//     (changing the semantics of this case is to be deferred for the future)
+	//
+	// Record this relationship in only  one of the records of the two connected entities.
+	// (a) The connection between compute and storage tier
+	//     appears in the compute tier record
+	// (b) the connection between VM and volume appears in the VM record
+	// (c) the connection between volume and zone appears in the volume record
+	ConnectedEntity_NORMAL_CONNECTION ConnectedEntity_ConnectionType = 1
+	// Ownership is used when two entities not only are topologically connected,
+	// but, in addition, one of the entities (the owned entity) cannot meaningfully exist
+	// without the other (the owner). Examples of ownerships:
+	// (a) Business accounts own workloads in the cloud (e.g., VMs, DBs)
+	//     and applications
+	// (b) Business accounts can own sub-accounts
+	// (c) Regions own availability zones
+	// (d) Cloud services own tiers
+	//
+	// The relationship is directional and should never form circles.
+	// Each entity can have at most one owner.
+	//
+	// Always represent the connection in the record of the owner.
+	ConnectedEntity_OWNS_CONNECTION ConnectedEntity_ConnectionType = 2
+	// Aggregation is a directional relationship between two entities, the "aggregator"
+	// and the "aggregated entity". It denotes a notion of containment (e.g.,
+	// the aggregated can be understood to be "inside" the aggregator), but it is less
+	// strict than ownership, in two ways:
+	// (a) An entity can have more than one aggregator
+	// (b) An aggregated entity can exist meaningfully without its aggregator(s)
+	// Aggregation should not form circles in the topology.
+	//
+	// Examples of aggregation:
+	// (a) Availability zones aggregate cloud workloads
+	// (b) In the absence of availability zones (e.g., Azure), regions aggregate cloud workloads
+	// (c) Regions aggregate tiers
+	// (d) Datacenters aggregate storage and PMs
+	//
+	// The aggregation connection should appears always in the record of the
+	// *aggregated entity*. This is the opposite of the convention that we use for ownership.
+	// The reason for this inconsistent convention is to:
+	// 1. Be consistent with the direction of the relationship in the TopologyDTO.
+	// 2. When a probe has a preference for which way it prefers to express the relationship,
+	//    it tends to be easier to express from the aggregated to the aggregator.
+	ConnectedEntity_AGGREGATED_BY_CONNECTION ConnectedEntity_ConnectionType = 3
+	// Controlling is a directional relationship between two entities, the "controller"
+	// and the "controlled entity".The semantics of a CONTROLLED_BY_CONNECTION are that the
+	// "controlled" entities participate in the market and the market generates the action on these
+	// "controlled" entities, but the action is actually executed on the "controller" entity.
+	// The controller contains the information like size, number of instances.
+	// When entities are controlled by controller:
+	// 1. A controller may maintain the "desired state" for the controlled entities and will continuously
+	// drive the controlled entities toward that desired state. Executing an action on the controlled entity
+	// without adjusting the controller's desired state is futile because the controller will change the entity back.
+	// 2. Often controlled entities are created as identical replicas specified by a configuration
+	// known to and managed by the controller. When the market generates actions for these replicas, they may be
+	// merged together on the controller where they are executed to minimize disruption and to make the actions
+	// more understandable to the user in the UI.
+	// Examples of Controls:
+	// (a) WorkloadController controls the ContainerSpec
+	// (b) AWS Auto-scaling-group controls the individual VMs under it
+	// (c) Azure ScaleSet controls the individual VMs under it
+	ConnectedEntity_CONTROLLED_BY_CONNECTION ConnectedEntity_ConnectionType = 4
+)
+
+var ConnectedEntity_ConnectionType_name = map[int32]string{
+	1: "NORMAL_CONNECTION",
+	2: "OWNS_CONNECTION",
+	3: "AGGREGATED_BY_CONNECTION",
+	4: "CONTROLLED_BY_CONNECTION",
+}
+
+var ConnectedEntity_ConnectionType_value = map[string]int32{
+	"NORMAL_CONNECTION":        1,
+	"OWNS_CONNECTION":          2,
+	"AGGREGATED_BY_CONNECTION": 3,
+	"CONTROLLED_BY_CONNECTION": 4,
+}
+
+func (x ConnectedEntity_ConnectionType) Enum() *ConnectedEntity_ConnectionType {
+	p := new(ConnectedEntity_ConnectionType)
+	*p = x
+	return p
+}
+
+func (x ConnectedEntity_ConnectionType) String() string {
+	return proto.EnumName(ConnectedEntity_ConnectionType_name, int32(x))
+}
+
+func (x *ConnectedEntity_ConnectionType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(ConnectedEntity_ConnectionType_value, data, "ConnectedEntity_ConnectionType")
+	if err != nil {
+		return err
+	}
+	*x = ConnectedEntity_ConnectionType(value)
+	return nil
+}
+
+func (ConnectedEntity_ConnectionType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{1, 0}
+}
+
+type PricingIdentifier_PricingIdentifierName int32
+
+const (
+	// The id of a price offering an Azure account is using; used to identify Azure
+	// subscriptions pricing
+	PricingIdentifier_OFFER_ID PricingIdentifier_PricingIdentifierName = 1
+	// The number associated with an Azure enterprise agreement; used to identify
+	// Azure subscriptions pricing
+	PricingIdentifier_ENROLLMENT_NUMBER PricingIdentifier_PricingIdentifierName = 2
+)
+
+var PricingIdentifier_PricingIdentifierName_name = map[int32]string{
+	1: "OFFER_ID",
+	2: "ENROLLMENT_NUMBER",
+}
+
+var PricingIdentifier_PricingIdentifierName_value = map[string]int32{
+	"OFFER_ID":          1,
+	"ENROLLMENT_NUMBER": 2,
+}
+
+func (x PricingIdentifier_PricingIdentifierName) Enum() *PricingIdentifier_PricingIdentifierName {
+	p := new(PricingIdentifier_PricingIdentifierName)
+	*p = x
+	return p
+}
+
+func (x PricingIdentifier_PricingIdentifierName) String() string {
+	return proto.EnumName(PricingIdentifier_PricingIdentifierName_name, int32(x))
+}
+
+func (x *PricingIdentifier_PricingIdentifierName) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(PricingIdentifier_PricingIdentifierName_value, data, "PricingIdentifier_PricingIdentifierName")
+	if err != nil {
+		return err
+	}
+	*x = PricingIdentifier_PricingIdentifierName(value)
+	return nil
+}
+
+func (PricingIdentifier_PricingIdentifierName) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{2, 0}
 }
 
 type CommodityDTO_CommodityType int32
@@ -873,7 +1650,7 @@ const (
 	CommodityDTO_TRANSACTION_LOG            CommodityDTO_CommodityType = 68
 	CommodityDTO_DB_CACHE_HIT_RATE          CommodityDTO_CommodityType = 69
 	CommodityDTO_HOT_STORAGE                CommodityDTO_CommodityType = 70
-	CommodityDTO_COLLECTION_TIME            CommodityDTO_CommodityType = 71
+	CommodityDTO_COLLECTION_TIME            CommodityDTO_CommodityType = 71 // Deprecated: Do not use.
 	CommodityDTO_BUFFER_COMMODITY           CommodityDTO_CommodityType = 72
 	CommodityDTO_SOFTWARE_LICENSE_COMMODITY CommodityDTO_CommodityType = 73
 	CommodityDTO_VMPM_ACCESS                CommodityDTO_CommodityType = 74
@@ -888,6 +1665,35 @@ const (
 	CommodityDTO_TENANCY_ACCESS             CommodityDTO_CommodityType = 83
 	CommodityDTO_LICENSE_ACCESS             CommodityDTO_CommodityType = 84
 	CommodityDTO_TEMPLATE_ACCESS            CommodityDTO_CommodityType = 85
+	CommodityDTO_NUM_DISK                   CommodityDTO_CommodityType = 86
+	CommodityDTO_ZONE                       CommodityDTO_CommodityType = 87
+	CommodityDTO_ACTIVE_SESSIONS            CommodityDTO_CommodityType = 88
+	CommodityDTO_POOL_CPU                   CommodityDTO_CommodityType = 89
+	CommodityDTO_POOL_MEM                   CommodityDTO_CommodityType = 90
+	CommodityDTO_POOL_STORAGE               CommodityDTO_CommodityType = 91
+	CommodityDTO_IMAGE_CPU                  CommodityDTO_CommodityType = 92
+	CommodityDTO_IMAGE_MEM                  CommodityDTO_CommodityType = 93
+	CommodityDTO_IMAGE_STORAGE              CommodityDTO_CommodityType = 94
+	CommodityDTO_INSTANCE_DISK_SIZE         CommodityDTO_CommodityType = 95
+	CommodityDTO_INSTANCE_DISK_TYPE         CommodityDTO_CommodityType = 96
+	CommodityDTO_BURST_BALANCE              CommodityDTO_CommodityType = 97
+	CommodityDTO_TEMPLATE_FAMILY            CommodityDTO_CommodityType = 98
+	CommodityDTO_DESIRED_COUPON             CommodityDTO_CommodityType = 99
+	CommodityDTO_VCPU_REQUEST               CommodityDTO_CommodityType = 100
+	CommodityDTO_VMEM_REQUEST               CommodityDTO_CommodityType = 101
+	CommodityDTO_CPU_REQUEST_ALLOCATION     CommodityDTO_CommodityType = 102 // Deprecated: Do not use.
+	CommodityDTO_MEM_REQUEST_ALLOCATION     CommodityDTO_CommodityType = 103 // Deprecated: Do not use.
+	CommodityDTO_NETWORK_INTERFACE_COUNT    CommodityDTO_CommodityType = 104
+	CommodityDTO_BICLIQUE                   CommodityDTO_CommodityType = 105
+	CommodityDTO_VCPU_LIMIT_QUOTA           CommodityDTO_CommodityType = 106
+	CommodityDTO_VMEM_LIMIT_QUOTA           CommodityDTO_CommodityType = 107
+	CommodityDTO_VCPU_REQUEST_QUOTA         CommodityDTO_CommodityType = 108
+	CommodityDTO_VMEM_REQUEST_QUOTA         CommodityDTO_CommodityType = 109
+	CommodityDTO_NUM_VCORE                  CommodityDTO_CommodityType = 110
+	CommodityDTO_REMAINING_GC_CAPACITY      CommodityDTO_CommodityType = 111
+	//custom KPI metric that can be pushed into Turbo
+	//to use as an additional measure of application performance
+	CommodityDTO_KPI CommodityDTO_CommodityType = 112
 	// 2047 is the largest tag value encoded in 2 bytes
 	CommodityDTO_UNKNOWN CommodityDTO_CommodityType = 2047
 )
@@ -979,8 +1785,36 @@ var CommodityDTO_CommodityType_name = map[int32]string{
 	83:   "TENANCY_ACCESS",
 	84:   "LICENSE_ACCESS",
 	85:   "TEMPLATE_ACCESS",
+	86:   "NUM_DISK",
+	87:   "ZONE",
+	88:   "ACTIVE_SESSIONS",
+	89:   "POOL_CPU",
+	90:   "POOL_MEM",
+	91:   "POOL_STORAGE",
+	92:   "IMAGE_CPU",
+	93:   "IMAGE_MEM",
+	94:   "IMAGE_STORAGE",
+	95:   "INSTANCE_DISK_SIZE",
+	96:   "INSTANCE_DISK_TYPE",
+	97:   "BURST_BALANCE",
+	98:   "TEMPLATE_FAMILY",
+	99:   "DESIRED_COUPON",
+	100:  "VCPU_REQUEST",
+	101:  "VMEM_REQUEST",
+	102:  "CPU_REQUEST_ALLOCATION",
+	103:  "MEM_REQUEST_ALLOCATION",
+	104:  "NETWORK_INTERFACE_COUNT",
+	105:  "BICLIQUE",
+	106:  "VCPU_LIMIT_QUOTA",
+	107:  "VMEM_LIMIT_QUOTA",
+	108:  "VCPU_REQUEST_QUOTA",
+	109:  "VMEM_REQUEST_QUOTA",
+	110:  "NUM_VCORE",
+	111:  "REMAINING_GC_CAPACITY",
+	112:  "KPI",
 	2047: "UNKNOWN",
 }
+
 var CommodityDTO_CommodityType_value = map[string]int32{
 	"CLUSTER":                    0,
 	"THREADS":                    1,
@@ -1068,6 +1902,33 @@ var CommodityDTO_CommodityType_value = map[string]int32{
 	"TENANCY_ACCESS":             83,
 	"LICENSE_ACCESS":             84,
 	"TEMPLATE_ACCESS":            85,
+	"NUM_DISK":                   86,
+	"ZONE":                       87,
+	"ACTIVE_SESSIONS":            88,
+	"POOL_CPU":                   89,
+	"POOL_MEM":                   90,
+	"POOL_STORAGE":               91,
+	"IMAGE_CPU":                  92,
+	"IMAGE_MEM":                  93,
+	"IMAGE_STORAGE":              94,
+	"INSTANCE_DISK_SIZE":         95,
+	"INSTANCE_DISK_TYPE":         96,
+	"BURST_BALANCE":              97,
+	"TEMPLATE_FAMILY":            98,
+	"DESIRED_COUPON":             99,
+	"VCPU_REQUEST":               100,
+	"VMEM_REQUEST":               101,
+	"CPU_REQUEST_ALLOCATION":     102,
+	"MEM_REQUEST_ALLOCATION":     103,
+	"NETWORK_INTERFACE_COUNT":    104,
+	"BICLIQUE":                   105,
+	"VCPU_LIMIT_QUOTA":           106,
+	"VMEM_LIMIT_QUOTA":           107,
+	"VCPU_REQUEST_QUOTA":         108,
+	"VMEM_REQUEST_QUOTA":         109,
+	"NUM_VCORE":                  110,
+	"REMAINING_GC_CAPACITY":      111,
+	"KPI":                        112,
 	"UNKNOWN":                    2047,
 }
 
@@ -1076,9 +1937,11 @@ func (x CommodityDTO_CommodityType) Enum() *CommodityDTO_CommodityType {
 	*p = x
 	return p
 }
+
 func (x CommodityDTO_CommodityType) String() string {
 	return proto.EnumName(CommodityDTO_CommodityType_name, int32(x))
 }
+
 func (x *CommodityDTO_CommodityType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(CommodityDTO_CommodityType_value, data, "CommodityDTO_CommodityType")
 	if err != nil {
@@ -1087,8 +1950,66 @@ func (x *CommodityDTO_CommodityType) UnmarshalJSON(data []byte) error {
 	*x = CommodityDTO_CommodityType(value)
 	return nil
 }
+
 func (CommodityDTO_CommodityType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{1, 0}
+	return fileDescriptor_2233245ab49fede8, []int{3, 0}
+}
+
+// Enumerates supported Group types
+type GroupDTO_GroupType int32
+
+const (
+	GroupDTO_REGULAR  GroupDTO_GroupType = 0
+	GroupDTO_RESOURCE GroupDTO_GroupType = 2
+	// A host compute cluster is comprised of physical machines.
+	GroupDTO_COMPUTE_HOST_CLUSTER GroupDTO_GroupType = 3
+	// A virtual machine compute cluster is comprised of virtual machines.
+	GroupDTO_COMPUTE_VIRTUAL_MACHINE_CLUSTER GroupDTO_GroupType = 4
+	// A storage cluster is comprised of storages.
+	GroupDTO_STORAGE_CLUSTER GroupDTO_GroupType = 5
+	// A billing family is comprised of billing accounts.
+	GroupDTO_BILLING_FAMILY GroupDTO_GroupType = 6
+)
+
+var GroupDTO_GroupType_name = map[int32]string{
+	0: "REGULAR",
+	2: "RESOURCE",
+	3: "COMPUTE_HOST_CLUSTER",
+	4: "COMPUTE_VIRTUAL_MACHINE_CLUSTER",
+	5: "STORAGE_CLUSTER",
+	6: "BILLING_FAMILY",
+}
+
+var GroupDTO_GroupType_value = map[string]int32{
+	"REGULAR":                         0,
+	"RESOURCE":                        2,
+	"COMPUTE_HOST_CLUSTER":            3,
+	"COMPUTE_VIRTUAL_MACHINE_CLUSTER": 4,
+	"STORAGE_CLUSTER":                 5,
+	"BILLING_FAMILY":                  6,
+}
+
+func (x GroupDTO_GroupType) Enum() *GroupDTO_GroupType {
+	p := new(GroupDTO_GroupType)
+	*p = x
+	return p
+}
+
+func (x GroupDTO_GroupType) String() string {
+	return proto.EnumName(GroupDTO_GroupType_name, int32(x))
+}
+
+func (x *GroupDTO_GroupType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(GroupDTO_GroupType_value, data, "GroupDTO_GroupType")
+	if err != nil {
+		return err
+	}
+	*x = GroupDTO_GroupType(value)
+	return nil
+}
+
+func (GroupDTO_GroupType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 0}
 }
 
 // Enum type notifying constraint's type
@@ -1099,9 +2020,10 @@ const (
 	GroupDTO_BUYER_SELLER_ANTI_AFFINITY GroupDTO_ConstraintType = 1
 	GroupDTO_BUYER_BUYER_AFFINITY       GroupDTO_ConstraintType = 2
 	GroupDTO_BUYER_BUYER_ANTI_AFFINITY  GroupDTO_ConstraintType = 3
-	GroupDTO_CLUSTER                    GroupDTO_ConstraintType = 4
+	GroupDTO_CLUSTER                    GroupDTO_ConstraintType = 4 // Deprecated: Do not use.
 	GroupDTO_MERGE                      GroupDTO_ConstraintType = 5
 	GroupDTO_SERVICE_LEVEL_CLUSTER      GroupDTO_ConstraintType = 6
+	GroupDTO_TEMPLATE_EXCLUSION         GroupDTO_ConstraintType = 7
 )
 
 var GroupDTO_ConstraintType_name = map[int32]string{
@@ -1112,7 +2034,9 @@ var GroupDTO_ConstraintType_name = map[int32]string{
 	4: "CLUSTER",
 	5: "MERGE",
 	6: "SERVICE_LEVEL_CLUSTER",
+	7: "TEMPLATE_EXCLUSION",
 }
+
 var GroupDTO_ConstraintType_value = map[string]int32{
 	"BUYER_SELLER_AFFINITY":      0,
 	"BUYER_SELLER_ANTI_AFFINITY": 1,
@@ -1121,6 +2045,7 @@ var GroupDTO_ConstraintType_value = map[string]int32{
 	"CLUSTER":                    4,
 	"MERGE":                      5,
 	"SERVICE_LEVEL_CLUSTER":      6,
+	"TEMPLATE_EXCLUSION":         7,
 }
 
 func (x GroupDTO_ConstraintType) Enum() *GroupDTO_ConstraintType {
@@ -1128,9 +2053,11 @@ func (x GroupDTO_ConstraintType) Enum() *GroupDTO_ConstraintType {
 	*p = x
 	return p
 }
+
 func (x GroupDTO_ConstraintType) String() string {
 	return proto.EnumName(GroupDTO_ConstraintType_name, int32(x))
 }
+
 func (x *GroupDTO_ConstraintType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(GroupDTO_ConstraintType_value, data, "GroupDTO_ConstraintType")
 	if err != nil {
@@ -1139,7 +2066,10 @@ func (x *GroupDTO_ConstraintType) UnmarshalJSON(data []byte) error {
 	*x = GroupDTO_ConstraintType(value)
 	return nil
 }
-func (GroupDTO_ConstraintType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{3, 0} }
+
+func (GroupDTO_ConstraintType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 1}
+}
 
 // Enum notifying expression type used to match entities' property value
 // with target value in SelectionSpec
@@ -1180,6 +2110,7 @@ var GroupDTO_SelectionSpec_ExpressionType_name = map[int32]string{
 	13: "LIST_FULL_CONTAINS",
 	14: "LIST_FULL_CONTAINED_BY",
 }
+
 var GroupDTO_SelectionSpec_ExpressionType_value = map[string]int32{
 	"EQUAL_TO":                 0,
 	"NOT_EQUAL_TO":             1,
@@ -1203,9 +2134,11 @@ func (x GroupDTO_SelectionSpec_ExpressionType) Enum() *GroupDTO_SelectionSpec_Ex
 	*p = x
 	return p
 }
+
 func (x GroupDTO_SelectionSpec_ExpressionType) String() string {
 	return proto.EnumName(GroupDTO_SelectionSpec_ExpressionType_name, int32(x))
 }
+
 func (x *GroupDTO_SelectionSpec_ExpressionType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(GroupDTO_SelectionSpec_ExpressionType_value, data, "GroupDTO_SelectionSpec_ExpressionType")
 	if err != nil {
@@ -1214,8 +2147,9 @@ func (x *GroupDTO_SelectionSpec_ExpressionType) UnmarshalJSON(data []byte) error
 	*x = GroupDTO_SelectionSpec_ExpressionType(value)
 	return nil
 }
+
 func (GroupDTO_SelectionSpec_ExpressionType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{3, 5, 0}
+	return fileDescriptor_2233245ab49fede8, []int{5, 7, 0}
 }
 
 type NotificationDTO_Severity int32
@@ -1235,6 +2169,7 @@ var NotificationDTO_Severity_name = map[int32]string{
 	3: "MAJOR",
 	4: "CRITICAL",
 }
+
 var NotificationDTO_Severity_value = map[string]int32{
 	"UNKNOWN":  0,
 	"NORMAL":   1,
@@ -1248,9 +2183,11 @@ func (x NotificationDTO_Severity) Enum() *NotificationDTO_Severity {
 	*p = x
 	return p
 }
+
 func (x NotificationDTO_Severity) String() string {
 	return proto.EnumName(NotificationDTO_Severity_name, int32(x))
 }
+
 func (x *NotificationDTO_Severity) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(NotificationDTO_Severity_value, data, "NotificationDTO_Severity")
 	if err != nil {
@@ -1259,7 +2196,10 @@ func (x *NotificationDTO_Severity) UnmarshalJSON(data []byte) error {
 	*x = NotificationDTO_Severity(value)
 	return nil
 }
-func (NotificationDTO_Severity) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{5, 0} }
+
+func (NotificationDTO_Severity) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{7, 0}
+}
 
 type CustomTypeDef_MetadataNamespace int32
 
@@ -1272,6 +2212,7 @@ var CustomTypeDef_MetadataNamespace_name = map[int32]string{
 	0: "UNKNOWN",
 	1: "NETWORK_POLICY_EPG",
 }
+
 var CustomTypeDef_MetadataNamespace_value = map[string]int32{
 	"UNKNOWN":            0,
 	"NETWORK_POLICY_EPG": 1,
@@ -1282,9 +2223,11 @@ func (x CustomTypeDef_MetadataNamespace) Enum() *CustomTypeDef_MetadataNamespace
 	*p = x
 	return p
 }
+
 func (x CustomTypeDef_MetadataNamespace) String() string {
 	return proto.EnumName(CustomTypeDef_MetadataNamespace_name, int32(x))
 }
+
 func (x *CustomTypeDef_MetadataNamespace) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(CustomTypeDef_MetadataNamespace_value, data, "CustomTypeDef_MetadataNamespace")
 	if err != nil {
@@ -1293,8 +2236,9 @@ func (x *CustomTypeDef_MetadataNamespace) UnmarshalJSON(data []byte) error {
 	*x = CustomTypeDef_MetadataNamespace(value)
 	return nil
 }
+
 func (CustomTypeDef_MetadataNamespace) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{6, 0}
+	return fileDescriptor_2233245ab49fede8, []int{8, 0}
 }
 
 // Only TCP and UDP are supported.
@@ -1311,6 +2255,7 @@ var FlowDTO_Protocol_name = map[int32]string{
 	2:    "UDP",
 	1000: "UNKNOWN_PROTO",
 }
+
 var FlowDTO_Protocol_value = map[string]int32{
 	"TCP":           1,
 	"UDP":           2,
@@ -1322,9 +2267,11 @@ func (x FlowDTO_Protocol) Enum() *FlowDTO_Protocol {
 	*p = x
 	return p
 }
+
 func (x FlowDTO_Protocol) String() string {
 	return proto.EnumName(FlowDTO_Protocol_name, int32(x))
 }
+
 func (x *FlowDTO_Protocol) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(FlowDTO_Protocol_value, data, "FlowDTO_Protocol")
 	if err != nil {
@@ -1333,7 +2280,10 @@ func (x *FlowDTO_Protocol) UnmarshalJSON(data []byte) error {
 	*x = FlowDTO_Protocol(value)
 	return nil
 }
-func (FlowDTO_Protocol) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{10, 0} }
+
+func (FlowDTO_Protocol) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{12, 0}
+}
 
 //
 // The EntityDTO message represents an Entity discovered in the target that your probe is
@@ -1370,7 +2320,7 @@ type EntityDTO struct {
 	CommoditiesBought []*EntityDTO_CommodityBought `protobuf:"bytes,5,rep,name=commoditiesBought" json:"commoditiesBought,omitempty"`
 	// List of the IDs of the entities that this entity is underlying. For example, an IO Module can underly
 	// physical machines, or a physical machine can underly datastores.
-	Underlying []string `protobuf:"bytes,6,rep,name=underlying" json:"underlying,omitempty"`
+	Underlying []string `protobuf:"bytes,6,rep,name=underlying" json:"underlying,omitempty"` // Deprecated: Do not use.
 	// list of <string, string, string> namespace, key, value triplets
 	EntityProperties []*EntityDTO_EntityProperty `protobuf:"bytes,7,rep,name=entityProperties" json:"entityProperties,omitempty"`
 	// Specifies the source of the entity (ie DISCOVERED or PROXY).
@@ -1411,6 +2361,13 @@ type EntityDTO struct {
 	ReplacesEntityId []string `protobuf:"bytes,20,rep,name=replacesEntityId" json:"replacesEntityId,omitempty"`
 	// Notifies if the entity is in maintenance.
 	Maintenance *bool `protobuf:"varint,21,opt,name=maintenance,def=0" json:"maintenance,omitempty"`
+	// List of the IDs of the entities that this entity consists of. For example, a
+	// master account consists of sub accounts.
+	ConsistsOf []string `protobuf:"bytes,22,rep,name=consistsOf" json:"consistsOf,omitempty"`
+	// Contains all settings regarding the eligibility of the entity for different actions.
+	ActionEligibility *EntityDTO_ActionEligibility `protobuf:"bytes,23,opt,name=actionEligibility" json:"actionEligibility,omitempty"`
+	// List of entities that are topologically connected with the entity that this probuf defines.
+	ConnectedEntities []*ConnectedEntity `protobuf:"bytes,24,rep,name=connectedEntities" json:"connectedEntities,omitempty"`
 	// Collection of entity type's specific data
 	//
 	// Types that are valid to be assigned to EntityData:
@@ -1427,6 +2384,15 @@ type EntityDTO struct {
 	//	*EntityDTO_ReservedInstanceData_
 	//	*EntityDTO_ContainerPodData_
 	//	*EntityDTO_ContainerData_
+	//	*EntityDTO_BusinessAccountData_
+	//	*EntityDTO_ComputeTierData_
+	//	*EntityDTO_VirtualVolumeData_
+	//	*EntityDTO_BusinessUserData_
+	//	*EntityDTO_RegionData_
+	//	*EntityDTO_WorkloadControllerData_
+	//	*EntityDTO_DatabaseTierData_
+	//	*EntityDTO_DatabaseServerTierData_
+	//	*EntityDTO_ServiceData_
 	EntityData isEntityDTO_EntityData `protobuf_oneof:"entity_data"`
 	// Data for entities related to the given entity but not specifically part of the
 	// the market. For example, PhysicalMachines are related to
@@ -1436,14 +2402,36 @@ type EntityDTO struct {
 	//	*EntityDTO_VirtualMachineRelatedData_
 	//	*EntityDTO_PhysicalMachineRelatedData_
 	//	*EntityDTO_StorageControllerRelatedData_
-	RelatedEntityData isEntityDTO_RelatedEntityData `protobuf_oneof:"related_entity_data"`
-	XXX_unrecognized  []byte                        `json:"-"`
+	RelatedEntityData    isEntityDTO_RelatedEntityData `protobuf_oneof:"related_entity_data"`
+	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
+	XXX_unrecognized     []byte                        `json:"-"`
+	XXX_sizecache        int32                         `json:"-"`
 }
 
-func (m *EntityDTO) Reset()                    { *m = EntityDTO{} }
-func (m *EntityDTO) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO) ProtoMessage()               {}
-func (*EntityDTO) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (m *EntityDTO) Reset()         { *m = EntityDTO{} }
+func (m *EntityDTO) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO) ProtoMessage()    {}
+func (*EntityDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0}
+}
+
+func (m *EntityDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO.Unmarshal(m, b)
+}
+func (m *EntityDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO.Merge(m, src)
+}
+func (m *EntityDTO) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO.Size(m)
+}
+func (m *EntityDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO proto.InternalMessageInfo
 
 const Default_EntityDTO_Origin EntityDTO_EntityOrigin = EntityDTO_DISCOVERED
 const Default_EntityDTO_Monitored bool = true
@@ -1451,92 +2439,6 @@ const Default_EntityDTO_PowerState EntityDTO_PowerState = EntityDTO_POWERED_ON
 const Default_EntityDTO_KeepStandalone bool = true
 const Default_EntityDTO_UpdateType UpdateType = UpdateType_UPDATED
 const Default_EntityDTO_Maintenance bool = false
-
-type isEntityDTO_EntityData interface {
-	isEntityDTO_EntityData()
-}
-type isEntityDTO_RelatedEntityData interface {
-	isEntityDTO_RelatedEntityData()
-}
-
-type EntityDTO_StorageData_ struct {
-	StorageData *EntityDTO_StorageData `protobuf:"bytes,500,opt,name=storage_data,json=storageData,oneof"`
-}
-type EntityDTO_DiskArrayData_ struct {
-	DiskArrayData *EntityDTO_DiskArrayData `protobuf:"bytes,501,opt,name=disk_array_data,json=diskArrayData,oneof"`
-}
-type EntityDTO_ApplicationData_ struct {
-	ApplicationData *EntityDTO_ApplicationData `protobuf:"bytes,502,opt,name=application_data,json=applicationData,oneof"`
-}
-type EntityDTO_VirtualMachineData_ struct {
-	VirtualMachineData *EntityDTO_VirtualMachineData `protobuf:"bytes,503,opt,name=virtual_machine_data,json=virtualMachineData,oneof"`
-}
-type EntityDTO_PhysicalMachineData_ struct {
-	PhysicalMachineData *EntityDTO_PhysicalMachineData `protobuf:"bytes,504,opt,name=physical_machine_data,json=physicalMachineData,oneof"`
-}
-type EntityDTO_VirtualDatacenterData_ struct {
-	VirtualDatacenterData *EntityDTO_VirtualDatacenterData `protobuf:"bytes,505,opt,name=virtual_datacenter_data,json=virtualDatacenterData,oneof"`
-}
-type EntityDTO_StorageControllerData_ struct {
-	StorageControllerData *EntityDTO_StorageControllerData `protobuf:"bytes,506,opt,name=storage_controller_data,json=storageControllerData,oneof"`
-}
-type EntityDTO_LogicalPoolData_ struct {
-	LogicalPoolData *EntityDTO_LogicalPoolData `protobuf:"bytes,507,opt,name=logical_pool_data,json=logicalPoolData,oneof"`
-}
-type EntityDTO_VirtualApplicationData_ struct {
-	VirtualApplicationData *EntityDTO_VirtualApplicationData `protobuf:"bytes,508,opt,name=virtual_application_data,json=virtualApplicationData,oneof"`
-}
-type EntityDTO_ProcessorPoolData_ struct {
-	ProcessorPoolData *EntityDTO_ProcessorPoolData `protobuf:"bytes,509,opt,name=processor_pool_data,json=processorPoolData,oneof"`
-}
-type EntityDTO_ReservedInstanceData_ struct {
-	ReservedInstanceData *EntityDTO_ReservedInstanceData `protobuf:"bytes,510,opt,name=reserved_instance_data,json=reservedInstanceData,oneof"`
-}
-type EntityDTO_ContainerPodData_ struct {
-	ContainerPodData *EntityDTO_ContainerPodData `protobuf:"bytes,511,opt,name=container_pod_data,json=containerPodData,oneof"`
-}
-type EntityDTO_ContainerData_ struct {
-	ContainerData *EntityDTO_ContainerData `protobuf:"bytes,512,opt,name=container_data,json=containerData,oneof"`
-}
-type EntityDTO_VirtualMachineRelatedData_ struct {
-	VirtualMachineRelatedData *EntityDTO_VirtualMachineRelatedData `protobuf:"bytes,1000,opt,name=virtual_machine_related_data,json=virtualMachineRelatedData,oneof"`
-}
-type EntityDTO_PhysicalMachineRelatedData_ struct {
-	PhysicalMachineRelatedData *EntityDTO_PhysicalMachineRelatedData `protobuf:"bytes,1001,opt,name=physical_machine_related_data,json=physicalMachineRelatedData,oneof"`
-}
-type EntityDTO_StorageControllerRelatedData_ struct {
-	StorageControllerRelatedData *EntityDTO_StorageControllerRelatedData `protobuf:"bytes,1002,opt,name=storage_controller_related_data,json=storageControllerRelatedData,oneof"`
-}
-
-func (*EntityDTO_StorageData_) isEntityDTO_EntityData()                         {}
-func (*EntityDTO_DiskArrayData_) isEntityDTO_EntityData()                       {}
-func (*EntityDTO_ApplicationData_) isEntityDTO_EntityData()                     {}
-func (*EntityDTO_VirtualMachineData_) isEntityDTO_EntityData()                  {}
-func (*EntityDTO_PhysicalMachineData_) isEntityDTO_EntityData()                 {}
-func (*EntityDTO_VirtualDatacenterData_) isEntityDTO_EntityData()               {}
-func (*EntityDTO_StorageControllerData_) isEntityDTO_EntityData()               {}
-func (*EntityDTO_LogicalPoolData_) isEntityDTO_EntityData()                     {}
-func (*EntityDTO_VirtualApplicationData_) isEntityDTO_EntityData()              {}
-func (*EntityDTO_ProcessorPoolData_) isEntityDTO_EntityData()                   {}
-func (*EntityDTO_ReservedInstanceData_) isEntityDTO_EntityData()                {}
-func (*EntityDTO_ContainerPodData_) isEntityDTO_EntityData()                    {}
-func (*EntityDTO_ContainerData_) isEntityDTO_EntityData()                       {}
-func (*EntityDTO_VirtualMachineRelatedData_) isEntityDTO_RelatedEntityData()    {}
-func (*EntityDTO_PhysicalMachineRelatedData_) isEntityDTO_RelatedEntityData()   {}
-func (*EntityDTO_StorageControllerRelatedData_) isEntityDTO_RelatedEntityData() {}
-
-func (m *EntityDTO) GetEntityData() isEntityDTO_EntityData {
-	if m != nil {
-		return m.EntityData
-	}
-	return nil
-}
-func (m *EntityDTO) GetRelatedEntityData() isEntityDTO_RelatedEntityData {
-	if m != nil {
-		return m.RelatedEntityData
-	}
-	return nil
-}
 
 func (m *EntityDTO) GetEntityType() EntityDTO_EntityType {
 	if m != nil && m.EntityType != nil {
@@ -1573,6 +2475,7 @@ func (m *EntityDTO) GetCommoditiesBought() []*EntityDTO_CommodityBought {
 	return nil
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO) GetUnderlying() []string {
 	if m != nil {
 		return m.Underlying
@@ -1685,6 +2588,170 @@ func (m *EntityDTO) GetMaintenance() bool {
 	return Default_EntityDTO_Maintenance
 }
 
+func (m *EntityDTO) GetConsistsOf() []string {
+	if m != nil {
+		return m.ConsistsOf
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetActionEligibility() *EntityDTO_ActionEligibility {
+	if m != nil {
+		return m.ActionEligibility
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetConnectedEntities() []*ConnectedEntity {
+	if m != nil {
+		return m.ConnectedEntities
+	}
+	return nil
+}
+
+type isEntityDTO_EntityData interface {
+	isEntityDTO_EntityData()
+}
+
+type EntityDTO_StorageData_ struct {
+	StorageData *EntityDTO_StorageData `protobuf:"bytes,500,opt,name=storage_data,json=storageData,oneof"`
+}
+
+type EntityDTO_DiskArrayData_ struct {
+	DiskArrayData *EntityDTO_DiskArrayData `protobuf:"bytes,501,opt,name=disk_array_data,json=diskArrayData,oneof"`
+}
+
+type EntityDTO_ApplicationData_ struct {
+	ApplicationData *EntityDTO_ApplicationData `protobuf:"bytes,502,opt,name=application_data,json=applicationData,oneof"`
+}
+
+type EntityDTO_VirtualMachineData_ struct {
+	VirtualMachineData *EntityDTO_VirtualMachineData `protobuf:"bytes,503,opt,name=virtual_machine_data,json=virtualMachineData,oneof"`
+}
+
+type EntityDTO_PhysicalMachineData_ struct {
+	PhysicalMachineData *EntityDTO_PhysicalMachineData `protobuf:"bytes,504,opt,name=physical_machine_data,json=physicalMachineData,oneof"`
+}
+
+type EntityDTO_VirtualDatacenterData_ struct {
+	VirtualDatacenterData *EntityDTO_VirtualDatacenterData `protobuf:"bytes,505,opt,name=virtual_datacenter_data,json=virtualDatacenterData,oneof"`
+}
+
+type EntityDTO_StorageControllerData_ struct {
+	StorageControllerData *EntityDTO_StorageControllerData `protobuf:"bytes,506,opt,name=storage_controller_data,json=storageControllerData,oneof"`
+}
+
+type EntityDTO_LogicalPoolData_ struct {
+	LogicalPoolData *EntityDTO_LogicalPoolData `protobuf:"bytes,507,opt,name=logical_pool_data,json=logicalPoolData,oneof"`
+}
+
+type EntityDTO_VirtualApplicationData_ struct {
+	VirtualApplicationData *EntityDTO_VirtualApplicationData `protobuf:"bytes,508,opt,name=virtual_application_data,json=virtualApplicationData,oneof"`
+}
+
+type EntityDTO_ProcessorPoolData_ struct {
+	ProcessorPoolData *EntityDTO_ProcessorPoolData `protobuf:"bytes,509,opt,name=processor_pool_data,json=processorPoolData,oneof"`
+}
+
+type EntityDTO_ReservedInstanceData_ struct {
+	ReservedInstanceData *EntityDTO_ReservedInstanceData `protobuf:"bytes,510,opt,name=reserved_instance_data,json=reservedInstanceData,oneof"`
+}
+
+type EntityDTO_ContainerPodData_ struct {
+	ContainerPodData *EntityDTO_ContainerPodData `protobuf:"bytes,511,opt,name=container_pod_data,json=containerPodData,oneof"`
+}
+
+type EntityDTO_ContainerData_ struct {
+	ContainerData *EntityDTO_ContainerData `protobuf:"bytes,512,opt,name=container_data,json=containerData,oneof"`
+}
+
+type EntityDTO_BusinessAccountData_ struct {
+	BusinessAccountData *EntityDTO_BusinessAccountData `protobuf:"bytes,513,opt,name=business_account_data,json=businessAccountData,oneof"`
+}
+
+type EntityDTO_ComputeTierData_ struct {
+	ComputeTierData *EntityDTO_ComputeTierData `protobuf:"bytes,514,opt,name=compute_tier_data,json=computeTierData,oneof"`
+}
+
+type EntityDTO_VirtualVolumeData_ struct {
+	VirtualVolumeData *EntityDTO_VirtualVolumeData `protobuf:"bytes,515,opt,name=virtual_volume_data,json=virtualVolumeData,oneof"`
+}
+
+type EntityDTO_BusinessUserData_ struct {
+	BusinessUserData *EntityDTO_BusinessUserData `protobuf:"bytes,516,opt,name=business_user_data,json=businessUserData,oneof"`
+}
+
+type EntityDTO_RegionData_ struct {
+	RegionData *EntityDTO_RegionData `protobuf:"bytes,517,opt,name=region_data,json=regionData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_ struct {
+	WorkloadControllerData *EntityDTO_WorkloadControllerData `protobuf:"bytes,518,opt,name=workload_controller_data,json=workloadControllerData,oneof"`
+}
+
+type EntityDTO_DatabaseTierData_ struct {
+	DatabaseTierData *EntityDTO_DatabaseTierData `protobuf:"bytes,519,opt,name=database_tier_data,json=databaseTierData,oneof"`
+}
+
+type EntityDTO_DatabaseServerTierData_ struct {
+	DatabaseServerTierData *EntityDTO_DatabaseServerTierData `protobuf:"bytes,520,opt,name=database_server_tier_data,json=databaseServerTierData,oneof"`
+}
+
+type EntityDTO_ServiceData_ struct {
+	ServiceData *EntityDTO_ServiceData `protobuf:"bytes,521,opt,name=service_data,json=serviceData,oneof"`
+}
+
+func (*EntityDTO_StorageData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_DiskArrayData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ApplicationData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_VirtualMachineData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_PhysicalMachineData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_VirtualDatacenterData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_StorageControllerData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_LogicalPoolData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_VirtualApplicationData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ProcessorPoolData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ReservedInstanceData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ContainerPodData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ContainerData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_BusinessAccountData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ComputeTierData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_VirtualVolumeData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_BusinessUserData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_RegionData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_WorkloadControllerData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_DatabaseTierData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_DatabaseServerTierData_) isEntityDTO_EntityData() {}
+
+func (*EntityDTO_ServiceData_) isEntityDTO_EntityData() {}
+
+func (m *EntityDTO) GetEntityData() isEntityDTO_EntityData {
+	if m != nil {
+		return m.EntityData
+	}
+	return nil
+}
+
 func (m *EntityDTO) GetStorageData() *EntityDTO_StorageData {
 	if x, ok := m.GetEntityData().(*EntityDTO_StorageData_); ok {
 		return x.StorageData
@@ -1741,6 +2808,7 @@ func (m *EntityDTO) GetLogicalPoolData() *EntityDTO_LogicalPoolData {
 	return nil
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO) GetVirtualApplicationData() *EntityDTO_VirtualApplicationData {
 	if x, ok := m.GetEntityData().(*EntityDTO_VirtualApplicationData_); ok {
 		return x.VirtualApplicationData
@@ -1776,6 +2844,98 @@ func (m *EntityDTO) GetContainerData() *EntityDTO_ContainerData {
 	return nil
 }
 
+func (m *EntityDTO) GetBusinessAccountData() *EntityDTO_BusinessAccountData {
+	if x, ok := m.GetEntityData().(*EntityDTO_BusinessAccountData_); ok {
+		return x.BusinessAccountData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetComputeTierData() *EntityDTO_ComputeTierData {
+	if x, ok := m.GetEntityData().(*EntityDTO_ComputeTierData_); ok {
+		return x.ComputeTierData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetVirtualVolumeData() *EntityDTO_VirtualVolumeData {
+	if x, ok := m.GetEntityData().(*EntityDTO_VirtualVolumeData_); ok {
+		return x.VirtualVolumeData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetBusinessUserData() *EntityDTO_BusinessUserData {
+	if x, ok := m.GetEntityData().(*EntityDTO_BusinessUserData_); ok {
+		return x.BusinessUserData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetRegionData() *EntityDTO_RegionData {
+	if x, ok := m.GetEntityData().(*EntityDTO_RegionData_); ok {
+		return x.RegionData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetWorkloadControllerData() *EntityDTO_WorkloadControllerData {
+	if x, ok := m.GetEntityData().(*EntityDTO_WorkloadControllerData_); ok {
+		return x.WorkloadControllerData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetDatabaseTierData() *EntityDTO_DatabaseTierData {
+	if x, ok := m.GetEntityData().(*EntityDTO_DatabaseTierData_); ok {
+		return x.DatabaseTierData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetDatabaseServerTierData() *EntityDTO_DatabaseServerTierData {
+	if x, ok := m.GetEntityData().(*EntityDTO_DatabaseServerTierData_); ok {
+		return x.DatabaseServerTierData
+	}
+	return nil
+}
+
+func (m *EntityDTO) GetServiceData() *EntityDTO_ServiceData {
+	if x, ok := m.GetEntityData().(*EntityDTO_ServiceData_); ok {
+		return x.ServiceData
+	}
+	return nil
+}
+
+type isEntityDTO_RelatedEntityData interface {
+	isEntityDTO_RelatedEntityData()
+}
+
+type EntityDTO_VirtualMachineRelatedData_ struct {
+	VirtualMachineRelatedData *EntityDTO_VirtualMachineRelatedData `protobuf:"bytes,1000,opt,name=virtual_machine_related_data,json=virtualMachineRelatedData,oneof"`
+}
+
+type EntityDTO_PhysicalMachineRelatedData_ struct {
+	PhysicalMachineRelatedData *EntityDTO_PhysicalMachineRelatedData `protobuf:"bytes,1001,opt,name=physical_machine_related_data,json=physicalMachineRelatedData,oneof"`
+}
+
+type EntityDTO_StorageControllerRelatedData_ struct {
+	StorageControllerRelatedData *EntityDTO_StorageControllerRelatedData `protobuf:"bytes,1002,opt,name=storage_controller_related_data,json=storageControllerRelatedData,oneof"`
+}
+
+func (*EntityDTO_VirtualMachineRelatedData_) isEntityDTO_RelatedEntityData() {}
+
+func (*EntityDTO_PhysicalMachineRelatedData_) isEntityDTO_RelatedEntityData() {}
+
+func (*EntityDTO_StorageControllerRelatedData_) isEntityDTO_RelatedEntityData() {}
+
+func (m *EntityDTO) GetRelatedEntityData() isEntityDTO_RelatedEntityData {
+	if m != nil {
+		return m.RelatedEntityData
+	}
+	return nil
+}
+
 func (m *EntityDTO) GetVirtualMachineRelatedData() *EntityDTO_VirtualMachineRelatedData {
 	if x, ok := m.GetRelatedEntityData().(*EntityDTO_VirtualMachineRelatedData_); ok {
 		return x.VirtualMachineRelatedData
@@ -1797,9 +2957,9 @@ func (m *EntityDTO) GetStorageControllerRelatedData() *EntityDTO_StorageControll
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*EntityDTO) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _EntityDTO_OneofMarshaler, _EntityDTO_OneofUnmarshaler, _EntityDTO_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*EntityDTO) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*EntityDTO_StorageData_)(nil),
 		(*EntityDTO_DiskArrayData_)(nil),
 		(*EntityDTO_ApplicationData_)(nil),
@@ -1813,340 +2973,19 @@ func (*EntityDTO) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) err
 		(*EntityDTO_ReservedInstanceData_)(nil),
 		(*EntityDTO_ContainerPodData_)(nil),
 		(*EntityDTO_ContainerData_)(nil),
+		(*EntityDTO_BusinessAccountData_)(nil),
+		(*EntityDTO_ComputeTierData_)(nil),
+		(*EntityDTO_VirtualVolumeData_)(nil),
+		(*EntityDTO_BusinessUserData_)(nil),
+		(*EntityDTO_RegionData_)(nil),
+		(*EntityDTO_WorkloadControllerData_)(nil),
+		(*EntityDTO_DatabaseTierData_)(nil),
+		(*EntityDTO_DatabaseServerTierData_)(nil),
+		(*EntityDTO_ServiceData_)(nil),
 		(*EntityDTO_VirtualMachineRelatedData_)(nil),
 		(*EntityDTO_PhysicalMachineRelatedData_)(nil),
 		(*EntityDTO_StorageControllerRelatedData_)(nil),
 	}
-}
-
-func _EntityDTO_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*EntityDTO)
-	// entity_data
-	switch x := m.EntityData.(type) {
-	case *EntityDTO_StorageData_:
-		b.EncodeVarint(500<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.StorageData); err != nil {
-			return err
-		}
-	case *EntityDTO_DiskArrayData_:
-		b.EncodeVarint(501<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DiskArrayData); err != nil {
-			return err
-		}
-	case *EntityDTO_ApplicationData_:
-		b.EncodeVarint(502<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ApplicationData); err != nil {
-			return err
-		}
-	case *EntityDTO_VirtualMachineData_:
-		b.EncodeVarint(503<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VirtualMachineData); err != nil {
-			return err
-		}
-	case *EntityDTO_PhysicalMachineData_:
-		b.EncodeVarint(504<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.PhysicalMachineData); err != nil {
-			return err
-		}
-	case *EntityDTO_VirtualDatacenterData_:
-		b.EncodeVarint(505<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VirtualDatacenterData); err != nil {
-			return err
-		}
-	case *EntityDTO_StorageControllerData_:
-		b.EncodeVarint(506<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.StorageControllerData); err != nil {
-			return err
-		}
-	case *EntityDTO_LogicalPoolData_:
-		b.EncodeVarint(507<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.LogicalPoolData); err != nil {
-			return err
-		}
-	case *EntityDTO_VirtualApplicationData_:
-		b.EncodeVarint(508<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VirtualApplicationData); err != nil {
-			return err
-		}
-	case *EntityDTO_ProcessorPoolData_:
-		b.EncodeVarint(509<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ProcessorPoolData); err != nil {
-			return err
-		}
-	case *EntityDTO_ReservedInstanceData_:
-		b.EncodeVarint(510<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ReservedInstanceData); err != nil {
-			return err
-		}
-	case *EntityDTO_ContainerPodData_:
-		b.EncodeVarint(511<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ContainerPodData); err != nil {
-			return err
-		}
-	case *EntityDTO_ContainerData_:
-		b.EncodeVarint(512<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ContainerData); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("EntityDTO.EntityData has unexpected type %T", x)
-	}
-	// related_entity_data
-	switch x := m.RelatedEntityData.(type) {
-	case *EntityDTO_VirtualMachineRelatedData_:
-		b.EncodeVarint(1000<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VirtualMachineRelatedData); err != nil {
-			return err
-		}
-	case *EntityDTO_PhysicalMachineRelatedData_:
-		b.EncodeVarint(1001<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.PhysicalMachineRelatedData); err != nil {
-			return err
-		}
-	case *EntityDTO_StorageControllerRelatedData_:
-		b.EncodeVarint(1002<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.StorageControllerRelatedData); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("EntityDTO.RelatedEntityData has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _EntityDTO_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*EntityDTO)
-	switch tag {
-	case 500: // entity_data.storage_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_StorageData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_StorageData_{msg}
-		return true, err
-	case 501: // entity_data.disk_array_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_DiskArrayData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_DiskArrayData_{msg}
-		return true, err
-	case 502: // entity_data.application_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_ApplicationData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_ApplicationData_{msg}
-		return true, err
-	case 503: // entity_data.virtual_machine_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_VirtualMachineData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_VirtualMachineData_{msg}
-		return true, err
-	case 504: // entity_data.physical_machine_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_PhysicalMachineData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_PhysicalMachineData_{msg}
-		return true, err
-	case 505: // entity_data.virtual_datacenter_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_VirtualDatacenterData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_VirtualDatacenterData_{msg}
-		return true, err
-	case 506: // entity_data.storage_controller_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_StorageControllerData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_StorageControllerData_{msg}
-		return true, err
-	case 507: // entity_data.logical_pool_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_LogicalPoolData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_LogicalPoolData_{msg}
-		return true, err
-	case 508: // entity_data.virtual_application_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_VirtualApplicationData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_VirtualApplicationData_{msg}
-		return true, err
-	case 509: // entity_data.processor_pool_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_ProcessorPoolData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_ProcessorPoolData_{msg}
-		return true, err
-	case 510: // entity_data.reserved_instance_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_ReservedInstanceData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_ReservedInstanceData_{msg}
-		return true, err
-	case 511: // entity_data.container_pod_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_ContainerPodData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_ContainerPodData_{msg}
-		return true, err
-	case 512: // entity_data.container_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_ContainerData)
-		err := b.DecodeMessage(msg)
-		m.EntityData = &EntityDTO_ContainerData_{msg}
-		return true, err
-	case 1000: // related_entity_data.virtual_machine_related_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_VirtualMachineRelatedData)
-		err := b.DecodeMessage(msg)
-		m.RelatedEntityData = &EntityDTO_VirtualMachineRelatedData_{msg}
-		return true, err
-	case 1001: // related_entity_data.physical_machine_related_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_PhysicalMachineRelatedData)
-		err := b.DecodeMessage(msg)
-		m.RelatedEntityData = &EntityDTO_PhysicalMachineRelatedData_{msg}
-		return true, err
-	case 1002: // related_entity_data.storage_controller_related_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_StorageControllerRelatedData)
-		err := b.DecodeMessage(msg)
-		m.RelatedEntityData = &EntityDTO_StorageControllerRelatedData_{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _EntityDTO_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*EntityDTO)
-	// entity_data
-	switch x := m.EntityData.(type) {
-	case *EntityDTO_StorageData_:
-		s := proto.Size(x.StorageData)
-		n += proto.SizeVarint(500<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_DiskArrayData_:
-		s := proto.Size(x.DiskArrayData)
-		n += proto.SizeVarint(501<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_ApplicationData_:
-		s := proto.Size(x.ApplicationData)
-		n += proto.SizeVarint(502<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_VirtualMachineData_:
-		s := proto.Size(x.VirtualMachineData)
-		n += proto.SizeVarint(503<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_PhysicalMachineData_:
-		s := proto.Size(x.PhysicalMachineData)
-		n += proto.SizeVarint(504<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_VirtualDatacenterData_:
-		s := proto.Size(x.VirtualDatacenterData)
-		n += proto.SizeVarint(505<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_StorageControllerData_:
-		s := proto.Size(x.StorageControllerData)
-		n += proto.SizeVarint(506<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_LogicalPoolData_:
-		s := proto.Size(x.LogicalPoolData)
-		n += proto.SizeVarint(507<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_VirtualApplicationData_:
-		s := proto.Size(x.VirtualApplicationData)
-		n += proto.SizeVarint(508<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_ProcessorPoolData_:
-		s := proto.Size(x.ProcessorPoolData)
-		n += proto.SizeVarint(509<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_ReservedInstanceData_:
-		s := proto.Size(x.ReservedInstanceData)
-		n += proto.SizeVarint(510<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_ContainerPodData_:
-		s := proto.Size(x.ContainerPodData)
-		n += proto.SizeVarint(511<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_ContainerData_:
-		s := proto.Size(x.ContainerData)
-		n += proto.SizeVarint(512<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	// related_entity_data
-	switch x := m.RelatedEntityData.(type) {
-	case *EntityDTO_VirtualMachineRelatedData_:
-		s := proto.Size(x.VirtualMachineRelatedData)
-		n += proto.SizeVarint(1000<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_PhysicalMachineRelatedData_:
-		s := proto.Size(x.PhysicalMachineRelatedData)
-		n += proto.SizeVarint(1001<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *EntityDTO_StorageControllerRelatedData_:
-		s := proto.Size(x.StorageControllerRelatedData)
-		n += proto.SizeVarint(1002<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type EntityDTO_CommodityBought struct {
@@ -2157,14 +2996,38 @@ type EntityDTO_CommodityBought struct {
 	// The provider type should be specified along with the provider id
 	ProviderType *EntityDTO_EntityType `protobuf:"varint,3,opt,name=providerType,enum=common_dto.EntityDTO_EntityType" json:"providerType,omitempty"`
 	// Define a related sub division of the commodities bought - for example vDisk
-	SubDivision      *EntityDTO_SubDivisionData `protobuf:"bytes,4,opt,name=subDivision" json:"subDivision,omitempty"`
-	XXX_unrecognized []byte                     `json:"-"`
+	SubDivision *EntityDTO_SubDivisionData `protobuf:"bytes,4,opt,name=subDivision" json:"subDivision,omitempty"`
+	// Eligibility for actions on this provider
+	ActionEligibility    *EntityDTO_ActionOnProviderEligibility `protobuf:"bytes,6,opt,name=actionEligibility" json:"actionEligibility,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                               `json:"-"`
+	XXX_unrecognized     []byte                                 `json:"-"`
+	XXX_sizecache        int32                                  `json:"-"`
 }
 
-func (m *EntityDTO_CommodityBought) Reset()                    { *m = EntityDTO_CommodityBought{} }
-func (m *EntityDTO_CommodityBought) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_CommodityBought) ProtoMessage()               {}
-func (*EntityDTO_CommodityBought) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 0} }
+func (m *EntityDTO_CommodityBought) Reset()         { *m = EntityDTO_CommodityBought{} }
+func (m *EntityDTO_CommodityBought) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_CommodityBought) ProtoMessage()    {}
+func (*EntityDTO_CommodityBought) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 0}
+}
+
+func (m *EntityDTO_CommodityBought) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_CommodityBought.Unmarshal(m, b)
+}
+func (m *EntityDTO_CommodityBought) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_CommodityBought.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_CommodityBought) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_CommodityBought.Merge(m, src)
+}
+func (m *EntityDTO_CommodityBought) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_CommodityBought.Size(m)
+}
+func (m *EntityDTO_CommodityBought) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_CommodityBought.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_CommodityBought proto.InternalMessageInfo
 
 func (m *EntityDTO_CommodityBought) GetProviderId() string {
 	if m != nil && m.ProviderId != nil {
@@ -2194,6 +3057,152 @@ func (m *EntityDTO_CommodityBought) GetSubDivision() *EntityDTO_SubDivisionData 
 	return nil
 }
 
+func (m *EntityDTO_CommodityBought) GetActionEligibility() *EntityDTO_ActionOnProviderEligibility {
+	if m != nil {
+		return m.ActionEligibility
+	}
+	return nil
+}
+
+// Setting to determine eligibility of the entity for various analysis actions that have an
+// effect on the whole entity.
+// It is defined as a member of the EntityDTO message.
+// See also the ActionOnProviderEligibility setting for actions that have effect on the
+// relationship/combination of the entity and a specific provider it is buying from.
+// Therefore, there can be multiple ActionOnProviderEligibility on a single entity, possibly
+// one per provider. It is defined as the member of the CommodityBought section.
+//
+// Note: The ProbeActionCapability has effect on all the entities of a specific type.
+// Probe writer should use the correct option for action settings. The probe wide entity type
+// action setting is usually preferred. However, the entity level action eligibility can be used
+// if further granularity is required to control entity actions.
+// In conjunction with the ProbeActionCapability, analysis will determine whether to recommend
+// a particular action for an entity.
+// If the probe has disabled the support for a particular action, then the action eligibility
+// setting of the entity is ignored.
+// Similarly, if the probe has indicated support for a particular action, but the action
+// eligibility of the entity is false, then the action cannot be recommended by analysis.
+// In summary, the most restrictive action setting will be applied by analysis.
+//
+// Note: the action eligibility section strictly pertains to the actions that can be applied on
+// the entity by the Analysis engine. These settings in Consumer Policy apply to the state
+// of the entity in the market.
+type EntityDTO_ActionEligibility struct {
+	// Whether the Market should generate suspend action for this entity
+	Suspendable *bool `protobuf:"varint,1,opt,name=suspendable,def=1" json:"suspendable,omitempty"`
+	// Whether the Market should generate clone or provision action this entity.
+	Cloneable            *bool    `protobuf:"varint,2,opt,name=cloneable,def=1" json:"cloneable,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ActionEligibility) Reset()         { *m = EntityDTO_ActionEligibility{} }
+func (m *EntityDTO_ActionEligibility) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ActionEligibility) ProtoMessage()    {}
+func (*EntityDTO_ActionEligibility) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 1}
+}
+
+func (m *EntityDTO_ActionEligibility) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ActionEligibility.Unmarshal(m, b)
+}
+func (m *EntityDTO_ActionEligibility) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ActionEligibility.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ActionEligibility) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ActionEligibility.Merge(m, src)
+}
+func (m *EntityDTO_ActionEligibility) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ActionEligibility.Size(m)
+}
+func (m *EntityDTO_ActionEligibility) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ActionEligibility.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ActionEligibility proto.InternalMessageInfo
+
+const Default_EntityDTO_ActionEligibility_Suspendable bool = true
+const Default_EntityDTO_ActionEligibility_Cloneable bool = true
+
+func (m *EntityDTO_ActionEligibility) GetSuspendable() bool {
+	if m != nil && m.Suspendable != nil {
+		return *m.Suspendable
+	}
+	return Default_EntityDTO_ActionEligibility_Suspendable
+}
+
+func (m *EntityDTO_ActionEligibility) GetCloneable() bool {
+	if m != nil && m.Cloneable != nil {
+		return *m.Cloneable
+	}
+	return Default_EntityDTO_ActionEligibility_Cloneable
+}
+
+// Eligibility for actions that will have effect on the combination of the entity
+// and a specific provider it is buying from.
+// It is defined as the member of the CommodityBought section.
+type EntityDTO_ActionOnProviderEligibility struct {
+	// Whether the Market should generate a move for this entity to another provider of the same type.
+	Movable *bool `protobuf:"varint,1,opt,name=movable" json:"movable,omitempty"`
+	// Whether the entity should generate a start for this entity on this provider
+	Startable *bool `protobuf:"varint,2,opt,name=startable,def=1" json:"startable,omitempty"`
+	// Where the Market should generate scale action this entity, relevant for cloud entities
+	Scalable             *bool    `protobuf:"varint,3,opt,name=scalable,def=1" json:"scalable,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ActionOnProviderEligibility) Reset()         { *m = EntityDTO_ActionOnProviderEligibility{} }
+func (m *EntityDTO_ActionOnProviderEligibility) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ActionOnProviderEligibility) ProtoMessage()    {}
+func (*EntityDTO_ActionOnProviderEligibility) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 2}
+}
+
+func (m *EntityDTO_ActionOnProviderEligibility) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ActionOnProviderEligibility.Unmarshal(m, b)
+}
+func (m *EntityDTO_ActionOnProviderEligibility) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ActionOnProviderEligibility.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ActionOnProviderEligibility) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ActionOnProviderEligibility.Merge(m, src)
+}
+func (m *EntityDTO_ActionOnProviderEligibility) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ActionOnProviderEligibility.Size(m)
+}
+func (m *EntityDTO_ActionOnProviderEligibility) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ActionOnProviderEligibility.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ActionOnProviderEligibility proto.InternalMessageInfo
+
+const Default_EntityDTO_ActionOnProviderEligibility_Startable bool = true
+const Default_EntityDTO_ActionOnProviderEligibility_Scalable bool = true
+
+func (m *EntityDTO_ActionOnProviderEligibility) GetMovable() bool {
+	if m != nil && m.Movable != nil {
+		return *m.Movable
+	}
+	return false
+}
+
+func (m *EntityDTO_ActionOnProviderEligibility) GetStartable() bool {
+	if m != nil && m.Startable != nil {
+		return *m.Startable
+	}
+	return Default_EntityDTO_ActionOnProviderEligibility_Startable
+}
+
+func (m *EntityDTO_ActionOnProviderEligibility) GetScalable() bool {
+	if m != nil && m.Scalable != nil {
+		return *m.Scalable
+	}
+	return Default_EntityDTO_ActionOnProviderEligibility_Scalable
+}
+
 // representation of a virtual disk (AWS EBS volume)
 // A VM can have multiple virtual disks from the same storage
 type EntityDTO_SubDivisionData struct {
@@ -2206,14 +3215,36 @@ type EntityDTO_SubDivisionData struct {
 	// float storage capacity of SubDivision needed for cost calculations
 	StorageAmountCapacity *float32 `protobuf:"fixed32,4,opt,name=storageAmountCapacity" json:"storageAmountCapacity,omitempty"`
 	// display name for the SubDivision
-	DisplayName      *string `protobuf:"bytes,5,opt,name=displayName" json:"displayName,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	DisplayName          *string  `protobuf:"bytes,5,opt,name=displayName" json:"displayName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_SubDivisionData) Reset()                    { *m = EntityDTO_SubDivisionData{} }
-func (m *EntityDTO_SubDivisionData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_SubDivisionData) ProtoMessage()               {}
-func (*EntityDTO_SubDivisionData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 1} }
+func (m *EntityDTO_SubDivisionData) Reset()         { *m = EntityDTO_SubDivisionData{} }
+func (m *EntityDTO_SubDivisionData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_SubDivisionData) ProtoMessage()    {}
+func (*EntityDTO_SubDivisionData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 3}
+}
+
+func (m *EntityDTO_SubDivisionData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_SubDivisionData.Unmarshal(m, b)
+}
+func (m *EntityDTO_SubDivisionData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_SubDivisionData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_SubDivisionData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_SubDivisionData.Merge(m, src)
+}
+func (m *EntityDTO_SubDivisionData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_SubDivisionData.Size(m)
+}
+func (m *EntityDTO_SubDivisionData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_SubDivisionData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_SubDivisionData proto.InternalMessageInfo
 
 func (m *EntityDTO_SubDivisionData) GetSubDivisionId() string {
 	if m != nil && m.SubDivisionId != nil {
@@ -2252,24 +3283,48 @@ func (m *EntityDTO_SubDivisionData) GetDisplayName() string {
 
 type EntityDTO_StorageData struct {
 	StorageType    *EntityDTO_StorageType `protobuf:"varint,1,opt,name=storageType,enum=common_dto.EntityDTO_StorageType" json:"storageType,omitempty"`
-	IpAddress      *string                `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
-	ExportPath     *string                `protobuf:"bytes,3,opt,name=exportPath" json:"exportPath,omitempty"`
-	StorageId      *string                `protobuf:"bytes,4,opt,name=storageId" json:"storageId,omitempty"`
-	LunUuid        *string                `protobuf:"bytes,5,opt,name=lunUuid" json:"lunUuid,omitempty"`
-	LunId          *int32                 `protobuf:"varint,6,opt,name=lunId" json:"lunId,omitempty"`
-	Wwn            *string                `protobuf:"bytes,7,opt,name=wwn" json:"wwn,omitempty"`
+	IpAddress      *string                `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`   // Deprecated: Do not use.
+	ExportPath     *string                `protobuf:"bytes,3,opt,name=exportPath" json:"exportPath,omitempty"` // Deprecated: Do not use.
+	StorageId      *string                `protobuf:"bytes,4,opt,name=storageId" json:"storageId,omitempty"`   // Deprecated: Do not use.
+	LunUuid        *string                `protobuf:"bytes,5,opt,name=lunUuid" json:"lunUuid,omitempty"`       // Deprecated: Do not use.
+	LunId          *int32                 `protobuf:"varint,6,opt,name=lunId" json:"lunId,omitempty"`          // Deprecated: Do not use.
+	Wwn            *string                `protobuf:"bytes,7,opt,name=wwn" json:"wwn,omitempty"`               // Deprecated: Do not use.
 	NotClusterable *bool                  `protobuf:"varint,8,opt,name=notClusterable,def=0" json:"notClusterable,omitempty"`
 	ExternalName   []string               `protobuf:"bytes,9,rep,name=externalName" json:"externalName,omitempty"`
 	// Files residing on the storage, if available
-	File             []*EntityDTO_StorageData_StorageFileDescriptor `protobuf:"bytes,10,rep,name=file" json:"file,omitempty"`
-	StorageTier      *string                                        `protobuf:"bytes,11,opt,name=storageTier" json:"storageTier,omitempty"`
-	XXX_unrecognized []byte                                         `json:"-"`
+	File                 []*EntityDTO_StorageData_StorageFileDescriptor `protobuf:"bytes,10,rep,name=file" json:"file,omitempty"`
+	StorageTier          *string                                        `protobuf:"bytes,11,opt,name=storageTier" json:"storageTier,omitempty"`
+	Policy               *EntityDTO_StorageData_StoragePolicy           `protobuf:"bytes,12,opt,name=policy" json:"policy,omitempty"`
+	RawCapacity          *EntityDTO_StorageData_RawCapacity             `protobuf:"bytes,13,opt,name=rawCapacity" json:"rawCapacity,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                                       `json:"-"`
+	XXX_unrecognized     []byte                                         `json:"-"`
+	XXX_sizecache        int32                                          `json:"-"`
 }
 
-func (m *EntityDTO_StorageData) Reset()                    { *m = EntityDTO_StorageData{} }
-func (m *EntityDTO_StorageData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_StorageData) ProtoMessage()               {}
-func (*EntityDTO_StorageData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 2} }
+func (m *EntityDTO_StorageData) Reset()         { *m = EntityDTO_StorageData{} }
+func (m *EntityDTO_StorageData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_StorageData) ProtoMessage()    {}
+func (*EntityDTO_StorageData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 4}
+}
+
+func (m *EntityDTO_StorageData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StorageData.Unmarshal(m, b)
+}
+func (m *EntityDTO_StorageData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StorageData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StorageData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StorageData.Merge(m, src)
+}
+func (m *EntityDTO_StorageData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StorageData.Size(m)
+}
+func (m *EntityDTO_StorageData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StorageData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StorageData proto.InternalMessageInfo
 
 const Default_EntityDTO_StorageData_NotClusterable bool = false
 
@@ -2280,6 +3335,7 @@ func (m *EntityDTO_StorageData) GetStorageType() EntityDTO_StorageType {
 	return EntityDTO_GENERIC_BLOCK
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_StorageData) GetIpAddress() string {
 	if m != nil && m.IpAddress != nil {
 		return *m.IpAddress
@@ -2287,6 +3343,7 @@ func (m *EntityDTO_StorageData) GetIpAddress() string {
 	return ""
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_StorageData) GetExportPath() string {
 	if m != nil && m.ExportPath != nil {
 		return *m.ExportPath
@@ -2294,6 +3351,7 @@ func (m *EntityDTO_StorageData) GetExportPath() string {
 	return ""
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_StorageData) GetStorageId() string {
 	if m != nil && m.StorageId != nil {
 		return *m.StorageId
@@ -2301,6 +3359,7 @@ func (m *EntityDTO_StorageData) GetStorageId() string {
 	return ""
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_StorageData) GetLunUuid() string {
 	if m != nil && m.LunUuid != nil {
 		return *m.LunUuid
@@ -2308,6 +3367,7 @@ func (m *EntityDTO_StorageData) GetLunUuid() string {
 	return ""
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_StorageData) GetLunId() int32 {
 	if m != nil && m.LunId != nil {
 		return *m.LunId
@@ -2315,6 +3375,7 @@ func (m *EntityDTO_StorageData) GetLunId() int32 {
 	return 0
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_StorageData) GetWwn() string {
 	if m != nil && m.Wwn != nil {
 		return *m.Wwn
@@ -2350,6 +3411,20 @@ func (m *EntityDTO_StorageData) GetStorageTier() string {
 	return ""
 }
 
+func (m *EntityDTO_StorageData) GetPolicy() *EntityDTO_StorageData_StoragePolicy {
+	if m != nil {
+		return m.Policy
+	}
+	return nil
+}
+
+func (m *EntityDTO_StorageData) GetRawCapacity() *EntityDTO_StorageData_RawCapacity {
+	if m != nil {
+		return m.RawCapacity
+	}
+	return nil
+}
+
 type EntityDTO_StorageData_StorageFileDescriptor struct {
 	// Full pathname with Unix-style separators
 	Path *string `protobuf:"bytes,1,req,name=path" json:"path,omitempty"`
@@ -2362,8 +3437,26 @@ type EntityDTO_StorageData_StorageFileDescriptor struct {
 	// IOPS provisioned needed for cost calculations
 	IopsProvisioned *int32 `protobuf:"varint,5,opt,name=iopsProvisioned" json:"iopsProvisioned,omitempty"`
 	// String identifying the replication type needed for cost calculations
-	RedundancyType   *string `protobuf:"bytes,6,opt,name=redundancyType" json:"redundancyType,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	RedundancyType *string `protobuf:"bytes,6,opt,name=redundancyType" json:"redundancyType,omitempty"`
+	// String identifying the resource group
+	ResourceGroup *string `protobuf:"bytes,7,opt,name=resourceGroup" json:"resourceGroup,omitempty"`
+	// Boolean identifying if blob/metal/dedicated
+	DoNotDelete *bool `protobuf:"varint,8,opt,name=doNotDelete,def=0" json:"doNotDelete,omitempty"`
+	// Potentially empty list of otherPaths to the file, links in Unix terminology
+	OtherPaths []string `protobuf:"bytes,9,rep,name=otherPaths" json:"otherPaths,omitempty"`
+	// Cloud volumes creation time
+	CreationTime *string `protobuf:"bytes,10,opt,name=creationTime" json:"creationTime,omitempty"`
+	// Azure volumes skuName
+	SkuName *string `protobuf:"bytes,11,opt,name=skuName" json:"skuName,omitempty"`
+	// snapshot Id
+	SnapshotId *string `protobuf:"bytes,12,opt,name=snapshotId" json:"snapshotId,omitempty"`
+	// volume name
+	VolumeName *string `protobuf:"bytes,13,opt,name=volumeName" json:"volumeName,omitempty"`
+	// if the file represents a Volume entity, the tags for that entity
+	VolumeProperties     []*EntityDTO_EntityProperty `protobuf:"bytes,15,rep,name=volumeProperties" json:"volumeProperties,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                    `json:"-"`
+	XXX_unrecognized     []byte                      `json:"-"`
+	XXX_sizecache        int32                       `json:"-"`
 }
 
 func (m *EntityDTO_StorageData_StorageFileDescriptor) Reset() {
@@ -2374,8 +3467,28 @@ func (m *EntityDTO_StorageData_StorageFileDescriptor) String() string {
 }
 func (*EntityDTO_StorageData_StorageFileDescriptor) ProtoMessage() {}
 func (*EntityDTO_StorageData_StorageFileDescriptor) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 2, 0}
+	return fileDescriptor_2233245ab49fede8, []int{0, 4, 0}
 }
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StorageData_StorageFileDescriptor.Unmarshal(m, b)
+}
+func (m *EntityDTO_StorageData_StorageFileDescriptor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StorageData_StorageFileDescriptor.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StorageData_StorageFileDescriptor) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StorageData_StorageFileDescriptor.Merge(m, src)
+}
+func (m *EntityDTO_StorageData_StorageFileDescriptor) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StorageData_StorageFileDescriptor.Size(m)
+}
+func (m *EntityDTO_StorageData_StorageFileDescriptor) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StorageData_StorageFileDescriptor.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StorageData_StorageFileDescriptor proto.InternalMessageInfo
+
+const Default_EntityDTO_StorageData_StorageFileDescriptor_DoNotDelete bool = false
 
 func (m *EntityDTO_StorageData_StorageFileDescriptor) GetPath() string {
 	if m != nil && m.Path != nil {
@@ -2419,26 +3532,362 @@ func (m *EntityDTO_StorageData_StorageFileDescriptor) GetRedundancyType() string
 	return ""
 }
 
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetResourceGroup() string {
+	if m != nil && m.ResourceGroup != nil {
+		return *m.ResourceGroup
+	}
+	return ""
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetDoNotDelete() bool {
+	if m != nil && m.DoNotDelete != nil {
+		return *m.DoNotDelete
+	}
+	return Default_EntityDTO_StorageData_StorageFileDescriptor_DoNotDelete
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetOtherPaths() []string {
+	if m != nil {
+		return m.OtherPaths
+	}
+	return nil
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetCreationTime() string {
+	if m != nil && m.CreationTime != nil {
+		return *m.CreationTime
+	}
+	return ""
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetSkuName() string {
+	if m != nil && m.SkuName != nil {
+		return *m.SkuName
+	}
+	return ""
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetSnapshotId() string {
+	if m != nil && m.SnapshotId != nil {
+		return *m.SnapshotId
+	}
+	return ""
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetVolumeName() string {
+	if m != nil && m.VolumeName != nil {
+		return *m.VolumeName
+	}
+	return ""
+}
+
+func (m *EntityDTO_StorageData_StorageFileDescriptor) GetVolumeProperties() []*EntityDTO_EntityProperty {
+	if m != nil {
+		return m.VolumeProperties
+	}
+	return nil
+}
+
+type EntityDTO_StorageData_StoragePolicy struct {
+	Redundancy           *EntityDTO_StorageRedundancyMethod `protobuf:"varint,1,opt,name=redundancy,enum=common_dto.EntityDTO_StorageRedundancyMethod" json:"redundancy,omitempty"`
+	FailuresToTolerate   *int32                             `protobuf:"varint,2,opt,name=failuresToTolerate" json:"failuresToTolerate,omitempty"`
+	SpaceReservationPct  *int32                             `protobuf:"varint,3,opt,name=spaceReservationPct" json:"spaceReservationPct,omitempty"`
+	RaidFactor           *float32                           `protobuf:"fixed32,4,opt,name=raidFactor" json:"raidFactor,omitempty"` // Deprecated: Do not use.
+	XXX_NoUnkeyedLiteral struct{}                           `json:"-"`
+	XXX_unrecognized     []byte                             `json:"-"`
+	XXX_sizecache        int32                              `json:"-"`
+}
+
+func (m *EntityDTO_StorageData_StoragePolicy) Reset()         { *m = EntityDTO_StorageData_StoragePolicy{} }
+func (m *EntityDTO_StorageData_StoragePolicy) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_StorageData_StoragePolicy) ProtoMessage()    {}
+func (*EntityDTO_StorageData_StoragePolicy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 4, 1}
+}
+
+func (m *EntityDTO_StorageData_StoragePolicy) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StorageData_StoragePolicy.Unmarshal(m, b)
+}
+func (m *EntityDTO_StorageData_StoragePolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StorageData_StoragePolicy.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StorageData_StoragePolicy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StorageData_StoragePolicy.Merge(m, src)
+}
+func (m *EntityDTO_StorageData_StoragePolicy) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StorageData_StoragePolicy.Size(m)
+}
+func (m *EntityDTO_StorageData_StoragePolicy) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StorageData_StoragePolicy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StorageData_StoragePolicy proto.InternalMessageInfo
+
+func (m *EntityDTO_StorageData_StoragePolicy) GetRedundancy() EntityDTO_StorageRedundancyMethod {
+	if m != nil && m.Redundancy != nil {
+		return *m.Redundancy
+	}
+	return EntityDTO_RAID0
+}
+
+func (m *EntityDTO_StorageData_StoragePolicy) GetFailuresToTolerate() int32 {
+	if m != nil && m.FailuresToTolerate != nil {
+		return *m.FailuresToTolerate
+	}
+	return 0
+}
+
+func (m *EntityDTO_StorageData_StoragePolicy) GetSpaceReservationPct() int32 {
+	if m != nil && m.SpaceReservationPct != nil {
+		return *m.SpaceReservationPct
+	}
+	return 0
+}
+
+// Deprecated: Do not use.
+func (m *EntityDTO_StorageData_StoragePolicy) GetRaidFactor() float32 {
+	if m != nil && m.RaidFactor != nil {
+		return *m.RaidFactor
+	}
+	return 0
+}
+
+type EntityDTO_StorageData_RawCapacity struct {
+	Capacity             *int64   `protobuf:"varint,1,opt,name=capacity" json:"capacity,omitempty"`
+	Free                 *int64   `protobuf:"varint,2,opt,name=free" json:"free,omitempty"`
+	Uncommitted          *int64   `protobuf:"varint,3,opt,name=uncommitted" json:"uncommitted,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_StorageData_RawCapacity) Reset()         { *m = EntityDTO_StorageData_RawCapacity{} }
+func (m *EntityDTO_StorageData_RawCapacity) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_StorageData_RawCapacity) ProtoMessage()    {}
+func (*EntityDTO_StorageData_RawCapacity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 4, 2}
+}
+
+func (m *EntityDTO_StorageData_RawCapacity) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StorageData_RawCapacity.Unmarshal(m, b)
+}
+func (m *EntityDTO_StorageData_RawCapacity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StorageData_RawCapacity.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StorageData_RawCapacity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StorageData_RawCapacity.Merge(m, src)
+}
+func (m *EntityDTO_StorageData_RawCapacity) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StorageData_RawCapacity.Size(m)
+}
+func (m *EntityDTO_StorageData_RawCapacity) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StorageData_RawCapacity.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StorageData_RawCapacity proto.InternalMessageInfo
+
+func (m *EntityDTO_StorageData_RawCapacity) GetCapacity() int64 {
+	if m != nil && m.Capacity != nil {
+		return *m.Capacity
+	}
+	return 0
+}
+
+func (m *EntityDTO_StorageData_RawCapacity) GetFree() int64 {
+	if m != nil && m.Free != nil {
+		return *m.Free
+	}
+	return 0
+}
+
+func (m *EntityDTO_StorageData_RawCapacity) GetUncommitted() int64 {
+	if m != nil && m.Uncommitted != nil {
+		return *m.Uncommitted
+	}
+	return 0
+}
+
+// business user details
+type EntityDTO_BusinessUserData struct {
+	// connection sessions, if any
+	SessionData          []*EntityDTO_SessionData `protobuf:"bytes,1,rep,name=sessionData" json:"sessionData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
+	XXX_unrecognized     []byte                   `json:"-"`
+	XXX_sizecache        int32                    `json:"-"`
+}
+
+func (m *EntityDTO_BusinessUserData) Reset()         { *m = EntityDTO_BusinessUserData{} }
+func (m *EntityDTO_BusinessUserData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_BusinessUserData) ProtoMessage()    {}
+func (*EntityDTO_BusinessUserData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 5}
+}
+
+func (m *EntityDTO_BusinessUserData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_BusinessUserData.Unmarshal(m, b)
+}
+func (m *EntityDTO_BusinessUserData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_BusinessUserData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_BusinessUserData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_BusinessUserData.Merge(m, src)
+}
+func (m *EntityDTO_BusinessUserData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_BusinessUserData.Size(m)
+}
+func (m *EntityDTO_BusinessUserData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_BusinessUserData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_BusinessUserData proto.InternalMessageInfo
+
+func (m *EntityDTO_BusinessUserData) GetSessionData() []*EntityDTO_SessionData {
+	if m != nil {
+		return m.SessionData
+	}
+	return nil
+}
+
+// Specific data for region
+type EntityDTO_RegionData struct {
+	// region should have a geo data info
+	GeoData              *GeoData `protobuf:"bytes,1,opt,name=geo_data,json=geoData" json:"geo_data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_RegionData) Reset()         { *m = EntityDTO_RegionData{} }
+func (m *EntityDTO_RegionData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_RegionData) ProtoMessage()    {}
+func (*EntityDTO_RegionData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 6}
+}
+
+func (m *EntityDTO_RegionData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_RegionData.Unmarshal(m, b)
+}
+func (m *EntityDTO_RegionData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_RegionData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_RegionData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_RegionData.Merge(m, src)
+}
+func (m *EntityDTO_RegionData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_RegionData.Size(m)
+}
+func (m *EntityDTO_RegionData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_RegionData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_RegionData proto.InternalMessageInfo
+
+func (m *EntityDTO_RegionData) GetGeoData() *GeoData {
+	if m != nil {
+		return m.GeoData
+	}
+	return nil
+}
+
+// describes a session (remote connection) to virtual machine by a business user
+type EntityDTO_SessionData struct {
+	// virtual machine to which the business user has established a session
+	VirtualMachine *string `protobuf:"bytes,1,req,name=virtualMachine" json:"virtualMachine,omitempty"`
+	// session duration in milliseconds
+	SessionDuration      *int64   `protobuf:"varint,2,req,name=sessionDuration" json:"sessionDuration,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_SessionData) Reset()         { *m = EntityDTO_SessionData{} }
+func (m *EntityDTO_SessionData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_SessionData) ProtoMessage()    {}
+func (*EntityDTO_SessionData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 7}
+}
+
+func (m *EntityDTO_SessionData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_SessionData.Unmarshal(m, b)
+}
+func (m *EntityDTO_SessionData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_SessionData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_SessionData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_SessionData.Merge(m, src)
+}
+func (m *EntityDTO_SessionData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_SessionData.Size(m)
+}
+func (m *EntityDTO_SessionData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_SessionData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_SessionData proto.InternalMessageInfo
+
+func (m *EntityDTO_SessionData) GetVirtualMachine() string {
+	if m != nil && m.VirtualMachine != nil {
+		return *m.VirtualMachine
+	}
+	return ""
+}
+
+func (m *EntityDTO_SessionData) GetSessionDuration() int64 {
+	if m != nil && m.SessionDuration != nil {
+		return *m.SessionDuration
+	}
+	return 0
+}
+
 type EntityDTO_DiskArrayData struct {
 	StorageId []string `protobuf:"bytes,1,rep,name=storageId" json:"storageId,omitempty"`
 	// Optionally provide information about the IOPS the disk array is capable of.
-	// Either provide the exact IOPS capacity directly, or supply
+	// Either provide the estimated IOPS capacity directly, or supply
 	// the counts for various types of disks so that it can be computed.
 	//
 	// Types that are valid to be assigned to IopsData:
 	//	*EntityDTO_DiskArrayData_IopsCapacity
-	//	*EntityDTO_DiskArrayData_DiskCounts
+	//	*EntityDTO_DiskArrayData_IopsComputeData
 	IopsData             isEntityDTO_DiskArrayData_IopsData `protobuf_oneof:"iops_data"`
 	SupportsVolumeResize *bool                              `protobuf:"varint,4,opt,name=supportsVolumeResize,def=0" json:"supportsVolumeResize,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                           `json:"-"`
 	XXX_unrecognized     []byte                             `json:"-"`
+	XXX_sizecache        int32                              `json:"-"`
 }
 
-func (m *EntityDTO_DiskArrayData) Reset()                    { *m = EntityDTO_DiskArrayData{} }
-func (m *EntityDTO_DiskArrayData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_DiskArrayData) ProtoMessage()               {}
-func (*EntityDTO_DiskArrayData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 3} }
+func (m *EntityDTO_DiskArrayData) Reset()         { *m = EntityDTO_DiskArrayData{} }
+func (m *EntityDTO_DiskArrayData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DiskArrayData) ProtoMessage()    {}
+func (*EntityDTO_DiskArrayData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 8}
+}
+
+func (m *EntityDTO_DiskArrayData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DiskArrayData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DiskArrayData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DiskArrayData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DiskArrayData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DiskArrayData.Merge(m, src)
+}
+func (m *EntityDTO_DiskArrayData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DiskArrayData.Size(m)
+}
+func (m *EntityDTO_DiskArrayData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DiskArrayData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DiskArrayData proto.InternalMessageInfo
 
 const Default_EntityDTO_DiskArrayData_SupportsVolumeResize bool = false
+
+func (m *EntityDTO_DiskArrayData) GetStorageId() []string {
+	if m != nil {
+		return m.StorageId
+	}
+	return nil
+}
 
 type isEntityDTO_DiskArrayData_IopsData interface {
 	isEntityDTO_DiskArrayData_IopsData()
@@ -2447,23 +3896,18 @@ type isEntityDTO_DiskArrayData_IopsData interface {
 type EntityDTO_DiskArrayData_IopsCapacity struct {
 	IopsCapacity int64 `protobuf:"varint,2,opt,name=iopsCapacity,oneof"`
 }
-type EntityDTO_DiskArrayData_DiskCounts struct {
-	DiskCounts *EntityDTO_DiskCountData `protobuf:"bytes,3,opt,name=diskCounts,oneof"`
+
+type EntityDTO_DiskArrayData_IopsComputeData struct {
+	IopsComputeData *EntityDTO_ComputeIopsData `protobuf:"bytes,3,opt,name=iopsComputeData,oneof"`
 }
 
 func (*EntityDTO_DiskArrayData_IopsCapacity) isEntityDTO_DiskArrayData_IopsData() {}
-func (*EntityDTO_DiskArrayData_DiskCounts) isEntityDTO_DiskArrayData_IopsData()   {}
+
+func (*EntityDTO_DiskArrayData_IopsComputeData) isEntityDTO_DiskArrayData_IopsData() {}
 
 func (m *EntityDTO_DiskArrayData) GetIopsData() isEntityDTO_DiskArrayData_IopsData {
 	if m != nil {
 		return m.IopsData
-	}
-	return nil
-}
-
-func (m *EntityDTO_DiskArrayData) GetStorageId() []string {
-	if m != nil {
-		return m.StorageId
 	}
 	return nil
 }
@@ -2475,9 +3919,9 @@ func (m *EntityDTO_DiskArrayData) GetIopsCapacity() int64 {
 	return 0
 }
 
-func (m *EntityDTO_DiskArrayData) GetDiskCounts() *EntityDTO_DiskCountData {
-	if x, ok := m.GetIopsData().(*EntityDTO_DiskArrayData_DiskCounts); ok {
-		return x.DiskCounts
+func (m *EntityDTO_DiskArrayData) GetIopsComputeData() *EntityDTO_ComputeIopsData {
+	if x, ok := m.GetIopsData().(*EntityDTO_DiskArrayData_IopsComputeData); ok {
+		return x.IopsComputeData
 	}
 	return nil
 }
@@ -2489,114 +3933,54 @@ func (m *EntityDTO_DiskArrayData) GetSupportsVolumeResize() bool {
 	return Default_EntityDTO_DiskArrayData_SupportsVolumeResize
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*EntityDTO_DiskArrayData) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _EntityDTO_DiskArrayData_OneofMarshaler, _EntityDTO_DiskArrayData_OneofUnmarshaler, _EntityDTO_DiskArrayData_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*EntityDTO_DiskArrayData) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*EntityDTO_DiskArrayData_IopsCapacity)(nil),
-		(*EntityDTO_DiskArrayData_DiskCounts)(nil),
+		(*EntityDTO_DiskArrayData_IopsComputeData)(nil),
 	}
-}
-
-func _EntityDTO_DiskArrayData_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*EntityDTO_DiskArrayData)
-	// iops_data
-	switch x := m.IopsData.(type) {
-	case *EntityDTO_DiskArrayData_IopsCapacity:
-		b.EncodeVarint(2<<3 | proto.WireVarint)
-		b.EncodeVarint(uint64(x.IopsCapacity))
-	case *EntityDTO_DiskArrayData_DiskCounts:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DiskCounts); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("EntityDTO_DiskArrayData.IopsData has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _EntityDTO_DiskArrayData_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*EntityDTO_DiskArrayData)
-	switch tag {
-	case 2: // iops_data.iopsCapacity
-		if wire != proto.WireVarint {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeVarint()
-		m.IopsData = &EntityDTO_DiskArrayData_IopsCapacity{int64(x)}
-		return true, err
-	case 3: // iops_data.diskCounts
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_DiskCountData)
-		err := b.DecodeMessage(msg)
-		m.IopsData = &EntityDTO_DiskArrayData_DiskCounts{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _EntityDTO_DiskArrayData_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*EntityDTO_DiskArrayData)
-	// iops_data
-	switch x := m.IopsData.(type) {
-	case *EntityDTO_DiskArrayData_IopsCapacity:
-		n += proto.SizeVarint(2<<3 | proto.WireVarint)
-		n += proto.SizeVarint(uint64(x.IopsCapacity))
-	case *EntityDTO_DiskArrayData_DiskCounts:
-		s := proto.Size(x.DiskCounts)
-		n += proto.SizeVarint(3<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type EntityDTO_LogicalPoolData struct {
 	StorageId             []string `protobuf:"bytes,1,rep,name=storageId" json:"storageId,omitempty"`
 	ServiceLevelObjective *string  `protobuf:"bytes,2,opt,name=serviceLevelObjective" json:"serviceLevelObjective,omitempty"`
 	// Optionally provide information about the IOPS the logical pool is capable of.
-	// Either provide the exact IOPS capacity directly, or supply
+	// Either provide the estimated IOPS capacity directly, or supply
 	// the counts for various types of disks so that it can be computed.
 	//
 	// Types that are valid to be assigned to IopsData:
 	//	*EntityDTO_LogicalPoolData_IopsCapacity
-	//	*EntityDTO_LogicalPoolData_DiskCounts
-	IopsData         isEntityDTO_LogicalPoolData_IopsData `protobuf_oneof:"iops_data"`
-	XXX_unrecognized []byte                               `json:"-"`
+	//	*EntityDTO_LogicalPoolData_IopsComputeData
+	IopsData             isEntityDTO_LogicalPoolData_IopsData `protobuf_oneof:"iops_data"`
+	XXX_NoUnkeyedLiteral struct{}                             `json:"-"`
+	XXX_unrecognized     []byte                               `json:"-"`
+	XXX_sizecache        int32                                `json:"-"`
 }
 
-func (m *EntityDTO_LogicalPoolData) Reset()                    { *m = EntityDTO_LogicalPoolData{} }
-func (m *EntityDTO_LogicalPoolData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_LogicalPoolData) ProtoMessage()               {}
-func (*EntityDTO_LogicalPoolData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 4} }
-
-type isEntityDTO_LogicalPoolData_IopsData interface {
-	isEntityDTO_LogicalPoolData_IopsData()
+func (m *EntityDTO_LogicalPoolData) Reset()         { *m = EntityDTO_LogicalPoolData{} }
+func (m *EntityDTO_LogicalPoolData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_LogicalPoolData) ProtoMessage()    {}
+func (*EntityDTO_LogicalPoolData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 9}
 }
 
-type EntityDTO_LogicalPoolData_IopsCapacity struct {
-	IopsCapacity int64 `protobuf:"varint,3,opt,name=iopsCapacity,oneof"`
+func (m *EntityDTO_LogicalPoolData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_LogicalPoolData.Unmarshal(m, b)
 }
-type EntityDTO_LogicalPoolData_DiskCounts struct {
-	DiskCounts *EntityDTO_DiskCountData `protobuf:"bytes,4,opt,name=diskCounts,oneof"`
+func (m *EntityDTO_LogicalPoolData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_LogicalPoolData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_LogicalPoolData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_LogicalPoolData.Merge(m, src)
+}
+func (m *EntityDTO_LogicalPoolData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_LogicalPoolData.Size(m)
+}
+func (m *EntityDTO_LogicalPoolData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_LogicalPoolData.DiscardUnknown(m)
 }
 
-func (*EntityDTO_LogicalPoolData_IopsCapacity) isEntityDTO_LogicalPoolData_IopsData() {}
-func (*EntityDTO_LogicalPoolData_DiskCounts) isEntityDTO_LogicalPoolData_IopsData()   {}
-
-func (m *EntityDTO_LogicalPoolData) GetIopsData() isEntityDTO_LogicalPoolData_IopsData {
-	if m != nil {
-		return m.IopsData
-	}
-	return nil
-}
+var xxx_messageInfo_EntityDTO_LogicalPoolData proto.InternalMessageInfo
 
 func (m *EntityDTO_LogicalPoolData) GetStorageId() []string {
 	if m != nil {
@@ -2612,6 +3996,29 @@ func (m *EntityDTO_LogicalPoolData) GetServiceLevelObjective() string {
 	return ""
 }
 
+type isEntityDTO_LogicalPoolData_IopsData interface {
+	isEntityDTO_LogicalPoolData_IopsData()
+}
+
+type EntityDTO_LogicalPoolData_IopsCapacity struct {
+	IopsCapacity int64 `protobuf:"varint,3,opt,name=iopsCapacity,oneof"`
+}
+
+type EntityDTO_LogicalPoolData_IopsComputeData struct {
+	IopsComputeData *EntityDTO_ComputeIopsData `protobuf:"bytes,4,opt,name=iopsComputeData,oneof"`
+}
+
+func (*EntityDTO_LogicalPoolData_IopsCapacity) isEntityDTO_LogicalPoolData_IopsData() {}
+
+func (*EntityDTO_LogicalPoolData_IopsComputeData) isEntityDTO_LogicalPoolData_IopsData() {}
+
+func (m *EntityDTO_LogicalPoolData) GetIopsData() isEntityDTO_LogicalPoolData_IopsData {
+	if m != nil {
+		return m.IopsData
+	}
+	return nil
+}
+
 func (m *EntityDTO_LogicalPoolData) GetIopsCapacity() int64 {
 	if x, ok := m.GetIopsData().(*EntityDTO_LogicalPoolData_IopsCapacity); ok {
 		return x.IopsCapacity
@@ -2619,80 +4026,19 @@ func (m *EntityDTO_LogicalPoolData) GetIopsCapacity() int64 {
 	return 0
 }
 
-func (m *EntityDTO_LogicalPoolData) GetDiskCounts() *EntityDTO_DiskCountData {
-	if x, ok := m.GetIopsData().(*EntityDTO_LogicalPoolData_DiskCounts); ok {
-		return x.DiskCounts
+func (m *EntityDTO_LogicalPoolData) GetIopsComputeData() *EntityDTO_ComputeIopsData {
+	if x, ok := m.GetIopsData().(*EntityDTO_LogicalPoolData_IopsComputeData); ok {
+		return x.IopsComputeData
 	}
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*EntityDTO_LogicalPoolData) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _EntityDTO_LogicalPoolData_OneofMarshaler, _EntityDTO_LogicalPoolData_OneofUnmarshaler, _EntityDTO_LogicalPoolData_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*EntityDTO_LogicalPoolData) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*EntityDTO_LogicalPoolData_IopsCapacity)(nil),
-		(*EntityDTO_LogicalPoolData_DiskCounts)(nil),
+		(*EntityDTO_LogicalPoolData_IopsComputeData)(nil),
 	}
-}
-
-func _EntityDTO_LogicalPoolData_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*EntityDTO_LogicalPoolData)
-	// iops_data
-	switch x := m.IopsData.(type) {
-	case *EntityDTO_LogicalPoolData_IopsCapacity:
-		b.EncodeVarint(3<<3 | proto.WireVarint)
-		b.EncodeVarint(uint64(x.IopsCapacity))
-	case *EntityDTO_LogicalPoolData_DiskCounts:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DiskCounts); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("EntityDTO_LogicalPoolData.IopsData has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _EntityDTO_LogicalPoolData_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*EntityDTO_LogicalPoolData)
-	switch tag {
-	case 3: // iops_data.iopsCapacity
-		if wire != proto.WireVarint {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeVarint()
-		m.IopsData = &EntityDTO_LogicalPoolData_IopsCapacity{int64(x)}
-		return true, err
-	case 4: // iops_data.diskCounts
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_DiskCountData)
-		err := b.DecodeMessage(msg)
-		m.IopsData = &EntityDTO_LogicalPoolData_DiskCounts{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _EntityDTO_LogicalPoolData_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*EntityDTO_LogicalPoolData)
-	// iops_data
-	switch x := m.IopsData.(type) {
-	case *EntityDTO_LogicalPoolData_IopsCapacity:
-		n += proto.SizeVarint(3<<3 | proto.WireVarint)
-		n += proto.SizeVarint(uint64(x.IopsCapacity))
-	case *EntityDTO_LogicalPoolData_DiskCounts:
-		s := proto.Size(x.DiskCounts)
-		n += proto.SizeVarint(4<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type EntityDTO_ApplicationData struct {
@@ -2702,14 +4048,36 @@ type EntityDTO_ApplicationData struct {
 	// IP address of related application/VM. E.g. it can be database IP for application server.
 	RelatedIpAddress *string `protobuf:"bytes,4,opt,name=relatedIpAddress" json:"relatedIpAddress,omitempty"`
 	// Information related to database applications
-	DbData           *EntityDTO_DatabaseData `protobuf:"bytes,5,opt,name=dbData" json:"dbData,omitempty"`
-	XXX_unrecognized []byte                  `json:"-"`
+	DbData               *EntityDTO_DatabaseData `protobuf:"bytes,5,opt,name=dbData" json:"dbData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                `json:"-"`
+	XXX_unrecognized     []byte                  `json:"-"`
+	XXX_sizecache        int32                   `json:"-"`
 }
 
-func (m *EntityDTO_ApplicationData) Reset()                    { *m = EntityDTO_ApplicationData{} }
-func (m *EntityDTO_ApplicationData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ApplicationData) ProtoMessage()               {}
-func (*EntityDTO_ApplicationData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 5} }
+func (m *EntityDTO_ApplicationData) Reset()         { *m = EntityDTO_ApplicationData{} }
+func (m *EntityDTO_ApplicationData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ApplicationData) ProtoMessage()    {}
+func (*EntityDTO_ApplicationData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 10}
+}
+
+func (m *EntityDTO_ApplicationData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ApplicationData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ApplicationData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ApplicationData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ApplicationData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ApplicationData.Merge(m, src)
+}
+func (m *EntityDTO_ApplicationData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ApplicationData.Size(m)
+}
+func (m *EntityDTO_ApplicationData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ApplicationData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ApplicationData proto.InternalMessageInfo
 
 func (m *EntityDTO_ApplicationData) GetType() string {
 	if m != nil && m.Type != nil {
@@ -2747,19 +4115,39 @@ func (m *EntityDTO_ApplicationData) GetDbData() *EntityDTO_DatabaseData {
 }
 
 type EntityDTO_VirtualApplicationData struct {
-	Type             *string `protobuf:"bytes,1,opt,name=type" json:"type,omitempty"`
-	IpAddress        *string `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
-	Port             *int32  `protobuf:"varint,3,opt,name=port" json:"port,omitempty"`
-	ServiceType      *string `protobuf:"bytes,4,opt,name=serviceType" json:"serviceType,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Type                 *string  `protobuf:"bytes,1,opt,name=type" json:"type,omitempty"`
+	IpAddress            *string  `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
+	Port                 *int32   `protobuf:"varint,3,opt,name=port" json:"port,omitempty"`
+	ServiceType          *string  `protobuf:"bytes,4,opt,name=serviceType" json:"serviceType,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *EntityDTO_VirtualApplicationData) Reset()         { *m = EntityDTO_VirtualApplicationData{} }
 func (m *EntityDTO_VirtualApplicationData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_VirtualApplicationData) ProtoMessage()    {}
 func (*EntityDTO_VirtualApplicationData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 6}
+	return fileDescriptor_2233245ab49fede8, []int{0, 11}
 }
+
+func (m *EntityDTO_VirtualApplicationData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualApplicationData.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualApplicationData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualApplicationData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualApplicationData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualApplicationData.Merge(m, src)
+}
+func (m *EntityDTO_VirtualApplicationData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualApplicationData.Size(m)
+}
+func (m *EntityDTO_VirtualApplicationData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualApplicationData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualApplicationData proto.InternalMessageInfo
 
 func (m *EntityDTO_VirtualApplicationData) GetType() string {
 	if m != nil && m.Type != nil {
@@ -2789,6 +4177,490 @@ func (m *EntityDTO_VirtualApplicationData) GetServiceType() string {
 	return ""
 }
 
+type EntityDTO_ServiceData struct {
+	// Service type
+	Type *string `protobuf:"bytes,1,opt,name=type" json:"type,omitempty"`
+	// Service IP address
+	IpAddress *string `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
+	// Service port
+	Port *int32 `protobuf:"varint,3,opt,name=port" json:"port,omitempty"`
+	// Type of service (protocol)
+	ServiceType          *string  `protobuf:"bytes,4,opt,name=serviceType" json:"serviceType,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ServiceData) Reset()         { *m = EntityDTO_ServiceData{} }
+func (m *EntityDTO_ServiceData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ServiceData) ProtoMessage()    {}
+func (*EntityDTO_ServiceData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 12}
+}
+
+func (m *EntityDTO_ServiceData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ServiceData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ServiceData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ServiceData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ServiceData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ServiceData.Merge(m, src)
+}
+func (m *EntityDTO_ServiceData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ServiceData.Size(m)
+}
+func (m *EntityDTO_ServiceData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ServiceData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ServiceData proto.InternalMessageInfo
+
+func (m *EntityDTO_ServiceData) GetType() string {
+	if m != nil && m.Type != nil {
+		return *m.Type
+	}
+	return ""
+}
+
+func (m *EntityDTO_ServiceData) GetIpAddress() string {
+	if m != nil && m.IpAddress != nil {
+		return *m.IpAddress
+	}
+	return ""
+}
+
+func (m *EntityDTO_ServiceData) GetPort() int32 {
+	if m != nil && m.Port != nil {
+		return *m.Port
+	}
+	return 0
+}
+
+func (m *EntityDTO_ServiceData) GetServiceType() string {
+	if m != nil && m.ServiceType != nil {
+		return *m.ServiceType
+	}
+	return ""
+}
+
+type EntityDTO_BusinessAccountData struct {
+	// Indicates whether data for this business account was discovered by the probe who is
+	// creating this business account EntityDTO
+	DataDiscovered *bool `protobuf:"varint,1,opt,name=dataDiscovered,def=0" json:"dataDiscovered,omitempty"`
+	// The account id given by a 3rd party provider. e.g. in Azure its the subscription ID
+	AccountId *string `protobuf:"bytes,2,opt,name=account_id,json=accountId" json:"account_id,omitempty"`
+	// Provider-specific account attributes that together identify the pricing used by an
+	// account. e.g. in Azure, the offer ID and enrollment number associated with an account
+	// to determine its pricing
+	PricingIdentifiers []*PricingIdentifier `protobuf:"bytes,3,rep,name=pricing_identifiers,json=pricingIdentifiers" json:"pricing_identifiers,omitempty"`
+	// Information used to uniquely associate this business account with a price table.
+	PriceTableKeys       []*PricingIdentifier `protobuf:"bytes,4,rep,name=price_table_keys,json=priceTableKeys" json:"price_table_keys,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *EntityDTO_BusinessAccountData) Reset()         { *m = EntityDTO_BusinessAccountData{} }
+func (m *EntityDTO_BusinessAccountData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_BusinessAccountData) ProtoMessage()    {}
+func (*EntityDTO_BusinessAccountData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 13}
+}
+
+func (m *EntityDTO_BusinessAccountData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_BusinessAccountData.Unmarshal(m, b)
+}
+func (m *EntityDTO_BusinessAccountData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_BusinessAccountData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_BusinessAccountData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_BusinessAccountData.Merge(m, src)
+}
+func (m *EntityDTO_BusinessAccountData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_BusinessAccountData.Size(m)
+}
+func (m *EntityDTO_BusinessAccountData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_BusinessAccountData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_BusinessAccountData proto.InternalMessageInfo
+
+const Default_EntityDTO_BusinessAccountData_DataDiscovered bool = false
+
+func (m *EntityDTO_BusinessAccountData) GetDataDiscovered() bool {
+	if m != nil && m.DataDiscovered != nil {
+		return *m.DataDiscovered
+	}
+	return Default_EntityDTO_BusinessAccountData_DataDiscovered
+}
+
+func (m *EntityDTO_BusinessAccountData) GetAccountId() string {
+	if m != nil && m.AccountId != nil {
+		return *m.AccountId
+	}
+	return ""
+}
+
+func (m *EntityDTO_BusinessAccountData) GetPricingIdentifiers() []*PricingIdentifier {
+	if m != nil {
+		return m.PricingIdentifiers
+	}
+	return nil
+}
+
+func (m *EntityDTO_BusinessAccountData) GetPriceTableKeys() []*PricingIdentifier {
+	if m != nil {
+		return m.PriceTableKeys
+	}
+	return nil
+}
+
+// specific data for compute tier
+type EntityDTO_ComputeTierData struct {
+	// An identifier for matching compute tiers that belong to the same family.
+	// TODO(OM-50516): Rename field to instanceSizeFamily.
+	Family *string `protobuf:"bytes,1,opt,name=family" json:"family,omitempty"`
+	// Quota family is the group that comprises of profiles that count towards the usage limit for
+	// a defined category imposed on a Business Account.
+	QuotaFamily *string `protobuf:"bytes,5,opt,name=quota_family,json=quotaFamily" json:"quota_family,omitempty"`
+	// Specifies the dedicated storage configuration state for the compute tier.
+	// Market uses this to decide whether or not to combine IOThroughput and NetThroughput that
+	// vm is buying and add them together as consumption, then check with compute tier.
+	DedicatedStorageNetworkState *EntityDTO_ComputeTierData_DedicatedStorageNetworkState `protobuf:"varint,2,opt,name=dedicated_storage_network_state,json=dedicatedStorageNetworkState,enum=common_dto.EntityDTO_ComputeTierData_DedicatedStorageNetworkState" json:"dedicated_storage_network_state,omitempty"`
+	// A quantitative way to compare different tiers in a family. Each tier provides a certain
+	// number of coupons, with the smallest tier in a family providing 1. Coupon is a our
+	// internal way compare different tiers in a family. AWS defines Normalization
+	// Factor (NFU) for different tier size:
+	// https://aws.amazon.com/blogs/aws/new-instance-size-flexibility-for-ec2-reserved-instances/
+	// In our internal mode, we defined the coupon to be NFU * 4. For example, "nano" has a NFU
+	// of 0.25, so its coupon size is 0.25 * 4 = 1.
+	NumCoupons *int32 `protobuf:"varint,3,opt,name=num_coupons,json=numCoupons" json:"num_coupons,omitempty"`
+	// Specifies the number of cores that matches the tier
+	// This is used for license price calculation (since not all templates are used by VMs)
+	NumCores *int32 `protobuf:"varint,4,opt,name=num_cores,json=numCores" json:"num_cores,omitempty"`
+	//Number of Ephemeral disks supported by this tier
+	NumInstanceDisks *int32 `protobuf:"varint,6,opt,name=num_instance_disks,json=numInstanceDisks" json:"num_instance_disks,omitempty"`
+	//Size of each Ephemeral disk supported by this tier in GB.
+	InstanceDiskSizeGb *int32 `protobuf:"varint,7,opt,name=instance_disk_size_gb,json=instanceDiskSizeGb" json:"instance_disk_size_gb,omitempty"`
+	//disk type of Ephemeral storage
+	InstanceDiskType *EntityDTO_InstanceDiskType `protobuf:"varint,8,opt,name=instance_disk_type,json=instanceDiskType,enum=common_dto.EntityDTO_InstanceDiskType" json:"instance_disk_type,omitempty"`
+	// property to determine if this ComputeTier supports burstable CPUs.
+	BurstableCPU         *bool    `protobuf:"varint,9,opt,name=burstableCPU" json:"burstableCPU,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ComputeTierData) Reset()         { *m = EntityDTO_ComputeTierData{} }
+func (m *EntityDTO_ComputeTierData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ComputeTierData) ProtoMessage()    {}
+func (*EntityDTO_ComputeTierData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 14}
+}
+
+func (m *EntityDTO_ComputeTierData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ComputeTierData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ComputeTierData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ComputeTierData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ComputeTierData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ComputeTierData.Merge(m, src)
+}
+func (m *EntityDTO_ComputeTierData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ComputeTierData.Size(m)
+}
+func (m *EntityDTO_ComputeTierData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ComputeTierData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ComputeTierData proto.InternalMessageInfo
+
+func (m *EntityDTO_ComputeTierData) GetFamily() string {
+	if m != nil && m.Family != nil {
+		return *m.Family
+	}
+	return ""
+}
+
+func (m *EntityDTO_ComputeTierData) GetQuotaFamily() string {
+	if m != nil && m.QuotaFamily != nil {
+		return *m.QuotaFamily
+	}
+	return ""
+}
+
+func (m *EntityDTO_ComputeTierData) GetDedicatedStorageNetworkState() EntityDTO_ComputeTierData_DedicatedStorageNetworkState {
+	if m != nil && m.DedicatedStorageNetworkState != nil {
+		return *m.DedicatedStorageNetworkState
+	}
+	return EntityDTO_ComputeTierData_NOT_SUPPORTED
+}
+
+func (m *EntityDTO_ComputeTierData) GetNumCoupons() int32 {
+	if m != nil && m.NumCoupons != nil {
+		return *m.NumCoupons
+	}
+	return 0
+}
+
+func (m *EntityDTO_ComputeTierData) GetNumCores() int32 {
+	if m != nil && m.NumCores != nil {
+		return *m.NumCores
+	}
+	return 0
+}
+
+func (m *EntityDTO_ComputeTierData) GetNumInstanceDisks() int32 {
+	if m != nil && m.NumInstanceDisks != nil {
+		return *m.NumInstanceDisks
+	}
+	return 0
+}
+
+func (m *EntityDTO_ComputeTierData) GetInstanceDiskSizeGb() int32 {
+	if m != nil && m.InstanceDiskSizeGb != nil {
+		return *m.InstanceDiskSizeGb
+	}
+	return 0
+}
+
+func (m *EntityDTO_ComputeTierData) GetInstanceDiskType() EntityDTO_InstanceDiskType {
+	if m != nil && m.InstanceDiskType != nil {
+		return *m.InstanceDiskType
+	}
+	return EntityDTO_NONE
+}
+
+func (m *EntityDTO_ComputeTierData) GetBurstableCPU() bool {
+	if m != nil && m.BurstableCPU != nil {
+		return *m.BurstableCPU
+	}
+	return false
+}
+
+// specific data for virtual volume
+type EntityDTO_VirtualVolumeData struct {
+	// float iops capacity of volume needed for cost calculations
+	// The field is deprecated because the value is now carried in the sold commodity
+	StorageAccessCapacity *float32 `protobuf:"fixed32,1,opt,name=storage_access_capacity,json=storageAccessCapacity" json:"storage_access_capacity,omitempty"` // Deprecated: Do not use.
+	// float storage capacity (MB) of volume needed for cost calculations
+	// The field is deprecated because the value is now carried in the sold commodity
+	StorageAmountCapacity *float32 `protobuf:"fixed32,2,opt,name=storage_amount_capacity,json=storageAmountCapacity" json:"storage_amount_capacity,omitempty"` // Deprecated: Do not use.
+	// enum identifying the replication type needed for cost calculations
+	RedundancyType *EntityDTO_VirtualVolumeData_RedundancyType `protobuf:"varint,3,opt,name=redundancy_type,json=redundancyType,enum=common_dto.EntityDTO_VirtualVolumeData_RedundancyType" json:"redundancy_type,omitempty"`
+	// files associated with this Virtual Volume
+	File []*EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor `protobuf:"bytes,4,rep,name=file" json:"file,omitempty"`
+	// string snapshot ID of volume needed for entity details
+	SnapshotId *string `protobuf:"bytes,5,opt,name=snapshotId" json:"snapshotId,omitempty"`
+	// Creation time (Unix ms)
+	CreationTime *int64 `protobuf:"varint,6,opt,name=creation_time,json=creationTime" json:"creation_time,omitempty"`
+	// volume's IO Throughput capacity
+	// The field is deprecated because the value is now carried in the sold commodity
+	IoThroughputCapacity *float64 `protobuf:"fixed64,7,opt,name=io_throughput_capacity,json=ioThroughputCapacity" json:"io_throughput_capacity,omitempty"` // Deprecated: Do not use.
+	// volume's IO Throughput used
+	IoThroughputUsage *float64 `protobuf:"fixed64,8,opt,name=io_throughput_usage,json=ioThroughputUsage" json:"io_throughput_usage,omitempty"`
+	// Whether the volume belongs to a VM
+	AttachmentState *EntityDTO_VirtualVolumeData_AttachmentState `protobuf:"varint,9,opt,name=attachment_state,json=attachmentState,enum=common_dto.EntityDTO_VirtualVolumeData_AttachmentState" json:"attachment_state,omitempty"`
+	// Whether the volume is encrypted
+	Encrypted *bool `protobuf:"varint,10,opt,name=encrypted" json:"encrypted,omitempty"`
+	// Whether the volume is Ephemeral
+	IsEphemeral          *bool    `protobuf:"varint,11,opt,name=isEphemeral" json:"isEphemeral,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_VirtualVolumeData) Reset()         { *m = EntityDTO_VirtualVolumeData{} }
+func (m *EntityDTO_VirtualVolumeData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_VirtualVolumeData) ProtoMessage()    {}
+func (*EntityDTO_VirtualVolumeData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 15}
+}
+
+func (m *EntityDTO_VirtualVolumeData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualVolumeData.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualVolumeData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualVolumeData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualVolumeData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualVolumeData.Merge(m, src)
+}
+func (m *EntityDTO_VirtualVolumeData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualVolumeData.Size(m)
+}
+func (m *EntityDTO_VirtualVolumeData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualVolumeData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualVolumeData proto.InternalMessageInfo
+
+// Deprecated: Do not use.
+func (m *EntityDTO_VirtualVolumeData) GetStorageAccessCapacity() float32 {
+	if m != nil && m.StorageAccessCapacity != nil {
+		return *m.StorageAccessCapacity
+	}
+	return 0
+}
+
+// Deprecated: Do not use.
+func (m *EntityDTO_VirtualVolumeData) GetStorageAmountCapacity() float32 {
+	if m != nil && m.StorageAmountCapacity != nil {
+		return *m.StorageAmountCapacity
+	}
+	return 0
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetRedundancyType() EntityDTO_VirtualVolumeData_RedundancyType {
+	if m != nil && m.RedundancyType != nil {
+		return *m.RedundancyType
+	}
+	return EntityDTO_VirtualVolumeData_LRS
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetFile() []*EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor {
+	if m != nil {
+		return m.File
+	}
+	return nil
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetSnapshotId() string {
+	if m != nil && m.SnapshotId != nil {
+		return *m.SnapshotId
+	}
+	return ""
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetCreationTime() int64 {
+	if m != nil && m.CreationTime != nil {
+		return *m.CreationTime
+	}
+	return 0
+}
+
+// Deprecated: Do not use.
+func (m *EntityDTO_VirtualVolumeData) GetIoThroughputCapacity() float64 {
+	if m != nil && m.IoThroughputCapacity != nil {
+		return *m.IoThroughputCapacity
+	}
+	return 0
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetIoThroughputUsage() float64 {
+	if m != nil && m.IoThroughputUsage != nil {
+		return *m.IoThroughputUsage
+	}
+	return 0
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetAttachmentState() EntityDTO_VirtualVolumeData_AttachmentState {
+	if m != nil && m.AttachmentState != nil {
+		return *m.AttachmentState
+	}
+	return EntityDTO_VirtualVolumeData_ATTACHED
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetEncrypted() bool {
+	if m != nil && m.Encrypted != nil {
+		return *m.Encrypted
+	}
+	return false
+}
+
+func (m *EntityDTO_VirtualVolumeData) GetIsEphemeral() bool {
+	if m != nil && m.IsEphemeral != nil {
+		return *m.IsEphemeral
+	}
+	return false
+}
+
+// We can have multiple files inside a virtual volume.  For example, for VC Storage
+// Browsing in XL. This message describes the file
+type EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor struct {
+	// Full pathname with Unix-style separators
+	Path *string `protobuf:"bytes,1,req,name=path" json:"path,omitempty"`
+	// Size of the file
+	SizeKb *int64 `protobuf:"varint,2,opt,name=sizeKb" json:"sizeKb,omitempty"`
+	// Type of the file, if available
+	Type *EntityDTO_VirtualMachineFileType `protobuf:"varint,3,opt,name=type,enum=common_dto.EntityDTO_VirtualMachineFileType" json:"type,omitempty"`
+	// Modification time in UTC milliseconds since epoch
+	ModificationTimeMs *int64 `protobuf:"varint,4,opt,name=modificationTimeMs" json:"modificationTimeMs,omitempty"`
+	// Potentially empty list of other paths to the file, links in Unix terminology
+	// VSAN has first level directory symbolic links with user friendly names,
+	// which are what we want to match the ignore directory patterns against.
+	LinkedPaths          []string `protobuf:"bytes,5,rep,name=linkedPaths" json:"linkedPaths,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) Reset() {
+	*m = EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor{}
+}
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) String() string {
+	return proto.CompactTextString(m)
+}
+func (*EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) ProtoMessage() {}
+func (*EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 15, 0}
+}
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor.Merge(m, src)
+}
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor.Size(m)
+}
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor proto.InternalMessageInfo
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) GetPath() string {
+	if m != nil && m.Path != nil {
+		return *m.Path
+	}
+	return ""
+}
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) GetSizeKb() int64 {
+	if m != nil && m.SizeKb != nil {
+		return *m.SizeKb
+	}
+	return 0
+}
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) GetType() EntityDTO_VirtualMachineFileType {
+	if m != nil && m.Type != nil {
+		return *m.Type
+	}
+	return EntityDTO_CONFIGURATION
+}
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) GetModificationTimeMs() int64 {
+	if m != nil && m.ModificationTimeMs != nil {
+		return *m.ModificationTimeMs
+	}
+	return 0
+}
+
+func (m *EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor) GetLinkedPaths() []string {
+	if m != nil {
+		return m.LinkedPaths
+	}
+	return nil
+}
+
 type EntityDTO_VirtualMachineData struct {
 	IpAddress []string `protobuf:"bytes,1,rep,name=ipAddress" json:"ipAddress,omitempty"`
 	// Carries specific properties for setting Entity State of this VM.
@@ -2811,14 +4683,47 @@ type EntityDTO_VirtualMachineData struct {
 	BiddingProductDescription *string `protobuf:"bytes,8,opt,name=biddingProductDescription" json:"biddingProductDescription,omitempty"`
 	// Number of Elastic Ips
 	//
-	NumElasticIps    *int32 `protobuf:"varint,9,opt,name=numElasticIps" json:"numElasticIps,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	NumElasticIps *int32 `protobuf:"varint,9,opt,name=numElasticIps" json:"numElasticIps,omitempty"`
+	// Display name list of the connected networks, this field is
+	// current for XL only.
+	ConnectedNetwork []string `protobuf:"bytes,10,rep,name=connectedNetwork" json:"connectedNetwork,omitempty"`
+	// VM Disk ID to Storage ID mapping. Multiple disks can point to the same storage.
+	DiskToStorage map[string]string `protobuf:"bytes,11,rep,name=diskToStorage" json:"diskToStorage,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// The licensing model of the VM (license included in compute price vs. BYOL)
+	LicenseModel *EntityDTO_LicenseModel `protobuf:"varint,12,opt,name=licenseModel,enum=common_dto.EntityDTO_LicenseModel,def=1" json:"licenseModel,omitempty"`
+	// The number of ephemeral storages attached to this VM
+	NumEphemeralStorages *int32   `protobuf:"varint,13,opt,name=numEphemeralStorages" json:"numEphemeralStorages,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_VirtualMachineData) Reset()                    { *m = EntityDTO_VirtualMachineData{} }
-func (m *EntityDTO_VirtualMachineData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_VirtualMachineData) ProtoMessage()               {}
-func (*EntityDTO_VirtualMachineData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 7} }
+func (m *EntityDTO_VirtualMachineData) Reset()         { *m = EntityDTO_VirtualMachineData{} }
+func (m *EntityDTO_VirtualMachineData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_VirtualMachineData) ProtoMessage()    {}
+func (*EntityDTO_VirtualMachineData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 16}
+}
+
+func (m *EntityDTO_VirtualMachineData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualMachineData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualMachineData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualMachineData.Merge(m, src)
+}
+func (m *EntityDTO_VirtualMachineData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData.Size(m)
+}
+func (m *EntityDTO_VirtualMachineData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualMachineData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualMachineData proto.InternalMessageInfo
+
+const Default_EntityDTO_VirtualMachineData_LicenseModel EntityDTO_LicenseModel = EntityDTO_LICENSE_INCLUDED
 
 func (m *EntityDTO_VirtualMachineData) GetIpAddress() []string {
 	if m != nil {
@@ -2883,13 +4788,43 @@ func (m *EntityDTO_VirtualMachineData) GetNumElasticIps() int32 {
 	return 0
 }
 
+func (m *EntityDTO_VirtualMachineData) GetConnectedNetwork() []string {
+	if m != nil {
+		return m.ConnectedNetwork
+	}
+	return nil
+}
+
+func (m *EntityDTO_VirtualMachineData) GetDiskToStorage() map[string]string {
+	if m != nil {
+		return m.DiskToStorage
+	}
+	return nil
+}
+
+func (m *EntityDTO_VirtualMachineData) GetLicenseModel() EntityDTO_LicenseModel {
+	if m != nil && m.LicenseModel != nil {
+		return *m.LicenseModel
+	}
+	return Default_EntityDTO_VirtualMachineData_LicenseModel
+}
+
+func (m *EntityDTO_VirtualMachineData) GetNumEphemeralStorages() int32 {
+	if m != nil && m.NumEphemeralStorages != nil {
+		return *m.NumEphemeralStorages
+	}
+	return 0
+}
+
 // Annotation note (currently used in VC only)
 type EntityDTO_VirtualMachineData_AnnotationNote struct {
 	// Annotation key
 	Key *string `protobuf:"bytes,1,req,name=key" json:"key,omitempty"`
 	// Annotation value
-	Value            *string `protobuf:"bytes,2,req,name=value" json:"value,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Value                *string  `protobuf:"bytes,2,req,name=value" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *EntityDTO_VirtualMachineData_AnnotationNote) Reset() {
@@ -2900,8 +4835,26 @@ func (m *EntityDTO_VirtualMachineData_AnnotationNote) String() string {
 }
 func (*EntityDTO_VirtualMachineData_AnnotationNote) ProtoMessage() {}
 func (*EntityDTO_VirtualMachineData_AnnotationNote) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 7, 0}
+	return fileDescriptor_2233245ab49fede8, []int{0, 16, 0}
 }
+
+func (m *EntityDTO_VirtualMachineData_AnnotationNote) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData_AnnotationNote.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualMachineData_AnnotationNote) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData_AnnotationNote.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualMachineData_AnnotationNote) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualMachineData_AnnotationNote.Merge(m, src)
+}
+func (m *EntityDTO_VirtualMachineData_AnnotationNote) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData_AnnotationNote.Size(m)
+}
+func (m *EntityDTO_VirtualMachineData_AnnotationNote) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualMachineData_AnnotationNote.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualMachineData_AnnotationNote proto.InternalMessageInfo
 
 func (m *EntityDTO_VirtualMachineData_AnnotationNote) GetKey() string {
 	if m != nil && m.Key != nil {
@@ -2925,8 +4878,10 @@ type EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor struct {
 	// Size of the file
 	SizeKb *int64 `protobuf:"varint,3,opt,name=sizeKb" json:"sizeKb,omitempty"`
 	// Type of the file, if available
-	Type             *EntityDTO_VirtualMachineFileType `protobuf:"varint,4,opt,name=type,enum=common_dto.EntityDTO_VirtualMachineFileType" json:"type,omitempty"`
-	XXX_unrecognized []byte                            `json:"-"`
+	Type                 *EntityDTO_VirtualMachineFileType `protobuf:"varint,4,opt,name=type,enum=common_dto.EntityDTO_VirtualMachineFileType" json:"type,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                          `json:"-"`
+	XXX_unrecognized     []byte                            `json:"-"`
+	XXX_sizecache        int32                             `json:"-"`
 }
 
 func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) Reset() {
@@ -2937,8 +4892,26 @@ func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) String() str
 }
 func (*EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) ProtoMessage() {}
 func (*EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 7, 1}
+	return fileDescriptor_2233245ab49fede8, []int{0, 16, 1}
 }
+
+func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor.Merge(m, src)
+}
+func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor.Size(m)
+}
+func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor proto.InternalMessageInfo
 
 func (m *EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor) GetStorageId() string {
 	if m != nil && m.StorageId != nil {
@@ -2973,14 +4946,42 @@ type EntityDTO_DatabaseData struct {
 	// Engine type of the related entity
 	Engine *string `protobuf:"bytes,1,opt,name=engine" json:"engine,omitempty"`
 	// Edition type of the specified database engine
-	Edition          *string `protobuf:"bytes,2,opt,name=edition" json:"edition,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Edition *string `protobuf:"bytes,2,opt,name=edition" json:"edition,omitempty"`
+	// Version of the specified database engine
+	Version *string `protobuf:"bytes,3,opt,name=version" json:"version,omitempty"`
+	// deployment type of database server; e.g. Single-AZ or Multi-AZ
+	DeploymentType *string `protobuf:"bytes,4,opt,name=deploymentType" json:"deploymentType,omitempty"`
+	// license model of database server; e.g. BYOL or license included
+	LicenseModel         *string  `protobuf:"bytes,5,opt,name=licenseModel" json:"licenseModel,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_DatabaseData) Reset()                    { *m = EntityDTO_DatabaseData{} }
-func (m *EntityDTO_DatabaseData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_DatabaseData) ProtoMessage()               {}
-func (*EntityDTO_DatabaseData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 8} }
+func (m *EntityDTO_DatabaseData) Reset()         { *m = EntityDTO_DatabaseData{} }
+func (m *EntityDTO_DatabaseData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DatabaseData) ProtoMessage()    {}
+func (*EntityDTO_DatabaseData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 17}
+}
+
+func (m *EntityDTO_DatabaseData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DatabaseData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DatabaseData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DatabaseData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DatabaseData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DatabaseData.Merge(m, src)
+}
+func (m *EntityDTO_DatabaseData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DatabaseData.Size(m)
+}
+func (m *EntityDTO_DatabaseData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DatabaseData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DatabaseData proto.InternalMessageInfo
 
 func (m *EntityDTO_DatabaseData) GetEngine() string {
 	if m != nil && m.Engine != nil {
@@ -2996,24 +4997,156 @@ func (m *EntityDTO_DatabaseData) GetEdition() string {
 	return ""
 }
 
+func (m *EntityDTO_DatabaseData) GetVersion() string {
+	if m != nil && m.Version != nil {
+		return *m.Version
+	}
+	return ""
+}
+
+func (m *EntityDTO_DatabaseData) GetDeploymentType() string {
+	if m != nil && m.DeploymentType != nil {
+		return *m.DeploymentType
+	}
+	return ""
+}
+
+func (m *EntityDTO_DatabaseData) GetLicenseModel() string {
+	if m != nil && m.LicenseModel != nil {
+		return *m.LicenseModel
+	}
+	return ""
+}
+
+// Describes information related to cloud database tier information
+type EntityDTO_DatabaseTierData struct {
+	// Edition type of the specified database engine
+	Edition *string `protobuf:"bytes,1,opt,name=edition" json:"edition,omitempty"`
+	// Family database server belongs to; e.g. Premium etc
+	Family               *string  `protobuf:"bytes,2,opt,name=family" json:"family,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_DatabaseTierData) Reset()         { *m = EntityDTO_DatabaseTierData{} }
+func (m *EntityDTO_DatabaseTierData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DatabaseTierData) ProtoMessage()    {}
+func (*EntityDTO_DatabaseTierData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 18}
+}
+
+func (m *EntityDTO_DatabaseTierData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DatabaseTierData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DatabaseTierData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DatabaseTierData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DatabaseTierData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DatabaseTierData.Merge(m, src)
+}
+func (m *EntityDTO_DatabaseTierData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DatabaseTierData.Size(m)
+}
+func (m *EntityDTO_DatabaseTierData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DatabaseTierData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DatabaseTierData proto.InternalMessageInfo
+
+func (m *EntityDTO_DatabaseTierData) GetEdition() string {
+	if m != nil && m.Edition != nil {
+		return *m.Edition
+	}
+	return ""
+}
+
+func (m *EntityDTO_DatabaseTierData) GetFamily() string {
+	if m != nil && m.Family != nil {
+		return *m.Family
+	}
+	return ""
+}
+
+// Describes information related to cloud /database tier server information
+type EntityDTO_DatabaseServerTierData struct {
+	// Family database server belongs to; e.g. db.m1 etc
+	Family               *string  `protobuf:"bytes,1,opt,name=family" json:"family,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_DatabaseServerTierData) Reset()         { *m = EntityDTO_DatabaseServerTierData{} }
+func (m *EntityDTO_DatabaseServerTierData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DatabaseServerTierData) ProtoMessage()    {}
+func (*EntityDTO_DatabaseServerTierData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 19}
+}
+
+func (m *EntityDTO_DatabaseServerTierData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DatabaseServerTierData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DatabaseServerTierData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DatabaseServerTierData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DatabaseServerTierData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DatabaseServerTierData.Merge(m, src)
+}
+func (m *EntityDTO_DatabaseServerTierData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DatabaseServerTierData.Size(m)
+}
+func (m *EntityDTO_DatabaseServerTierData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DatabaseServerTierData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DatabaseServerTierData proto.InternalMessageInfo
+
+func (m *EntityDTO_DatabaseServerTierData) GetFamily() string {
+	if m != nil && m.Family != nil {
+		return *m.Family
+	}
+	return ""
+}
+
 type EntityDTO_StorageControllerData struct {
 	// Optionally provide information about the IOPS the storage controller is capable of.
-	// Either provide the exact IOPS capacity directly, or supply
+	// Either provide the estimated IOPS capacity directly, or supply
 	// the counts for various types of disks so that it can be computed.
 	//
 	// Types that are valid to be assigned to IopsData:
 	//	*EntityDTO_StorageControllerData_IopsCapacity
-	//	*EntityDTO_StorageControllerData_DiskCounts
-	IopsData         isEntityDTO_StorageControllerData_IopsData `protobuf_oneof:"iops_data"`
-	XXX_unrecognized []byte                                     `json:"-"`
+	//	*EntityDTO_StorageControllerData_IopsComputeData
+	IopsData             isEntityDTO_StorageControllerData_IopsData `protobuf_oneof:"iops_data"`
+	XXX_NoUnkeyedLiteral struct{}                                   `json:"-"`
+	XXX_unrecognized     []byte                                     `json:"-"`
+	XXX_sizecache        int32                                      `json:"-"`
 }
 
 func (m *EntityDTO_StorageControllerData) Reset()         { *m = EntityDTO_StorageControllerData{} }
 func (m *EntityDTO_StorageControllerData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_StorageControllerData) ProtoMessage()    {}
 func (*EntityDTO_StorageControllerData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 9}
+	return fileDescriptor_2233245ab49fede8, []int{0, 20}
 }
+
+func (m *EntityDTO_StorageControllerData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StorageControllerData.Unmarshal(m, b)
+}
+func (m *EntityDTO_StorageControllerData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StorageControllerData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StorageControllerData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StorageControllerData.Merge(m, src)
+}
+func (m *EntityDTO_StorageControllerData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StorageControllerData.Size(m)
+}
+func (m *EntityDTO_StorageControllerData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StorageControllerData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StorageControllerData proto.InternalMessageInfo
 
 type isEntityDTO_StorageControllerData_IopsData interface {
 	isEntityDTO_StorageControllerData_IopsData()
@@ -3022,12 +5155,15 @@ type isEntityDTO_StorageControllerData_IopsData interface {
 type EntityDTO_StorageControllerData_IopsCapacity struct {
 	IopsCapacity int64 `protobuf:"varint,1,opt,name=iopsCapacity,oneof"`
 }
-type EntityDTO_StorageControllerData_DiskCounts struct {
-	DiskCounts *EntityDTO_DiskCountData `protobuf:"bytes,2,opt,name=diskCounts,oneof"`
+
+type EntityDTO_StorageControllerData_IopsComputeData struct {
+	IopsComputeData *EntityDTO_ComputeIopsData `protobuf:"bytes,2,opt,name=iopsComputeData,oneof"`
 }
 
 func (*EntityDTO_StorageControllerData_IopsCapacity) isEntityDTO_StorageControllerData_IopsData() {}
-func (*EntityDTO_StorageControllerData_DiskCounts) isEntityDTO_StorageControllerData_IopsData()   {}
+
+func (*EntityDTO_StorageControllerData_IopsComputeData) isEntityDTO_StorageControllerData_IopsData() {
+}
 
 func (m *EntityDTO_StorageControllerData) GetIopsData() isEntityDTO_StorageControllerData_IopsData {
 	if m != nil {
@@ -3043,94 +5179,55 @@ func (m *EntityDTO_StorageControllerData) GetIopsCapacity() int64 {
 	return 0
 }
 
-func (m *EntityDTO_StorageControllerData) GetDiskCounts() *EntityDTO_DiskCountData {
-	if x, ok := m.GetIopsData().(*EntityDTO_StorageControllerData_DiskCounts); ok {
-		return x.DiskCounts
+func (m *EntityDTO_StorageControllerData) GetIopsComputeData() *EntityDTO_ComputeIopsData {
+	if x, ok := m.GetIopsData().(*EntityDTO_StorageControllerData_IopsComputeData); ok {
+		return x.IopsComputeData
 	}
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*EntityDTO_StorageControllerData) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _EntityDTO_StorageControllerData_OneofMarshaler, _EntityDTO_StorageControllerData_OneofUnmarshaler, _EntityDTO_StorageControllerData_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*EntityDTO_StorageControllerData) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*EntityDTO_StorageControllerData_IopsCapacity)(nil),
-		(*EntityDTO_StorageControllerData_DiskCounts)(nil),
+		(*EntityDTO_StorageControllerData_IopsComputeData)(nil),
 	}
-}
-
-func _EntityDTO_StorageControllerData_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*EntityDTO_StorageControllerData)
-	// iops_data
-	switch x := m.IopsData.(type) {
-	case *EntityDTO_StorageControllerData_IopsCapacity:
-		b.EncodeVarint(1<<3 | proto.WireVarint)
-		b.EncodeVarint(uint64(x.IopsCapacity))
-	case *EntityDTO_StorageControllerData_DiskCounts:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DiskCounts); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("EntityDTO_StorageControllerData.IopsData has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _EntityDTO_StorageControllerData_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*EntityDTO_StorageControllerData)
-	switch tag {
-	case 1: // iops_data.iopsCapacity
-		if wire != proto.WireVarint {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeVarint()
-		m.IopsData = &EntityDTO_StorageControllerData_IopsCapacity{int64(x)}
-		return true, err
-	case 2: // iops_data.diskCounts
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(EntityDTO_DiskCountData)
-		err := b.DecodeMessage(msg)
-		m.IopsData = &EntityDTO_StorageControllerData_DiskCounts{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _EntityDTO_StorageControllerData_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*EntityDTO_StorageControllerData)
-	// iops_data
-	switch x := m.IopsData.(type) {
-	case *EntityDTO_StorageControllerData_IopsCapacity:
-		n += proto.SizeVarint(1<<3 | proto.WireVarint)
-		n += proto.SizeVarint(uint64(x.IopsCapacity))
-	case *EntityDTO_StorageControllerData_DiskCounts:
-		s := proto.Size(x.DiskCounts)
-		n += proto.SizeVarint(2<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 type EntityDTO_ContainerPodData struct {
-	Namespace        *string `protobuf:"bytes,1,opt,name=namespace" json:"namespace,omitempty"`
-	IpAddress        *string `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
-	FullName         *string `protobuf:"bytes,3,opt,name=fullName" json:"fullName,omitempty"`
-	Port             *string `protobuf:"bytes,4,opt,name=port" json:"port,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Namespace            *string  `protobuf:"bytes,1,opt,name=namespace" json:"namespace,omitempty"`
+	IpAddress            *string  `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
+	FullName             *string  `protobuf:"bytes,3,opt,name=fullName" json:"fullName,omitempty"`
+	Port                 *string  `protobuf:"bytes,4,opt,name=port" json:"port,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_ContainerPodData) Reset()                    { *m = EntityDTO_ContainerPodData{} }
-func (m *EntityDTO_ContainerPodData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ContainerPodData) ProtoMessage()               {}
-func (*EntityDTO_ContainerPodData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 10} }
+func (m *EntityDTO_ContainerPodData) Reset()         { *m = EntityDTO_ContainerPodData{} }
+func (m *EntityDTO_ContainerPodData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ContainerPodData) ProtoMessage()    {}
+func (*EntityDTO_ContainerPodData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 21}
+}
+
+func (m *EntityDTO_ContainerPodData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ContainerPodData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ContainerPodData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ContainerPodData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ContainerPodData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ContainerPodData.Merge(m, src)
+}
+func (m *EntityDTO_ContainerPodData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ContainerPodData.Size(m)
+}
+func (m *EntityDTO_ContainerPodData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ContainerPodData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ContainerPodData proto.InternalMessageInfo
 
 func (m *EntityDTO_ContainerPodData) GetNamespace() string {
 	if m != nil && m.Namespace != nil {
@@ -3161,18 +5258,40 @@ func (m *EntityDTO_ContainerPodData) GetPort() string {
 }
 
 type EntityDTO_ContainerData struct {
-	Namespace        *string `protobuf:"bytes,1,opt,name=namespace" json:"namespace,omitempty"`
-	IpAddress        *string `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
-	FullName         *string `protobuf:"bytes,3,opt,name=fullName" json:"fullName,omitempty"`
-	Port             *string `protobuf:"bytes,4,opt,name=port" json:"port,omitempty"`
-	PodName          *string `protobuf:"bytes,5,opt,name=podName" json:"podName,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Namespace            *string  `protobuf:"bytes,1,opt,name=namespace" json:"namespace,omitempty"`
+	IpAddress            *string  `protobuf:"bytes,2,opt,name=ipAddress" json:"ipAddress,omitempty"`
+	FullName             *string  `protobuf:"bytes,3,opt,name=fullName" json:"fullName,omitempty"`
+	Port                 *string  `protobuf:"bytes,4,opt,name=port" json:"port,omitempty"`
+	PodName              *string  `protobuf:"bytes,5,opt,name=podName" json:"podName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_ContainerData) Reset()                    { *m = EntityDTO_ContainerData{} }
-func (m *EntityDTO_ContainerData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ContainerData) ProtoMessage()               {}
-func (*EntityDTO_ContainerData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 11} }
+func (m *EntityDTO_ContainerData) Reset()         { *m = EntityDTO_ContainerData{} }
+func (m *EntityDTO_ContainerData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ContainerData) ProtoMessage()    {}
+func (*EntityDTO_ContainerData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 22}
+}
+
+func (m *EntityDTO_ContainerData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ContainerData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ContainerData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ContainerData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ContainerData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ContainerData.Merge(m, src)
+}
+func (m *EntityDTO_ContainerData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ContainerData.Size(m)
+}
+func (m *EntityDTO_ContainerData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ContainerData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ContainerData proto.InternalMessageInfo
 
 func (m *EntityDTO_ContainerData) GetNamespace() string {
 	if m != nil && m.Namespace != nil {
@@ -3209,16 +5328,473 @@ func (m *EntityDTO_ContainerData) GetPodName() string {
 	return ""
 }
 
-type EntityDTO_VMState struct {
-	// Notifies if the VirtualMachine is connected.
-	Connected        *bool  `protobuf:"varint,1,opt,name=connected,def=1" json:"connected,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+type EntityDTO_WorkloadControllerData struct {
+	// Types that are valid to be assigned to ControllerType:
+	//	*EntityDTO_WorkloadControllerData_CronJobData
+	//	*EntityDTO_WorkloadControllerData_CustomControllerData
+	//	*EntityDTO_WorkloadControllerData_DaemonSetData
+	//	*EntityDTO_WorkloadControllerData_DeploymentData
+	//	*EntityDTO_WorkloadControllerData_JobData
+	//	*EntityDTO_WorkloadControllerData_ReplicaSetData
+	//	*EntityDTO_WorkloadControllerData_ReplicationControllerData
+	//	*EntityDTO_WorkloadControllerData_StatefulSetData
+	ControllerType       isEntityDTO_WorkloadControllerData_ControllerType `protobuf_oneof:"controller_type"`
+	XXX_NoUnkeyedLiteral struct{}                                          `json:"-"`
+	XXX_unrecognized     []byte                                            `json:"-"`
+	XXX_sizecache        int32                                             `json:"-"`
 }
 
-func (m *EntityDTO_VMState) Reset()                    { *m = EntityDTO_VMState{} }
-func (m *EntityDTO_VMState) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_VMState) ProtoMessage()               {}
-func (*EntityDTO_VMState) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 12} }
+func (m *EntityDTO_WorkloadControllerData) Reset()         { *m = EntityDTO_WorkloadControllerData{} }
+func (m *EntityDTO_WorkloadControllerData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_WorkloadControllerData) ProtoMessage()    {}
+func (*EntityDTO_WorkloadControllerData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 23}
+}
+
+func (m *EntityDTO_WorkloadControllerData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_WorkloadControllerData.Unmarshal(m, b)
+}
+func (m *EntityDTO_WorkloadControllerData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_WorkloadControllerData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_WorkloadControllerData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_WorkloadControllerData.Merge(m, src)
+}
+func (m *EntityDTO_WorkloadControllerData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_WorkloadControllerData.Size(m)
+}
+func (m *EntityDTO_WorkloadControllerData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_WorkloadControllerData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_WorkloadControllerData proto.InternalMessageInfo
+
+type isEntityDTO_WorkloadControllerData_ControllerType interface {
+	isEntityDTO_WorkloadControllerData_ControllerType()
+}
+
+type EntityDTO_WorkloadControllerData_CronJobData struct {
+	CronJobData *EntityDTO_CronJobData `protobuf:"bytes,1,opt,name=cron_job_data,json=cronJobData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_CustomControllerData struct {
+	CustomControllerData *EntityDTO_CustomControllerData `protobuf:"bytes,2,opt,name=custom_controller_data,json=customControllerData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_DaemonSetData struct {
+	DaemonSetData *EntityDTO_DaemonSetData `protobuf:"bytes,3,opt,name=daemon_set_data,json=daemonSetData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_DeploymentData struct {
+	DeploymentData *EntityDTO_DeploymentData `protobuf:"bytes,4,opt,name=deployment_data,json=deploymentData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_JobData struct {
+	JobData *EntityDTO_JobData `protobuf:"bytes,5,opt,name=job_data,json=jobData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_ReplicaSetData struct {
+	ReplicaSetData *EntityDTO_ReplicaSetData `protobuf:"bytes,6,opt,name=replica_set_data,json=replicaSetData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_ReplicationControllerData struct {
+	ReplicationControllerData *EntityDTO_ReplicationControllerData `protobuf:"bytes,7,opt,name=replication_controller_data,json=replicationControllerData,oneof"`
+}
+
+type EntityDTO_WorkloadControllerData_StatefulSetData struct {
+	StatefulSetData *EntityDTO_StatefulSetData `protobuf:"bytes,8,opt,name=stateful_set_data,json=statefulSetData,oneof"`
+}
+
+func (*EntityDTO_WorkloadControllerData_CronJobData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_CustomControllerData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_DaemonSetData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_DeploymentData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_JobData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_ReplicaSetData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_ReplicationControllerData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (*EntityDTO_WorkloadControllerData_StatefulSetData) isEntityDTO_WorkloadControllerData_ControllerType() {
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetControllerType() isEntityDTO_WorkloadControllerData_ControllerType {
+	if m != nil {
+		return m.ControllerType
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetCronJobData() *EntityDTO_CronJobData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_CronJobData); ok {
+		return x.CronJobData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetCustomControllerData() *EntityDTO_CustomControllerData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_CustomControllerData); ok {
+		return x.CustomControllerData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetDaemonSetData() *EntityDTO_DaemonSetData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_DaemonSetData); ok {
+		return x.DaemonSetData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetDeploymentData() *EntityDTO_DeploymentData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_DeploymentData); ok {
+		return x.DeploymentData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetJobData() *EntityDTO_JobData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_JobData); ok {
+		return x.JobData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetReplicaSetData() *EntityDTO_ReplicaSetData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_ReplicaSetData); ok {
+		return x.ReplicaSetData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetReplicationControllerData() *EntityDTO_ReplicationControllerData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_ReplicationControllerData); ok {
+		return x.ReplicationControllerData
+	}
+	return nil
+}
+
+func (m *EntityDTO_WorkloadControllerData) GetStatefulSetData() *EntityDTO_StatefulSetData {
+	if x, ok := m.GetControllerType().(*EntityDTO_WorkloadControllerData_StatefulSetData); ok {
+		return x.StatefulSetData
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*EntityDTO_WorkloadControllerData) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*EntityDTO_WorkloadControllerData_CronJobData)(nil),
+		(*EntityDTO_WorkloadControllerData_CustomControllerData)(nil),
+		(*EntityDTO_WorkloadControllerData_DaemonSetData)(nil),
+		(*EntityDTO_WorkloadControllerData_DeploymentData)(nil),
+		(*EntityDTO_WorkloadControllerData_JobData)(nil),
+		(*EntityDTO_WorkloadControllerData_ReplicaSetData)(nil),
+		(*EntityDTO_WorkloadControllerData_ReplicationControllerData)(nil),
+		(*EntityDTO_WorkloadControllerData_StatefulSetData)(nil),
+	}
+}
+
+type EntityDTO_CronJobData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_CronJobData) Reset()         { *m = EntityDTO_CronJobData{} }
+func (m *EntityDTO_CronJobData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_CronJobData) ProtoMessage()    {}
+func (*EntityDTO_CronJobData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 24}
+}
+
+func (m *EntityDTO_CronJobData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_CronJobData.Unmarshal(m, b)
+}
+func (m *EntityDTO_CronJobData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_CronJobData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_CronJobData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_CronJobData.Merge(m, src)
+}
+func (m *EntityDTO_CronJobData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_CronJobData.Size(m)
+}
+func (m *EntityDTO_CronJobData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_CronJobData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_CronJobData proto.InternalMessageInfo
+
+type EntityDTO_CustomControllerData struct {
+	// Type of a custom controller. For example, "DeploymentConfig" for an Openshift DeploymentConfig.
+	CustomControllerType *string  `protobuf:"bytes,1,opt,name=custom_controller_type,json=customControllerType" json:"custom_controller_type,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_CustomControllerData) Reset()         { *m = EntityDTO_CustomControllerData{} }
+func (m *EntityDTO_CustomControllerData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_CustomControllerData) ProtoMessage()    {}
+func (*EntityDTO_CustomControllerData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 25}
+}
+
+func (m *EntityDTO_CustomControllerData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_CustomControllerData.Unmarshal(m, b)
+}
+func (m *EntityDTO_CustomControllerData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_CustomControllerData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_CustomControllerData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_CustomControllerData.Merge(m, src)
+}
+func (m *EntityDTO_CustomControllerData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_CustomControllerData.Size(m)
+}
+func (m *EntityDTO_CustomControllerData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_CustomControllerData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_CustomControllerData proto.InternalMessageInfo
+
+func (m *EntityDTO_CustomControllerData) GetCustomControllerType() string {
+	if m != nil && m.CustomControllerType != nil {
+		return *m.CustomControllerType
+	}
+	return ""
+}
+
+type EntityDTO_DaemonSetData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_DaemonSetData) Reset()         { *m = EntityDTO_DaemonSetData{} }
+func (m *EntityDTO_DaemonSetData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DaemonSetData) ProtoMessage()    {}
+func (*EntityDTO_DaemonSetData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 26}
+}
+
+func (m *EntityDTO_DaemonSetData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DaemonSetData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DaemonSetData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DaemonSetData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DaemonSetData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DaemonSetData.Merge(m, src)
+}
+func (m *EntityDTO_DaemonSetData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DaemonSetData.Size(m)
+}
+func (m *EntityDTO_DaemonSetData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DaemonSetData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DaemonSetData proto.InternalMessageInfo
+
+type EntityDTO_DeploymentData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_DeploymentData) Reset()         { *m = EntityDTO_DeploymentData{} }
+func (m *EntityDTO_DeploymentData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DeploymentData) ProtoMessage()    {}
+func (*EntityDTO_DeploymentData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 27}
+}
+
+func (m *EntityDTO_DeploymentData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DeploymentData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DeploymentData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DeploymentData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DeploymentData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DeploymentData.Merge(m, src)
+}
+func (m *EntityDTO_DeploymentData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DeploymentData.Size(m)
+}
+func (m *EntityDTO_DeploymentData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DeploymentData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DeploymentData proto.InternalMessageInfo
+
+type EntityDTO_JobData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_JobData) Reset()         { *m = EntityDTO_JobData{} }
+func (m *EntityDTO_JobData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_JobData) ProtoMessage()    {}
+func (*EntityDTO_JobData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 28}
+}
+
+func (m *EntityDTO_JobData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_JobData.Unmarshal(m, b)
+}
+func (m *EntityDTO_JobData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_JobData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_JobData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_JobData.Merge(m, src)
+}
+func (m *EntityDTO_JobData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_JobData.Size(m)
+}
+func (m *EntityDTO_JobData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_JobData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_JobData proto.InternalMessageInfo
+
+type EntityDTO_ReplicaSetData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ReplicaSetData) Reset()         { *m = EntityDTO_ReplicaSetData{} }
+func (m *EntityDTO_ReplicaSetData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ReplicaSetData) ProtoMessage()    {}
+func (*EntityDTO_ReplicaSetData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 29}
+}
+
+func (m *EntityDTO_ReplicaSetData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ReplicaSetData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ReplicaSetData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ReplicaSetData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ReplicaSetData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ReplicaSetData.Merge(m, src)
+}
+func (m *EntityDTO_ReplicaSetData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ReplicaSetData.Size(m)
+}
+func (m *EntityDTO_ReplicaSetData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ReplicaSetData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ReplicaSetData proto.InternalMessageInfo
+
+type EntityDTO_ReplicationControllerData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ReplicationControllerData) Reset()         { *m = EntityDTO_ReplicationControllerData{} }
+func (m *EntityDTO_ReplicationControllerData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ReplicationControllerData) ProtoMessage()    {}
+func (*EntityDTO_ReplicationControllerData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 30}
+}
+
+func (m *EntityDTO_ReplicationControllerData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ReplicationControllerData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ReplicationControllerData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ReplicationControllerData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ReplicationControllerData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ReplicationControllerData.Merge(m, src)
+}
+func (m *EntityDTO_ReplicationControllerData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ReplicationControllerData.Size(m)
+}
+func (m *EntityDTO_ReplicationControllerData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ReplicationControllerData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ReplicationControllerData proto.InternalMessageInfo
+
+type EntityDTO_StatefulSetData struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_StatefulSetData) Reset()         { *m = EntityDTO_StatefulSetData{} }
+func (m *EntityDTO_StatefulSetData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_StatefulSetData) ProtoMessage()    {}
+func (*EntityDTO_StatefulSetData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 31}
+}
+
+func (m *EntityDTO_StatefulSetData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StatefulSetData.Unmarshal(m, b)
+}
+func (m *EntityDTO_StatefulSetData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StatefulSetData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StatefulSetData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StatefulSetData.Merge(m, src)
+}
+func (m *EntityDTO_StatefulSetData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StatefulSetData.Size(m)
+}
+func (m *EntityDTO_StatefulSetData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StatefulSetData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StatefulSetData proto.InternalMessageInfo
+
+type EntityDTO_VMState struct {
+	// Notifies if the VirtualMachine is connected.
+	Connected            *bool    `protobuf:"varint,1,opt,name=connected,def=1" json:"connected,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_VMState) Reset()         { *m = EntityDTO_VMState{} }
+func (m *EntityDTO_VMState) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_VMState) ProtoMessage()    {}
+func (*EntityDTO_VMState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 32}
+}
+
+func (m *EntityDTO_VMState) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VMState.Unmarshal(m, b)
+}
+func (m *EntityDTO_VMState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VMState.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VMState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VMState.Merge(m, src)
+}
+func (m *EntityDTO_VMState) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VMState.Size(m)
+}
+func (m *EntityDTO_VMState) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VMState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VMState proto.InternalMessageInfo
 
 const Default_EntityDTO_VMState_Connected bool = true
 
@@ -3239,16 +5815,38 @@ type EntityDTO_PhysicalMachineData struct {
 	// Total number of physical CPU threads on the PM.
 	NumCpuThreads *int32 `protobuf:"varint,4,opt,name=numCpuThreads" json:"numCpuThreads,omitempty"`
 	// CPU frequency for one CPU core for the PM.
-	CpuCoreMhz       *int32 `protobuf:"varint,5,opt,name=cpuCoreMhz" json:"cpuCoreMhz,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	CpuCoreMhz *int32 `protobuf:"varint,5,opt,name=cpuCoreMhz" json:"cpuCoreMhz,omitempty"`
+	// Disk Groups do not go in ComposedOf
+	DiskGroup            []*EntityDTO_DiskGroupData `protobuf:"bytes,6,rep,name=diskGroup" json:"diskGroup,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
+	XXX_unrecognized     []byte                     `json:"-"`
+	XXX_sizecache        int32                      `json:"-"`
 }
 
 func (m *EntityDTO_PhysicalMachineData) Reset()         { *m = EntityDTO_PhysicalMachineData{} }
 func (m *EntityDTO_PhysicalMachineData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_PhysicalMachineData) ProtoMessage()    {}
 func (*EntityDTO_PhysicalMachineData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 13}
+	return fileDescriptor_2233245ab49fede8, []int{0, 33}
 }
+
+func (m *EntityDTO_PhysicalMachineData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_PhysicalMachineData.Unmarshal(m, b)
+}
+func (m *EntityDTO_PhysicalMachineData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_PhysicalMachineData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_PhysicalMachineData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_PhysicalMachineData.Merge(m, src)
+}
+func (m *EntityDTO_PhysicalMachineData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_PhysicalMachineData.Size(m)
+}
+func (m *EntityDTO_PhysicalMachineData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_PhysicalMachineData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_PhysicalMachineData proto.InternalMessageInfo
 
 func (m *EntityDTO_PhysicalMachineData) GetPmState() *EntityDTO_PMState {
 	if m != nil {
@@ -3285,16 +5883,45 @@ func (m *EntityDTO_PhysicalMachineData) GetCpuCoreMhz() int32 {
 	return 0
 }
 
-type EntityDTO_PMState struct {
-	// Notifies if the PhysicalMachine is for failover.
-	Failover         *bool  `protobuf:"varint,1,opt,name=failover,def=0" json:"failover,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+func (m *EntityDTO_PhysicalMachineData) GetDiskGroup() []*EntityDTO_DiskGroupData {
+	if m != nil {
+		return m.DiskGroup
+	}
+	return nil
 }
 
-func (m *EntityDTO_PMState) Reset()                    { *m = EntityDTO_PMState{} }
-func (m *EntityDTO_PMState) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_PMState) ProtoMessage()               {}
-func (*EntityDTO_PMState) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 14} }
+type EntityDTO_PMState struct {
+	// Notifies if the PhysicalMachine is for failover.
+	Failover             *bool    `protobuf:"varint,1,opt,name=failover,def=0" json:"failover,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_PMState) Reset()         { *m = EntityDTO_PMState{} }
+func (m *EntityDTO_PMState) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_PMState) ProtoMessage()    {}
+func (*EntityDTO_PMState) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 34}
+}
+
+func (m *EntityDTO_PMState) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_PMState.Unmarshal(m, b)
+}
+func (m *EntityDTO_PMState) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_PMState.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_PMState) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_PMState.Merge(m, src)
+}
+func (m *EntityDTO_PMState) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_PMState.Size(m)
+}
+func (m *EntityDTO_PMState) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_PMState.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_PMState proto.InternalMessageInfo
 
 const Default_EntityDTO_PMState_Failover bool = false
 
@@ -3307,18 +5934,38 @@ func (m *EntityDTO_PMState) GetFailover() bool {
 
 // Properties specific for a particular type of virtual datacenter
 type EntityDTO_VirtualDatacenterTypeProps struct {
-	Role             *EntityDTO_VirtualDatacenterRole `protobuf:"varint,1,opt,name=role,enum=common_dto.EntityDTO_VirtualDatacenterRole,def=1" json:"role,omitempty"`
-	SupportsNesting  *bool                            `protobuf:"varint,2,opt,name=supportsNesting,def=0" json:"supportsNesting,omitempty"`
-	NestedConsumer   *bool                            `protobuf:"varint,3,opt,name=nestedConsumer,def=0" json:"nestedConsumer,omitempty"`
-	XXX_unrecognized []byte                           `json:"-"`
+	Role                 *EntityDTO_VirtualDatacenterRole `protobuf:"varint,1,opt,name=role,enum=common_dto.EntityDTO_VirtualDatacenterRole,def=1" json:"role,omitempty"`
+	SupportsNesting      *bool                            `protobuf:"varint,2,opt,name=supportsNesting,def=0" json:"supportsNesting,omitempty"`
+	NestedConsumer       *bool                            `protobuf:"varint,3,opt,name=nestedConsumer,def=0" json:"nestedConsumer,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                         `json:"-"`
+	XXX_unrecognized     []byte                           `json:"-"`
+	XXX_sizecache        int32                            `json:"-"`
 }
 
 func (m *EntityDTO_VirtualDatacenterTypeProps) Reset()         { *m = EntityDTO_VirtualDatacenterTypeProps{} }
 func (m *EntityDTO_VirtualDatacenterTypeProps) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_VirtualDatacenterTypeProps) ProtoMessage()    {}
 func (*EntityDTO_VirtualDatacenterTypeProps) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 15}
+	return fileDescriptor_2233245ab49fede8, []int{0, 35}
 }
+
+func (m *EntityDTO_VirtualDatacenterTypeProps) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualDatacenterTypeProps.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualDatacenterTypeProps) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualDatacenterTypeProps.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualDatacenterTypeProps) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualDatacenterTypeProps.Merge(m, src)
+}
+func (m *EntityDTO_VirtualDatacenterTypeProps) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualDatacenterTypeProps.Size(m)
+}
+func (m *EntityDTO_VirtualDatacenterTypeProps) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualDatacenterTypeProps.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualDatacenterTypeProps proto.InternalMessageInfo
 
 const Default_EntityDTO_VirtualDatacenterTypeProps_Role EntityDTO_VirtualDatacenterRole = EntityDTO_CONSUMER
 const Default_EntityDTO_VirtualDatacenterTypeProps_SupportsNesting bool = false
@@ -3346,20 +5993,41 @@ func (m *EntityDTO_VirtualDatacenterTypeProps) GetNestedConsumer() bool {
 }
 
 type EntityDTO_VirtualDatacenterData struct {
-	PmUuid             []string                                    `protobuf:"bytes,1,rep,name=pmUuid" json:"pmUuid,omitempty"`
-	VmUuid             []string                                    `protobuf:"bytes,2,rep,name=vmUuid" json:"vmUuid,omitempty"`
-	SupportsStorage    *bool                                       `protobuf:"varint,3,opt,name=supportsStorage,def=1" json:"supportsStorage,omitempty"`
-	VdcTypeProps       *EntityDTO_VirtualDatacenterTypeProps       `protobuf:"bytes,4,opt,name=vdc_type_props,json=vdcTypeProps" json:"vdc_type_props,omitempty"`
-	VdcAllocationModel *EntityDTO_VirtualDatacenterAllocationModel `protobuf:"varint,5,opt,name=vdc_allocation_model,json=vdcAllocationModel,enum=common_dto.EntityDTO_VirtualDatacenterAllocationModel" json:"vdc_allocation_model,omitempty"`
-	XXX_unrecognized   []byte                                      `json:"-"`
+	PmUuid               []string                                    `protobuf:"bytes,1,rep,name=pmUuid" json:"pmUuid,omitempty"`
+	VmUuid               []string                                    `protobuf:"bytes,2,rep,name=vmUuid" json:"vmUuid,omitempty"`
+	SupportsStorage      *bool                                       `protobuf:"varint,3,opt,name=supportsStorage,def=1" json:"supportsStorage,omitempty"`
+	VdcTypeProps         *EntityDTO_VirtualDatacenterTypeProps       `protobuf:"bytes,4,opt,name=vdc_type_props,json=vdcTypeProps" json:"vdc_type_props,omitempty"`
+	VdcAllocationModel   *EntityDTO_VirtualDatacenterAllocationModel `protobuf:"varint,5,opt,name=vdc_allocation_model,json=vdcAllocationModel,enum=common_dto.EntityDTO_VirtualDatacenterAllocationModel" json:"vdc_allocation_model,omitempty"`
+	DesktopPoolData      *EntityDTO_DesktopPoolData                  `protobuf:"bytes,6,opt,name=desktopPoolData" json:"desktopPoolData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                                    `json:"-"`
+	XXX_unrecognized     []byte                                      `json:"-"`
+	XXX_sizecache        int32                                       `json:"-"`
 }
 
 func (m *EntityDTO_VirtualDatacenterData) Reset()         { *m = EntityDTO_VirtualDatacenterData{} }
 func (m *EntityDTO_VirtualDatacenterData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_VirtualDatacenterData) ProtoMessage()    {}
 func (*EntityDTO_VirtualDatacenterData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 16}
+	return fileDescriptor_2233245ab49fede8, []int{0, 36}
 }
+
+func (m *EntityDTO_VirtualDatacenterData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualDatacenterData.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualDatacenterData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualDatacenterData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualDatacenterData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualDatacenterData.Merge(m, src)
+}
+func (m *EntityDTO_VirtualDatacenterData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualDatacenterData.Size(m)
+}
+func (m *EntityDTO_VirtualDatacenterData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualDatacenterData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualDatacenterData proto.InternalMessageInfo
 
 const Default_EntityDTO_VirtualDatacenterData_SupportsStorage bool = true
 
@@ -3398,17 +6066,120 @@ func (m *EntityDTO_VirtualDatacenterData) GetVdcAllocationModel() EntityDTO_Virt
 	return EntityDTO_ALLOCATION_POOL
 }
 
-type EntityDTO_EntityProperty struct {
-	Namespace        *string `protobuf:"bytes,1,req,name=namespace" json:"namespace,omitempty"`
-	Name             *string `protobuf:"bytes,2,req,name=name" json:"name,omitempty"`
-	Value            *string `protobuf:"bytes,3,req,name=value" json:"value,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+func (m *EntityDTO_VirtualDatacenterData) GetDesktopPoolData() *EntityDTO_DesktopPoolData {
+	if m != nil {
+		return m.DesktopPoolData
+	}
+	return nil
 }
 
-func (m *EntityDTO_EntityProperty) Reset()                    { *m = EntityDTO_EntityProperty{} }
-func (m *EntityDTO_EntityProperty) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_EntityProperty) ProtoMessage()               {}
-func (*EntityDTO_EntityProperty) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 17} }
+// VDI desktop pool details
+type EntityDTO_DesktopPoolData struct {
+	ProvisionType  *EntityDTO_DesktopPoolData_DesktopPoolProvisionType  `protobuf:"varint,1,req,name=provisionType,enum=common_dto.EntityDTO_DesktopPoolData_DesktopPoolProvisionType" json:"provisionType,omitempty"`
+	CloneType      *EntityDTO_DesktopPoolData_DesktopPoolCloneType      `protobuf:"varint,2,req,name=cloneType,enum=common_dto.EntityDTO_DesktopPoolData_DesktopPoolCloneType" json:"cloneType,omitempty"`
+	AssignmentType *EntityDTO_DesktopPoolData_DesktopPoolAssignmentType `protobuf:"varint,3,req,name=assignmentType,enum=common_dto.EntityDTO_DesktopPoolData_DesktopPoolAssignmentType" json:"assignmentType,omitempty"`
+	// id of a virtual machine or entity profile used to create VDI desktops, if applicable
+	MasterImage *string `protobuf:"bytes,4,opt,name=masterImage" json:"masterImage,omitempty"`
+	// reference to a snapshot used to create desktops, if the master image above is a vm
+	Snapshot             *string  `protobuf:"bytes,5,opt,name=snapshot" json:"snapshot,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_DesktopPoolData) Reset()         { *m = EntityDTO_DesktopPoolData{} }
+func (m *EntityDTO_DesktopPoolData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DesktopPoolData) ProtoMessage()    {}
+func (*EntityDTO_DesktopPoolData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 37}
+}
+
+func (m *EntityDTO_DesktopPoolData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DesktopPoolData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DesktopPoolData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DesktopPoolData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DesktopPoolData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DesktopPoolData.Merge(m, src)
+}
+func (m *EntityDTO_DesktopPoolData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DesktopPoolData.Size(m)
+}
+func (m *EntityDTO_DesktopPoolData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DesktopPoolData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DesktopPoolData proto.InternalMessageInfo
+
+func (m *EntityDTO_DesktopPoolData) GetProvisionType() EntityDTO_DesktopPoolData_DesktopPoolProvisionType {
+	if m != nil && m.ProvisionType != nil {
+		return *m.ProvisionType
+	}
+	return EntityDTO_DesktopPoolData_ON_DEMAND
+}
+
+func (m *EntityDTO_DesktopPoolData) GetCloneType() EntityDTO_DesktopPoolData_DesktopPoolCloneType {
+	if m != nil && m.CloneType != nil {
+		return *m.CloneType
+	}
+	return EntityDTO_DesktopPoolData_FULL
+}
+
+func (m *EntityDTO_DesktopPoolData) GetAssignmentType() EntityDTO_DesktopPoolData_DesktopPoolAssignmentType {
+	if m != nil && m.AssignmentType != nil {
+		return *m.AssignmentType
+	}
+	return EntityDTO_DesktopPoolData_DYNAMIC
+}
+
+func (m *EntityDTO_DesktopPoolData) GetMasterImage() string {
+	if m != nil && m.MasterImage != nil {
+		return *m.MasterImage
+	}
+	return ""
+}
+
+func (m *EntityDTO_DesktopPoolData) GetSnapshot() string {
+	if m != nil && m.Snapshot != nil {
+		return *m.Snapshot
+	}
+	return ""
+}
+
+type EntityDTO_EntityProperty struct {
+	Namespace            *string  `protobuf:"bytes,1,req,name=namespace" json:"namespace,omitempty"`
+	Name                 *string  `protobuf:"bytes,2,req,name=name" json:"name,omitempty"`
+	Value                *string  `protobuf:"bytes,3,req,name=value" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_EntityProperty) Reset()         { *m = EntityDTO_EntityProperty{} }
+func (m *EntityDTO_EntityProperty) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_EntityProperty) ProtoMessage()    {}
+func (*EntityDTO_EntityProperty) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 38}
+}
+
+func (m *EntityDTO_EntityProperty) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_EntityProperty.Unmarshal(m, b)
+}
+func (m *EntityDTO_EntityProperty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_EntityProperty.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_EntityProperty) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_EntityProperty.Merge(m, src)
+}
+func (m *EntityDTO_EntityProperty) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_EntityProperty.Size(m)
+}
+func (m *EntityDTO_EntityProperty) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_EntityProperty.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_EntityProperty proto.InternalMessageInfo
 
 func (m *EntityDTO_EntityProperty) GetNamespace() string {
 	if m != nil && m.Namespace != nil {
@@ -3432,18 +6203,38 @@ func (m *EntityDTO_EntityProperty) GetValue() string {
 }
 
 type EntityDTO_VirtualMachineRelatedData struct {
-	Memory           *EntityDTO_MemoryData      `protobuf:"bytes,1,opt,name=memory" json:"memory,omitempty"`
-	Processor        []*EntityDTO_ProcessorData `protobuf:"bytes,2,rep,name=processor" json:"processor,omitempty"`
-	Io               []*EntityDTO_IoData        `protobuf:"bytes,3,rep,name=io" json:"io,omitempty"`
-	XXX_unrecognized []byte                     `json:"-"`
+	Memory               *EntityDTO_MemoryData      `protobuf:"bytes,1,opt,name=memory" json:"memory,omitempty"`
+	Processor            []*EntityDTO_ProcessorData `protobuf:"bytes,2,rep,name=processor" json:"processor,omitempty"`
+	Io                   []*EntityDTO_IoData        `protobuf:"bytes,3,rep,name=io" json:"io,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
+	XXX_unrecognized     []byte                     `json:"-"`
+	XXX_sizecache        int32                      `json:"-"`
 }
 
 func (m *EntityDTO_VirtualMachineRelatedData) Reset()         { *m = EntityDTO_VirtualMachineRelatedData{} }
 func (m *EntityDTO_VirtualMachineRelatedData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_VirtualMachineRelatedData) ProtoMessage()    {}
 func (*EntityDTO_VirtualMachineRelatedData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 18}
+	return fileDescriptor_2233245ab49fede8, []int{0, 39}
 }
+
+func (m *EntityDTO_VirtualMachineRelatedData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_VirtualMachineRelatedData.Unmarshal(m, b)
+}
+func (m *EntityDTO_VirtualMachineRelatedData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_VirtualMachineRelatedData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_VirtualMachineRelatedData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_VirtualMachineRelatedData.Merge(m, src)
+}
+func (m *EntityDTO_VirtualMachineRelatedData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_VirtualMachineRelatedData.Size(m)
+}
+func (m *EntityDTO_VirtualMachineRelatedData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_VirtualMachineRelatedData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_VirtualMachineRelatedData proto.InternalMessageInfo
 
 func (m *EntityDTO_VirtualMachineRelatedData) GetMemory() *EntityDTO_MemoryData {
 	if m != nil {
@@ -3467,18 +6258,38 @@ func (m *EntityDTO_VirtualMachineRelatedData) GetIo() []*EntityDTO_IoData {
 }
 
 type EntityDTO_PhysicalMachineRelatedData struct {
-	Memory           *EntityDTO_MemoryData      `protobuf:"bytes,1,opt,name=memory" json:"memory,omitempty"`
-	Processor        []*EntityDTO_ProcessorData `protobuf:"bytes,2,rep,name=processor" json:"processor,omitempty"`
-	Io               []*EntityDTO_IoData        `protobuf:"bytes,3,rep,name=io" json:"io,omitempty"`
-	XXX_unrecognized []byte                     `json:"-"`
+	Memory               *EntityDTO_MemoryData      `protobuf:"bytes,1,opt,name=memory" json:"memory,omitempty"`
+	Processor            []*EntityDTO_ProcessorData `protobuf:"bytes,2,rep,name=processor" json:"processor,omitempty"`
+	Io                   []*EntityDTO_IoData        `protobuf:"bytes,3,rep,name=io" json:"io,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
+	XXX_unrecognized     []byte                     `json:"-"`
+	XXX_sizecache        int32                      `json:"-"`
 }
 
 func (m *EntityDTO_PhysicalMachineRelatedData) Reset()         { *m = EntityDTO_PhysicalMachineRelatedData{} }
 func (m *EntityDTO_PhysicalMachineRelatedData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_PhysicalMachineRelatedData) ProtoMessage()    {}
 func (*EntityDTO_PhysicalMachineRelatedData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 19}
+	return fileDescriptor_2233245ab49fede8, []int{0, 40}
 }
+
+func (m *EntityDTO_PhysicalMachineRelatedData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_PhysicalMachineRelatedData.Unmarshal(m, b)
+}
+func (m *EntityDTO_PhysicalMachineRelatedData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_PhysicalMachineRelatedData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_PhysicalMachineRelatedData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_PhysicalMachineRelatedData.Merge(m, src)
+}
+func (m *EntityDTO_PhysicalMachineRelatedData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_PhysicalMachineRelatedData.Size(m)
+}
+func (m *EntityDTO_PhysicalMachineRelatedData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_PhysicalMachineRelatedData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_PhysicalMachineRelatedData proto.InternalMessageInfo
 
 func (m *EntityDTO_PhysicalMachineRelatedData) GetMemory() *EntityDTO_MemoryData {
 	if m != nil {
@@ -3502,9 +6313,11 @@ func (m *EntityDTO_PhysicalMachineRelatedData) GetIo() []*EntityDTO_IoData {
 }
 
 type EntityDTO_StorageControllerRelatedData struct {
-	Memory           *EntityDTO_MemoryData      `protobuf:"bytes,1,opt,name=memory" json:"memory,omitempty"`
-	Processor        []*EntityDTO_ProcessorData `protobuf:"bytes,2,rep,name=processor" json:"processor,omitempty"`
-	XXX_unrecognized []byte                     `json:"-"`
+	Memory               *EntityDTO_MemoryData      `protobuf:"bytes,1,opt,name=memory" json:"memory,omitempty"`
+	Processor            []*EntityDTO_ProcessorData `protobuf:"bytes,2,rep,name=processor" json:"processor,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
+	XXX_unrecognized     []byte                     `json:"-"`
+	XXX_sizecache        int32                      `json:"-"`
 }
 
 func (m *EntityDTO_StorageControllerRelatedData) Reset() {
@@ -3513,8 +6326,26 @@ func (m *EntityDTO_StorageControllerRelatedData) Reset() {
 func (m *EntityDTO_StorageControllerRelatedData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_StorageControllerRelatedData) ProtoMessage()    {}
 func (*EntityDTO_StorageControllerRelatedData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 20}
+	return fileDescriptor_2233245ab49fede8, []int{0, 41}
 }
+
+func (m *EntityDTO_StorageControllerRelatedData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_StorageControllerRelatedData.Unmarshal(m, b)
+}
+func (m *EntityDTO_StorageControllerRelatedData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_StorageControllerRelatedData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_StorageControllerRelatedData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_StorageControllerRelatedData.Merge(m, src)
+}
+func (m *EntityDTO_StorageControllerRelatedData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_StorageControllerRelatedData.Size(m)
+}
+func (m *EntityDTO_StorageControllerRelatedData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_StorageControllerRelatedData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_StorageControllerRelatedData proto.InternalMessageInfo
 
 func (m *EntityDTO_StorageControllerRelatedData) GetMemory() *EntityDTO_MemoryData {
 	if m != nil {
@@ -3531,16 +6362,39 @@ func (m *EntityDTO_StorageControllerRelatedData) GetProcessor() []*EntityDTO_Pro
 }
 
 type EntityDTO_MemoryData struct {
-	Id               *string  `protobuf:"bytes,1,req,name=id" json:"id,omitempty"`
-	DisplayName      *string  `protobuf:"bytes,2,opt,name=displayName" json:"displayName,omitempty"`
-	Capacity         *float64 `protobuf:"fixed64,3,opt,name=capacity" json:"capacity,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	Id                   *string  `protobuf:"bytes,1,req,name=id" json:"id,omitempty"`
+	DisplayName          *string  `protobuf:"bytes,2,opt,name=displayName" json:"displayName,omitempty"`
+	Capacity             *float64 `protobuf:"fixed64,3,opt,name=capacity" json:"capacity,omitempty"`
+	Dynamic              *bool    `protobuf:"varint,4,opt,name=dynamic" json:"dynamic,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_MemoryData) Reset()                    { *m = EntityDTO_MemoryData{} }
-func (m *EntityDTO_MemoryData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_MemoryData) ProtoMessage()               {}
-func (*EntityDTO_MemoryData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 21} }
+func (m *EntityDTO_MemoryData) Reset()         { *m = EntityDTO_MemoryData{} }
+func (m *EntityDTO_MemoryData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_MemoryData) ProtoMessage()    {}
+func (*EntityDTO_MemoryData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 42}
+}
+
+func (m *EntityDTO_MemoryData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_MemoryData.Unmarshal(m, b)
+}
+func (m *EntityDTO_MemoryData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_MemoryData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_MemoryData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_MemoryData.Merge(m, src)
+}
+func (m *EntityDTO_MemoryData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_MemoryData.Size(m)
+}
+func (m *EntityDTO_MemoryData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_MemoryData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_MemoryData proto.InternalMessageInfo
 
 func (m *EntityDTO_MemoryData) GetId() string {
 	if m != nil && m.Id != nil {
@@ -3563,17 +6417,46 @@ func (m *EntityDTO_MemoryData) GetCapacity() float64 {
 	return 0
 }
 
-type EntityDTO_ProcessorData struct {
-	Id               *string  `protobuf:"bytes,1,req,name=id" json:"id,omitempty"`
-	DisplayName      *string  `protobuf:"bytes,2,opt,name=displayName" json:"displayName,omitempty"`
-	Capacity         *float64 `protobuf:"fixed64,3,opt,name=capacity" json:"capacity,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+func (m *EntityDTO_MemoryData) GetDynamic() bool {
+	if m != nil && m.Dynamic != nil {
+		return *m.Dynamic
+	}
+	return false
 }
 
-func (m *EntityDTO_ProcessorData) Reset()                    { *m = EntityDTO_ProcessorData{} }
-func (m *EntityDTO_ProcessorData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ProcessorData) ProtoMessage()               {}
-func (*EntityDTO_ProcessorData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 22} }
+type EntityDTO_ProcessorData struct {
+	Id                   *string  `protobuf:"bytes,1,req,name=id" json:"id,omitempty"`
+	DisplayName          *string  `protobuf:"bytes,2,opt,name=displayName" json:"displayName,omitempty"`
+	Capacity             *float64 `protobuf:"fixed64,3,opt,name=capacity" json:"capacity,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EntityDTO_ProcessorData) Reset()         { *m = EntityDTO_ProcessorData{} }
+func (m *EntityDTO_ProcessorData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ProcessorData) ProtoMessage()    {}
+func (*EntityDTO_ProcessorData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 43}
+}
+
+func (m *EntityDTO_ProcessorData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ProcessorData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ProcessorData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ProcessorData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ProcessorData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ProcessorData.Merge(m, src)
+}
+func (m *EntityDTO_ProcessorData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ProcessorData.Size(m)
+}
+func (m *EntityDTO_ProcessorData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ProcessorData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ProcessorData proto.InternalMessageInfo
 
 func (m *EntityDTO_ProcessorData) GetId() string {
 	if m != nil && m.Id != nil {
@@ -3597,17 +6480,39 @@ func (m *EntityDTO_ProcessorData) GetCapacity() float64 {
 }
 
 type EntityDTO_IoData struct {
-	Id               *string  `protobuf:"bytes,1,req,name=id" json:"id,omitempty"`
-	DisplayName      *string  `protobuf:"bytes,2,opt,name=displayName" json:"displayName,omitempty"`
-	Speed            *float64 `protobuf:"fixed64,3,opt,name=speed" json:"speed,omitempty"`
-	MacAddress       *string  `protobuf:"bytes,4,opt,name=macAddress" json:"macAddress,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	Id                   *string  `protobuf:"bytes,1,req,name=id" json:"id,omitempty"`
+	DisplayName          *string  `protobuf:"bytes,2,opt,name=displayName" json:"displayName,omitempty"`
+	Speed                *float64 `protobuf:"fixed64,3,opt,name=speed" json:"speed,omitempty"`
+	MacAddress           *string  `protobuf:"bytes,4,opt,name=macAddress" json:"macAddress,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_IoData) Reset()                    { *m = EntityDTO_IoData{} }
-func (m *EntityDTO_IoData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_IoData) ProtoMessage()               {}
-func (*EntityDTO_IoData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 23} }
+func (m *EntityDTO_IoData) Reset()         { *m = EntityDTO_IoData{} }
+func (m *EntityDTO_IoData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_IoData) ProtoMessage()    {}
+func (*EntityDTO_IoData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 44}
+}
+
+func (m *EntityDTO_IoData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_IoData.Unmarshal(m, b)
+}
+func (m *EntityDTO_IoData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_IoData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_IoData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_IoData.Merge(m, src)
+}
+func (m *EntityDTO_IoData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_IoData.Size(m)
+}
+func (m *EntityDTO_IoData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_IoData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_IoData proto.InternalMessageInfo
 
 func (m *EntityDTO_IoData) GetId() string {
 	if m != nil && m.Id != nil {
@@ -3637,82 +6542,217 @@ func (m *EntityDTO_IoData) GetMacAddress() string {
 	return ""
 }
 
+// Represents a collection of disks on a host for use by vSAN or storage technology
+type EntityDTO_DiskGroupData struct {
+	Disk                 []*EntityDTO_DiskData `protobuf:"bytes,1,rep,name=disk" json:"disk,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
+}
+
+func (m *EntityDTO_DiskGroupData) Reset()         { *m = EntityDTO_DiskGroupData{} }
+func (m *EntityDTO_DiskGroupData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DiskGroupData) ProtoMessage()    {}
+func (*EntityDTO_DiskGroupData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 45}
+}
+
+func (m *EntityDTO_DiskGroupData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DiskGroupData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DiskGroupData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DiskGroupData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DiskGroupData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DiskGroupData.Merge(m, src)
+}
+func (m *EntityDTO_DiskGroupData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DiskGroupData.Size(m)
+}
+func (m *EntityDTO_DiskGroupData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DiskGroupData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DiskGroupData proto.InternalMessageInfo
+
+func (m *EntityDTO_DiskGroupData) GetDisk() []*EntityDTO_DiskData {
+	if m != nil {
+		return m.Disk
+	}
+	return nil
+}
+
+// Represents an individual disk in a disk group
+type EntityDTO_DiskData struct {
+	Role                 *EntityDTO_DiskRole `protobuf:"varint,1,opt,name=role,enum=common_dto.EntityDTO_DiskRole" json:"role,omitempty"`
+	Capacity             *int64              `protobuf:"varint,2,opt,name=capacity" json:"capacity,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
+	XXX_unrecognized     []byte              `json:"-"`
+	XXX_sizecache        int32               `json:"-"`
+}
+
+func (m *EntityDTO_DiskData) Reset()         { *m = EntityDTO_DiskData{} }
+func (m *EntityDTO_DiskData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_DiskData) ProtoMessage()    {}
+func (*EntityDTO_DiskData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 46}
+}
+
+func (m *EntityDTO_DiskData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_DiskData.Unmarshal(m, b)
+}
+func (m *EntityDTO_DiskData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_DiskData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_DiskData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_DiskData.Merge(m, src)
+}
+func (m *EntityDTO_DiskData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_DiskData.Size(m)
+}
+func (m *EntityDTO_DiskData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_DiskData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_DiskData proto.InternalMessageInfo
+
+func (m *EntityDTO_DiskData) GetRole() EntityDTO_DiskRole {
+	if m != nil && m.Role != nil {
+		return *m.Role
+	}
+	return EntityDTO_ROLE_CACHE
+}
+
+func (m *EntityDTO_DiskData) GetCapacity() int64 {
+	if m != nil && m.Capacity != nil {
+		return *m.Capacity
+	}
+	return 0
+}
+
 // Represents the counts of various types of disk drives in a disk array.
+// The information required to compute the IOPS capacity of a Service Entity
+// Includes various flags to adjust the capacity as well as values to
+// multiply by settings to get the capacity.
 // Each count represents the number of discovered disks of that speed.
-type EntityDTO_DiskCountData struct {
+type EntityDTO_ComputeIopsData struct {
 	// If the hybrid flag is present, it modifies how the included disk counts are
 	// used to compute IOPS capacity.
 	Hybrid *bool `protobuf:"varint,1,opt,name=hybrid,def=0" json:"hybrid,omitempty"`
 	// If the flashAvailable flag is present, it modifies how the included disk counts are
 	// used to compute IOPS capacity.
-	FlashAvailable *bool                  `protobuf:"varint,2,opt,name=flashAvailable,def=0" json:"flashAvailable,omitempty"`
-	Disks          []*EntityDTO_DiskCount `protobuf:"bytes,3,rep,name=disks" json:"disks,omitempty"`
+	FlashAvailable *bool                     `protobuf:"varint,2,opt,name=flashAvailable,def=0" json:"flashAvailable,omitempty"`
+	IopsItems      []*EntityDTO_IopsItemData `protobuf:"bytes,3,rep,name=iopsItems" json:"iopsItems,omitempty"`
 	// The calculateFromHostedEntities flag defines whether IOPS capacity must be calculated as
 	// sum of capacities of underlying entities (Storages or Disk Arrays)
-	CalculateFromHostedEntities *bool  `protobuf:"varint,4,opt,name=calculateFromHostedEntities,def=0" json:"calculateFromHostedEntities,omitempty"`
-	XXX_unrecognized            []byte `json:"-"`
+	CalculateFromHostedEntities *bool    `protobuf:"varint,4,opt,name=calculateFromHostedEntities,def=0" json:"calculateFromHostedEntities,omitempty"`
+	XXX_NoUnkeyedLiteral        struct{} `json:"-"`
+	XXX_unrecognized            []byte   `json:"-"`
+	XXX_sizecache               int32    `json:"-"`
 }
 
-func (m *EntityDTO_DiskCountData) Reset()                    { *m = EntityDTO_DiskCountData{} }
-func (m *EntityDTO_DiskCountData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_DiskCountData) ProtoMessage()               {}
-func (*EntityDTO_DiskCountData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 24} }
+func (m *EntityDTO_ComputeIopsData) Reset()         { *m = EntityDTO_ComputeIopsData{} }
+func (m *EntityDTO_ComputeIopsData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ComputeIopsData) ProtoMessage()    {}
+func (*EntityDTO_ComputeIopsData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 47}
+}
 
-const Default_EntityDTO_DiskCountData_Hybrid bool = false
-const Default_EntityDTO_DiskCountData_FlashAvailable bool = false
-const Default_EntityDTO_DiskCountData_CalculateFromHostedEntities bool = false
+func (m *EntityDTO_ComputeIopsData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ComputeIopsData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ComputeIopsData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ComputeIopsData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ComputeIopsData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ComputeIopsData.Merge(m, src)
+}
+func (m *EntityDTO_ComputeIopsData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ComputeIopsData.Size(m)
+}
+func (m *EntityDTO_ComputeIopsData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ComputeIopsData.DiscardUnknown(m)
+}
 
-func (m *EntityDTO_DiskCountData) GetHybrid() bool {
+var xxx_messageInfo_EntityDTO_ComputeIopsData proto.InternalMessageInfo
+
+const Default_EntityDTO_ComputeIopsData_Hybrid bool = false
+const Default_EntityDTO_ComputeIopsData_FlashAvailable bool = false
+const Default_EntityDTO_ComputeIopsData_CalculateFromHostedEntities bool = false
+
+func (m *EntityDTO_ComputeIopsData) GetHybrid() bool {
 	if m != nil && m.Hybrid != nil {
 		return *m.Hybrid
 	}
-	return Default_EntityDTO_DiskCountData_Hybrid
+	return Default_EntityDTO_ComputeIopsData_Hybrid
 }
 
-func (m *EntityDTO_DiskCountData) GetFlashAvailable() bool {
+func (m *EntityDTO_ComputeIopsData) GetFlashAvailable() bool {
 	if m != nil && m.FlashAvailable != nil {
 		return *m.FlashAvailable
 	}
-	return Default_EntityDTO_DiskCountData_FlashAvailable
+	return Default_EntityDTO_ComputeIopsData_FlashAvailable
 }
 
-func (m *EntityDTO_DiskCountData) GetDisks() []*EntityDTO_DiskCount {
+func (m *EntityDTO_ComputeIopsData) GetIopsItems() []*EntityDTO_IopsItemData {
 	if m != nil {
-		return m.Disks
+		return m.IopsItems
 	}
 	return nil
 }
 
-func (m *EntityDTO_DiskCountData) GetCalculateFromHostedEntities() bool {
+func (m *EntityDTO_ComputeIopsData) GetCalculateFromHostedEntities() bool {
 	if m != nil && m.CalculateFromHostedEntities != nil {
 		return *m.CalculateFromHostedEntities
 	}
-	return Default_EntityDTO_DiskCountData_CalculateFromHostedEntities
+	return Default_EntityDTO_ComputeIopsData_CalculateFromHostedEntities
 }
 
-type EntityDTO_DiskCount struct {
-	// Usually derived from the NumDiskNames enum
-	NumDiskName *string `protobuf:"bytes,1,req,name=numDiskName" json:"numDiskName,omitempty"`
+type EntityDTO_IopsItemData struct {
+	// Usually derived from the IopsItemNames enum
+	IopsItemName *string `protobuf:"bytes,1,req,name=iopsItemName" json:"iopsItemName,omitempty"`
 	// The number of discovered disks of this type.
-	NumDisks         *int64 `protobuf:"varint,2,req,name=numDisks" json:"numDisks,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	IopsItemValue        *int64   `protobuf:"varint,2,req,name=iopsItemValue" json:"iopsItemValue,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_DiskCount) Reset()                    { *m = EntityDTO_DiskCount{} }
-func (m *EntityDTO_DiskCount) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_DiskCount) ProtoMessage()               {}
-func (*EntityDTO_DiskCount) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 25} }
+func (m *EntityDTO_IopsItemData) Reset()         { *m = EntityDTO_IopsItemData{} }
+func (m *EntityDTO_IopsItemData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_IopsItemData) ProtoMessage()    {}
+func (*EntityDTO_IopsItemData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 48}
+}
 
-func (m *EntityDTO_DiskCount) GetNumDiskName() string {
-	if m != nil && m.NumDiskName != nil {
-		return *m.NumDiskName
+func (m *EntityDTO_IopsItemData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_IopsItemData.Unmarshal(m, b)
+}
+func (m *EntityDTO_IopsItemData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_IopsItemData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_IopsItemData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_IopsItemData.Merge(m, src)
+}
+func (m *EntityDTO_IopsItemData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_IopsItemData.Size(m)
+}
+func (m *EntityDTO_IopsItemData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_IopsItemData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_IopsItemData proto.InternalMessageInfo
+
+func (m *EntityDTO_IopsItemData) GetIopsItemName() string {
+	if m != nil && m.IopsItemName != nil {
+		return *m.IopsItemName
 	}
 	return ""
 }
 
-func (m *EntityDTO_DiskCount) GetNumDisks() int64 {
-	if m != nil && m.NumDisks != nil {
-		return *m.NumDisks
+func (m *EntityDTO_IopsItemData) GetIopsItemValue() int64 {
+	if m != nil && m.IopsItemValue != nil {
+		return *m.IopsItemValue
 	}
 	return 0
 }
@@ -3724,6 +6764,10 @@ type EntityDTO_ReplacementEntityMetaData struct {
 	// are pre-defined for some entity types. Generic properties can be set using
 	// the EntityProperty.
 	IdentifyingProp []string `protobuf:"bytes,1,rep,name=identifyingProp" json:"identifyingProp,omitempty"`
+	// Fields of proxy entity to be patched as properties to real entity
+	ReplacementFields []*EntityDTO_FieldReplacement `protobuf:"bytes,101,rep,name=replacementFields" json:"replacementFields,omitempty"`
+	// names of properties to be patched to real entity
+	ReplacementEntityProperties []string `protobuf:"bytes,102,rep,name=replacementEntityProperties" json:"replacementEntityProperties,omitempty"`
 	// Proxy entities may also transfer their commodity data to the replacement entity
 	BuyingCommTypes  []*EntityDTO_ReplacementCommodityPropertyData `protobuf:"bytes,2,rep,name=buyingCommTypes" json:"buyingCommTypes,omitempty"`
 	SellingCommTypes []*EntityDTO_ReplacementCommodityPropertyData `protobuf:"bytes,3,rep,name=sellingCommTypes" json:"sellingCommTypes,omitempty"`
@@ -3731,22 +6775,56 @@ type EntityDTO_ReplacementEntityMetaData struct {
 	// Name of the external property whose values will be examined
 	// and matched to the values of the entity DTO properties listed above
 	// The field is deprecated, extEntityPropDef must be used instead.
-	ExtEntityProp []string `protobuf:"bytes,4,rep,name=extEntityProp" json:"extEntityProp,omitempty"`
+	ExtEntityProp []string `protobuf:"bytes,4,rep,name=extEntityProp" json:"extEntityProp,omitempty"` // Deprecated: Do not use.
 	// Definition of the external matching property of the entity on the server side.
-	ExtEntityPropDef []*ServerEntityPropDef `protobuf:"bytes,5,rep,name=extEntityPropDef" json:"extEntityPropDef,omitempty"`
-	XXX_unrecognized []byte                 `json:"-"`
+	ExtEntityPropDef     []*ServerEntityPropDef `protobuf:"bytes,5,rep,name=extEntityPropDef" json:"extEntityPropDef,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
+	XXX_unrecognized     []byte                 `json:"-"`
+	XXX_sizecache        int32                  `json:"-"`
 }
 
 func (m *EntityDTO_ReplacementEntityMetaData) Reset()         { *m = EntityDTO_ReplacementEntityMetaData{} }
 func (m *EntityDTO_ReplacementEntityMetaData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_ReplacementEntityMetaData) ProtoMessage()    {}
 func (*EntityDTO_ReplacementEntityMetaData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 26}
+	return fileDescriptor_2233245ab49fede8, []int{0, 49}
 }
+
+func (m *EntityDTO_ReplacementEntityMetaData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ReplacementEntityMetaData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ReplacementEntityMetaData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ReplacementEntityMetaData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ReplacementEntityMetaData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ReplacementEntityMetaData.Merge(m, src)
+}
+func (m *EntityDTO_ReplacementEntityMetaData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ReplacementEntityMetaData.Size(m)
+}
+func (m *EntityDTO_ReplacementEntityMetaData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ReplacementEntityMetaData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ReplacementEntityMetaData proto.InternalMessageInfo
 
 func (m *EntityDTO_ReplacementEntityMetaData) GetIdentifyingProp() []string {
 	if m != nil {
 		return m.IdentifyingProp
+	}
+	return nil
+}
+
+func (m *EntityDTO_ReplacementEntityMetaData) GetReplacementFields() []*EntityDTO_FieldReplacement {
+	if m != nil {
+		return m.ReplacementFields
+	}
+	return nil
+}
+
+func (m *EntityDTO_ReplacementEntityMetaData) GetReplacementEntityProperties() []string {
+	if m != nil {
+		return m.ReplacementEntityProperties
 	}
 	return nil
 }
@@ -3765,6 +6843,7 @@ func (m *EntityDTO_ReplacementEntityMetaData) GetSellingCommTypes() []*EntityDTO
 	return nil
 }
 
+// Deprecated: Do not use.
 func (m *EntityDTO_ReplacementEntityMetaData) GetExtEntityProp() []string {
 	if m != nil {
 		return m.ExtEntityProp
@@ -3779,13 +6858,128 @@ func (m *EntityDTO_ReplacementEntityMetaData) GetExtEntityPropDef() []*ServerEnt
 	return nil
 }
 
+// Data to specify a field in the proxy's inner entity_data DTO that should patch as an
+// EntityProperty to the main entity. The field can be nested within objects in the DTO.
+// For example:
+// FieldReplacement {
+//      propertyName = "patchedProperty1234",
+//      path = FieldPath {
+//          field = "reserved_instance_data",
+//          next = FieldPath {
+//              field = "appliedScopes",
+//              next = null
+//          }
+//      }
+// }
+// would refer to a field ReservedInstanceData.appliedScopes which would be patched as an
+// EntityProperty with key = "patchedProperty1234".
+type EntityDTO_FieldReplacement struct {
+	PropertyName         *string                               `protobuf:"bytes,1,opt,name=propertyName" json:"propertyName,omitempty"`
+	Path                 *EntityDTO_FieldReplacement_FieldPath `protobuf:"bytes,2,opt,name=path" json:"path,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
+	XXX_unrecognized     []byte                                `json:"-"`
+	XXX_sizecache        int32                                 `json:"-"`
+}
+
+func (m *EntityDTO_FieldReplacement) Reset()         { *m = EntityDTO_FieldReplacement{} }
+func (m *EntityDTO_FieldReplacement) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_FieldReplacement) ProtoMessage()    {}
+func (*EntityDTO_FieldReplacement) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 50}
+}
+
+func (m *EntityDTO_FieldReplacement) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_FieldReplacement.Unmarshal(m, b)
+}
+func (m *EntityDTO_FieldReplacement) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_FieldReplacement.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_FieldReplacement) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_FieldReplacement.Merge(m, src)
+}
+func (m *EntityDTO_FieldReplacement) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_FieldReplacement.Size(m)
+}
+func (m *EntityDTO_FieldReplacement) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_FieldReplacement.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_FieldReplacement proto.InternalMessageInfo
+
+func (m *EntityDTO_FieldReplacement) GetPropertyName() string {
+	if m != nil && m.PropertyName != nil {
+		return *m.PropertyName
+	}
+	return ""
+}
+
+func (m *EntityDTO_FieldReplacement) GetPath() *EntityDTO_FieldReplacement_FieldPath {
+	if m != nil {
+		return m.Path
+	}
+	return nil
+}
+
+type EntityDTO_FieldReplacement_FieldPath struct {
+	Field                *string                               `protobuf:"bytes,1,opt,name=field" json:"field,omitempty"`
+	Next                 *EntityDTO_FieldReplacement_FieldPath `protobuf:"bytes,2,opt,name=next" json:"next,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
+	XXX_unrecognized     []byte                                `json:"-"`
+	XXX_sizecache        int32                                 `json:"-"`
+}
+
+func (m *EntityDTO_FieldReplacement_FieldPath) Reset()         { *m = EntityDTO_FieldReplacement_FieldPath{} }
+func (m *EntityDTO_FieldReplacement_FieldPath) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_FieldReplacement_FieldPath) ProtoMessage()    {}
+func (*EntityDTO_FieldReplacement_FieldPath) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 50, 0}
+}
+
+func (m *EntityDTO_FieldReplacement_FieldPath) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_FieldReplacement_FieldPath.Unmarshal(m, b)
+}
+func (m *EntityDTO_FieldReplacement_FieldPath) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_FieldReplacement_FieldPath.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_FieldReplacement_FieldPath) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_FieldReplacement_FieldPath.Merge(m, src)
+}
+func (m *EntityDTO_FieldReplacement_FieldPath) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_FieldReplacement_FieldPath.Size(m)
+}
+func (m *EntityDTO_FieldReplacement_FieldPath) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_FieldReplacement_FieldPath.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_FieldReplacement_FieldPath proto.InternalMessageInfo
+
+func (m *EntityDTO_FieldReplacement_FieldPath) GetField() string {
+	if m != nil && m.Field != nil {
+		return *m.Field
+	}
+	return ""
+}
+
+func (m *EntityDTO_FieldReplacement_FieldPath) GetNext() *EntityDTO_FieldReplacement_FieldPath {
+	if m != nil {
+		return m.Next
+	}
+	return nil
+}
+
 // Data to specify which commodity types and properties
 // should be patched when updating data in an entity from
 // a proxy entity
 type EntityDTO_ReplacementCommodityPropertyData struct {
-	CommodityType    *CommodityDTO_CommodityType `protobuf:"varint,1,req,name=commodityType,enum=common_dto.CommodityDTO_CommodityType" json:"commodityType,omitempty"`
-	PropertyName     []string                    `protobuf:"bytes,2,rep,name=propertyName" json:"propertyName,omitempty"`
-	XXX_unrecognized []byte                      `json:"-"`
+	// Which commodity type to patch.
+	CommodityType *CommodityDTO_CommodityType `protobuf:"varint,1,req,name=commodityType,enum=common_dto.CommodityDTO_CommodityType" json:"commodityType,omitempty"`
+	// Which properties to transfer from the proxy entity's commodity
+	// to replacement entity's commodity.
+	// If no properties are specified, transfer the whole commodity.
+	PropertyName         []string `protobuf:"bytes,2,rep,name=propertyName" json:"propertyName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *EntityDTO_ReplacementCommodityPropertyData) Reset() {
@@ -3796,8 +6990,26 @@ func (m *EntityDTO_ReplacementCommodityPropertyData) String() string {
 }
 func (*EntityDTO_ReplacementCommodityPropertyData) ProtoMessage() {}
 func (*EntityDTO_ReplacementCommodityPropertyData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 27}
+	return fileDescriptor_2233245ab49fede8, []int{0, 51}
 }
+
+func (m *EntityDTO_ReplacementCommodityPropertyData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ReplacementCommodityPropertyData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ReplacementCommodityPropertyData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ReplacementCommodityPropertyData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ReplacementCommodityPropertyData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ReplacementCommodityPropertyData.Merge(m, src)
+}
+func (m *EntityDTO_ReplacementCommodityPropertyData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ReplacementCommodityPropertyData.Size(m)
+}
+func (m *EntityDTO_ReplacementCommodityPropertyData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ReplacementCommodityPropertyData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ReplacementCommodityPropertyData proto.InternalMessageInfo
 
 func (m *EntityDTO_ReplacementCommodityPropertyData) GetCommodityType() CommodityDTO_CommodityType {
 	if m != nil && m.CommodityType != nil {
@@ -3819,17 +7031,49 @@ type EntityDTO_ConsumerPolicy struct {
 	ShopsTogether *bool `protobuf:"varint,1,opt,name=shopsTogether,def=0" json:"shopsTogether,omitempty"`
 	// Boolean property to indicate if the entity is controllable by Market.
 	// Set as false if the entity cannot be moved, righted size, etc...
-	Controllable     *bool  `protobuf:"varint,2,opt,name=controllable,def=1" json:"controllable,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	Controllable *bool `protobuf:"varint,2,opt,name=controllable,def=1" json:"controllable,omitempty"`
+	// Boolean property to indicate whether the entity needs to clone
+	// its supplier when it clones
+	ProviderMustClone *bool `protobuf:"varint,3,opt,name=providerMustClone,def=0" json:"providerMustClone,omitempty"`
+	// Boolean property to indicate whether the entity is a daemon
+	Daemon *bool `protobuf:"varint,4,opt,name=daemon,def=0" json:"daemon,omitempty"`
+	// Boolean property to indicate whether the entity is deletable
+	Deletable            *bool    `protobuf:"varint,5,opt,name=deletable,def=1" json:"deletable,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_ConsumerPolicy) Reset()                    { *m = EntityDTO_ConsumerPolicy{} }
-func (m *EntityDTO_ConsumerPolicy) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ConsumerPolicy) ProtoMessage()               {}
-func (*EntityDTO_ConsumerPolicy) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 28} }
+func (m *EntityDTO_ConsumerPolicy) Reset()         { *m = EntityDTO_ConsumerPolicy{} }
+func (m *EntityDTO_ConsumerPolicy) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ConsumerPolicy) ProtoMessage()    {}
+func (*EntityDTO_ConsumerPolicy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 52}
+}
+
+func (m *EntityDTO_ConsumerPolicy) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ConsumerPolicy.Unmarshal(m, b)
+}
+func (m *EntityDTO_ConsumerPolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ConsumerPolicy.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ConsumerPolicy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ConsumerPolicy.Merge(m, src)
+}
+func (m *EntityDTO_ConsumerPolicy) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ConsumerPolicy.Size(m)
+}
+func (m *EntityDTO_ConsumerPolicy) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ConsumerPolicy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ConsumerPolicy proto.InternalMessageInfo
 
 const Default_EntityDTO_ConsumerPolicy_ShopsTogether bool = false
 const Default_EntityDTO_ConsumerPolicy_Controllable bool = true
+const Default_EntityDTO_ConsumerPolicy_ProviderMustClone bool = false
+const Default_EntityDTO_ConsumerPolicy_Daemon bool = false
+const Default_EntityDTO_ConsumerPolicy_Deletable bool = true
 
 func (m *EntityDTO_ConsumerPolicy) GetShopsTogether() bool {
 	if m != nil && m.ShopsTogether != nil {
@@ -3845,18 +7089,61 @@ func (m *EntityDTO_ConsumerPolicy) GetControllable() bool {
 	return Default_EntityDTO_ConsumerPolicy_Controllable
 }
 
+func (m *EntityDTO_ConsumerPolicy) GetProviderMustClone() bool {
+	if m != nil && m.ProviderMustClone != nil {
+		return *m.ProviderMustClone
+	}
+	return Default_EntityDTO_ConsumerPolicy_ProviderMustClone
+}
+
+func (m *EntityDTO_ConsumerPolicy) GetDaemon() bool {
+	if m != nil && m.Daemon != nil {
+		return *m.Daemon
+	}
+	return Default_EntityDTO_ConsumerPolicy_Daemon
+}
+
+func (m *EntityDTO_ConsumerPolicy) GetDeletable() bool {
+	if m != nil && m.Deletable != nil {
+		return *m.Deletable
+	}
+	return Default_EntityDTO_ConsumerPolicy_Deletable
+}
+
 type EntityDTO_ProviderPolicy struct {
 	// Provides availableForPlacement placement policy
 	AvailableForPlacement *bool `protobuf:"varint,1,opt,name=availableForPlacement,def=1" json:"availableForPlacement,omitempty"`
 	// Provides localSupported placement policy
-	LocalSupported   *bool  `protobuf:"varint,2,opt,name=localSupported,def=0" json:"localSupported,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	LocalSupported       *bool    `protobuf:"varint,2,opt,name=localSupported,def=0" json:"localSupported,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityDTO_ProviderPolicy) Reset()                    { *m = EntityDTO_ProviderPolicy{} }
-func (m *EntityDTO_ProviderPolicy) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ProviderPolicy) ProtoMessage()               {}
-func (*EntityDTO_ProviderPolicy) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 29} }
+func (m *EntityDTO_ProviderPolicy) Reset()         { *m = EntityDTO_ProviderPolicy{} }
+func (m *EntityDTO_ProviderPolicy) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ProviderPolicy) ProtoMessage()    {}
+func (*EntityDTO_ProviderPolicy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 53}
+}
+
+func (m *EntityDTO_ProviderPolicy) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ProviderPolicy.Unmarshal(m, b)
+}
+func (m *EntityDTO_ProviderPolicy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ProviderPolicy.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ProviderPolicy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ProviderPolicy.Merge(m, src)
+}
+func (m *EntityDTO_ProviderPolicy) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ProviderPolicy.Size(m)
+}
+func (m *EntityDTO_ProviderPolicy) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ProviderPolicy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ProviderPolicy proto.InternalMessageInfo
 
 const Default_EntityDTO_ProviderPolicy_AvailableForPlacement bool = true
 const Default_EntityDTO_ProviderPolicy_LocalSupported bool = false
@@ -3882,13 +7169,35 @@ type EntityDTO_ProcessorPoolData struct {
 	AvailableProcessingUnits *float32 `protobuf:"fixed32,2,req,name=availableProcessingUnits" json:"availableProcessingUnits,omitempty"`
 	// Used by Uncapped VMs during busy time
 	ReservedProcessingUnits *float32 `protobuf:"fixed32,3,opt,name=reservedProcessingUnits" json:"reservedProcessingUnits,omitempty"`
+	XXX_NoUnkeyedLiteral    struct{} `json:"-"`
 	XXX_unrecognized        []byte   `json:"-"`
+	XXX_sizecache           int32    `json:"-"`
 }
 
-func (m *EntityDTO_ProcessorPoolData) Reset()                    { *m = EntityDTO_ProcessorPoolData{} }
-func (m *EntityDTO_ProcessorPoolData) String() string            { return proto.CompactTextString(m) }
-func (*EntityDTO_ProcessorPoolData) ProtoMessage()               {}
-func (*EntityDTO_ProcessorPoolData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 30} }
+func (m *EntityDTO_ProcessorPoolData) Reset()         { *m = EntityDTO_ProcessorPoolData{} }
+func (m *EntityDTO_ProcessorPoolData) String() string { return proto.CompactTextString(m) }
+func (*EntityDTO_ProcessorPoolData) ProtoMessage()    {}
+func (*EntityDTO_ProcessorPoolData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{0, 54}
+}
+
+func (m *EntityDTO_ProcessorPoolData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ProcessorPoolData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ProcessorPoolData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ProcessorPoolData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ProcessorPoolData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ProcessorPoolData.Merge(m, src)
+}
+func (m *EntityDTO_ProcessorPoolData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ProcessorPoolData.Size(m)
+}
+func (m *EntityDTO_ProcessorPoolData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ProcessorPoolData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ProcessorPoolData proto.InternalMessageInfo
 
 func (m *EntityDTO_ProcessorPoolData) GetMaximumProcessingUnits() float32 {
 	if m != nil && m.MaximumProcessingUnits != nil {
@@ -3914,7 +7223,8 @@ func (m *EntityDTO_ProcessorPoolData) GetReservedProcessingUnits() float32 {
 // This represents a Reserved Instance which is a reservation of resource and capacity.
 type EntityDTO_ReservedInstanceData struct {
 	// Reserved Instance Id obtained from Cloud Service Provider.
-	ReservedInstanceId *string `protobuf:"bytes,1,req,name=reservedInstanceId" json:"reservedInstanceId,omitempty"`
+	// Not present for a RI yet to be purchased.
+	ReservedInstanceId *string `protobuf:"bytes,1,opt,name=reservedInstanceId" json:"reservedInstanceId,omitempty"`
 	// The start timestamp of the reservation in milliseconds.
 	StartTime *int64 `protobuf:"varint,2,req,name=startTime" json:"startTime,omitempty"`
 	// The duration of the reservation in milliseconds.
@@ -3947,16 +7257,57 @@ type EntityDTO_ReservedInstanceData struct {
 	// The number of instances covered in this reservation.
 	InstanceCount *int32 `protobuf:"varint,15,req,name=instanceCount" json:"instanceCount,omitempty"`
 	// id of VirtualMachineProfile related with this Reserved Instance. e.g. aws::VMPROFILE::c1.medium
-	RelatedProfileId *string `protobuf:"bytes,16,req,name=relatedProfileId" json:"relatedProfileId,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	RelatedProfileId *string  `protobuf:"bytes,16,req,name=relatedProfileId" json:"relatedProfileId,omitempty"`
+	AppliedScopes    []string `protobuf:"bytes,17,rep,name=appliedScopes" json:"appliedScopes,omitempty"`
+	// ID of account that purchased this RI
+	PurchasingAccountId *string `protobuf:"bytes,18,opt,name=purchasingAccountId" json:"purchasingAccountId,omitempty"`
+	// If shared is true this Reserved Instance can be used by all accounts in the billing
+	// family. Otherwise it is used by purchasing account only.
+	Shared *bool `protobuf:"varint,19,opt,name=shared,def=1" json:"shared,omitempty"`
+	// If instanceSizeFlexible is true then this Reserved Instance can be applied to all
+	// instance types within the family.
+	InstanceSizeFlexible *bool `protobuf:"varint,20,opt,name=instanceSizeFlexible" json:"instanceSizeFlexible,omitempty"`
+	// Reservation order ID. Currently it is used in Azure only.
+	ReservationOrderId *string `protobuf:"bytes,21,opt,name=reservationOrderId" json:"reservationOrderId,omitempty"`
+	// The property that determines if the RI is applicable to workloads running any platform or
+	// to the workloads running the same platform as the RI's platform.
+	PlatformFlexible *bool `protobuf:"varint,22,opt,name=platform_flexible,json=platformFlexible,def=0" json:"platform_flexible,omitempty"`
+	// The end timestamp of the reservation in milliseconds.
+	// this field is optional since this info is available for AWS RIs only.
+	// we will continue estimating endtime for Azure RIs from its startTime and duration.
+	EndTime              *int64   `protobuf:"varint,23,opt,name=endTime" json:"endTime,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *EntityDTO_ReservedInstanceData) Reset()         { *m = EntityDTO_ReservedInstanceData{} }
 func (m *EntityDTO_ReservedInstanceData) String() string { return proto.CompactTextString(m) }
 func (*EntityDTO_ReservedInstanceData) ProtoMessage()    {}
 func (*EntityDTO_ReservedInstanceData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{0, 31}
+	return fileDescriptor_2233245ab49fede8, []int{0, 55}
 }
+
+func (m *EntityDTO_ReservedInstanceData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityDTO_ReservedInstanceData.Unmarshal(m, b)
+}
+func (m *EntityDTO_ReservedInstanceData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityDTO_ReservedInstanceData.Marshal(b, m, deterministic)
+}
+func (m *EntityDTO_ReservedInstanceData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityDTO_ReservedInstanceData.Merge(m, src)
+}
+func (m *EntityDTO_ReservedInstanceData) XXX_Size() int {
+	return xxx_messageInfo_EntityDTO_ReservedInstanceData.Size(m)
+}
+func (m *EntityDTO_ReservedInstanceData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityDTO_ReservedInstanceData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityDTO_ReservedInstanceData proto.InternalMessageInfo
+
+const Default_EntityDTO_ReservedInstanceData_Shared bool = true
+const Default_EntityDTO_ReservedInstanceData_PlatformFlexible bool = false
 
 func (m *EntityDTO_ReservedInstanceData) GetReservedInstanceId() string {
 	if m != nil && m.ReservedInstanceId != nil {
@@ -4070,6 +7421,163 @@ func (m *EntityDTO_ReservedInstanceData) GetRelatedProfileId() string {
 	return ""
 }
 
+func (m *EntityDTO_ReservedInstanceData) GetAppliedScopes() []string {
+	if m != nil {
+		return m.AppliedScopes
+	}
+	return nil
+}
+
+func (m *EntityDTO_ReservedInstanceData) GetPurchasingAccountId() string {
+	if m != nil && m.PurchasingAccountId != nil {
+		return *m.PurchasingAccountId
+	}
+	return ""
+}
+
+func (m *EntityDTO_ReservedInstanceData) GetShared() bool {
+	if m != nil && m.Shared != nil {
+		return *m.Shared
+	}
+	return Default_EntityDTO_ReservedInstanceData_Shared
+}
+
+func (m *EntityDTO_ReservedInstanceData) GetInstanceSizeFlexible() bool {
+	if m != nil && m.InstanceSizeFlexible != nil {
+		return *m.InstanceSizeFlexible
+	}
+	return false
+}
+
+func (m *EntityDTO_ReservedInstanceData) GetReservationOrderId() string {
+	if m != nil && m.ReservationOrderId != nil {
+		return *m.ReservationOrderId
+	}
+	return ""
+}
+
+func (m *EntityDTO_ReservedInstanceData) GetPlatformFlexible() bool {
+	if m != nil && m.PlatformFlexible != nil {
+		return *m.PlatformFlexible
+	}
+	return Default_EntityDTO_ReservedInstanceData_PlatformFlexible
+}
+
+func (m *EntityDTO_ReservedInstanceData) GetEndTime() int64 {
+	if m != nil && m.EndTime != nil {
+		return *m.EndTime
+	}
+	return 0
+}
+
+// This message defines a topological connection between 2 entities.
+// This message needs to be used only to represent a topological relationship where the 2
+// entities are connected to each other, but they are not trading any resources between them.
+//
+// For efficiency, we represent only one side of a connection, either as one of the
+// connections of A or as one of the connections of B. Which one is used depends on
+// the type of the connection. See comments for the specific connection types for
+// details on which side to represent when sending information for a ConnectedEntity.
+type ConnectedEntity struct {
+	// Id of the entity on the other side of the connection
+	ConnectedEntityId *string `protobuf:"bytes,1,opt,name=connectedEntityId" json:"connectedEntityId,omitempty"`
+	// Type of connection that this message is representing.
+	ConnectionType       *ConnectedEntity_ConnectionType `protobuf:"varint,2,opt,name=connectionType,enum=common_dto.ConnectedEntity_ConnectionType" json:"connectionType,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                        `json:"-"`
+	XXX_unrecognized     []byte                          `json:"-"`
+	XXX_sizecache        int32                           `json:"-"`
+}
+
+func (m *ConnectedEntity) Reset()         { *m = ConnectedEntity{} }
+func (m *ConnectedEntity) String() string { return proto.CompactTextString(m) }
+func (*ConnectedEntity) ProtoMessage()    {}
+func (*ConnectedEntity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{1}
+}
+
+func (m *ConnectedEntity) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ConnectedEntity.Unmarshal(m, b)
+}
+func (m *ConnectedEntity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ConnectedEntity.Marshal(b, m, deterministic)
+}
+func (m *ConnectedEntity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ConnectedEntity.Merge(m, src)
+}
+func (m *ConnectedEntity) XXX_Size() int {
+	return xxx_messageInfo_ConnectedEntity.Size(m)
+}
+func (m *ConnectedEntity) XXX_DiscardUnknown() {
+	xxx_messageInfo_ConnectedEntity.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ConnectedEntity proto.InternalMessageInfo
+
+func (m *ConnectedEntity) GetConnectedEntityId() string {
+	if m != nil && m.ConnectedEntityId != nil {
+		return *m.ConnectedEntityId
+	}
+	return ""
+}
+
+func (m *ConnectedEntity) GetConnectionType() ConnectedEntity_ConnectionType {
+	if m != nil && m.ConnectionType != nil {
+		return *m.ConnectionType
+	}
+	return ConnectedEntity_NORMAL_CONNECTION
+}
+
+type PricingIdentifier struct {
+	// The name of an account attribute that identify its pricing. e.g offerId for Azure
+	// accounts
+	IdentifierName *PricingIdentifier_PricingIdentifierName `protobuf:"varint,1,req,name=identifier_name,json=identifierName,enum=common_dto.PricingIdentifier_PricingIdentifierName" json:"identifier_name,omitempty"`
+	// The value of an account attribute that identify its pricing. e.g MS-AZR-0003 as
+	// an offerId value for Azure accounts
+	IdentifierValue      *string  `protobuf:"bytes,2,req,name=identifier_value,json=identifierValue" json:"identifier_value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PricingIdentifier) Reset()         { *m = PricingIdentifier{} }
+func (m *PricingIdentifier) String() string { return proto.CompactTextString(m) }
+func (*PricingIdentifier) ProtoMessage()    {}
+func (*PricingIdentifier) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{2}
+}
+
+func (m *PricingIdentifier) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PricingIdentifier.Unmarshal(m, b)
+}
+func (m *PricingIdentifier) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PricingIdentifier.Marshal(b, m, deterministic)
+}
+func (m *PricingIdentifier) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PricingIdentifier.Merge(m, src)
+}
+func (m *PricingIdentifier) XXX_Size() int {
+	return xxx_messageInfo_PricingIdentifier.Size(m)
+}
+func (m *PricingIdentifier) XXX_DiscardUnknown() {
+	xxx_messageInfo_PricingIdentifier.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PricingIdentifier proto.InternalMessageInfo
+
+func (m *PricingIdentifier) GetIdentifierName() PricingIdentifier_PricingIdentifierName {
+	if m != nil && m.IdentifierName != nil {
+		return *m.IdentifierName
+	}
+	return PricingIdentifier_OFFER_ID
+}
+
+func (m *PricingIdentifier) GetIdentifierValue() string {
+	if m != nil && m.IdentifierValue != nil {
+		return *m.IdentifierValue
+	}
+	return ""
+}
+
 // Represents a specific resource (like Mem, Cpu, Network, ...) that an entity can sell to another
 // entity or wants to buy from another entity.
 // A commodity has multiple metrics (like used, capacity, reservation, ...) that are used to track
@@ -4133,13 +7641,16 @@ type CommodityDTO struct {
 	// returned by the server.
 	// In situations where Mediation is not able to obtain the used values, it should set
 	// this property to 'true'.
-	ComputedUsed *bool `protobuf:"varint,12,opt,name=computedUsed,def=0" json:"computedUsed,omitempty"`
+	//Warning: This is obsolete in XL and will be removed eventually.
+	ComputedUsed *bool `protobuf:"varint,12,opt,name=computedUsed" json:"computedUsed,omitempty"` // Deprecated: Do not use.
 	// Property to indicate the amount by which the commodity will be resized.
 	UsedIncrement *float64 `protobuf:"fixed64,13,opt,name=usedIncrement" json:"usedIncrement,omitempty"`
 	// Commodity properties map
 	PropMap []*CommodityDTO_PropertiesList `protobuf:"bytes,14,rep,name=propMap" json:"propMap,omitempty"`
 	// Specifies if 'used' value is reported as percentage
 	IsUsedPct *bool `protobuf:"varint,15,opt,name=isUsedPct,def=0" json:"isUsedPct,omitempty"`
+	// Specifies if 'peak' value is reported as percentage
+	IsPeakPct *bool `protobuf:"varint,23,opt,name=isPeakPct,def=0" json:"isPeakPct,omitempty"`
 	// Maximum acceptable level of resource utilization (as percentage).
 	// All the remainder of the resource above this value is considered as reserved.
 	// E.g. for VMware host with a utilizationThresholdPct of 70, 70% of the commodity would be
@@ -4148,6 +7659,25 @@ type CommodityDTO struct {
 	UtilizationThresholdPct *float64 `protobuf:"fixed64,16,opt,name=utilizationThresholdPct" json:"utilizationThresholdPct,omitempty"`
 	// Metadata for the invoking a custom pricing function for the commodity.
 	PricingMetadata *CommodityDTO_PricingMetadata `protobuf:"bytes,17,opt,name=pricingMetadata" json:"pricingMetadata,omitempty"`
+	// Collection of commodity utilization points. The collection contains series of usage points
+	// with given timestamp and interval between points. It is used to calculate percentile on
+	// server side.
+	UtilizationData *CommodityDTO_UtilizationData `protobuf:"bytes,18,opt,name=utilizationData" json:"utilizationData,omitempty"`
+	// The min amount resource can be provided to consumer
+	MinAmountForConsumer *float64 `protobuf:"fixed64,19,opt,name=min_amount_for_consumer,json=minAmountForConsumer" json:"min_amount_for_consumer,omitempty"`
+	// The max amount resource can be provided to consumer
+	MaxAmountForConsumer *float64 `protobuf:"fixed64,20,opt,name=max_amount_for_consumer,json=maxAmountForConsumer" json:"max_amount_for_consumer,omitempty"`
+	// The max ratio between this commodity and a base commodity
+	RatioDependency *CommodityDTO_RatioDependency `protobuf:"bytes,21,opt,name=ratio_dependency,json=ratioDependency" json:"ratio_dependency,omitempty"`
+	// Represents the utilization percent (range of 0 to 100), corresponding to the 95th percentile
+	// (or other as specified) for the given resource. This field is set for CommodityDTOs that are
+	// a part of targetSE in ActionItemDTO, created during Action Execution. This field is not
+	// intended to be set as a part of DiscoveryResponse and doing so will have no effect.
+	PercentileUtilization *float64 `protobuf:"fixed64,22,opt,name=percentileUtilization" json:"percentileUtilization,omitempty"`
+	// Whether min is a strict constraint. True when consumer must consume amount above min.
+	CheckMinAmountForConsumer *bool `protobuf:"varint,24,opt,name=check_min_amount_for_consumer,json=checkMinAmountForConsumer,def=0" json:"check_min_amount_for_consumer,omitempty"`
+	// Max amount will be decided by another commodity's capacity on the consumer.
+	RangeDependency *CommodityDTO_RangeDependency `protobuf:"bytes,25,opt,name=range_dependency,json=rangeDependency" json:"range_dependency,omitempty"`
 	// Collection of commodity type's specific data
 	//
 	// Types that are valid to be assigned to CommodityData:
@@ -4161,66 +7691,43 @@ type CommodityDTO struct {
 	// Types that are valid to be assigned to HotresizeData:
 	//	*CommodityDTO_VmemData
 	//	*CommodityDTO_VcpuData
-	HotresizeData    isCommodityDTO_HotresizeData `protobuf_oneof:"hotresize_data"`
-	XXX_unrecognized []byte                       `json:"-"`
+	HotresizeData        isCommodityDTO_HotresizeData `protobuf_oneof:"hotresize_data"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
 }
 
-func (m *CommodityDTO) Reset()                    { *m = CommodityDTO{} }
-func (m *CommodityDTO) String() string            { return proto.CompactTextString(m) }
-func (*CommodityDTO) ProtoMessage()               {}
-func (*CommodityDTO) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
+func (m *CommodityDTO) Reset()         { *m = CommodityDTO{} }
+func (m *CommodityDTO) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO) ProtoMessage()    {}
+func (*CommodityDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3}
+}
+
+func (m *CommodityDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO.Unmarshal(m, b)
+}
+func (m *CommodityDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO.Merge(m, src)
+}
+func (m *CommodityDTO) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO.Size(m)
+}
+func (m *CommodityDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO proto.InternalMessageInfo
 
 const Default_CommodityDTO_Active bool = true
 const Default_CommodityDTO_Resizable bool = false
 const Default_CommodityDTO_Thin bool = true
-const Default_CommodityDTO_ComputedUsed bool = false
 const Default_CommodityDTO_IsUsedPct bool = false
-
-type isCommodityDTO_CommodityData interface {
-	isCommodityDTO_CommodityData()
-}
-type isCommodityDTO_HotresizeData interface {
-	isCommodityDTO_HotresizeData()
-}
-
-type CommodityDTO_StorageLatencyData_ struct {
-	StorageLatencyData *CommodityDTO_StorageLatencyData `protobuf:"bytes,500,opt,name=storage_latency_data,json=storageLatencyData,oneof"`
-}
-type CommodityDTO_StorageAccessData_ struct {
-	StorageAccessData *CommodityDTO_StorageAccessData `protobuf:"bytes,501,opt,name=storage_access_data,json=storageAccessData,oneof"`
-}
-type CommodityDTO_VstoragePartitionData struct {
-	VstoragePartitionData *VStoragePartitionData `protobuf:"bytes,502,opt,name=vstorage_partition_data,json=vstoragePartitionData,oneof"`
-}
-type CommodityDTO_StorageProvisionedData_ struct {
-	StorageProvisionedData *CommodityDTO_StorageProvisionedData `protobuf:"bytes,503,opt,name=storage_provisioned_data,json=storageProvisionedData,oneof"`
-}
-type CommodityDTO_VmemData struct {
-	VmemData *CommodityDTO_VMemData `protobuf:"bytes,200,opt,name=vmem_data,json=vmemData,oneof"`
-}
-type CommodityDTO_VcpuData struct {
-	VcpuData *CommodityDTO_VCpuData `protobuf:"bytes,201,opt,name=vcpu_data,json=vcpuData,oneof"`
-}
-
-func (*CommodityDTO_StorageLatencyData_) isCommodityDTO_CommodityData()     {}
-func (*CommodityDTO_StorageAccessData_) isCommodityDTO_CommodityData()      {}
-func (*CommodityDTO_VstoragePartitionData) isCommodityDTO_CommodityData()   {}
-func (*CommodityDTO_StorageProvisionedData_) isCommodityDTO_CommodityData() {}
-func (*CommodityDTO_VmemData) isCommodityDTO_HotresizeData()                {}
-func (*CommodityDTO_VcpuData) isCommodityDTO_HotresizeData()                {}
-
-func (m *CommodityDTO) GetCommodityData() isCommodityDTO_CommodityData {
-	if m != nil {
-		return m.CommodityData
-	}
-	return nil
-}
-func (m *CommodityDTO) GetHotresizeData() isCommodityDTO_HotresizeData {
-	if m != nil {
-		return m.HotresizeData
-	}
-	return nil
-}
+const Default_CommodityDTO_IsPeakPct bool = false
+const Default_CommodityDTO_CheckMinAmountForConsumer bool = false
 
 func (m *CommodityDTO) GetCommodityType() CommodityDTO_CommodityType {
 	if m != nil && m.CommodityType != nil {
@@ -4299,11 +7806,12 @@ func (m *CommodityDTO) GetThin() bool {
 	return Default_CommodityDTO_Thin
 }
 
+// Deprecated: Do not use.
 func (m *CommodityDTO) GetComputedUsed() bool {
 	if m != nil && m.ComputedUsed != nil {
 		return *m.ComputedUsed
 	}
-	return Default_CommodityDTO_ComputedUsed
+	return false
 }
 
 func (m *CommodityDTO) GetUsedIncrement() float64 {
@@ -4327,6 +7835,13 @@ func (m *CommodityDTO) GetIsUsedPct() bool {
 	return Default_CommodityDTO_IsUsedPct
 }
 
+func (m *CommodityDTO) GetIsPeakPct() bool {
+	if m != nil && m.IsPeakPct != nil {
+		return *m.IsPeakPct
+	}
+	return Default_CommodityDTO_IsPeakPct
+}
+
 func (m *CommodityDTO) GetUtilizationThresholdPct() float64 {
 	if m != nil && m.UtilizationThresholdPct != nil {
 		return *m.UtilizationThresholdPct
@@ -4337,6 +7852,90 @@ func (m *CommodityDTO) GetUtilizationThresholdPct() float64 {
 func (m *CommodityDTO) GetPricingMetadata() *CommodityDTO_PricingMetadata {
 	if m != nil {
 		return m.PricingMetadata
+	}
+	return nil
+}
+
+func (m *CommodityDTO) GetUtilizationData() *CommodityDTO_UtilizationData {
+	if m != nil {
+		return m.UtilizationData
+	}
+	return nil
+}
+
+func (m *CommodityDTO) GetMinAmountForConsumer() float64 {
+	if m != nil && m.MinAmountForConsumer != nil {
+		return *m.MinAmountForConsumer
+	}
+	return 0
+}
+
+func (m *CommodityDTO) GetMaxAmountForConsumer() float64 {
+	if m != nil && m.MaxAmountForConsumer != nil {
+		return *m.MaxAmountForConsumer
+	}
+	return 0
+}
+
+func (m *CommodityDTO) GetRatioDependency() *CommodityDTO_RatioDependency {
+	if m != nil {
+		return m.RatioDependency
+	}
+	return nil
+}
+
+func (m *CommodityDTO) GetPercentileUtilization() float64 {
+	if m != nil && m.PercentileUtilization != nil {
+		return *m.PercentileUtilization
+	}
+	return 0
+}
+
+func (m *CommodityDTO) GetCheckMinAmountForConsumer() bool {
+	if m != nil && m.CheckMinAmountForConsumer != nil {
+		return *m.CheckMinAmountForConsumer
+	}
+	return Default_CommodityDTO_CheckMinAmountForConsumer
+}
+
+func (m *CommodityDTO) GetRangeDependency() *CommodityDTO_RangeDependency {
+	if m != nil {
+		return m.RangeDependency
+	}
+	return nil
+}
+
+type isCommodityDTO_CommodityData interface {
+	isCommodityDTO_CommodityData()
+}
+
+type CommodityDTO_StorageLatencyData_ struct {
+	StorageLatencyData *CommodityDTO_StorageLatencyData `protobuf:"bytes,500,opt,name=storage_latency_data,json=storageLatencyData,oneof"`
+}
+
+type CommodityDTO_StorageAccessData_ struct {
+	StorageAccessData *CommodityDTO_StorageAccessData `protobuf:"bytes,501,opt,name=storage_access_data,json=storageAccessData,oneof"`
+}
+
+type CommodityDTO_VstoragePartitionData struct {
+	VstoragePartitionData *VStoragePartitionData `protobuf:"bytes,502,opt,name=vstorage_partition_data,json=vstoragePartitionData,oneof"`
+}
+
+type CommodityDTO_StorageProvisionedData_ struct {
+	StorageProvisionedData *CommodityDTO_StorageProvisionedData `protobuf:"bytes,503,opt,name=storage_provisioned_data,json=storageProvisionedData,oneof"`
+}
+
+func (*CommodityDTO_StorageLatencyData_) isCommodityDTO_CommodityData() {}
+
+func (*CommodityDTO_StorageAccessData_) isCommodityDTO_CommodityData() {}
+
+func (*CommodityDTO_VstoragePartitionData) isCommodityDTO_CommodityData() {}
+
+func (*CommodityDTO_StorageProvisionedData_) isCommodityDTO_CommodityData() {}
+
+func (m *CommodityDTO) GetCommodityData() isCommodityDTO_CommodityData {
+	if m != nil {
+		return m.CommodityData
 	}
 	return nil
 }
@@ -4369,6 +7968,29 @@ func (m *CommodityDTO) GetStorageProvisionedData() *CommodityDTO_StorageProvisio
 	return nil
 }
 
+type isCommodityDTO_HotresizeData interface {
+	isCommodityDTO_HotresizeData()
+}
+
+type CommodityDTO_VmemData struct {
+	VmemData *CommodityDTO_VMemData `protobuf:"bytes,200,opt,name=vmem_data,json=vmemData,oneof"`
+}
+
+type CommodityDTO_VcpuData struct {
+	VcpuData *CommodityDTO_VCpuData `protobuf:"bytes,201,opt,name=vcpu_data,json=vcpuData,oneof"`
+}
+
+func (*CommodityDTO_VmemData) isCommodityDTO_HotresizeData() {}
+
+func (*CommodityDTO_VcpuData) isCommodityDTO_HotresizeData() {}
+
+func (m *CommodityDTO) GetHotresizeData() isCommodityDTO_HotresizeData {
+	if m != nil {
+		return m.HotresizeData
+	}
+	return nil
+}
+
 func (m *CommodityDTO) GetVmemData() *CommodityDTO_VMemData {
 	if x, ok := m.GetHotresizeData().(*CommodityDTO_VmemData); ok {
 		return x.VmemData
@@ -4383,9 +8005,9 @@ func (m *CommodityDTO) GetVcpuData() *CommodityDTO_VCpuData {
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*CommodityDTO) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _CommodityDTO_OneofMarshaler, _CommodityDTO_OneofUnmarshaler, _CommodityDTO_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*CommodityDTO) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*CommodityDTO_StorageLatencyData_)(nil),
 		(*CommodityDTO_StorageAccessData_)(nil),
 		(*CommodityDTO_VstoragePartitionData)(nil),
@@ -4395,167 +8017,185 @@ func (*CommodityDTO) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) 
 	}
 }
 
-func _CommodityDTO_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*CommodityDTO)
-	// commodity_data
-	switch x := m.CommodityData.(type) {
-	case *CommodityDTO_StorageLatencyData_:
-		b.EncodeVarint(500<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.StorageLatencyData); err != nil {
-			return err
-		}
-	case *CommodityDTO_StorageAccessData_:
-		b.EncodeVarint(501<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.StorageAccessData); err != nil {
-			return err
-		}
-	case *CommodityDTO_VstoragePartitionData:
-		b.EncodeVarint(502<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VstoragePartitionData); err != nil {
-			return err
-		}
-	case *CommodityDTO_StorageProvisionedData_:
-		b.EncodeVarint(503<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.StorageProvisionedData); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("CommodityDTO.CommodityData has unexpected type %T", x)
+type CommodityDTO_RangeDependency struct {
+	// the type of commodity whose usage will be used as a factor
+	BaseCommodity *CommodityDTO_CommodityType `protobuf:"varint,1,opt,name=base_commodity,json=baseCommodity,enum=common_dto.CommodityDTO_CommodityType" json:"base_commodity,omitempty"`
+	// list of <double, double> tuples, mapping from base commodity max amount to dependent commodity max amount
+	RangeTuple           []*CommodityDTO_RangeTuple `protobuf:"bytes,2,rep,name=range_tuple,json=rangeTuple" json:"range_tuple,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
+	XXX_unrecognized     []byte                     `json:"-"`
+	XXX_sizecache        int32                      `json:"-"`
+}
+
+func (m *CommodityDTO_RangeDependency) Reset()         { *m = CommodityDTO_RangeDependency{} }
+func (m *CommodityDTO_RangeDependency) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_RangeDependency) ProtoMessage()    {}
+func (*CommodityDTO_RangeDependency) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 0}
+}
+
+func (m *CommodityDTO_RangeDependency) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_RangeDependency.Unmarshal(m, b)
+}
+func (m *CommodityDTO_RangeDependency) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_RangeDependency.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_RangeDependency) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_RangeDependency.Merge(m, src)
+}
+func (m *CommodityDTO_RangeDependency) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_RangeDependency.Size(m)
+}
+func (m *CommodityDTO_RangeDependency) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_RangeDependency.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_RangeDependency proto.InternalMessageInfo
+
+func (m *CommodityDTO_RangeDependency) GetBaseCommodity() CommodityDTO_CommodityType {
+	if m != nil && m.BaseCommodity != nil {
+		return *m.BaseCommodity
 	}
-	// hotresize_data
-	switch x := m.HotresizeData.(type) {
-	case *CommodityDTO_VmemData:
-		b.EncodeVarint(200<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VmemData); err != nil {
-			return err
-		}
-	case *CommodityDTO_VcpuData:
-		b.EncodeVarint(201<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.VcpuData); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("CommodityDTO.HotresizeData has unexpected type %T", x)
+	return CommodityDTO_CLUSTER
+}
+
+func (m *CommodityDTO_RangeDependency) GetRangeTuple() []*CommodityDTO_RangeTuple {
+	if m != nil {
+		return m.RangeTuple
 	}
 	return nil
 }
 
-func _CommodityDTO_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*CommodityDTO)
-	switch tag {
-	case 500: // commodity_data.storage_latency_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CommodityDTO_StorageLatencyData)
-		err := b.DecodeMessage(msg)
-		m.CommodityData = &CommodityDTO_StorageLatencyData_{msg}
-		return true, err
-	case 501: // commodity_data.storage_access_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CommodityDTO_StorageAccessData)
-		err := b.DecodeMessage(msg)
-		m.CommodityData = &CommodityDTO_StorageAccessData_{msg}
-		return true, err
-	case 502: // commodity_data.vstorage_partition_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(VStoragePartitionData)
-		err := b.DecodeMessage(msg)
-		m.CommodityData = &CommodityDTO_VstoragePartitionData{msg}
-		return true, err
-	case 503: // commodity_data.storage_provisioned_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CommodityDTO_StorageProvisionedData)
-		err := b.DecodeMessage(msg)
-		m.CommodityData = &CommodityDTO_StorageProvisionedData_{msg}
-		return true, err
-	case 200: // hotresize_data.vmem_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CommodityDTO_VMemData)
-		err := b.DecodeMessage(msg)
-		m.HotresizeData = &CommodityDTO_VmemData{msg}
-		return true, err
-	case 201: // hotresize_data.vcpu_data
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CommodityDTO_VCpuData)
-		err := b.DecodeMessage(msg)
-		m.HotresizeData = &CommodityDTO_VcpuData{msg}
-		return true, err
-	default:
-		return false, nil
-	}
+type CommodityDTO_RangeTuple struct {
+	BaseMaxAmountForConsumer      *float64 `protobuf:"fixed64,1,opt,name=base_max_amount_for_consumer,json=baseMaxAmountForConsumer" json:"base_max_amount_for_consumer,omitempty"`
+	DependentMaxAmountForConsumer *float64 `protobuf:"fixed64,2,opt,name=dependent_max_amount_for_consumer,json=dependentMaxAmountForConsumer" json:"dependent_max_amount_for_consumer,omitempty"`
+	XXX_NoUnkeyedLiteral          struct{} `json:"-"`
+	XXX_unrecognized              []byte   `json:"-"`
+	XXX_sizecache                 int32    `json:"-"`
 }
 
-func _CommodityDTO_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*CommodityDTO)
-	// commodity_data
-	switch x := m.CommodityData.(type) {
-	case *CommodityDTO_StorageLatencyData_:
-		s := proto.Size(x.StorageLatencyData)
-		n += proto.SizeVarint(500<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *CommodityDTO_StorageAccessData_:
-		s := proto.Size(x.StorageAccessData)
-		n += proto.SizeVarint(501<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *CommodityDTO_VstoragePartitionData:
-		s := proto.Size(x.VstoragePartitionData)
-		n += proto.SizeVarint(502<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *CommodityDTO_StorageProvisionedData_:
-		s := proto.Size(x.StorageProvisionedData)
-		n += proto.SizeVarint(503<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+func (m *CommodityDTO_RangeTuple) Reset()         { *m = CommodityDTO_RangeTuple{} }
+func (m *CommodityDTO_RangeTuple) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_RangeTuple) ProtoMessage()    {}
+func (*CommodityDTO_RangeTuple) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 1}
+}
+
+func (m *CommodityDTO_RangeTuple) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_RangeTuple.Unmarshal(m, b)
+}
+func (m *CommodityDTO_RangeTuple) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_RangeTuple.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_RangeTuple) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_RangeTuple.Merge(m, src)
+}
+func (m *CommodityDTO_RangeTuple) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_RangeTuple.Size(m)
+}
+func (m *CommodityDTO_RangeTuple) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_RangeTuple.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_RangeTuple proto.InternalMessageInfo
+
+func (m *CommodityDTO_RangeTuple) GetBaseMaxAmountForConsumer() float64 {
+	if m != nil && m.BaseMaxAmountForConsumer != nil {
+		return *m.BaseMaxAmountForConsumer
 	}
-	// hotresize_data
-	switch x := m.HotresizeData.(type) {
-	case *CommodityDTO_VmemData:
-		s := proto.Size(x.VmemData)
-		n += proto.SizeVarint(200<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *CommodityDTO_VcpuData:
-		s := proto.Size(x.VcpuData)
-		n += proto.SizeVarint(201<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	return 0
+}
+
+func (m *CommodityDTO_RangeTuple) GetDependentMaxAmountForConsumer() float64 {
+	if m != nil && m.DependentMaxAmountForConsumer != nil {
+		return *m.DependentMaxAmountForConsumer
 	}
-	return n
+	return 0
+}
+
+// The max amount resource will be decided by another commodity's usage on the consumer
+type CommodityDTO_RatioDependency struct {
+	// the type of commodity whose usage will be used as a factor
+	BaseCommodity *CommodityDTO_CommodityType `protobuf:"varint,1,opt,name=base_commodity,json=baseCommodity,enum=common_dto.CommodityDTO_CommodityType" json:"base_commodity,omitempty"`
+	// the ratio which will be used to multiply with base commodity's usage
+	Ratio                *int32   `protobuf:"varint,2,opt,name=ratio" json:"ratio,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CommodityDTO_RatioDependency) Reset()         { *m = CommodityDTO_RatioDependency{} }
+func (m *CommodityDTO_RatioDependency) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_RatioDependency) ProtoMessage()    {}
+func (*CommodityDTO_RatioDependency) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 2}
+}
+
+func (m *CommodityDTO_RatioDependency) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_RatioDependency.Unmarshal(m, b)
+}
+func (m *CommodityDTO_RatioDependency) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_RatioDependency.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_RatioDependency) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_RatioDependency.Merge(m, src)
+}
+func (m *CommodityDTO_RatioDependency) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_RatioDependency.Size(m)
+}
+func (m *CommodityDTO_RatioDependency) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_RatioDependency.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_RatioDependency proto.InternalMessageInfo
+
+func (m *CommodityDTO_RatioDependency) GetBaseCommodity() CommodityDTO_CommodityType {
+	if m != nil && m.BaseCommodity != nil {
+		return *m.BaseCommodity
+	}
+	return CommodityDTO_CLUSTER
+}
+
+func (m *CommodityDTO_RatioDependency) GetRatio() int32 {
+	if m != nil && m.Ratio != nil {
+		return *m.Ratio
+	}
+	return 0
 }
 
 // Map property type to list of strings
 type CommodityDTO_PropertiesList struct {
-	Name             *string  `protobuf:"bytes,1,req,name=name" json:"name,omitempty"`
-	Values           []string `protobuf:"bytes,2,rep,name=values" json:"values,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	Name                 *string  `protobuf:"bytes,1,req,name=name" json:"name,omitempty"`
+	Values               []string `protobuf:"bytes,2,rep,name=values" json:"values,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CommodityDTO_PropertiesList) Reset()                    { *m = CommodityDTO_PropertiesList{} }
-func (m *CommodityDTO_PropertiesList) String() string            { return proto.CompactTextString(m) }
-func (*CommodityDTO_PropertiesList) ProtoMessage()               {}
-func (*CommodityDTO_PropertiesList) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1, 0} }
+func (m *CommodityDTO_PropertiesList) Reset()         { *m = CommodityDTO_PropertiesList{} }
+func (m *CommodityDTO_PropertiesList) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_PropertiesList) ProtoMessage()    {}
+func (*CommodityDTO_PropertiesList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 3}
+}
+
+func (m *CommodityDTO_PropertiesList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_PropertiesList.Unmarshal(m, b)
+}
+func (m *CommodityDTO_PropertiesList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_PropertiesList.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_PropertiesList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_PropertiesList.Merge(m, src)
+}
+func (m *CommodityDTO_PropertiesList) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_PropertiesList.Size(m)
+}
+func (m *CommodityDTO_PropertiesList) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_PropertiesList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_PropertiesList proto.InternalMessageInfo
 
 func (m *CommodityDTO_PropertiesList) GetName() string {
 	if m != nil && m.Name != nil {
@@ -4572,19 +8212,39 @@ func (m *CommodityDTO_PropertiesList) GetValues() []string {
 }
 
 type CommodityDTO_StorageLatencyData struct {
-	SupportsDiskArrayLatency           *bool  `protobuf:"varint,1,opt,name=supportsDiskArrayLatency" json:"supportsDiskArrayLatency,omitempty"`
-	SupportsStorageLatency             *bool  `protobuf:"varint,2,opt,name=supportsStorageLatency" json:"supportsStorageLatency,omitempty"`
-	SupportsLogicalPoolLatency         *bool  `protobuf:"varint,3,opt,name=supportsLogicalPoolLatency" json:"supportsLogicalPoolLatency,omitempty"`
-	SupportsLogicalPoolLatencyCapacity *bool  `protobuf:"varint,4,opt,name=supportsLogicalPoolLatencyCapacity" json:"supportsLogicalPoolLatencyCapacity,omitempty"`
-	XXX_unrecognized                   []byte `json:"-"`
+	SupportsDiskArrayLatency           *bool    `protobuf:"varint,1,opt,name=supportsDiskArrayLatency" json:"supportsDiskArrayLatency,omitempty"`
+	SupportsStorageLatency             *bool    `protobuf:"varint,2,opt,name=supportsStorageLatency" json:"supportsStorageLatency,omitempty"`
+	SupportsLogicalPoolLatency         *bool    `protobuf:"varint,3,opt,name=supportsLogicalPoolLatency" json:"supportsLogicalPoolLatency,omitempty"`
+	SupportsLogicalPoolLatencyCapacity *bool    `protobuf:"varint,4,opt,name=supportsLogicalPoolLatencyCapacity" json:"supportsLogicalPoolLatencyCapacity,omitempty"`
+	XXX_NoUnkeyedLiteral               struct{} `json:"-"`
+	XXX_unrecognized                   []byte   `json:"-"`
+	XXX_sizecache                      int32    `json:"-"`
 }
 
 func (m *CommodityDTO_StorageLatencyData) Reset()         { *m = CommodityDTO_StorageLatencyData{} }
 func (m *CommodityDTO_StorageLatencyData) String() string { return proto.CompactTextString(m) }
 func (*CommodityDTO_StorageLatencyData) ProtoMessage()    {}
 func (*CommodityDTO_StorageLatencyData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{1, 1}
+	return fileDescriptor_2233245ab49fede8, []int{3, 4}
 }
+
+func (m *CommodityDTO_StorageLatencyData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_StorageLatencyData.Unmarshal(m, b)
+}
+func (m *CommodityDTO_StorageLatencyData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_StorageLatencyData.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_StorageLatencyData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_StorageLatencyData.Merge(m, src)
+}
+func (m *CommodityDTO_StorageLatencyData) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_StorageLatencyData.Size(m)
+}
+func (m *CommodityDTO_StorageLatencyData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_StorageLatencyData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_StorageLatencyData proto.InternalMessageInfo
 
 func (m *CommodityDTO_StorageLatencyData) GetSupportsDiskArrayLatency() bool {
 	if m != nil && m.SupportsDiskArrayLatency != nil {
@@ -4615,18 +8275,38 @@ func (m *CommodityDTO_StorageLatencyData) GetSupportsLogicalPoolLatencyCapacity(
 }
 
 type CommodityDTO_StorageAccessData struct {
-	SupportsDiskArrayIOPS   *bool  `protobuf:"varint,1,opt,name=supportsDiskArrayIOPS" json:"supportsDiskArrayIOPS,omitempty"`
-	SupportsStorageIOPS     *bool  `protobuf:"varint,2,opt,name=supportsStorageIOPS" json:"supportsStorageIOPS,omitempty"`
-	SupportsLogicalPoolIOPS *bool  `protobuf:"varint,3,opt,name=supportsLogicalPoolIOPS" json:"supportsLogicalPoolIOPS,omitempty"`
-	XXX_unrecognized        []byte `json:"-"`
+	SupportsDiskArrayIOPS   *bool    `protobuf:"varint,1,opt,name=supportsDiskArrayIOPS" json:"supportsDiskArrayIOPS,omitempty"`
+	SupportsStorageIOPS     *bool    `protobuf:"varint,2,opt,name=supportsStorageIOPS" json:"supportsStorageIOPS,omitempty"`
+	SupportsLogicalPoolIOPS *bool    `protobuf:"varint,3,opt,name=supportsLogicalPoolIOPS" json:"supportsLogicalPoolIOPS,omitempty"`
+	XXX_NoUnkeyedLiteral    struct{} `json:"-"`
+	XXX_unrecognized        []byte   `json:"-"`
+	XXX_sizecache           int32    `json:"-"`
 }
 
 func (m *CommodityDTO_StorageAccessData) Reset()         { *m = CommodityDTO_StorageAccessData{} }
 func (m *CommodityDTO_StorageAccessData) String() string { return proto.CompactTextString(m) }
 func (*CommodityDTO_StorageAccessData) ProtoMessage()    {}
 func (*CommodityDTO_StorageAccessData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{1, 2}
+	return fileDescriptor_2233245ab49fede8, []int{3, 5}
 }
+
+func (m *CommodityDTO_StorageAccessData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_StorageAccessData.Unmarshal(m, b)
+}
+func (m *CommodityDTO_StorageAccessData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_StorageAccessData.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_StorageAccessData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_StorageAccessData.Merge(m, src)
+}
+func (m *CommodityDTO_StorageAccessData) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_StorageAccessData.Size(m)
+}
+func (m *CommodityDTO_StorageAccessData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_StorageAccessData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_StorageAccessData proto.InternalMessageInfo
 
 func (m *CommodityDTO_StorageAccessData) GetSupportsDiskArrayIOPS() bool {
 	if m != nil && m.SupportsDiskArrayIOPS != nil {
@@ -4650,16 +8330,36 @@ func (m *CommodityDTO_StorageAccessData) GetSupportsLogicalPoolIOPS() bool {
 }
 
 type CommodityDTO_StorageProvisionedData struct {
-	UsedAdjustment   *float64 `protobuf:"fixed64,1,opt,name=usedAdjustment" json:"usedAdjustment,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	UsedAdjustment       *float64 `protobuf:"fixed64,1,opt,name=usedAdjustment" json:"usedAdjustment,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *CommodityDTO_StorageProvisionedData) Reset()         { *m = CommodityDTO_StorageProvisionedData{} }
 func (m *CommodityDTO_StorageProvisionedData) String() string { return proto.CompactTextString(m) }
 func (*CommodityDTO_StorageProvisionedData) ProtoMessage()    {}
 func (*CommodityDTO_StorageProvisionedData) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{1, 3}
+	return fileDescriptor_2233245ab49fede8, []int{3, 6}
 }
+
+func (m *CommodityDTO_StorageProvisionedData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_StorageProvisionedData.Unmarshal(m, b)
+}
+func (m *CommodityDTO_StorageProvisionedData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_StorageProvisionedData.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_StorageProvisionedData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_StorageProvisionedData.Merge(m, src)
+}
+func (m *CommodityDTO_StorageProvisionedData) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_StorageProvisionedData.Size(m)
+}
+func (m *CommodityDTO_StorageProvisionedData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_StorageProvisionedData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_StorageProvisionedData proto.InternalMessageInfo
 
 func (m *CommodityDTO_StorageProvisionedData) GetUsedAdjustment() float64 {
 	if m != nil && m.UsedAdjustment != nil {
@@ -4669,14 +8369,36 @@ func (m *CommodityDTO_StorageProvisionedData) GetUsedAdjustment() float64 {
 }
 
 type CommodityDTO_VMemData struct {
-	HotAddSupported  *bool  `protobuf:"varint,1,opt,name=hotAddSupported,def=0" json:"hotAddSupported,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	HotAddSupported      *bool    `protobuf:"varint,1,opt,name=hotAddSupported,def=0" json:"hotAddSupported,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CommodityDTO_VMemData) Reset()                    { *m = CommodityDTO_VMemData{} }
-func (m *CommodityDTO_VMemData) String() string            { return proto.CompactTextString(m) }
-func (*CommodityDTO_VMemData) ProtoMessage()               {}
-func (*CommodityDTO_VMemData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1, 4} }
+func (m *CommodityDTO_VMemData) Reset()         { *m = CommodityDTO_VMemData{} }
+func (m *CommodityDTO_VMemData) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_VMemData) ProtoMessage()    {}
+func (*CommodityDTO_VMemData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 7}
+}
+
+func (m *CommodityDTO_VMemData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_VMemData.Unmarshal(m, b)
+}
+func (m *CommodityDTO_VMemData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_VMemData.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_VMemData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_VMemData.Merge(m, src)
+}
+func (m *CommodityDTO_VMemData) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_VMemData.Size(m)
+}
+func (m *CommodityDTO_VMemData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_VMemData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_VMemData proto.InternalMessageInfo
 
 const Default_CommodityDTO_VMemData_HotAddSupported bool = false
 
@@ -4691,14 +8413,36 @@ type CommodityDTO_VCpuData struct {
 	HotAddSupported    *bool `protobuf:"varint,1,opt,name=hotAddSupported,def=0" json:"hotAddSupported,omitempty"`
 	HotRemoveSupported *bool `protobuf:"varint,2,opt,name=hotRemoveSupported,def=0" json:"hotRemoveSupported,omitempty"`
 	// whether the vcpu used is a per CPU core reading or a per node reading
-	IsReadingPerCpu  *bool  `protobuf:"varint,3,opt,name=isReadingPerCpu,def=0" json:"isReadingPerCpu,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	IsReadingPerCpu      *bool    `protobuf:"varint,3,opt,name=isReadingPerCpu,def=0" json:"isReadingPerCpu,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CommodityDTO_VCpuData) Reset()                    { *m = CommodityDTO_VCpuData{} }
-func (m *CommodityDTO_VCpuData) String() string            { return proto.CompactTextString(m) }
-func (*CommodityDTO_VCpuData) ProtoMessage()               {}
-func (*CommodityDTO_VCpuData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1, 5} }
+func (m *CommodityDTO_VCpuData) Reset()         { *m = CommodityDTO_VCpuData{} }
+func (m *CommodityDTO_VCpuData) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_VCpuData) ProtoMessage()    {}
+func (*CommodityDTO_VCpuData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 8}
+}
+
+func (m *CommodityDTO_VCpuData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_VCpuData.Unmarshal(m, b)
+}
+func (m *CommodityDTO_VCpuData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_VCpuData.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_VCpuData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_VCpuData.Merge(m, src)
+}
+func (m *CommodityDTO_VCpuData) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_VCpuData.Size(m)
+}
+func (m *CommodityDTO_VCpuData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_VCpuData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_VCpuData proto.InternalMessageInfo
 
 const Default_CommodityDTO_VCpuData_HotAddSupported bool = false
 const Default_CommodityDTO_VCpuData_HotRemoveSupported bool = false
@@ -4729,13 +8473,35 @@ func (m *CommodityDTO_VCpuData) GetIsReadingPerCpu() bool {
 type CommodityDTO_PricingMetadata struct {
 	// Namespace of the handler for the pricing function for this commodity
 	PricingHandlerNamespace *CustomTypeDef_MetadataNamespace `protobuf:"varint,1,req,name=pricingHandlerNamespace,enum=common_dto.CustomTypeDef_MetadataNamespace" json:"pricingHandlerNamespace,omitempty"`
+	XXX_NoUnkeyedLiteral    struct{}                         `json:"-"`
 	XXX_unrecognized        []byte                           `json:"-"`
+	XXX_sizecache           int32                            `json:"-"`
 }
 
-func (m *CommodityDTO_PricingMetadata) Reset()                    { *m = CommodityDTO_PricingMetadata{} }
-func (m *CommodityDTO_PricingMetadata) String() string            { return proto.CompactTextString(m) }
-func (*CommodityDTO_PricingMetadata) ProtoMessage()               {}
-func (*CommodityDTO_PricingMetadata) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1, 6} }
+func (m *CommodityDTO_PricingMetadata) Reset()         { *m = CommodityDTO_PricingMetadata{} }
+func (m *CommodityDTO_PricingMetadata) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_PricingMetadata) ProtoMessage()    {}
+func (*CommodityDTO_PricingMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 9}
+}
+
+func (m *CommodityDTO_PricingMetadata) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_PricingMetadata.Unmarshal(m, b)
+}
+func (m *CommodityDTO_PricingMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_PricingMetadata.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_PricingMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_PricingMetadata.Merge(m, src)
+}
+func (m *CommodityDTO_PricingMetadata) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_PricingMetadata.Size(m)
+}
+func (m *CommodityDTO_PricingMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_PricingMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_PricingMetadata proto.InternalMessageInfo
 
 func (m *CommodityDTO_PricingMetadata) GetPricingHandlerNamespace() CustomTypeDef_MetadataNamespace {
 	if m != nil && m.PricingHandlerNamespace != nil {
@@ -4744,16 +8510,97 @@ func (m *CommodityDTO_PricingMetadata) GetPricingHandlerNamespace() CustomTypeDe
 	return CustomTypeDef_UNKNOWN
 }
 
-// The partition that the VStorage sits on.  Used for display in the UI.
-type VStoragePartitionData struct {
-	Partition        *string `protobuf:"bytes,1,opt,name=partition" json:"partition,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+// Represents a collection of utilization data points.
+type CommodityDTO_UtilizationData struct {
+	// Array of data points. The last element in the array refers to the latest point in time.
+	Point []float64 `protobuf:"fixed64,1,rep,name=point" json:"point,omitempty"`
+	// The timestamp of the last (the most recent) point in the array.
+	LastPointTimestampMs *int64 `protobuf:"varint,2,req,name=lastPointTimestampMs" json:"lastPointTimestampMs,omitempty"`
+	// Interval in milliseconds between 2 consecutive points in the array.
+	IntervalMs           *int32   `protobuf:"varint,3,req,name=intervalMs" json:"intervalMs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *VStoragePartitionData) Reset()                    { *m = VStoragePartitionData{} }
-func (m *VStoragePartitionData) String() string            { return proto.CompactTextString(m) }
-func (*VStoragePartitionData) ProtoMessage()               {}
-func (*VStoragePartitionData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{2} }
+func (m *CommodityDTO_UtilizationData) Reset()         { *m = CommodityDTO_UtilizationData{} }
+func (m *CommodityDTO_UtilizationData) String() string { return proto.CompactTextString(m) }
+func (*CommodityDTO_UtilizationData) ProtoMessage()    {}
+func (*CommodityDTO_UtilizationData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{3, 10}
+}
+
+func (m *CommodityDTO_UtilizationData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CommodityDTO_UtilizationData.Unmarshal(m, b)
+}
+func (m *CommodityDTO_UtilizationData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CommodityDTO_UtilizationData.Marshal(b, m, deterministic)
+}
+func (m *CommodityDTO_UtilizationData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CommodityDTO_UtilizationData.Merge(m, src)
+}
+func (m *CommodityDTO_UtilizationData) XXX_Size() int {
+	return xxx_messageInfo_CommodityDTO_UtilizationData.Size(m)
+}
+func (m *CommodityDTO_UtilizationData) XXX_DiscardUnknown() {
+	xxx_messageInfo_CommodityDTO_UtilizationData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CommodityDTO_UtilizationData proto.InternalMessageInfo
+
+func (m *CommodityDTO_UtilizationData) GetPoint() []float64 {
+	if m != nil {
+		return m.Point
+	}
+	return nil
+}
+
+func (m *CommodityDTO_UtilizationData) GetLastPointTimestampMs() int64 {
+	if m != nil && m.LastPointTimestampMs != nil {
+		return *m.LastPointTimestampMs
+	}
+	return 0
+}
+
+func (m *CommodityDTO_UtilizationData) GetIntervalMs() int32 {
+	if m != nil && m.IntervalMs != nil {
+		return *m.IntervalMs
+	}
+	return 0
+}
+
+// The partition that the VStorage sits on.  Used for display in the UI.
+type VStoragePartitionData struct {
+	Partition            *string  `protobuf:"bytes,1,opt,name=partition" json:"partition,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *VStoragePartitionData) Reset()         { *m = VStoragePartitionData{} }
+func (m *VStoragePartitionData) String() string { return proto.CompactTextString(m) }
+func (*VStoragePartitionData) ProtoMessage()    {}
+func (*VStoragePartitionData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{4}
+}
+
+func (m *VStoragePartitionData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_VStoragePartitionData.Unmarshal(m, b)
+}
+func (m *VStoragePartitionData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_VStoragePartitionData.Marshal(b, m, deterministic)
+}
+func (m *VStoragePartitionData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VStoragePartitionData.Merge(m, src)
+}
+func (m *VStoragePartitionData) XXX_Size() int {
+	return xxx_messageInfo_VStoragePartitionData.Size(m)
+}
+func (m *VStoragePartitionData) XXX_DiscardUnknown() {
+	xxx_messageInfo_VStoragePartitionData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VStoragePartitionData proto.InternalMessageInfo
 
 func (m *VStoragePartitionData) GetPartition() string {
 	if m != nil && m.Partition != nil {
@@ -4792,63 +8639,51 @@ type GroupDTO struct {
 	Members isGroupDTO_Members `protobuf_oneof:"members"`
 	// list of <string, string, string> namespace, key, value triplets
 	EntityProperties []*EntityDTO_EntityProperty `protobuf:"bytes,9,rep,name=entityProperties" json:"entityProperties,omitempty"`
-	// Specifies group DTO type (can be a new/existing group or deleted group).
-	UpdateType       *UpdateType `protobuf:"varint,10,opt,name=updateType,enum=common_dto.UpdateType,def=0" json:"updateType,omitempty"`
-	XXX_unrecognized []byte      `json:"-"`
+	// Specifies group DTO Update type (can be a new/existing group or deleted group).
+	UpdateType *UpdateType `protobuf:"varint,10,opt,name=updateType,enum=common_dto.UpdateType,def=0" json:"updateType,omitempty"`
+	// Specifies group DTO type (can be either a regular group or a resource group).
+	GroupType *GroupDTO_GroupType `protobuf:"varint,11,opt,name=groupType,enum=common_dto.GroupDTO_GroupType,def=0" json:"groupType,omitempty"`
+	// Specifies if the group should be resized consistently or not
+	IsConsistentResizing *bool `protobuf:"varint,12,opt,name=isConsistentResizing,def=0" json:"isConsistentResizing,omitempty"`
+	// Tags related to group.
+	Tags map[string]*GroupDTO_TagValues `protobuf:"bytes,13,rep,name=tags" json:"tags,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// "Owner" of the group.
+	// The main use case (Sept 5 2019) is Business Accounts (account id) that own Resource
+	// Groups.
+	Owner                *string  `protobuf:"bytes,14,opt,name=owner" json:"owner,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GroupDTO) Reset()                    { *m = GroupDTO{} }
-func (m *GroupDTO) String() string            { return proto.CompactTextString(m) }
-func (*GroupDTO) ProtoMessage()               {}
-func (*GroupDTO) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3} }
+func (m *GroupDTO) Reset()         { *m = GroupDTO{} }
+func (m *GroupDTO) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO) ProtoMessage()    {}
+func (*GroupDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5}
+}
+
+func (m *GroupDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO.Unmarshal(m, b)
+}
+func (m *GroupDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO.Merge(m, src)
+}
+func (m *GroupDTO) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO.Size(m)
+}
+func (m *GroupDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO proto.InternalMessageInfo
 
 const Default_GroupDTO_UpdateType UpdateType = UpdateType_UPDATED
-
-type isGroupDTO_Info interface {
-	isGroupDTO_Info()
-}
-type isGroupDTO_Members interface {
-	isGroupDTO_Members()
-}
-
-type GroupDTO_GroupName struct {
-	GroupName string `protobuf:"bytes,3,opt,name=group_name,json=groupName,oneof"`
-}
-type GroupDTO_ConstraintInfo_ struct {
-	ConstraintInfo *GroupDTO_ConstraintInfo `protobuf:"bytes,4,opt,name=constraint_info,json=constraintInfo,oneof"`
-}
-type GroupDTO_SelectionSpecList_ struct {
-	SelectionSpecList *GroupDTO_SelectionSpecList `protobuf:"bytes,5,opt,name=selection_spec_list,json=selectionSpecList,oneof"`
-}
-type GroupDTO_MemberList struct {
-	MemberList *GroupDTO_MembersList `protobuf:"bytes,6,opt,name=member_list,json=memberList,oneof"`
-}
-type GroupDTO_AddedAndRemovedMembers struct {
-	AddedAndRemovedMembers *GroupDTO_AddedAndRemovedMembersList `protobuf:"bytes,7,opt,name=added_and_removed_members,json=addedAndRemovedMembers,oneof"`
-}
-type GroupDTO_SourceGroupId struct {
-	SourceGroupId string `protobuf:"bytes,8,opt,name=source_group_id,json=sourceGroupId,oneof"`
-}
-
-func (*GroupDTO_GroupName) isGroupDTO_Info()                 {}
-func (*GroupDTO_ConstraintInfo_) isGroupDTO_Info()           {}
-func (*GroupDTO_SelectionSpecList_) isGroupDTO_Members()     {}
-func (*GroupDTO_MemberList) isGroupDTO_Members()             {}
-func (*GroupDTO_AddedAndRemovedMembers) isGroupDTO_Members() {}
-func (*GroupDTO_SourceGroupId) isGroupDTO_Members()          {}
-
-func (m *GroupDTO) GetInfo() isGroupDTO_Info {
-	if m != nil {
-		return m.Info
-	}
-	return nil
-}
-func (m *GroupDTO) GetMembers() isGroupDTO_Members {
-	if m != nil {
-		return m.Members
-	}
-	return nil
-}
+const Default_GroupDTO_GroupType GroupDTO_GroupType = GroupDTO_REGULAR
+const Default_GroupDTO_IsConsistentResizing bool = false
 
 func (m *GroupDTO) GetEntityType() EntityDTO_EntityType {
 	if m != nil && m.EntityType != nil {
@@ -4864,6 +8699,29 @@ func (m *GroupDTO) GetDisplayName() string {
 	return ""
 }
 
+type isGroupDTO_Info interface {
+	isGroupDTO_Info()
+}
+
+type GroupDTO_GroupName struct {
+	GroupName string `protobuf:"bytes,3,opt,name=group_name,json=groupName,oneof"`
+}
+
+type GroupDTO_ConstraintInfo_ struct {
+	ConstraintInfo *GroupDTO_ConstraintInfo `protobuf:"bytes,4,opt,name=constraint_info,json=constraintInfo,oneof"`
+}
+
+func (*GroupDTO_GroupName) isGroupDTO_Info() {}
+
+func (*GroupDTO_ConstraintInfo_) isGroupDTO_Info() {}
+
+func (m *GroupDTO) GetInfo() isGroupDTO_Info {
+	if m != nil {
+		return m.Info
+	}
+	return nil
+}
+
 func (m *GroupDTO) GetGroupName() string {
 	if x, ok := m.GetInfo().(*GroupDTO_GroupName); ok {
 		return x.GroupName
@@ -4874,6 +8732,41 @@ func (m *GroupDTO) GetGroupName() string {
 func (m *GroupDTO) GetConstraintInfo() *GroupDTO_ConstraintInfo {
 	if x, ok := m.GetInfo().(*GroupDTO_ConstraintInfo_); ok {
 		return x.ConstraintInfo
+	}
+	return nil
+}
+
+type isGroupDTO_Members interface {
+	isGroupDTO_Members()
+}
+
+type GroupDTO_SelectionSpecList_ struct {
+	SelectionSpecList *GroupDTO_SelectionSpecList `protobuf:"bytes,5,opt,name=selection_spec_list,json=selectionSpecList,oneof"`
+}
+
+type GroupDTO_MemberList struct {
+	MemberList *GroupDTO_MembersList `protobuf:"bytes,6,opt,name=member_list,json=memberList,oneof"`
+}
+
+type GroupDTO_AddedAndRemovedMembers struct {
+	AddedAndRemovedMembers *GroupDTO_AddedAndRemovedMembersList `protobuf:"bytes,7,opt,name=added_and_removed_members,json=addedAndRemovedMembers,oneof"`
+}
+
+type GroupDTO_SourceGroupId struct {
+	SourceGroupId string `protobuf:"bytes,8,opt,name=source_group_id,json=sourceGroupId,oneof"`
+}
+
+func (*GroupDTO_SelectionSpecList_) isGroupDTO_Members() {}
+
+func (*GroupDTO_MemberList) isGroupDTO_Members() {}
+
+func (*GroupDTO_AddedAndRemovedMembers) isGroupDTO_Members() {}
+
+func (*GroupDTO_SourceGroupId) isGroupDTO_Members() {}
+
+func (m *GroupDTO) GetMembers() isGroupDTO_Members {
+	if m != nil {
+		return m.Members
 	}
 	return nil
 }
@@ -4920,9 +8813,37 @@ func (m *GroupDTO) GetUpdateType() UpdateType {
 	return Default_GroupDTO_UpdateType
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*GroupDTO) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _GroupDTO_OneofMarshaler, _GroupDTO_OneofUnmarshaler, _GroupDTO_OneofSizer, []interface{}{
+func (m *GroupDTO) GetGroupType() GroupDTO_GroupType {
+	if m != nil && m.GroupType != nil {
+		return *m.GroupType
+	}
+	return Default_GroupDTO_GroupType
+}
+
+func (m *GroupDTO) GetIsConsistentResizing() bool {
+	if m != nil && m.IsConsistentResizing != nil {
+		return *m.IsConsistentResizing
+	}
+	return Default_GroupDTO_IsConsistentResizing
+}
+
+func (m *GroupDTO) GetTags() map[string]*GroupDTO_TagValues {
+	if m != nil {
+		return m.Tags
+	}
+	return nil
+}
+
+func (m *GroupDTO) GetOwner() string {
+	if m != nil && m.Owner != nil {
+		return *m.Owner
+	}
+	return ""
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*GroupDTO) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*GroupDTO_GroupName)(nil),
 		(*GroupDTO_ConstraintInfo_)(nil),
 		(*GroupDTO_SelectionSpecList_)(nil),
@@ -4932,146 +8853,44 @@ func (*GroupDTO) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) erro
 	}
 }
 
-func _GroupDTO_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*GroupDTO)
-	// info
-	switch x := m.Info.(type) {
-	case *GroupDTO_GroupName:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		b.EncodeStringBytes(x.GroupName)
-	case *GroupDTO_ConstraintInfo_:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ConstraintInfo); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("GroupDTO.Info has unexpected type %T", x)
-	}
-	// members
-	switch x := m.Members.(type) {
-	case *GroupDTO_SelectionSpecList_:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SelectionSpecList); err != nil {
-			return err
-		}
-	case *GroupDTO_MemberList:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.MemberList); err != nil {
-			return err
-		}
-	case *GroupDTO_AddedAndRemovedMembers:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AddedAndRemovedMembers); err != nil {
-			return err
-		}
-	case *GroupDTO_SourceGroupId:
-		b.EncodeVarint(8<<3 | proto.WireBytes)
-		b.EncodeStringBytes(x.SourceGroupId)
-	case nil:
-	default:
-		return fmt.Errorf("GroupDTO.Members has unexpected type %T", x)
+// Tag values. Tag with certain name can has several values.
+type GroupDTO_TagValues struct {
+	Value                []string `protobuf:"bytes,1,rep,name=value" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GroupDTO_TagValues) Reset()         { *m = GroupDTO_TagValues{} }
+func (m *GroupDTO_TagValues) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO_TagValues) ProtoMessage()    {}
+func (*GroupDTO_TagValues) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 0}
+}
+
+func (m *GroupDTO_TagValues) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_TagValues.Unmarshal(m, b)
+}
+func (m *GroupDTO_TagValues) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_TagValues.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_TagValues) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_TagValues.Merge(m, src)
+}
+func (m *GroupDTO_TagValues) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_TagValues.Size(m)
+}
+func (m *GroupDTO_TagValues) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_TagValues.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_TagValues proto.InternalMessageInfo
+
+func (m *GroupDTO_TagValues) GetValue() []string {
+	if m != nil {
+		return m.Value
 	}
 	return nil
-}
-
-func _GroupDTO_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*GroupDTO)
-	switch tag {
-	case 3: // info.group_name
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeStringBytes()
-		m.Info = &GroupDTO_GroupName{x}
-		return true, err
-	case 4: // info.constraint_info
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GroupDTO_ConstraintInfo)
-		err := b.DecodeMessage(msg)
-		m.Info = &GroupDTO_ConstraintInfo_{msg}
-		return true, err
-	case 5: // members.selection_spec_list
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GroupDTO_SelectionSpecList)
-		err := b.DecodeMessage(msg)
-		m.Members = &GroupDTO_SelectionSpecList_{msg}
-		return true, err
-	case 6: // members.member_list
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GroupDTO_MembersList)
-		err := b.DecodeMessage(msg)
-		m.Members = &GroupDTO_MemberList{msg}
-		return true, err
-	case 7: // members.added_and_removed_members
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GroupDTO_AddedAndRemovedMembersList)
-		err := b.DecodeMessage(msg)
-		m.Members = &GroupDTO_AddedAndRemovedMembers{msg}
-		return true, err
-	case 8: // members.source_group_id
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeStringBytes()
-		m.Members = &GroupDTO_SourceGroupId{x}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _GroupDTO_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*GroupDTO)
-	// info
-	switch x := m.Info.(type) {
-	case *GroupDTO_GroupName:
-		n += proto.SizeVarint(3<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(len(x.GroupName)))
-		n += len(x.GroupName)
-	case *GroupDTO_ConstraintInfo_:
-		s := proto.Size(x.ConstraintInfo)
-		n += proto.SizeVarint(4<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	// members
-	switch x := m.Members.(type) {
-	case *GroupDTO_SelectionSpecList_:
-		s := proto.Size(x.SelectionSpecList)
-		n += proto.SizeVarint(5<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *GroupDTO_MemberList:
-		s := proto.Size(x.MemberList)
-		n += proto.SizeVarint(6<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *GroupDTO_AddedAndRemovedMembers:
-		s := proto.Size(x.AddedAndRemovedMembers)
-		n += proto.SizeVarint(7<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *GroupDTO_SourceGroupId:
-		n += proto.SizeVarint(8<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(len(x.SourceGroupId)))
-		n += len(x.SourceGroupId)
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 // ConstraintInfo contains all necessary information specific for Group associated with Constraint
@@ -5093,13 +8912,37 @@ type GroupDTO_ConstraintInfo struct {
 	ForExcludedConsumers *bool `protobuf:"varint,7,opt,name=forExcludedConsumers,def=0" json:"forExcludedConsumers,omitempty"`
 	// Display name for the constraint
 	ConstraintDisplayName *string `protobuf:"bytes,8,opt,name=constraint_display_name,json=constraintDisplayName" json:"constraint_display_name,omitempty"`
-	XXX_unrecognized      []byte  `json:"-"`
+	// Excluded Templates
+	ExcludedTemplates    []string `protobuf:"bytes,9,rep,name=excluded_templates,json=excludedTemplates" json:"excluded_templates,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GroupDTO_ConstraintInfo) Reset()                    { *m = GroupDTO_ConstraintInfo{} }
-func (m *GroupDTO_ConstraintInfo) String() string            { return proto.CompactTextString(m) }
-func (*GroupDTO_ConstraintInfo) ProtoMessage()               {}
-func (*GroupDTO_ConstraintInfo) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3, 0} }
+func (m *GroupDTO_ConstraintInfo) Reset()         { *m = GroupDTO_ConstraintInfo{} }
+func (m *GroupDTO_ConstraintInfo) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO_ConstraintInfo) ProtoMessage()    {}
+func (*GroupDTO_ConstraintInfo) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 2}
+}
+
+func (m *GroupDTO_ConstraintInfo) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_ConstraintInfo.Unmarshal(m, b)
+}
+func (m *GroupDTO_ConstraintInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_ConstraintInfo.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_ConstraintInfo) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_ConstraintInfo.Merge(m, src)
+}
+func (m *GroupDTO_ConstraintInfo) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_ConstraintInfo.Size(m)
+}
+func (m *GroupDTO_ConstraintInfo) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_ConstraintInfo.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_ConstraintInfo proto.InternalMessageInfo
 
 const Default_GroupDTO_ConstraintInfo_IsBuyer bool = false
 const Default_GroupDTO_ConstraintInfo_NeedComplementary bool = false
@@ -5161,16 +9004,45 @@ func (m *GroupDTO_ConstraintInfo) GetConstraintDisplayName() string {
 	return ""
 }
 
-// List of SelectionSpec to select group members
-type GroupDTO_SelectionSpecList struct {
-	SelectionSpec    []*GroupDTO_SelectionSpec `protobuf:"bytes,1,rep,name=selection_spec,json=selectionSpec" json:"selection_spec,omitempty"`
-	XXX_unrecognized []byte                    `json:"-"`
+func (m *GroupDTO_ConstraintInfo) GetExcludedTemplates() []string {
+	if m != nil {
+		return m.ExcludedTemplates
+	}
+	return nil
 }
 
-func (m *GroupDTO_SelectionSpecList) Reset()                    { *m = GroupDTO_SelectionSpecList{} }
-func (m *GroupDTO_SelectionSpecList) String() string            { return proto.CompactTextString(m) }
-func (*GroupDTO_SelectionSpecList) ProtoMessage()               {}
-func (*GroupDTO_SelectionSpecList) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3, 1} }
+// List of SelectionSpec to select group members
+type GroupDTO_SelectionSpecList struct {
+	SelectionSpec        []*GroupDTO_SelectionSpec `protobuf:"bytes,1,rep,name=selection_spec,json=selectionSpec" json:"selection_spec,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
+	XXX_unrecognized     []byte                    `json:"-"`
+	XXX_sizecache        int32                     `json:"-"`
+}
+
+func (m *GroupDTO_SelectionSpecList) Reset()         { *m = GroupDTO_SelectionSpecList{} }
+func (m *GroupDTO_SelectionSpecList) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO_SelectionSpecList) ProtoMessage()    {}
+func (*GroupDTO_SelectionSpecList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 3}
+}
+
+func (m *GroupDTO_SelectionSpecList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_SelectionSpecList.Unmarshal(m, b)
+}
+func (m *GroupDTO_SelectionSpecList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_SelectionSpecList.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_SelectionSpecList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_SelectionSpecList.Merge(m, src)
+}
+func (m *GroupDTO_SelectionSpecList) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_SelectionSpecList.Size(m)
+}
+func (m *GroupDTO_SelectionSpecList) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_SelectionSpecList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_SelectionSpecList proto.InternalMessageInfo
 
 func (m *GroupDTO_SelectionSpecList) GetSelectionSpec() []*GroupDTO_SelectionSpec {
 	if m != nil {
@@ -5181,14 +9053,36 @@ func (m *GroupDTO_SelectionSpecList) GetSelectionSpec() []*GroupDTO_SelectionSpe
 
 // List of member uuids
 type GroupDTO_MembersList struct {
-	Member           []string `protobuf:"bytes,1,rep,name=member" json:"member,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	Member               []string `protobuf:"bytes,1,rep,name=member" json:"member,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GroupDTO_MembersList) Reset()                    { *m = GroupDTO_MembersList{} }
-func (m *GroupDTO_MembersList) String() string            { return proto.CompactTextString(m) }
-func (*GroupDTO_MembersList) ProtoMessage()               {}
-func (*GroupDTO_MembersList) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3, 2} }
+func (m *GroupDTO_MembersList) Reset()         { *m = GroupDTO_MembersList{} }
+func (m *GroupDTO_MembersList) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO_MembersList) ProtoMessage()    {}
+func (*GroupDTO_MembersList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 4}
+}
+
+func (m *GroupDTO_MembersList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_MembersList.Unmarshal(m, b)
+}
+func (m *GroupDTO_MembersList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_MembersList.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_MembersList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_MembersList.Merge(m, src)
+}
+func (m *GroupDTO_MembersList) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_MembersList.Size(m)
+}
+func (m *GroupDTO_MembersList) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_MembersList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_MembersList proto.InternalMessageInfo
 
 func (m *GroupDTO_MembersList) GetMember() []string {
 	if m != nil {
@@ -5199,17 +9093,37 @@ func (m *GroupDTO_MembersList) GetMember() []string {
 
 // List of members added and removed from the group.
 type GroupDTO_AddedAndRemovedMembersList struct {
-	AddedMembers     []string `protobuf:"bytes,1,rep,name=addedMembers" json:"addedMembers,omitempty"`
-	RemovedMembers   []string `protobuf:"bytes,2,rep,name=removedMembers" json:"removedMembers,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	AddedMembers         []string `protobuf:"bytes,1,rep,name=addedMembers" json:"addedMembers,omitempty"`
+	RemovedMembers       []string `protobuf:"bytes,2,rep,name=removedMembers" json:"removedMembers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *GroupDTO_AddedAndRemovedMembersList) Reset()         { *m = GroupDTO_AddedAndRemovedMembersList{} }
 func (m *GroupDTO_AddedAndRemovedMembersList) String() string { return proto.CompactTextString(m) }
 func (*GroupDTO_AddedAndRemovedMembersList) ProtoMessage()    {}
 func (*GroupDTO_AddedAndRemovedMembersList) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{3, 3}
+	return fileDescriptor_2233245ab49fede8, []int{5, 5}
 }
+
+func (m *GroupDTO_AddedAndRemovedMembersList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_AddedAndRemovedMembersList.Unmarshal(m, b)
+}
+func (m *GroupDTO_AddedAndRemovedMembersList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_AddedAndRemovedMembersList.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_AddedAndRemovedMembersList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_AddedAndRemovedMembersList.Merge(m, src)
+}
+func (m *GroupDTO_AddedAndRemovedMembersList) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_AddedAndRemovedMembersList.Size(m)
+}
+func (m *GroupDTO_AddedAndRemovedMembersList) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_AddedAndRemovedMembersList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_AddedAndRemovedMembersList proto.InternalMessageInfo
 
 func (m *GroupDTO_AddedAndRemovedMembersList) GetAddedMembers() []string {
 	if m != nil {
@@ -5226,15 +9140,37 @@ func (m *GroupDTO_AddedAndRemovedMembersList) GetRemovedMembers() []string {
 }
 
 type GroupDTO_BuyerMetaData struct {
-	SellerType       *EntityDTO_EntityType `protobuf:"varint,1,opt,name=seller_type,json=sellerType,enum=common_dto.EntityDTO_EntityType" json:"seller_type,omitempty"`
-	AtMost           *int32                `protobuf:"zigzag32,2,opt,name=at_most,json=atMost,def=-1" json:"at_most,omitempty"`
-	XXX_unrecognized []byte                `json:"-"`
+	SellerType           *EntityDTO_EntityType `protobuf:"varint,1,opt,name=seller_type,json=sellerType,enum=common_dto.EntityDTO_EntityType" json:"seller_type,omitempty"`
+	AtMost               *int32                `protobuf:"zigzag32,2,opt,name=at_most,json=atMost,def=-1" json:"at_most,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
 }
 
-func (m *GroupDTO_BuyerMetaData) Reset()                    { *m = GroupDTO_BuyerMetaData{} }
-func (m *GroupDTO_BuyerMetaData) String() string            { return proto.CompactTextString(m) }
-func (*GroupDTO_BuyerMetaData) ProtoMessage()               {}
-func (*GroupDTO_BuyerMetaData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3, 4} }
+func (m *GroupDTO_BuyerMetaData) Reset()         { *m = GroupDTO_BuyerMetaData{} }
+func (m *GroupDTO_BuyerMetaData) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO_BuyerMetaData) ProtoMessage()    {}
+func (*GroupDTO_BuyerMetaData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 6}
+}
+
+func (m *GroupDTO_BuyerMetaData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_BuyerMetaData.Unmarshal(m, b)
+}
+func (m *GroupDTO_BuyerMetaData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_BuyerMetaData.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_BuyerMetaData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_BuyerMetaData.Merge(m, src)
+}
+func (m *GroupDTO_BuyerMetaData) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_BuyerMetaData.Size(m)
+}
+func (m *GroupDTO_BuyerMetaData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_BuyerMetaData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_BuyerMetaData proto.InternalMessageInfo
 
 const Default_GroupDTO_BuyerMetaData_AtMost int32 = -1
 
@@ -5261,43 +9197,36 @@ type GroupDTO_SelectionSpec struct {
 	//	*GroupDTO_SelectionSpec_PropertyValueString
 	//	*GroupDTO_SelectionSpec_PropertyValueStringList
 	//	*GroupDTO_SelectionSpec_PropertyValueDoubleList
-	PropertyValue    isGroupDTO_SelectionSpec_PropertyValue `protobuf_oneof:"propertyValue"`
-	XXX_unrecognized []byte                                 `json:"-"`
+	PropertyValue        isGroupDTO_SelectionSpec_PropertyValue `protobuf_oneof:"propertyValue"`
+	XXX_NoUnkeyedLiteral struct{}                               `json:"-"`
+	XXX_unrecognized     []byte                                 `json:"-"`
+	XXX_sizecache        int32                                  `json:"-"`
 }
 
-func (m *GroupDTO_SelectionSpec) Reset()                    { *m = GroupDTO_SelectionSpec{} }
-func (m *GroupDTO_SelectionSpec) String() string            { return proto.CompactTextString(m) }
-func (*GroupDTO_SelectionSpec) ProtoMessage()               {}
-func (*GroupDTO_SelectionSpec) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{3, 5} }
-
-type isGroupDTO_SelectionSpec_PropertyValue interface {
-	isGroupDTO_SelectionSpec_PropertyValue()
+func (m *GroupDTO_SelectionSpec) Reset()         { *m = GroupDTO_SelectionSpec{} }
+func (m *GroupDTO_SelectionSpec) String() string { return proto.CompactTextString(m) }
+func (*GroupDTO_SelectionSpec) ProtoMessage()    {}
+func (*GroupDTO_SelectionSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 7}
 }
 
-type GroupDTO_SelectionSpec_PropertyValueDouble struct {
-	PropertyValueDouble float64 `protobuf:"fixed64,3,opt,name=property_value_double,json=propertyValueDouble,oneof"`
+func (m *GroupDTO_SelectionSpec) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_SelectionSpec.Unmarshal(m, b)
 }
-type GroupDTO_SelectionSpec_PropertyValueString struct {
-	PropertyValueString string `protobuf:"bytes,4,opt,name=property_value_string,json=propertyValueString,oneof"`
+func (m *GroupDTO_SelectionSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_SelectionSpec.Marshal(b, m, deterministic)
 }
-type GroupDTO_SelectionSpec_PropertyValueStringList struct {
-	PropertyValueStringList *GroupDTO_SelectionSpec_PropertyStringList `protobuf:"bytes,5,opt,name=property_value_string_list,json=propertyValueStringList,oneof"`
+func (m *GroupDTO_SelectionSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_SelectionSpec.Merge(m, src)
 }
-type GroupDTO_SelectionSpec_PropertyValueDoubleList struct {
-	PropertyValueDoubleList *GroupDTO_SelectionSpec_PropertyDoubleList `protobuf:"bytes,6,opt,name=property_value_double_list,json=propertyValueDoubleList,oneof"`
+func (m *GroupDTO_SelectionSpec) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_SelectionSpec.Size(m)
+}
+func (m *GroupDTO_SelectionSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_SelectionSpec.DiscardUnknown(m)
 }
 
-func (*GroupDTO_SelectionSpec_PropertyValueDouble) isGroupDTO_SelectionSpec_PropertyValue()     {}
-func (*GroupDTO_SelectionSpec_PropertyValueString) isGroupDTO_SelectionSpec_PropertyValue()     {}
-func (*GroupDTO_SelectionSpec_PropertyValueStringList) isGroupDTO_SelectionSpec_PropertyValue() {}
-func (*GroupDTO_SelectionSpec_PropertyValueDoubleList) isGroupDTO_SelectionSpec_PropertyValue() {}
-
-func (m *GroupDTO_SelectionSpec) GetPropertyValue() isGroupDTO_SelectionSpec_PropertyValue {
-	if m != nil {
-		return m.PropertyValue
-	}
-	return nil
-}
+var xxx_messageInfo_GroupDTO_SelectionSpec proto.InternalMessageInfo
 
 func (m *GroupDTO_SelectionSpec) GetProperty() string {
 	if m != nil && m.Property != nil {
@@ -5311,6 +9240,41 @@ func (m *GroupDTO_SelectionSpec) GetExpressionType() GroupDTO_SelectionSpec_Expr
 		return *m.ExpressionType
 	}
 	return GroupDTO_SelectionSpec_EQUAL_TO
+}
+
+type isGroupDTO_SelectionSpec_PropertyValue interface {
+	isGroupDTO_SelectionSpec_PropertyValue()
+}
+
+type GroupDTO_SelectionSpec_PropertyValueDouble struct {
+	PropertyValueDouble float64 `protobuf:"fixed64,3,opt,name=property_value_double,json=propertyValueDouble,oneof"`
+}
+
+type GroupDTO_SelectionSpec_PropertyValueString struct {
+	PropertyValueString string `protobuf:"bytes,4,opt,name=property_value_string,json=propertyValueString,oneof"`
+}
+
+type GroupDTO_SelectionSpec_PropertyValueStringList struct {
+	PropertyValueStringList *GroupDTO_SelectionSpec_PropertyStringList `protobuf:"bytes,5,opt,name=property_value_string_list,json=propertyValueStringList,oneof"`
+}
+
+type GroupDTO_SelectionSpec_PropertyValueDoubleList struct {
+	PropertyValueDoubleList *GroupDTO_SelectionSpec_PropertyDoubleList `protobuf:"bytes,6,opt,name=property_value_double_list,json=propertyValueDoubleList,oneof"`
+}
+
+func (*GroupDTO_SelectionSpec_PropertyValueDouble) isGroupDTO_SelectionSpec_PropertyValue() {}
+
+func (*GroupDTO_SelectionSpec_PropertyValueString) isGroupDTO_SelectionSpec_PropertyValue() {}
+
+func (*GroupDTO_SelectionSpec_PropertyValueStringList) isGroupDTO_SelectionSpec_PropertyValue() {}
+
+func (*GroupDTO_SelectionSpec_PropertyValueDoubleList) isGroupDTO_SelectionSpec_PropertyValue() {}
+
+func (m *GroupDTO_SelectionSpec) GetPropertyValue() isGroupDTO_SelectionSpec_PropertyValue {
+	if m != nil {
+		return m.PropertyValue
+	}
+	return nil
 }
 
 func (m *GroupDTO_SelectionSpec) GetPropertyValueDouble() float64 {
@@ -5341,9 +9305,9 @@ func (m *GroupDTO_SelectionSpec) GetPropertyValueDoubleList() *GroupDTO_Selectio
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*GroupDTO_SelectionSpec) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _GroupDTO_SelectionSpec_OneofMarshaler, _GroupDTO_SelectionSpec_OneofUnmarshaler, _GroupDTO_SelectionSpec_OneofSizer, []interface{}{
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*GroupDTO_SelectionSpec) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
 		(*GroupDTO_SelectionSpec_PropertyValueDouble)(nil),
 		(*GroupDTO_SelectionSpec_PropertyValueString)(nil),
 		(*GroupDTO_SelectionSpec_PropertyValueStringList)(nil),
@@ -5351,113 +9315,42 @@ func (*GroupDTO_SelectionSpec) XXX_OneofFuncs() (func(msg proto.Message, b *prot
 	}
 }
 
-func _GroupDTO_SelectionSpec_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*GroupDTO_SelectionSpec)
-	// propertyValue
-	switch x := m.PropertyValue.(type) {
-	case *GroupDTO_SelectionSpec_PropertyValueDouble:
-		b.EncodeVarint(3<<3 | proto.WireFixed64)
-		b.EncodeFixed64(math.Float64bits(x.PropertyValueDouble))
-	case *GroupDTO_SelectionSpec_PropertyValueString:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		b.EncodeStringBytes(x.PropertyValueString)
-	case *GroupDTO_SelectionSpec_PropertyValueStringList:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.PropertyValueStringList); err != nil {
-			return err
-		}
-	case *GroupDTO_SelectionSpec_PropertyValueDoubleList:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.PropertyValueDoubleList); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("GroupDTO_SelectionSpec.PropertyValue has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _GroupDTO_SelectionSpec_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*GroupDTO_SelectionSpec)
-	switch tag {
-	case 3: // propertyValue.property_value_double
-		if wire != proto.WireFixed64 {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeFixed64()
-		m.PropertyValue = &GroupDTO_SelectionSpec_PropertyValueDouble{math.Float64frombits(x)}
-		return true, err
-	case 4: // propertyValue.property_value_string
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeStringBytes()
-		m.PropertyValue = &GroupDTO_SelectionSpec_PropertyValueString{x}
-		return true, err
-	case 5: // propertyValue.property_value_string_list
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GroupDTO_SelectionSpec_PropertyStringList)
-		err := b.DecodeMessage(msg)
-		m.PropertyValue = &GroupDTO_SelectionSpec_PropertyValueStringList{msg}
-		return true, err
-	case 6: // propertyValue.property_value_double_list
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(GroupDTO_SelectionSpec_PropertyDoubleList)
-		err := b.DecodeMessage(msg)
-		m.PropertyValue = &GroupDTO_SelectionSpec_PropertyValueDoubleList{msg}
-		return true, err
-	default:
-		return false, nil
-	}
-}
-
-func _GroupDTO_SelectionSpec_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*GroupDTO_SelectionSpec)
-	// propertyValue
-	switch x := m.PropertyValue.(type) {
-	case *GroupDTO_SelectionSpec_PropertyValueDouble:
-		n += proto.SizeVarint(3<<3 | proto.WireFixed64)
-		n += 8
-	case *GroupDTO_SelectionSpec_PropertyValueString:
-		n += proto.SizeVarint(4<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(len(x.PropertyValueString)))
-		n += len(x.PropertyValueString)
-	case *GroupDTO_SelectionSpec_PropertyValueStringList:
-		s := proto.Size(x.PropertyValueStringList)
-		n += proto.SizeVarint(5<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case *GroupDTO_SelectionSpec_PropertyValueDoubleList:
-		s := proto.Size(x.PropertyValueDoubleList)
-		n += proto.SizeVarint(6<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
-}
-
 // List of string type property value
 type GroupDTO_SelectionSpec_PropertyStringList struct {
-	PropertyValue    []string `protobuf:"bytes,1,rep,name=property_value,json=propertyValue" json:"property_value,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	PropertyValue        []string `protobuf:"bytes,1,rep,name=property_value,json=propertyValue" json:"property_value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *GroupDTO_SelectionSpec_PropertyStringList) Reset() {
 	*m = GroupDTO_SelectionSpec_PropertyStringList{}
 }
-func (m *GroupDTO_SelectionSpec_PropertyStringList) String() string { return proto.CompactTextString(m) }
-func (*GroupDTO_SelectionSpec_PropertyStringList) ProtoMessage()    {}
-func (*GroupDTO_SelectionSpec_PropertyStringList) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{3, 5, 0}
+func (m *GroupDTO_SelectionSpec_PropertyStringList) String() string {
+	return proto.CompactTextString(m)
 }
+func (*GroupDTO_SelectionSpec_PropertyStringList) ProtoMessage() {}
+func (*GroupDTO_SelectionSpec_PropertyStringList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 7, 0}
+}
+
+func (m *GroupDTO_SelectionSpec_PropertyStringList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_SelectionSpec_PropertyStringList.Unmarshal(m, b)
+}
+func (m *GroupDTO_SelectionSpec_PropertyStringList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_SelectionSpec_PropertyStringList.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_SelectionSpec_PropertyStringList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_SelectionSpec_PropertyStringList.Merge(m, src)
+}
+func (m *GroupDTO_SelectionSpec_PropertyStringList) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_SelectionSpec_PropertyStringList.Size(m)
+}
+func (m *GroupDTO_SelectionSpec_PropertyStringList) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_SelectionSpec_PropertyStringList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_SelectionSpec_PropertyStringList proto.InternalMessageInfo
 
 func (m *GroupDTO_SelectionSpec_PropertyStringList) GetPropertyValue() []string {
 	if m != nil {
@@ -5468,18 +9361,40 @@ func (m *GroupDTO_SelectionSpec_PropertyStringList) GetPropertyValue() []string 
 
 // List of double type property value
 type GroupDTO_SelectionSpec_PropertyDoubleList struct {
-	PropertyValue    []float64 `protobuf:"fixed64,1,rep,name=property_value,json=propertyValue" json:"property_value,omitempty"`
-	XXX_unrecognized []byte    `json:"-"`
+	PropertyValue        []float64 `protobuf:"fixed64,1,rep,name=property_value,json=propertyValue" json:"property_value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
 }
 
 func (m *GroupDTO_SelectionSpec_PropertyDoubleList) Reset() {
 	*m = GroupDTO_SelectionSpec_PropertyDoubleList{}
 }
-func (m *GroupDTO_SelectionSpec_PropertyDoubleList) String() string { return proto.CompactTextString(m) }
-func (*GroupDTO_SelectionSpec_PropertyDoubleList) ProtoMessage()    {}
-func (*GroupDTO_SelectionSpec_PropertyDoubleList) Descriptor() ([]byte, []int) {
-	return fileDescriptor1, []int{3, 5, 1}
+func (m *GroupDTO_SelectionSpec_PropertyDoubleList) String() string {
+	return proto.CompactTextString(m)
 }
+func (*GroupDTO_SelectionSpec_PropertyDoubleList) ProtoMessage() {}
+func (*GroupDTO_SelectionSpec_PropertyDoubleList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{5, 7, 1}
+}
+
+func (m *GroupDTO_SelectionSpec_PropertyDoubleList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GroupDTO_SelectionSpec_PropertyDoubleList.Unmarshal(m, b)
+}
+func (m *GroupDTO_SelectionSpec_PropertyDoubleList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GroupDTO_SelectionSpec_PropertyDoubleList.Marshal(b, m, deterministic)
+}
+func (m *GroupDTO_SelectionSpec_PropertyDoubleList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GroupDTO_SelectionSpec_PropertyDoubleList.Merge(m, src)
+}
+func (m *GroupDTO_SelectionSpec_PropertyDoubleList) XXX_Size() int {
+	return xxx_messageInfo_GroupDTO_SelectionSpec_PropertyDoubleList.Size(m)
+}
+func (m *GroupDTO_SelectionSpec_PropertyDoubleList) XXX_DiscardUnknown() {
+	xxx_messageInfo_GroupDTO_SelectionSpec_PropertyDoubleList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GroupDTO_SelectionSpec_PropertyDoubleList proto.InternalMessageInfo
 
 func (m *GroupDTO_SelectionSpec_PropertyDoubleList) GetPropertyValue() []float64 {
 	if m != nil {
@@ -5491,15 +9406,37 @@ func (m *GroupDTO_SelectionSpec_PropertyDoubleList) GetPropertyValue() []float64
 // Context data.  This data may be related to action execution
 // or this data may be used more generally.
 type ContextData struct {
-	ContextKey       *string `protobuf:"bytes,1,req,name=contextKey" json:"contextKey,omitempty"`
-	ContextValue     *string `protobuf:"bytes,2,req,name=contextValue" json:"contextValue,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	ContextKey           *string  `protobuf:"bytes,1,req,name=contextKey" json:"contextKey,omitempty"`
+	ContextValue         *string  `protobuf:"bytes,2,req,name=contextValue" json:"contextValue,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ContextData) Reset()                    { *m = ContextData{} }
-func (m *ContextData) String() string            { return proto.CompactTextString(m) }
-func (*ContextData) ProtoMessage()               {}
-func (*ContextData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{4} }
+func (m *ContextData) Reset()         { *m = ContextData{} }
+func (m *ContextData) String() string { return proto.CompactTextString(m) }
+func (*ContextData) ProtoMessage()    {}
+func (*ContextData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{6}
+}
+
+func (m *ContextData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ContextData.Unmarshal(m, b)
+}
+func (m *ContextData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ContextData.Marshal(b, m, deterministic)
+}
+func (m *ContextData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ContextData.Merge(m, src)
+}
+func (m *ContextData) XXX_Size() int {
+	return xxx_messageInfo_ContextData.Size(m)
+}
+func (m *ContextData) XXX_DiscardUnknown() {
+	xxx_messageInfo_ContextData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ContextData proto.InternalMessageInfo
 
 func (m *ContextData) GetContextKey() string {
 	if m != nil && m.ContextKey != nil {
@@ -5526,14 +9463,36 @@ type NotificationDTO struct {
 	// Optional notification description.
 	Description *string `protobuf:"bytes,4,opt,name=description" json:"description,omitempty"`
 	// Notification severity.
-	Severity         *NotificationDTO_Severity `protobuf:"varint,5,opt,name=severity,enum=common_dto.NotificationDTO_Severity,def=0" json:"severity,omitempty"`
-	XXX_unrecognized []byte                    `json:"-"`
+	Severity             *NotificationDTO_Severity `protobuf:"varint,5,opt,name=severity,enum=common_dto.NotificationDTO_Severity,def=0" json:"severity,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
+	XXX_unrecognized     []byte                    `json:"-"`
+	XXX_sizecache        int32                     `json:"-"`
 }
 
-func (m *NotificationDTO) Reset()                    { *m = NotificationDTO{} }
-func (m *NotificationDTO) String() string            { return proto.CompactTextString(m) }
-func (*NotificationDTO) ProtoMessage()               {}
-func (*NotificationDTO) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{5} }
+func (m *NotificationDTO) Reset()         { *m = NotificationDTO{} }
+func (m *NotificationDTO) String() string { return proto.CompactTextString(m) }
+func (*NotificationDTO) ProtoMessage()    {}
+func (*NotificationDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{7}
+}
+
+func (m *NotificationDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NotificationDTO.Unmarshal(m, b)
+}
+func (m *NotificationDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NotificationDTO.Marshal(b, m, deterministic)
+}
+func (m *NotificationDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NotificationDTO.Merge(m, src)
+}
+func (m *NotificationDTO) XXX_Size() int {
+	return xxx_messageInfo_NotificationDTO.Size(m)
+}
+func (m *NotificationDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_NotificationDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NotificationDTO proto.InternalMessageInfo
 
 const Default_NotificationDTO_Severity NotificationDTO_Severity = NotificationDTO_UNKNOWN
 
@@ -5575,14 +9534,36 @@ func (m *NotificationDTO) GetSeverity() NotificationDTO_Severity {
 // Metadata for creating custom data objects in the Operations Manager
 type CustomTypeDef struct {
 	// Unique namespace for the data
-	Namespace        *CustomTypeDef_MetadataNamespace `protobuf:"varint,1,req,name=namespace,enum=common_dto.CustomTypeDef_MetadataNamespace,def=0" json:"namespace,omitempty"`
-	XXX_unrecognized []byte                           `json:"-"`
+	Namespace            *CustomTypeDef_MetadataNamespace `protobuf:"varint,1,req,name=namespace,enum=common_dto.CustomTypeDef_MetadataNamespace,def=0" json:"namespace,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                         `json:"-"`
+	XXX_unrecognized     []byte                           `json:"-"`
+	XXX_sizecache        int32                            `json:"-"`
 }
 
-func (m *CustomTypeDef) Reset()                    { *m = CustomTypeDef{} }
-func (m *CustomTypeDef) String() string            { return proto.CompactTextString(m) }
-func (*CustomTypeDef) ProtoMessage()               {}
-func (*CustomTypeDef) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{6} }
+func (m *CustomTypeDef) Reset()         { *m = CustomTypeDef{} }
+func (m *CustomTypeDef) String() string { return proto.CompactTextString(m) }
+func (*CustomTypeDef) ProtoMessage()    {}
+func (*CustomTypeDef) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{8}
+}
+
+func (m *CustomTypeDef) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CustomTypeDef.Unmarshal(m, b)
+}
+func (m *CustomTypeDef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CustomTypeDef.Marshal(b, m, deterministic)
+}
+func (m *CustomTypeDef) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CustomTypeDef.Merge(m, src)
+}
+func (m *CustomTypeDef) XXX_Size() int {
+	return xxx_messageInfo_CustomTypeDef.Size(m)
+}
+func (m *CustomTypeDef) XXX_DiscardUnknown() {
+	xxx_messageInfo_CustomTypeDef.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CustomTypeDef proto.InternalMessageInfo
 
 const Default_CustomTypeDef_Namespace CustomTypeDef_MetadataNamespace = CustomTypeDef_UNKNOWN
 
@@ -5624,17 +9605,39 @@ func (m *CustomTypeDef) GetNamespace() CustomTypeDef_MetadataNamespace {
 // You can use one of these constants as the ExternalEntityLinkDef in the
 // ExternalEntityLink that you create for the discovered VM.
 type ServerEntityPropDef struct {
-	Entity           *EntityDTO_EntityType `protobuf:"varint,1,req,name=entity,enum=common_dto.EntityDTO_EntityType" json:"entity,omitempty"`
-	Attribute        *string               `protobuf:"bytes,2,req,name=attribute" json:"attribute,omitempty"`
-	UseTopoExt       *bool                 `protobuf:"varint,3,opt,name=useTopoExt" json:"useTopoExt,omitempty"`
-	PropertyHandler  *PropertyHandler      `protobuf:"bytes,4,opt,name=propertyHandler" json:"propertyHandler,omitempty"`
-	XXX_unrecognized []byte                `json:"-"`
+	Entity               *EntityDTO_EntityType `protobuf:"varint,1,req,name=entity,enum=common_dto.EntityDTO_EntityType" json:"entity,omitempty"`
+	Attribute            *string               `protobuf:"bytes,2,req,name=attribute" json:"attribute,omitempty"`
+	UseTopoExt           *bool                 `protobuf:"varint,3,opt,name=useTopoExt" json:"useTopoExt,omitempty"`
+	PropertyHandler      *PropertyHandler      `protobuf:"bytes,4,opt,name=propertyHandler" json:"propertyHandler,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
 }
 
-func (m *ServerEntityPropDef) Reset()                    { *m = ServerEntityPropDef{} }
-func (m *ServerEntityPropDef) String() string            { return proto.CompactTextString(m) }
-func (*ServerEntityPropDef) ProtoMessage()               {}
-func (*ServerEntityPropDef) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{7} }
+func (m *ServerEntityPropDef) Reset()         { *m = ServerEntityPropDef{} }
+func (m *ServerEntityPropDef) String() string { return proto.CompactTextString(m) }
+func (*ServerEntityPropDef) ProtoMessage()    {}
+func (*ServerEntityPropDef) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{9}
+}
+
+func (m *ServerEntityPropDef) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ServerEntityPropDef.Unmarshal(m, b)
+}
+func (m *ServerEntityPropDef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ServerEntityPropDef.Marshal(b, m, deterministic)
+}
+func (m *ServerEntityPropDef) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ServerEntityPropDef.Merge(m, src)
+}
+func (m *ServerEntityPropDef) XXX_Size() int {
+	return xxx_messageInfo_ServerEntityPropDef.Size(m)
+}
+func (m *ServerEntityPropDef) XXX_DiscardUnknown() {
+	xxx_messageInfo_ServerEntityPropDef.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ServerEntityPropDef proto.InternalMessageInfo
 
 func (m *ServerEntityPropDef) GetEntity() EntityDTO_EntityType {
 	if m != nil && m.Entity != nil {
@@ -5684,15 +9687,37 @@ type PropertyHandler struct {
 	// For example, if it's for IP from VM.getUsesEndPoints(), then directlyApply should be false.
 	// Since what returned from VM.getUsesEndPoints() is a list of IPs. So should go to each
 	// instance and apply that method.
-	DirectlyApply    *bool            `protobuf:"varint,3,opt,name=directlyApply" json:"directlyApply,omitempty"`
-	NextHandler      *PropertyHandler `protobuf:"bytes,4,opt,name=next_handler,json=nextHandler" json:"next_handler,omitempty"`
-	XXX_unrecognized []byte           `json:"-"`
+	DirectlyApply        *bool            `protobuf:"varint,3,opt,name=directlyApply" json:"directlyApply,omitempty"`
+	NextHandler          *PropertyHandler `protobuf:"bytes,4,opt,name=next_handler,json=nextHandler" json:"next_handler,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
-func (m *PropertyHandler) Reset()                    { *m = PropertyHandler{} }
-func (m *PropertyHandler) String() string            { return proto.CompactTextString(m) }
-func (*PropertyHandler) ProtoMessage()               {}
-func (*PropertyHandler) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{8} }
+func (m *PropertyHandler) Reset()         { *m = PropertyHandler{} }
+func (m *PropertyHandler) String() string { return proto.CompactTextString(m) }
+func (*PropertyHandler) ProtoMessage()    {}
+func (*PropertyHandler) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{10}
+}
+
+func (m *PropertyHandler) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PropertyHandler.Unmarshal(m, b)
+}
+func (m *PropertyHandler) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PropertyHandler.Marshal(b, m, deterministic)
+}
+func (m *PropertyHandler) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PropertyHandler.Merge(m, src)
+}
+func (m *PropertyHandler) XXX_Size() int {
+	return xxx_messageInfo_PropertyHandler.Size(m)
+}
+func (m *PropertyHandler) XXX_DiscardUnknown() {
+	xxx_messageInfo_PropertyHandler.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PropertyHandler proto.InternalMessageInfo
 
 func (m *PropertyHandler) GetMethodName() string {
 	if m != nil && m.MethodName != nil {
@@ -5728,14 +9753,36 @@ type EntityIdentityData struct {
 	// The target entity's IP address.
 	IpAddress *string `protobuf:"bytes,1,req,name=ipAddress" json:"ipAddress,omitempty"`
 	// The target entity's port number.
-	Port             *int32 `protobuf:"varint,2,req,name=port" json:"port,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	Port                 *int32   `protobuf:"varint,2,req,name=port" json:"port,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EntityIdentityData) Reset()                    { *m = EntityIdentityData{} }
-func (m *EntityIdentityData) String() string            { return proto.CompactTextString(m) }
-func (*EntityIdentityData) ProtoMessage()               {}
-func (*EntityIdentityData) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{9} }
+func (m *EntityIdentityData) Reset()         { *m = EntityIdentityData{} }
+func (m *EntityIdentityData) String() string { return proto.CompactTextString(m) }
+func (*EntityIdentityData) ProtoMessage()    {}
+func (*EntityIdentityData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{11}
+}
+
+func (m *EntityIdentityData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EntityIdentityData.Unmarshal(m, b)
+}
+func (m *EntityIdentityData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EntityIdentityData.Marshal(b, m, deterministic)
+}
+func (m *EntityIdentityData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EntityIdentityData.Merge(m, src)
+}
+func (m *EntityIdentityData) XXX_Size() int {
+	return xxx_messageInfo_EntityIdentityData.Size(m)
+}
+func (m *EntityIdentityData) XXX_DiscardUnknown() {
+	xxx_messageInfo_EntityIdentityData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EntityIdentityData proto.InternalMessageInfo
 
 func (m *EntityIdentityData) GetIpAddress() string {
 	if m != nil && m.IpAddress != nil {
@@ -5768,14 +9815,36 @@ type FlowDTO struct {
 	// Transmitted amount
 	TransmittedAmount *int64 `protobuf:"varint,6,req,name=transmittedAmount" json:"transmittedAmount,omitempty"`
 	// Received amount
-	ReceivedAmount   *int64 `protobuf:"varint,7,req,name=receivedAmount" json:"receivedAmount,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	ReceivedAmount       *int64   `protobuf:"varint,7,req,name=receivedAmount" json:"receivedAmount,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *FlowDTO) Reset()                    { *m = FlowDTO{} }
-func (m *FlowDTO) String() string            { return proto.CompactTextString(m) }
-func (*FlowDTO) ProtoMessage()               {}
-func (*FlowDTO) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{10} }
+func (m *FlowDTO) Reset()         { *m = FlowDTO{} }
+func (m *FlowDTO) String() string { return proto.CompactTextString(m) }
+func (*FlowDTO) ProtoMessage()    {}
+func (*FlowDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{12}
+}
+
+func (m *FlowDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FlowDTO.Unmarshal(m, b)
+}
+func (m *FlowDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FlowDTO.Marshal(b, m, deterministic)
+}
+func (m *FlowDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FlowDTO.Merge(m, src)
+}
+func (m *FlowDTO) XXX_Size() int {
+	return xxx_messageInfo_FlowDTO.Size(m)
+}
+func (m *FlowDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_FlowDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FlowDTO proto.InternalMessageInfo
 
 func (m *FlowDTO) GetSourceEntityIdentityData() *EntityIdentityData {
 	if m != nil {
@@ -5826,28 +9895,136 @@ func (m *FlowDTO) GetReceivedAmount() int64 {
 	return 0
 }
 
+// geo data location with latitude and longitude to determine physical location of entity
+type GeoData struct {
+	// the latitude of the entity used along with longitude to determine physical location
+	Latitude *float64 `protobuf:"fixed64,1,req,name=latitude" json:"latitude,omitempty"`
+	// the longitude of the entity used along with latitude to determine physical location
+	Longitude            *float64 `protobuf:"fixed64,2,req,name=longitude" json:"longitude,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GeoData) Reset()         { *m = GeoData{} }
+func (m *GeoData) String() string { return proto.CompactTextString(m) }
+func (*GeoData) ProtoMessage()    {}
+func (*GeoData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2233245ab49fede8, []int{13}
+}
+
+func (m *GeoData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GeoData.Unmarshal(m, b)
+}
+func (m *GeoData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GeoData.Marshal(b, m, deterministic)
+}
+func (m *GeoData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GeoData.Merge(m, src)
+}
+func (m *GeoData) XXX_Size() int {
+	return xxx_messageInfo_GeoData.Size(m)
+}
+func (m *GeoData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GeoData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GeoData proto.InternalMessageInfo
+
+func (m *GeoData) GetLatitude() float64 {
+	if m != nil && m.Latitude != nil {
+		return *m.Latitude
+	}
+	return 0
+}
+
+func (m *GeoData) GetLongitude() float64 {
+	if m != nil && m.Longitude != nil {
+		return *m.Longitude
+	}
+	return 0
+}
+
 func init() {
+	proto.RegisterEnum("common_dto.UpdateType", UpdateType_name, UpdateType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_EntityType", EntityDTO_EntityType_name, EntityDTO_EntityType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_PowerState", EntityDTO_PowerState_name, EntityDTO_PowerState_value)
+	proto.RegisterEnum("common_dto.EntityDTO_StorageRedundancyMethod", EntityDTO_StorageRedundancyMethod_name, EntityDTO_StorageRedundancyMethod_value)
+	proto.RegisterEnum("common_dto.EntityDTO_StorageType", EntityDTO_StorageType_name, EntityDTO_StorageType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_VirtualMachineFileType", EntityDTO_VirtualMachineFileType_name, EntityDTO_VirtualMachineFileType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_InstanceDiskType", EntityDTO_InstanceDiskType_name, EntityDTO_InstanceDiskType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_LicenseModel", EntityDTO_LicenseModel_name, EntityDTO_LicenseModel_value)
+	proto.RegisterEnum("common_dto.EntityDTO_VirtualDatacenterRole", EntityDTO_VirtualDatacenterRole_name, EntityDTO_VirtualDatacenterRole_value)
+	proto.RegisterEnum("common_dto.EntityDTO_VirtualDatacenterAllocationModel", EntityDTO_VirtualDatacenterAllocationModel_name, EntityDTO_VirtualDatacenterAllocationModel_value)
+	proto.RegisterEnum("common_dto.EntityDTO_DiskRole", EntityDTO_DiskRole_name, EntityDTO_DiskRole_value)
+	proto.RegisterEnum("common_dto.EntityDTO_IopsItemNames", EntityDTO_IopsItemNames_name, EntityDTO_IopsItemNames_value)
+	proto.RegisterEnum("common_dto.EntityDTO_EntityOrigin", EntityDTO_EntityOrigin_name, EntityDTO_EntityOrigin_value)
+	proto.RegisterEnum("common_dto.EntityDTO_ComputeTierData_DedicatedStorageNetworkState", EntityDTO_ComputeTierData_DedicatedStorageNetworkState_name, EntityDTO_ComputeTierData_DedicatedStorageNetworkState_value)
+	proto.RegisterEnum("common_dto.EntityDTO_VirtualVolumeData_AttachmentState", EntityDTO_VirtualVolumeData_AttachmentState_name, EntityDTO_VirtualVolumeData_AttachmentState_value)
+	proto.RegisterEnum("common_dto.EntityDTO_VirtualVolumeData_RedundancyType", EntityDTO_VirtualVolumeData_RedundancyType_name, EntityDTO_VirtualVolumeData_RedundancyType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_VirtualMachineData_VMBillingType", EntityDTO_VirtualMachineData_VMBillingType_name, EntityDTO_VirtualMachineData_VMBillingType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_DesktopPoolData_DesktopPoolProvisionType", EntityDTO_DesktopPoolData_DesktopPoolProvisionType_name, EntityDTO_DesktopPoolData_DesktopPoolProvisionType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_DesktopPoolData_DesktopPoolCloneType", EntityDTO_DesktopPoolData_DesktopPoolCloneType_name, EntityDTO_DesktopPoolData_DesktopPoolCloneType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_DesktopPoolData_DesktopPoolAssignmentType", EntityDTO_DesktopPoolData_DesktopPoolAssignmentType_name, EntityDTO_DesktopPoolData_DesktopPoolAssignmentType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_InstanceTenancy", EntityDTO_ReservedInstanceData_InstanceTenancy_name, EntityDTO_ReservedInstanceData_InstanceTenancy_value)
+	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_OfferingClass", EntityDTO_ReservedInstanceData_OfferingClass_name, EntityDTO_ReservedInstanceData_OfferingClass_value)
+	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_OfferingType", EntityDTO_ReservedInstanceData_OfferingType_name, EntityDTO_ReservedInstanceData_OfferingType_value)
+	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_Platform", EntityDTO_ReservedInstanceData_Platform_name, EntityDTO_ReservedInstanceData_Platform_value)
+	proto.RegisterEnum("common_dto.ConnectedEntity_ConnectionType", ConnectedEntity_ConnectionType_name, ConnectedEntity_ConnectionType_value)
+	proto.RegisterEnum("common_dto.PricingIdentifier_PricingIdentifierName", PricingIdentifier_PricingIdentifierName_name, PricingIdentifier_PricingIdentifierName_value)
+	proto.RegisterEnum("common_dto.CommodityDTO_CommodityType", CommodityDTO_CommodityType_name, CommodityDTO_CommodityType_value)
+	proto.RegisterEnum("common_dto.GroupDTO_GroupType", GroupDTO_GroupType_name, GroupDTO_GroupType_value)
+	proto.RegisterEnum("common_dto.GroupDTO_ConstraintType", GroupDTO_ConstraintType_name, GroupDTO_ConstraintType_value)
+	proto.RegisterEnum("common_dto.GroupDTO_SelectionSpec_ExpressionType", GroupDTO_SelectionSpec_ExpressionType_name, GroupDTO_SelectionSpec_ExpressionType_value)
+	proto.RegisterEnum("common_dto.NotificationDTO_Severity", NotificationDTO_Severity_name, NotificationDTO_Severity_value)
+	proto.RegisterEnum("common_dto.CustomTypeDef_MetadataNamespace", CustomTypeDef_MetadataNamespace_name, CustomTypeDef_MetadataNamespace_value)
+	proto.RegisterEnum("common_dto.FlowDTO_Protocol", FlowDTO_Protocol_name, FlowDTO_Protocol_value)
 	proto.RegisterType((*EntityDTO)(nil), "common_dto.EntityDTO")
 	proto.RegisterType((*EntityDTO_CommodityBought)(nil), "common_dto.EntityDTO.CommodityBought")
+	proto.RegisterType((*EntityDTO_ActionEligibility)(nil), "common_dto.EntityDTO.ActionEligibility")
+	proto.RegisterType((*EntityDTO_ActionOnProviderEligibility)(nil), "common_dto.EntityDTO.ActionOnProviderEligibility")
 	proto.RegisterType((*EntityDTO_SubDivisionData)(nil), "common_dto.EntityDTO.SubDivisionData")
 	proto.RegisterType((*EntityDTO_StorageData)(nil), "common_dto.EntityDTO.StorageData")
 	proto.RegisterType((*EntityDTO_StorageData_StorageFileDescriptor)(nil), "common_dto.EntityDTO.StorageData.StorageFileDescriptor")
+	proto.RegisterType((*EntityDTO_StorageData_StoragePolicy)(nil), "common_dto.EntityDTO.StorageData.StoragePolicy")
+	proto.RegisterType((*EntityDTO_StorageData_RawCapacity)(nil), "common_dto.EntityDTO.StorageData.RawCapacity")
+	proto.RegisterType((*EntityDTO_BusinessUserData)(nil), "common_dto.EntityDTO.BusinessUserData")
+	proto.RegisterType((*EntityDTO_RegionData)(nil), "common_dto.EntityDTO.RegionData")
+	proto.RegisterType((*EntityDTO_SessionData)(nil), "common_dto.EntityDTO.SessionData")
 	proto.RegisterType((*EntityDTO_DiskArrayData)(nil), "common_dto.EntityDTO.DiskArrayData")
 	proto.RegisterType((*EntityDTO_LogicalPoolData)(nil), "common_dto.EntityDTO.LogicalPoolData")
 	proto.RegisterType((*EntityDTO_ApplicationData)(nil), "common_dto.EntityDTO.ApplicationData")
 	proto.RegisterType((*EntityDTO_VirtualApplicationData)(nil), "common_dto.EntityDTO.VirtualApplicationData")
+	proto.RegisterType((*EntityDTO_ServiceData)(nil), "common_dto.EntityDTO.ServiceData")
+	proto.RegisterType((*EntityDTO_BusinessAccountData)(nil), "common_dto.EntityDTO.BusinessAccountData")
+	proto.RegisterType((*EntityDTO_ComputeTierData)(nil), "common_dto.EntityDTO.ComputeTierData")
+	proto.RegisterType((*EntityDTO_VirtualVolumeData)(nil), "common_dto.EntityDTO.VirtualVolumeData")
+	proto.RegisterType((*EntityDTO_VirtualVolumeData_VirtualVolumeFileDescriptor)(nil), "common_dto.EntityDTO.VirtualVolumeData.VirtualVolumeFileDescriptor")
 	proto.RegisterType((*EntityDTO_VirtualMachineData)(nil), "common_dto.EntityDTO.VirtualMachineData")
+	proto.RegisterMapType((map[string]string)(nil), "common_dto.EntityDTO.VirtualMachineData.DiskToStorageEntry")
 	proto.RegisterType((*EntityDTO_VirtualMachineData_AnnotationNote)(nil), "common_dto.EntityDTO.VirtualMachineData.AnnotationNote")
 	proto.RegisterType((*EntityDTO_VirtualMachineData_VirtualMachineFileDescriptor)(nil), "common_dto.EntityDTO.VirtualMachineData.VirtualMachineFileDescriptor")
 	proto.RegisterType((*EntityDTO_DatabaseData)(nil), "common_dto.EntityDTO.DatabaseData")
+	proto.RegisterType((*EntityDTO_DatabaseTierData)(nil), "common_dto.EntityDTO.DatabaseTierData")
+	proto.RegisterType((*EntityDTO_DatabaseServerTierData)(nil), "common_dto.EntityDTO.DatabaseServerTierData")
 	proto.RegisterType((*EntityDTO_StorageControllerData)(nil), "common_dto.EntityDTO.StorageControllerData")
 	proto.RegisterType((*EntityDTO_ContainerPodData)(nil), "common_dto.EntityDTO.ContainerPodData")
 	proto.RegisterType((*EntityDTO_ContainerData)(nil), "common_dto.EntityDTO.ContainerData")
+	proto.RegisterType((*EntityDTO_WorkloadControllerData)(nil), "common_dto.EntityDTO.WorkloadControllerData")
+	proto.RegisterType((*EntityDTO_CronJobData)(nil), "common_dto.EntityDTO.CronJobData")
+	proto.RegisterType((*EntityDTO_CustomControllerData)(nil), "common_dto.EntityDTO.CustomControllerData")
+	proto.RegisterType((*EntityDTO_DaemonSetData)(nil), "common_dto.EntityDTO.DaemonSetData")
+	proto.RegisterType((*EntityDTO_DeploymentData)(nil), "common_dto.EntityDTO.DeploymentData")
+	proto.RegisterType((*EntityDTO_JobData)(nil), "common_dto.EntityDTO.JobData")
+	proto.RegisterType((*EntityDTO_ReplicaSetData)(nil), "common_dto.EntityDTO.ReplicaSetData")
+	proto.RegisterType((*EntityDTO_ReplicationControllerData)(nil), "common_dto.EntityDTO.ReplicationControllerData")
+	proto.RegisterType((*EntityDTO_StatefulSetData)(nil), "common_dto.EntityDTO.StatefulSetData")
 	proto.RegisterType((*EntityDTO_VMState)(nil), "common_dto.EntityDTO.VMState")
 	proto.RegisterType((*EntityDTO_PhysicalMachineData)(nil), "common_dto.EntityDTO.PhysicalMachineData")
 	proto.RegisterType((*EntityDTO_PMState)(nil), "common_dto.EntityDTO.PMState")
 	proto.RegisterType((*EntityDTO_VirtualDatacenterTypeProps)(nil), "common_dto.EntityDTO.VirtualDatacenterTypeProps")
 	proto.RegisterType((*EntityDTO_VirtualDatacenterData)(nil), "common_dto.EntityDTO.VirtualDatacenterData")
+	proto.RegisterType((*EntityDTO_DesktopPoolData)(nil), "common_dto.EntityDTO.DesktopPoolData")
 	proto.RegisterType((*EntityDTO_EntityProperty)(nil), "common_dto.EntityDTO.EntityProperty")
 	proto.RegisterType((*EntityDTO_VirtualMachineRelatedData)(nil), "common_dto.EntityDTO.VirtualMachineRelatedData")
 	proto.RegisterType((*EntityDTO_PhysicalMachineRelatedData)(nil), "common_dto.EntityDTO.PhysicalMachineRelatedData")
@@ -5855,15 +10032,24 @@ func init() {
 	proto.RegisterType((*EntityDTO_MemoryData)(nil), "common_dto.EntityDTO.MemoryData")
 	proto.RegisterType((*EntityDTO_ProcessorData)(nil), "common_dto.EntityDTO.ProcessorData")
 	proto.RegisterType((*EntityDTO_IoData)(nil), "common_dto.EntityDTO.IoData")
-	proto.RegisterType((*EntityDTO_DiskCountData)(nil), "common_dto.EntityDTO.DiskCountData")
-	proto.RegisterType((*EntityDTO_DiskCount)(nil), "common_dto.EntityDTO.DiskCount")
+	proto.RegisterType((*EntityDTO_DiskGroupData)(nil), "common_dto.EntityDTO.DiskGroupData")
+	proto.RegisterType((*EntityDTO_DiskData)(nil), "common_dto.EntityDTO.DiskData")
+	proto.RegisterType((*EntityDTO_ComputeIopsData)(nil), "common_dto.EntityDTO.ComputeIopsData")
+	proto.RegisterType((*EntityDTO_IopsItemData)(nil), "common_dto.EntityDTO.IopsItemData")
 	proto.RegisterType((*EntityDTO_ReplacementEntityMetaData)(nil), "common_dto.EntityDTO.ReplacementEntityMetaData")
+	proto.RegisterType((*EntityDTO_FieldReplacement)(nil), "common_dto.EntityDTO.FieldReplacement")
+	proto.RegisterType((*EntityDTO_FieldReplacement_FieldPath)(nil), "common_dto.EntityDTO.FieldReplacement.FieldPath")
 	proto.RegisterType((*EntityDTO_ReplacementCommodityPropertyData)(nil), "common_dto.EntityDTO.ReplacementCommodityPropertyData")
 	proto.RegisterType((*EntityDTO_ConsumerPolicy)(nil), "common_dto.EntityDTO.ConsumerPolicy")
 	proto.RegisterType((*EntityDTO_ProviderPolicy)(nil), "common_dto.EntityDTO.ProviderPolicy")
 	proto.RegisterType((*EntityDTO_ProcessorPoolData)(nil), "common_dto.EntityDTO.ProcessorPoolData")
 	proto.RegisterType((*EntityDTO_ReservedInstanceData)(nil), "common_dto.EntityDTO.ReservedInstanceData")
+	proto.RegisterType((*ConnectedEntity)(nil), "common_dto.ConnectedEntity")
+	proto.RegisterType((*PricingIdentifier)(nil), "common_dto.PricingIdentifier")
 	proto.RegisterType((*CommodityDTO)(nil), "common_dto.CommodityDTO")
+	proto.RegisterType((*CommodityDTO_RangeDependency)(nil), "common_dto.CommodityDTO.RangeDependency")
+	proto.RegisterType((*CommodityDTO_RangeTuple)(nil), "common_dto.CommodityDTO.RangeTuple")
+	proto.RegisterType((*CommodityDTO_RatioDependency)(nil), "common_dto.CommodityDTO.RatioDependency")
 	proto.RegisterType((*CommodityDTO_PropertiesList)(nil), "common_dto.CommodityDTO.PropertiesList")
 	proto.RegisterType((*CommodityDTO_StorageLatencyData)(nil), "common_dto.CommodityDTO.StorageLatencyData")
 	proto.RegisterType((*CommodityDTO_StorageAccessData)(nil), "common_dto.CommodityDTO.StorageAccessData")
@@ -5871,8 +10057,11 @@ func init() {
 	proto.RegisterType((*CommodityDTO_VMemData)(nil), "common_dto.CommodityDTO.VMemData")
 	proto.RegisterType((*CommodityDTO_VCpuData)(nil), "common_dto.CommodityDTO.VCpuData")
 	proto.RegisterType((*CommodityDTO_PricingMetadata)(nil), "common_dto.CommodityDTO.PricingMetadata")
+	proto.RegisterType((*CommodityDTO_UtilizationData)(nil), "common_dto.CommodityDTO.UtilizationData")
 	proto.RegisterType((*VStoragePartitionData)(nil), "common_dto.VStoragePartitionData")
 	proto.RegisterType((*GroupDTO)(nil), "common_dto.GroupDTO")
+	proto.RegisterMapType((map[string]*GroupDTO_TagValues)(nil), "common_dto.GroupDTO.TagsEntry")
+	proto.RegisterType((*GroupDTO_TagValues)(nil), "common_dto.GroupDTO.TagValues")
 	proto.RegisterType((*GroupDTO_ConstraintInfo)(nil), "common_dto.GroupDTO.ConstraintInfo")
 	proto.RegisterType((*GroupDTO_SelectionSpecList)(nil), "common_dto.GroupDTO.SelectionSpecList")
 	proto.RegisterType((*GroupDTO_MembersList)(nil), "common_dto.GroupDTO.MembersList")
@@ -5888,473 +10077,682 @@ func init() {
 	proto.RegisterType((*PropertyHandler)(nil), "common_dto.PropertyHandler")
 	proto.RegisterType((*EntityIdentityData)(nil), "common_dto.EntityIdentityData")
 	proto.RegisterType((*FlowDTO)(nil), "common_dto.FlowDTO")
-	proto.RegisterEnum("common_dto.UpdateType", UpdateType_name, UpdateType_value)
-	proto.RegisterEnum("common_dto.EntityDTO_EntityType", EntityDTO_EntityType_name, EntityDTO_EntityType_value)
-	proto.RegisterEnum("common_dto.EntityDTO_PowerState", EntityDTO_PowerState_name, EntityDTO_PowerState_value)
-	proto.RegisterEnum("common_dto.EntityDTO_StorageType", EntityDTO_StorageType_name, EntityDTO_StorageType_value)
-	proto.RegisterEnum("common_dto.EntityDTO_VirtualMachineFileType", EntityDTO_VirtualMachineFileType_name, EntityDTO_VirtualMachineFileType_value)
-	proto.RegisterEnum("common_dto.EntityDTO_VirtualDatacenterRole", EntityDTO_VirtualDatacenterRole_name, EntityDTO_VirtualDatacenterRole_value)
-	proto.RegisterEnum("common_dto.EntityDTO_VirtualDatacenterAllocationModel", EntityDTO_VirtualDatacenterAllocationModel_name, EntityDTO_VirtualDatacenterAllocationModel_value)
-	proto.RegisterEnum("common_dto.EntityDTO_NumDiskNames", EntityDTO_NumDiskNames_name, EntityDTO_NumDiskNames_value)
-	proto.RegisterEnum("common_dto.EntityDTO_EntityOrigin", EntityDTO_EntityOrigin_name, EntityDTO_EntityOrigin_value)
-	proto.RegisterEnum("common_dto.EntityDTO_VirtualMachineData_VMBillingType", EntityDTO_VirtualMachineData_VMBillingType_name, EntityDTO_VirtualMachineData_VMBillingType_value)
-	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_InstanceTenancy", EntityDTO_ReservedInstanceData_InstanceTenancy_name, EntityDTO_ReservedInstanceData_InstanceTenancy_value)
-	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_OfferingClass", EntityDTO_ReservedInstanceData_OfferingClass_name, EntityDTO_ReservedInstanceData_OfferingClass_value)
-	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_OfferingType", EntityDTO_ReservedInstanceData_OfferingType_name, EntityDTO_ReservedInstanceData_OfferingType_value)
-	proto.RegisterEnum("common_dto.EntityDTO_ReservedInstanceData_Platform", EntityDTO_ReservedInstanceData_Platform_name, EntityDTO_ReservedInstanceData_Platform_value)
-	proto.RegisterEnum("common_dto.CommodityDTO_CommodityType", CommodityDTO_CommodityType_name, CommodityDTO_CommodityType_value)
-	proto.RegisterEnum("common_dto.GroupDTO_ConstraintType", GroupDTO_ConstraintType_name, GroupDTO_ConstraintType_value)
-	proto.RegisterEnum("common_dto.GroupDTO_SelectionSpec_ExpressionType", GroupDTO_SelectionSpec_ExpressionType_name, GroupDTO_SelectionSpec_ExpressionType_value)
-	proto.RegisterEnum("common_dto.NotificationDTO_Severity", NotificationDTO_Severity_name, NotificationDTO_Severity_value)
-	proto.RegisterEnum("common_dto.CustomTypeDef_MetadataNamespace", CustomTypeDef_MetadataNamespace_name, CustomTypeDef_MetadataNamespace_value)
-	proto.RegisterEnum("common_dto.FlowDTO_Protocol", FlowDTO_Protocol_name, FlowDTO_Protocol_value)
+	proto.RegisterType((*GeoData)(nil), "common_dto.GeoData")
 }
 
-func init() { proto.RegisterFile("CommonDTO.proto", fileDescriptor1) }
+func init() { proto.RegisterFile("CommonDTO.proto", fileDescriptor_2233245ab49fede8) }
 
-var fileDescriptor1 = []byte{
-	// 7074 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x7c, 0x5b, 0x8c, 0xe4, 0x48,
-	0xb6, 0x50, 0x67, 0xd6, 0xfb, 0xd4, 0xcb, 0x15, 0xdd, 0x5d, 0x9d, 0x9d, 0xd3, 0x3d, 0x53, 0x93,
-	0xf3, 0xaa, 0x9d, 0xe9, 0xa9, 0xe9, 0xe9, 0x79, 0xf5, 0xed, 0x5d, 0x76, 0xc7, 0xe9, 0x74, 0x55,
-	0x79, 0x3b, 0xd3, 0xf6, 0x84, 0x9d, 0xd5, 0xd3, 0x03, 0xbb, 0xde, 0xac, 0x74, 0x54, 0x95, 0xef,
-	0x64, 0xa6, 0x53, 0xb6, 0xb3, 0xa6, 0x6b, 0x2f, 0x42, 0x57, 0x48, 0x88, 0x4f, 0x84, 0xc4, 0x45,
-	0x48, 0x57, 0xf0, 0x03, 0x5f, 0xf7, 0x1f, 0xa1, 0x2b, 0x81, 0x10, 0x42, 0xe2, 0xf1, 0xc1, 0x1f,
-	0x3f, 0x57, 0x02, 0x21, 0xf1, 0x75, 0x41, 0xe2, 0x07, 0xf1, 0xe6, 0xc2, 0x45, 0x27, 0x22, 0xec,
-	0xb4, 0xf3, 0x51, 0xdd, 0xb3, 0xbb, 0x02, 0xf1, 0x53, 0xca, 0x38, 0xaf, 0x88, 0x38, 0x71, 0xe2,
-	0xc4, 0x39, 0x27, 0xc2, 0x05, 0xdb, 0x5a, 0xd8, 0xef, 0x87, 0x83, 0x86, 0x6b, 0x1d, 0x0c, 0xa3,
-	0x30, 0x09, 0x09, 0x74, 0x39, 0xc0, 0xf3, 0x93, 0xb0, 0xf6, 0xb7, 0x7e, 0x0e, 0x6b, 0xfa, 0x20,
-	0x09, 0x92, 0xab, 0x86, 0x6b, 0x91, 0x2f, 0x01, 0x18, 0x6f, 0xb8, 0x57, 0x43, 0x56, 0x29, 0xed,
-	0x95, 0xf7, 0xb7, 0x1e, 0xed, 0x1d, 0x8c, 0xc9, 0x0f, 0x32, 0x52, 0xf9, 0x0b, 0xe9, 0x68, 0x8e,
-	0x87, 0x6c, 0x41, 0x39, 0xf0, 0x2b, 0xe5, 0xbd, 0xf2, 0xfe, 0x1a, 0x2d, 0x07, 0x3e, 0xd9, 0x83,
-	0x75, 0x3f, 0x88, 0x87, 0xbd, 0xce, 0x95, 0xd9, 0xe9, 0xb3, 0xca, 0xc2, 0x5e, 0x69, 0x7f, 0x8d,
-	0xe6, 0x41, 0xa4, 0x0e, 0xdb, 0xbc, 0x03, 0x3f, 0x48, 0x02, 0x16, 0x3b, 0x61, 0xcf, 0xaf, 0x2c,
-	0xee, 0x2d, 0xec, 0xaf, 0x3f, 0xaa, 0xe4, 0x3b, 0xd6, 0x24, 0x09, 0xf6, 0x4d, 0x27, 0x19, 0x88,
-	0x03, 0x3b, 0x39, 0x50, 0x3d, 0x1c, 0x9d, 0x5f, 0x24, 0x95, 0x25, 0x2e, 0xe5, 0x9d, 0xd9, 0xc3,
-	0xcf, 0xe4, 0x09, 0x62, 0x3a, 0xcd, 0x4f, 0x6a, 0x00, 0xa3, 0x81, 0xcf, 0xa2, 0xde, 0x55, 0x30,
-	0x38, 0xaf, 0x2c, 0xef, 0x2d, 0xec, 0xaf, 0xd5, 0xcb, 0x95, 0x12, 0xcd, 0x41, 0x89, 0x0d, 0x8a,
-	0x98, 0xbc, 0x1d, 0x85, 0x43, 0x16, 0x21, 0x77, 0x65, 0x85, 0xf7, 0xfb, 0xf6, 0x75, 0x6a, 0x93,
-	0xd4, 0x57, 0x74, 0x8a, 0x9b, 0x1c, 0xc2, 0x72, 0x18, 0x05, 0xe7, 0xc1, 0xa0, 0xb2, 0xba, 0x57,
-	0xda, 0xdf, 0x7a, 0x54, 0xbb, 0x4e, 0x8e, 0xc5, 0x29, 0x9f, 0x40, 0xc3, 0x70, 0x34, 0xeb, 0x44,
-	0xa7, 0x7a, 0x83, 0x4a, 0x6e, 0xc2, 0xe0, 0x76, 0xc4, 0x86, 0xbd, 0x4e, 0x97, 0xf5, 0xd9, 0x20,
-	0x91, 0x8c, 0x9d, 0xa4, 0x53, 0x59, 0xdb, 0x2b, 0xed, 0xaf, 0x3f, 0xfa, 0x68, 0xb6, 0x58, 0x3a,
-	0xc9, 0xd2, 0x62, 0x49, 0x07, 0xd9, 0xe8, 0x6c, 0x69, 0xa4, 0x06, 0x6b, 0xfd, 0x70, 0x10, 0x24,
-	0x61, 0xc4, 0xfc, 0x0a, 0xec, 0x95, 0xf6, 0x57, 0x9f, 0x2c, 0x26, 0xd1, 0x88, 0xd1, 0x31, 0x98,
-	0x34, 0x01, 0x86, 0xe1, 0x77, 0x2c, 0x72, 0x92, 0x4e, 0xc2, 0x2a, 0xeb, 0x7c, 0x5a, 0x73, 0xac,
-	0xca, 0xce, 0xe8, 0x9e, 0x80, 0x6d, 0x3d, 0xc3, 0x19, 0x79, 0x96, 0x49, 0x73, 0xfc, 0xa4, 0x09,
-	0x5b, 0xdd, 0x70, 0x10, 0x8f, 0xfa, 0x2c, 0xb2, 0xc3, 0x5e, 0xd0, 0xbd, 0xaa, 0x6c, 0xf0, 0x19,
-	0xbd, 0x3d, 0x6f, 0xa1, 0xf3, 0xb4, 0x74, 0x82, 0x17, 0xa5, 0x0d, 0xa3, 0xf0, 0x32, 0xf0, 0x33,
-	0x69, 0x9b, 0xd7, 0x49, 0xb3, 0x0b, 0xb4, 0x74, 0x82, 0x97, 0x54, 0x60, 0x25, 0xfc, 0x6e, 0xc0,
-	0xfc, 0xfa, 0x55, 0x65, 0x8b, 0x5b, 0x7a, 0xda, 0x24, 0x3f, 0x81, 0x8d, 0x41, 0x98, 0x04, 0x67,
-	0x41, 0xb7, 0x93, 0x04, 0xe1, 0xa0, 0xb2, 0xcd, 0x8d, 0xe4, 0xb5, 0x7c, 0x2f, 0x66, 0x0e, 0x8f,
-	0x56, 0x5e, 0x60, 0x20, 0x0f, 0x60, 0xeb, 0x5b, 0xc6, 0x86, 0x4e, 0xd2, 0x19, 0xf8, 0x9d, 0x5e,
-	0x38, 0x60, 0x15, 0x25, 0xa7, 0xed, 0x09, 0x1c, 0xb9, 0x07, 0x6b, 0xc3, 0x28, 0x3c, 0x0b, 0x7a,
-	0xcc, 0xf0, 0x2b, 0x3b, 0x7c, 0x28, 0x63, 0x00, 0xf9, 0x09, 0xc0, 0x68, 0xe8, 0x77, 0x12, 0xc6,
-	0xb7, 0x39, 0xe1, 0x0b, 0xb2, 0x9b, 0x1f, 0x4a, 0x3b, 0xc3, 0x3e, 0x59, 0x69, 0xdb, 0x0d, 0xd5,
-	0xd5, 0x1b, 0x34, 0xc7, 0x82, 0xbb, 0xba, 0xd7, 0xb9, 0x62, 0x11, 0xf3, 0xad, 0x4b, 0x16, 0x55,
-	0x6e, 0xe2, 0xde, 0xa0, 0x79, 0x10, 0x79, 0x1f, 0x14, 0x69, 0x30, 0xb1, 0xd0, 0x9e, 0xe1, 0x57,
-	0x6e, 0x71, 0xb2, 0x29, 0x38, 0x79, 0x0f, 0xd6, 0xfb, 0x9d, 0x60, 0x90, 0xb0, 0x41, 0x67, 0xd0,
-	0x65, 0x95, 0xdb, 0x7c, 0x5e, 0x4b, 0x67, 0x9d, 0x5e, 0xcc, 0x68, 0x1e, 0x43, 0x8e, 0x60, 0x23,
-	0x4e, 0xc2, 0xa8, 0x73, 0xce, 0x3c, 0x1f, 0x4d, 0xf9, 0x3f, 0x2d, 0xf0, 0xb5, 0x7a, 0x73, 0xf6,
-	0x5a, 0x39, 0x82, 0x14, 0xcd, 0xf4, 0xf8, 0x06, 0x5d, 0x8f, 0xc7, 0x4d, 0x62, 0xc2, 0xb6, 0x1f,
-	0xc4, 0xdf, 0x7a, 0x9d, 0x28, 0xea, 0x5c, 0x09, 0x59, 0xff, 0x59, 0xc8, 0x7a, 0x6b, 0xb6, 0xac,
-	0x46, 0x10, 0x7f, 0xab, 0x22, 0xb1, 0x94, 0xb6, 0xe9, 0xe7, 0x01, 0xc4, 0x01, 0xa5, 0x33, 0x1c,
-	0xf6, 0xe4, 0x5a, 0x09, 0x81, 0xff, 0x45, 0x08, 0x9c, 0xe3, 0x7f, 0xd4, 0x31, 0xb9, 0x14, 0xb9,
-	0xdd, 0x29, 0x82, 0xc8, 0xcf, 0xe0, 0xd6, 0x65, 0x10, 0x25, 0xa3, 0x4e, 0xcf, 0xeb, 0x77, 0xba,
-	0x17, 0xc1, 0x40, 0xce, 0xfa, 0xbf, 0x0a, 0xc1, 0xfb, 0xb3, 0x05, 0x9f, 0x08, 0x96, 0x96, 0xe0,
-	0x90, 0xb2, 0xc9, 0xe5, 0x14, 0x94, 0xfc, 0x02, 0x6e, 0x0f, 0x2f, 0xae, 0xe2, 0xa0, 0x3b, 0x29,
-	0xff, 0xbf, 0x09, 0xf9, 0x3f, 0x98, 0xb3, 0x03, 0x24, 0x4f, 0xb1, 0x83, 0x9b, 0xc3, 0x69, 0x30,
-	0x39, 0x83, 0x3b, 0xe9, 0x04, 0x50, 0x70, 0x97, 0x0d, 0x12, 0x16, 0x89, 0x3e, 0xfe, 0xbb, 0xe8,
-	0xe3, 0x83, 0x6b, 0xe7, 0xd0, 0xc8, 0x98, 0x64, 0x2f, 0xb7, 0x2f, 0x67, 0x21, 0xb0, 0x9f, 0xd4,
-	0x2c, 0xba, 0xe1, 0x20, 0x89, 0xc2, 0x5e, 0x2f, 0xed, 0xe7, 0x7f, 0x5c, 0xdb, 0x8f, 0xb4, 0x10,
-	0x2d, 0x63, 0x4a, 0xfb, 0x89, 0x67, 0x21, 0x88, 0x0b, 0x3b, 0xbd, 0xf0, 0x9c, 0x2b, 0x6c, 0x18,
-	0x86, 0x62, 0x52, 0x95, 0xff, 0x79, 0xed, 0x32, 0x37, 0x05, 0xbd, 0x1d, 0x86, 0xbd, 0x74, 0x99,
-	0x7b, 0x45, 0x10, 0x09, 0xa0, 0x92, 0x6a, 0x69, 0xca, 0x86, 0xfe, 0x44, 0x08, 0x7f, 0x70, 0xad,
-	0x9a, 0xa6, 0x4d, 0x69, 0xf7, 0x72, 0x26, 0x86, 0x7c, 0x03, 0x37, 0x87, 0x51, 0xd8, 0x65, 0x71,
-	0x1c, 0x46, 0xb9, 0x29, 0xfc, 0x2f, 0xd1, 0xcb, 0x7b, 0x73, 0x5d, 0x9e, 0xe0, 0xc8, 0x4d, 0x62,
-	0x67, 0x38, 0x09, 0x24, 0x5d, 0xd8, 0x8d, 0x58, 0xcc, 0xa2, 0x4b, 0xe6, 0x7b, 0xc1, 0x20, 0x4e,
-	0x70, 0xc3, 0x0a, 0xf1, 0xff, 0x5b, 0x88, 0x7f, 0x7f, 0xde, 0x89, 0x23, 0x98, 0x0c, 0xc9, 0x23,
-	0x7b, 0xb8, 0x15, 0xcd, 0x80, 0x93, 0x67, 0x40, 0x70, 0x85, 0x3b, 0xc1, 0x80, 0xe1, 0x04, 0x7c,
-	0xd1, 0xc1, 0x9f, 0x8a, 0x0e, 0xde, 0x9d, 0x7b, 0x00, 0x08, 0x06, 0x3b, 0xf4, 0xa5, 0x70, 0xa5,
-	0x3b, 0x01, 0x23, 0x2d, 0x7e, 0xa8, 0x48, 0xc1, 0x5c, 0xe8, 0xef, 0x2e, 0x5e, 0xe7, 0x0f, 0x32,
-	0xa1, 0xa9, 0x3f, 0xe8, 0xe6, 0x01, 0x24, 0x86, 0x7b, 0x93, 0x5b, 0x37, 0x62, 0xbd, 0x4e, 0xc2,
-	0xe4, 0x88, 0xff, 0x78, 0xe5, 0xba, 0x43, 0xb8, 0xb8, 0x85, 0xa9, 0x60, 0xe4, 0x1d, 0x95, 0xe8,
-	0xdd, 0xcb, 0x79, 0x48, 0x72, 0x09, 0xf7, 0xa7, 0x36, 0x74, 0xa1, 0xd7, 0x7f, 0x27, 0x7a, 0x7d,
-	0xf8, 0x4a, 0x1b, 0xbb, 0xd8, 0x6d, 0x75, 0x38, 0x17, 0x4b, 0xfe, 0x3c, 0xbc, 0x31, 0x63, 0xfb,
-	0x15, 0x7a, 0xfe, 0xf7, 0xa2, 0xe7, 0x47, 0xaf, 0xb8, 0x0d, 0x8b, 0x7d, 0xdf, 0x8b, 0xaf, 0xc1,
-	0x57, 0xff, 0x63, 0x49, 0x06, 0xb8, 0xe3, 0x60, 0x8e, 0xbc, 0x0e, 0x90, 0x1e, 0xcc, 0x86, 0xcf,
-	0xc3, 0xd8, 0x35, 0x9a, 0x83, 0x90, 0x87, 0xb0, 0x7c, 0x2a, 0x62, 0xc4, 0xf2, 0x4b, 0x22, 0x4d,
-	0x49, 0x47, 0x1a, 0xb0, 0x91, 0xf2, 0xf3, 0x33, 0x73, 0xe1, 0xba, 0x20, 0x26, 0x17, 0x1a, 0x17,
-	0xb8, 0xc8, 0x11, 0xac, 0xc7, 0xa3, 0xd3, 0x46, 0x70, 0x19, 0xc4, 0x18, 0x03, 0x2c, 0x5e, 0xe7,
-	0x39, 0x9c, 0x31, 0x21, 0x8f, 0xbf, 0xf2, 0x9c, 0xd5, 0xff, 0x50, 0x82, 0xed, 0x09, 0x02, 0xf2,
-	0x36, 0x6c, 0xe6, 0x48, 0xb2, 0x79, 0x17, 0x81, 0xe4, 0x5d, 0xd8, 0x8a, 0x98, 0x3f, 0x1a, 0xf8,
-	0x9d, 0x41, 0x57, 0x44, 0xf9, 0x65, 0x1e, 0x1d, 0x4c, 0x40, 0xc9, 0xa7, 0x90, 0x3a, 0x41, 0xb5,
-	0x8b, 0x3b, 0x5d, 0xeb, 0x0c, 0x3b, 0xdd, 0x20, 0xb9, 0xe2, 0x33, 0x2f, 0xd3, 0xd9, 0xc8, 0x3c,
-	0x57, 0x3f, 0x1c, 0x0d, 0x92, 0x8c, 0x6b, 0xb1, 0xc8, 0x55, 0x40, 0x4e, 0xe6, 0x08, 0x4b, 0x53,
-	0x39, 0x42, 0xf5, 0xef, 0x2f, 0xc1, 0x7a, 0xee, 0x38, 0x27, 0x1a, 0xa4, 0xc7, 0xb9, 0x4c, 0x54,
-	0x70, 0x35, 0xae, 0x0f, 0x03, 0xf8, 0x72, 0xe4, 0xb9, 0x30, 0x46, 0x0a, 0x86, 0xaa, 0xef, 0x47,
-	0x2c, 0x8e, 0xa5, 0x16, 0xc6, 0x00, 0xb4, 0x21, 0xf6, 0x62, 0x18, 0x46, 0x89, 0xdd, 0x49, 0x2e,
-	0x64, 0xde, 0x92, 0x83, 0x20, 0xb7, 0x14, 0x66, 0xf8, 0x7c, 0x7a, 0x6b, 0x74, 0x0c, 0xc0, 0x40,
-	0xb0, 0x37, 0x1a, 0xb4, 0x47, 0x81, 0x2f, 0xa7, 0x93, 0x36, 0xc9, 0x2d, 0x58, 0xea, 0x8d, 0x70,
-	0x79, 0x96, 0xf7, 0x4a, 0xfb, 0x4b, 0x54, 0x34, 0x88, 0x02, 0x0b, 0xdf, 0x7d, 0x37, 0xa8, 0xac,
-	0x70, 0x5a, 0xfc, 0x49, 0x3e, 0x84, 0xad, 0x41, 0x98, 0x68, 0xbd, 0x51, 0x9c, 0xb0, 0xa8, 0x73,
-	0xda, 0x63, 0x3c, 0x1f, 0xc8, 0xe2, 0xa2, 0x09, 0x24, 0xa9, 0xc1, 0x06, 0x7b, 0x91, 0xb0, 0x68,
-	0xd0, 0xe9, 0x71, 0x25, 0xae, 0xf1, 0x58, 0xab, 0x00, 0x23, 0x4f, 0x61, 0x11, 0x03, 0xc0, 0x0a,
-	0x70, 0xa3, 0xff, 0xe2, 0xa5, 0x51, 0x53, 0xfa, 0xfb, 0x30, 0xe8, 0xb1, 0x06, 0x8b, 0xbb, 0x51,
-	0x30, 0x4c, 0xc2, 0x88, 0x72, 0x21, 0xb8, 0x68, 0xa9, 0x32, 0x03, 0x16, 0xf1, 0xa8, 0x7e, 0x8d,
-	0xe6, 0x41, 0xd5, 0xbf, 0x5c, 0x86, 0xdb, 0x33, 0x25, 0x10, 0x02, 0x8b, 0x43, 0xd4, 0xaa, 0xb0,
-	0x50, 0xfe, 0x9b, 0xec, 0xc2, 0x72, 0x1c, 0xfc, 0x92, 0x3d, 0x3d, 0xe5, 0xc9, 0xe3, 0x02, 0x95,
-	0x2d, 0x72, 0x00, 0x04, 0xb7, 0x63, 0x1a, 0x07, 0xbb, 0x41, 0x9f, 0xb5, 0xe2, 0xca, 0x02, 0xa7,
-	0x99, 0x81, 0x21, 0x5f, 0xc2, 0x62, 0x82, 0x36, 0xb1, 0xc8, 0x6d, 0xe2, 0xc1, 0xab, 0x78, 0x58,
-	0x1c, 0x1d, 0x37, 0x0f, 0xce, 0x49, 0xf6, 0x61, 0x3b, 0x08, 0x87, 0x31, 0x0f, 0xf5, 0x71, 0xd7,
-	0x30, 0xb1, 0x86, 0x4b, 0x74, 0x12, 0x3c, 0x63, 0x33, 0x2d, 0xcf, 0xda, 0x4c, 0xd5, 0x7f, 0x5b,
-	0x82, 0xcd, 0x42, 0x04, 0x59, 0xb4, 0x9e, 0x12, 0x5f, 0xab, 0x9c, 0xf5, 0xbc, 0x0d, 0x1b, 0xd8,
-	0x55, 0xb6, 0x7b, 0xd0, 0x38, 0x17, 0x8e, 0x6f, 0xd0, 0x02, 0x94, 0xe8, 0x00, 0x18, 0x85, 0x6a,
-	0xb8, 0x97, 0xe2, 0xca, 0x4b, 0xc3, 0x57, 0x4e, 0x27, 0x8f, 0xab, 0x1c, 0x23, 0xf9, 0x2d, 0xb8,
-	0x15, 0x8f, 0x86, 0x68, 0xd7, 0xf1, 0x49, 0xd8, 0x1b, 0xf5, 0x19, 0x65, 0xa8, 0x7a, 0xae, 0xc0,
-	0xcc, 0xdc, 0x66, 0x92, 0xd4, 0xd7, 0x61, 0x0d, 0x47, 0xc4, 0x7d, 0x7c, 0xf5, 0xdf, 0x94, 0x60,
-	0x7b, 0x22, 0xdc, 0x79, 0xc9, 0x34, 0xd1, 0x5b, 0xb0, 0xe8, 0x32, 0xe8, 0xb2, 0x26, 0xbb, 0x64,
-	0x3d, 0xeb, 0xf4, 0xb7, 0x59, 0x37, 0x09, 0x2e, 0x53, 0x97, 0x34, 0x1b, 0x39, 0xa5, 0x9c, 0x85,
-	0x57, 0x50, 0xce, 0xe2, 0xaf, 0xa8, 0x9c, 0xe2, 0x0c, 0xff, 0x61, 0x09, 0xb6, 0x27, 0x43, 0x2a,
-	0x22, 0xcd, 0xad, 0xc4, 0x87, 0x2c, 0x0c, 0xe8, 0x7a, 0xc7, 0x82, 0xc6, 0x1f, 0x46, 0x89, 0x74,
-	0x29, 0xfc, 0xb7, 0xc8, 0x96, 0xf8, 0x99, 0x66, 0x64, 0x8c, 0xc2, 0xa7, 0x4c, 0xc1, 0xc9, 0x13,
-	0x58, 0xf6, 0x4f, 0x79, 0x26, 0xbf, 0xc4, 0x67, 0x35, 0xa7, 0x40, 0x80, 0x14, 0xa7, 0x9d, 0x98,
-	0x6f, 0x64, 0x2a, 0x39, 0xaa, 0xbf, 0x5b, 0x82, 0xdd, 0xd9, 0x51, 0xe3, 0xaf, 0x39, 0x91, 0x25,
-	0x39, 0x11, 0xf4, 0x0a, 0x62, 0xd5, 0xdc, 0x74, 0x13, 0xa2, 0x57, 0x18, 0x83, 0xaa, 0x7f, 0xb4,
-	0x0c, 0x64, 0x3a, 0x47, 0x29, 0x76, 0x25, 0x2d, 0x65, 0xdc, 0xd5, 0x17, 0xb0, 0x72, 0xd9, 0x17,
-	0xe5, 0x83, 0x32, 0x9f, 0xf4, 0xfd, 0x39, 0xfb, 0xba, 0xc5, 0x89, 0x68, 0x4a, 0x8d, 0x62, 0xcf,
-	0x47, 0x2c, 0x4e, 0x72, 0xc5, 0xa7, 0x31, 0x80, 0x78, 0xb0, 0xd5, 0x19, 0x0c, 0xc2, 0x84, 0x6b,
-	0xc1, 0x0c, 0x13, 0x26, 0x2b, 0x4f, 0x5f, 0xbc, 0x6a, 0x6a, 0x75, 0xa0, 0x16, 0xd8, 0xe9, 0x84,
-	0x38, 0xf2, 0x5c, 0x7a, 0x5c, 0x51, 0x8a, 0xd2, 0x5f, 0x59, 0xec, 0xb4, 0x7f, 0x9a, 0xf2, 0xbf,
-	0x15, 0x58, 0x19, 0x8c, 0xfa, 0xda, 0x70, 0x14, 0xcb, 0x93, 0x24, 0x6d, 0x92, 0xaf, 0x61, 0xfd,
-	0x34, 0xe8, 0xf5, 0x82, 0xc1, 0x39, 0x5f, 0x83, 0x15, 0xee, 0x08, 0x3f, 0x7f, 0xf5, 0xbe, 0x5b,
-	0xf5, 0x31, 0x37, 0xcd, 0x8b, 0x22, 0x3f, 0x82, 0xbb, 0xa7, 0x81, 0xef, 0x07, 0x83, 0x73, 0x3b,
-	0x0a, 0xfd, 0x51, 0x37, 0x49, 0x47, 0x85, 0xd1, 0xcc, 0x2a, 0xd7, 0xee, 0x7c, 0x02, 0x0c, 0x50,
-	0x06, 0xa3, 0xbe, 0xde, 0xeb, 0xc4, 0x49, 0xd0, 0x35, 0x86, 0x31, 0xaf, 0x44, 0x2d, 0xd1, 0x22,
-	0xb0, 0xfa, 0x18, 0xb6, 0x8a, 0x4a, 0xc5, 0xb3, 0xf1, 0x5b, 0x76, 0x25, 0x0f, 0x0b, 0xfc, 0x89,
-	0x67, 0xe8, 0x65, 0xa7, 0x37, 0x62, 0xb2, 0xce, 0x28, 0x1a, 0xd5, 0x3f, 0x28, 0xc1, 0xbd, 0xeb,
-	0x14, 0x37, 0xe9, 0x8d, 0xca, 0x45, 0x6f, 0x94, 0x1e, 0x4a, 0xe5, 0x99, 0x87, 0x12, 0xf7, 0x32,
-	0xd9, 0xa1, 0xf4, 0x6b, 0x1f, 0x32, 0x35, 0x07, 0x36, 0x0b, 0x8a, 0x26, 0x1b, 0xb0, 0x6a, 0x99,
-	0x0d, 0xbd, 0xa5, 0x9a, 0x0d, 0xe5, 0x06, 0x59, 0x87, 0x95, 0xba, 0xd1, 0x68, 0x18, 0xe6, 0x91,
-	0x52, 0x22, 0x9b, 0xb0, 0xd6, 0xd0, 0x1b, 0x86, 0xa6, 0xba, 0x7a, 0x43, 0x29, 0x23, 0x25, 0xd5,
-	0x1d, 0x9d, 0x9e, 0xe8, 0x0d, 0x65, 0x81, 0x00, 0x2c, 0x1f, 0x3f, 0xaf, 0x53, 0xa3, 0xa1, 0x2c,
-	0x56, 0xbf, 0x84, 0x8d, 0xfc, 0xb6, 0xc7, 0xe1, 0xb3, 0xc1, 0x79, 0x30, 0x48, 0x77, 0xb5, 0x6c,
-	0xa1, 0xed, 0x30, 0x3f, 0xe0, 0xab, 0x26, 0x76, 0x75, 0xda, 0xac, 0xfe, 0xd5, 0x52, 0x76, 0x66,
-	0x4f, 0x24, 0xbf, 0x93, 0x6e, 0xb7, 0xf4, 0x0a, 0x6e, 0xb7, 0xfc, 0x1b, 0x71, 0xbb, 0x7f, 0x01,
-	0x94, 0xc9, 0x1c, 0x0e, 0x97, 0x72, 0xd0, 0xe9, 0xb3, 0x78, 0xd8, 0xe9, 0xa6, 0x93, 0x1b, 0x03,
-	0x5e, 0xe2, 0xb7, 0xaa, 0xb0, 0x7a, 0x36, 0xea, 0xf5, 0x72, 0x2e, 0x21, 0x6b, 0x67, 0x3e, 0x6d,
-	0x71, 0xec, 0x9c, 0xab, 0xbf, 0x57, 0x82, 0xcd, 0x42, 0xbe, 0xf7, 0x7f, 0xb3, 0x77, 0x5c, 0xab,
-	0x61, 0xe8, 0xe7, 0x02, 0xe3, 0xb4, 0x59, 0xfd, 0x10, 0x56, 0xa4, 0xbf, 0x23, 0x35, 0x58, 0xeb,
-	0x86, 0x83, 0x01, 0xeb, 0x26, 0xcc, 0xe7, 0x03, 0xca, 0xaa, 0xb0, 0x19, 0xb8, 0xfa, 0xaf, 0x4a,
-	0x70, 0x73, 0x46, 0xf1, 0x06, 0x7d, 0xeb, 0x50, 0xfa, 0xd6, 0xd2, 0x75, 0xbe, 0xd5, 0x4e, 0x7d,
-	0xab, 0xa4, 0x96, 0xfb, 0x59, 0x1b, 0x8e, 0x9c, 0xb0, 0xfb, 0x2d, 0x93, 0xcb, 0x2d, 0xf6, 0xf3,
-	0x18, 0x88, 0x27, 0x82, 0x00, 0x68, 0x61, 0xc4, 0x62, 0x79, 0x58, 0xe4, 0x41, 0x63, 0x39, 0xee,
-	0x45, 0xc4, 0x3a, 0xbe, 0x38, 0xf9, 0x32, 0x39, 0x12, 0x88, 0xf1, 0x78, 0x57, 0x70, 0xb4, 0x2e,
-	0x7e, 0x29, 0x03, 0xb2, 0x1c, 0xa4, 0xfa, 0x00, 0x56, 0xe4, 0x08, 0xc9, 0x9b, 0xb0, 0x7a, 0xd6,
-	0x09, 0x7a, 0xe1, 0x25, 0x8b, 0xa4, 0x32, 0x64, 0x14, 0x93, 0x81, 0xab, 0xff, 0xb4, 0x04, 0xd5,
-	0xa9, 0x2a, 0x13, 0xee, 0x43, 0x3b, 0x0a, 0x87, 0x31, 0x31, 0x60, 0x31, 0x0a, 0x7b, 0x69, 0x62,
-	0xf1, 0xaa, 0x55, 0x2a, 0x1a, 0xf6, 0xd8, 0x93, 0x55, 0xcd, 0x32, 0x9d, 0x76, 0x4b, 0xa7, 0x94,
-	0x8b, 0x20, 0x1f, 0xc1, 0x76, 0x1a, 0x3b, 0x99, 0x2c, 0x4e, 0x82, 0xc1, 0x39, 0xd7, 0x53, 0x36,
-	0xa6, 0x49, 0x2c, 0x0f, 0xfc, 0x59, 0x9c, 0x30, 0x3f, 0xad, 0x5c, 0x73, 0x9d, 0xe5, 0x02, 0xff,
-	0x02, 0xb2, 0xfa, 0x87, 0x65, 0xb8, 0x3d, 0xb3, 0x5e, 0x86, 0xbb, 0x7f, 0xd8, 0xe7, 0x29, 0x88,
-	0x38, 0x4f, 0x65, 0x0b, 0xe1, 0x97, 0x02, 0x5e, 0x16, 0x70, 0xd1, 0x22, 0x07, 0xe3, 0x91, 0x4a,
-	0x17, 0x20, 0x7b, 0x16, 0xa6, 0x34, 0x89, 0x24, 0x27, 0xb0, 0x75, 0xe9, 0x77, 0x3d, 0x74, 0x67,
-	0xde, 0x10, 0xd5, 0x26, 0xc3, 0xac, 0x87, 0xaf, 0xa8, 0xae, 0x4c, 0xdd, 0x74, 0xe3, 0xd2, 0xef,
-	0x8e, 0x95, 0x7f, 0x01, 0xb7, 0x50, 0x6e, 0xa7, 0xd7, 0x0b, 0x65, 0x2d, 0xac, 0x1f, 0xfa, 0xac,
-	0xc7, 0xd7, 0xfc, 0x65, 0x07, 0xd9, 0x58, 0xba, 0x9a, 0xb1, 0xb7, 0x90, 0x9b, 0x92, 0x4b, 0xbf,
-	0x3b, 0x01, 0xab, 0x7e, 0x0d, 0x5b, 0xc5, 0xfb, 0x98, 0xc9, 0x9d, 0x5d, 0x2e, 0xee, 0x6c, 0x02,
-	0x8b, 0xd8, 0x48, 0x8f, 0x08, 0xfc, 0x3d, 0x3e, 0x8b, 0x16, 0xf2, 0x67, 0xd1, 0x3f, 0x29, 0xc1,
-	0xdd, 0xb9, 0x65, 0x1c, 0xf2, 0x18, 0x96, 0xfb, 0xac, 0x1f, 0x46, 0x57, 0x72, 0xc7, 0xcd, 0xa9,
-	0x23, 0xb4, 0x38, 0x8d, 0x08, 0xe0, 0x04, 0x3d, 0x51, 0x79, 0x5d, 0x5f, 0x94, 0xde, 0x64, 0xf1,
-	0xe2, 0xad, 0x97, 0x94, 0xed, 0x38, 0xff, 0x98, 0x8b, 0x3c, 0x80, 0x72, 0x10, 0x56, 0x16, 0x38,
-	0xef, 0xbd, 0xd9, 0xbc, 0x46, 0xc8, 0x99, 0xca, 0x41, 0xc8, 0x37, 0xca, 0xfc, 0xca, 0xd0, 0xff,
-	0x4f, 0x33, 0xf9, 0xfd, 0x12, 0xdc, 0xbb, 0xae, 0xd2, 0xf4, 0xff, 0x74, 0x2e, 0xd5, 0x6f, 0x00,
-	0xc6, 0x82, 0xe5, 0x2d, 0x6a, 0x69, 0xde, 0x2d, 0x6a, 0x79, 0xfa, 0x16, 0xb5, 0x0a, 0xab, 0xdd,
-	0x7c, 0x46, 0x54, 0xa2, 0x59, 0xbb, 0xfa, 0x33, 0xd8, 0x2c, 0xf4, 0xfb, 0x1b, 0x16, 0x3f, 0x84,
-	0x65, 0xa1, 0xe6, 0x5f, 0x41, 0xee, 0x2d, 0x58, 0x8a, 0x87, 0x8c, 0xf9, 0x52, 0xa8, 0x68, 0xa0,
-	0xaf, 0xef, 0x77, 0xba, 0xc5, 0x44, 0x28, 0x07, 0xa9, 0xfe, 0x6b, 0x99, 0x4f, 0x67, 0xe1, 0x03,
-	0xb9, 0x0f, 0xcb, 0x17, 0x57, 0xa7, 0x51, 0xe0, 0x17, 0x1d, 0xbe, 0x04, 0xa2, 0x4f, 0x3d, 0xeb,
-	0x75, 0xe2, 0x0b, 0xf5, 0xb2, 0x13, 0xf4, 0x78, 0x31, 0xa5, 0xe0, 0x83, 0x27, 0x90, 0xe4, 0x33,
-	0x58, 0xc2, 0x60, 0x24, 0x96, 0xb6, 0xf5, 0xc6, 0x4b, 0x02, 0x18, 0x2a, 0xa8, 0xc9, 0x11, 0xbc,
-	0xd6, 0xed, 0xf4, 0xba, 0x23, 0x34, 0xa9, 0xc3, 0x28, 0xec, 0x1f, 0x87, 0xe8, 0xa9, 0x39, 0x43,
-	0xc0, 0xe2, 0x62, 0x42, 0x7d, 0x1d, 0x65, 0xd5, 0x80, 0xb5, 0x4c, 0xb8, 0x3c, 0x40, 0xb1, 0xcd,
-	0x95, 0x28, 0xb4, 0x9b, 0x07, 0xe1, 0xe2, 0xc8, 0x66, 0x2c, 0x8b, 0x27, 0x59, 0xbb, 0xfa, 0x17,
-	0x17, 0xe0, 0xee, 0xdc, 0x4b, 0x5d, 0x5e, 0xea, 0xf0, 0xd9, 0x20, 0x09, 0xce, 0xae, 0x44, 0xcc,
-	0x3e, 0x94, 0x67, 0xc5, 0x24, 0x98, 0xfc, 0x02, 0xb6, 0x4f, 0x47, 0xd8, 0xd2, 0xc2, 0x7e, 0x1f,
-	0x7d, 0x75, 0x2c, 0x0d, 0xfd, 0xf3, 0x97, 0x5e, 0x24, 0x67, 0x05, 0xd5, 0xd4, 0xcb, 0x72, 0xdb,
-	0x9f, 0x14, 0x47, 0x4e, 0x41, 0x89, 0x19, 0x8f, 0x87, 0xc7, 0x5d, 0x2c, 0xfc, 0x5a, 0x5d, 0x4c,
-	0xc9, 0x23, 0xfb, 0xb0, 0xc9, 0x5e, 0x24, 0x63, 0x9f, 0xcf, 0xf3, 0x3d, 0x71, 0xab, 0x5f, 0x44,
-	0x90, 0xa7, 0xa0, 0x14, 0x00, 0x0d, 0x76, 0x26, 0xb3, 0xb8, 0x82, 0x35, 0x38, 0x2c, 0xba, 0x64,
-	0x51, 0x81, 0x8c, 0x4e, 0x31, 0x56, 0xff, 0x5a, 0x09, 0xf6, 0x5e, 0x36, 0x5a, 0xd2, 0x84, 0xcd,
-	0xf4, 0x0d, 0x42, 0xfe, 0xf9, 0xc5, 0xbb, 0xf3, 0x6a, 0xd3, 0xe3, 0x06, 0x4f, 0x2b, 0x8a, 0xcc,
-	0xa4, 0xc6, 0x0b, 0xd6, 0x5c, 0xba, 0xdc, 0x7b, 0xbc, 0x1e, 0x98, 0x87, 0x55, 0xcf, 0x61, 0xab,
-	0x78, 0x3b, 0x4e, 0x3e, 0x80, 0xcd, 0xf8, 0x22, 0x1c, 0xc6, 0x6e, 0x78, 0xce, 0x92, 0x8b, 0xc9,
-	0xf0, 0xa9, 0x88, 0x23, 0xfb, 0xb0, 0x91, 0xd6, 0xfb, 0x73, 0x5b, 0x4a, 0x04, 0x0b, 0x05, 0x4c,
-	0xf5, 0x77, 0x60, 0xab, 0x78, 0x71, 0x4e, 0x9e, 0xc0, 0xed, 0x4e, 0xba, 0xdd, 0x0e, 0xc3, 0xc8,
-	0x4e, 0x55, 0x53, 0x08, 0x5e, 0x67, 0x93, 0xe0, 0x66, 0xc6, 0x63, 0xbc, 0xe7, 0x88, 0x78, 0x84,
-	0xf9, 0x13, 0x9b, 0xb9, 0x88, 0xac, 0xfe, 0xa3, 0x12, 0xec, 0x4c, 0xdd, 0x61, 0x91, 0xcf, 0x61,
-	0xb7, 0xdf, 0x79, 0x11, 0xf4, 0x47, 0x7d, 0x89, 0x0b, 0x06, 0xe7, 0xed, 0x41, 0x90, 0xc4, 0x5c,
-	0xed, 0x65, 0x3a, 0x07, 0x4b, 0x9e, 0x40, 0x25, 0x1b, 0xd5, 0x24, 0x67, 0x99, 0x73, 0xce, 0xc5,
-	0x93, 0xc7, 0x70, 0x27, 0xbd, 0xd5, 0x9a, 0x64, 0x15, 0x55, 0xf5, 0x79, 0xe8, 0xea, 0x5f, 0x59,
-	0x83, 0x5b, 0xb3, 0x2e, 0xca, 0xc8, 0x01, 0x90, 0xc9, 0x8b, 0xb2, 0x2c, 0xb7, 0x9d, 0x81, 0x11,
-	0x29, 0x70, 0x27, 0x4a, 0xdc, 0x40, 0x86, 0x31, 0x0b, 0x74, 0x0c, 0x40, 0x47, 0xe2, 0x8f, 0x22,
-	0xf1, 0x40, 0x41, 0x54, 0x58, 0xb3, 0x36, 0xf1, 0x61, 0x3b, 0xbd, 0xd6, 0x73, 0xf9, 0x75, 0xfc,
-	0x55, 0x65, 0x91, 0x1b, 0xe8, 0x93, 0x57, 0xbf, 0xd7, 0x3b, 0x30, 0x8a, 0x12, 0xe8, 0xa4, 0x48,
-	0xf2, 0x73, 0xd8, 0x0c, 0xcf, 0xce, 0x58, 0x84, 0xbb, 0xb6, 0xd7, 0x89, 0xe3, 0xca, 0x12, 0xef,
-	0xe3, 0xf1, 0xf7, 0xe8, 0xc3, 0xca, 0xf3, 0xd3, 0xa2, 0x38, 0xf2, 0x67, 0x61, 0x23, 0x05, 0xc8,
-	0x7a, 0x2d, 0x8a, 0xff, 0xe2, 0x57, 0x10, 0x2f, 0xae, 0x77, 0xf2, 0xc2, 0xc8, 0xfb, 0xa0, 0xc8,
-	0xb5, 0x0f, 0x7a, 0x41, 0x72, 0xf5, 0x4d, 0x38, 0x60, 0xb2, 0xa2, 0x3f, 0x05, 0x27, 0x16, 0xac,
-	0x0e, 0x7b, 0x9d, 0xe4, 0x2c, 0x8c, 0xfa, 0x95, 0x55, 0x3e, 0x88, 0x4f, 0xbe, 0xc7, 0x20, 0x6c,
-	0xc9, 0x4a, 0x33, 0x21, 0xe8, 0xca, 0x07, 0xa3, 0xfe, 0x29, 0x8b, 0xac, 0x33, 0x2d, 0x1c, 0x0d,
-	0xc3, 0x41, 0x5c, 0x59, 0xdb, 0x2b, 0xef, 0x2f, 0xd1, 0x49, 0x30, 0x79, 0x08, 0x37, 0x27, 0x40,
-	0xed, 0x98, 0x3f, 0xde, 0x29, 0xef, 0x97, 0xe8, 0x2c, 0x14, 0x5a, 0xcd, 0x59, 0xf0, 0x02, 0x93,
-	0x8e, 0x38, 0xa9, 0xac, 0x73, 0xba, 0x31, 0x00, 0xb1, 0xa3, 0x98, 0x47, 0x55, 0x71, 0x52, 0xd9,
-	0x10, 0xd8, 0x0c, 0x80, 0xd9, 0x5d, 0xc4, 0xba, 0xa3, 0x88, 0xaf, 0x01, 0x52, 0x6c, 0x72, 0x8a,
-	0x22, 0x10, 0x73, 0x92, 0x88, 0x9d, 0xa3, 0xdd, 0x6d, 0x71, 0xdb, 0x95, 0x2d, 0xe4, 0x4e, 0x4d,
-	0x84, 0x9f, 0x86, 0x95, 0x6d, 0x3e, 0xa7, 0x22, 0x30, 0x57, 0x3e, 0xb5, 0xb3, 0x47, 0x2f, 0x0a,
-	0x97, 0x33, 0x05, 0xaf, 0x7d, 0x01, 0xdb, 0x13, 0x56, 0x48, 0xd6, 0x61, 0xa5, 0xa1, 0x1f, 0xaa,
-	0xed, 0xa6, 0x3b, 0x5d, 0x6c, 0x59, 0x85, 0xc5, 0x63, 0xcb, 0x71, 0x95, 0x85, 0xda, 0x01, 0x6c,
-	0x16, 0x4c, 0x8b, 0x6c, 0xc0, 0xaa, 0xe3, 0xaa, 0x66, 0x43, 0xa5, 0x0d, 0xa5, 0x44, 0xb6, 0x61,
-	0x5d, 0xb3, 0xcc, 0x13, 0x9d, 0xba, 0x46, 0xbd, 0xa9, 0x2b, 0xe5, 0x5a, 0x03, 0x36, 0xf2, 0xb6,
-	0x82, 0x04, 0x6a, 0xb3, 0xe9, 0xb5, 0xed, 0x43, 0x6a, 0x99, 0xd8, 0xd3, 0x4d, 0xd8, 0xb6, 0x55,
-	0xea, 0x1a, 0xea, 0x18, 0x58, 0x26, 0x5b, 0x00, 0xa6, 0x95, 0xb5, 0x17, 0x6a, 0xbf, 0x57, 0x82,
-	0xd5, 0x74, 0xb5, 0x71, 0xa0, 0x6d, 0xf3, 0xa9, 0x69, 0x3d, 0x33, 0x95, 0x12, 0x59, 0x83, 0xa5,
-	0xa6, 0x61, 0xb6, 0xbf, 0x16, 0x83, 0xa4, 0xc7, 0x7a, 0x53, 0x59, 0xc0, 0x5f, 0x4e, 0xdb, 0xd1,
-	0x95, 0x45, 0xa4, 0x7d, 0x66, 0x98, 0x0d, 0xeb, 0x99, 0xa3, 0x2c, 0x91, 0x0a, 0xdc, 0x92, 0x0d,
-	0xcf, 0xf9, 0xaa, 0xe9, 0x65, 0xc3, 0x5e, 0xc6, 0x41, 0xe4, 0x31, 0xcf, 0xf4, 0xba, 0xb2, 0x42,
-	0xde, 0x84, 0xfb, 0x05, 0x72, 0x9d, 0x9e, 0xe8, 0xd4, 0xd3, 0x4d, 0x57, 0xa7, 0x36, 0x35, 0x1c,
-	0x5d, 0x59, 0xad, 0xfd, 0xa5, 0x55, 0x80, 0xf1, 0x3d, 0x27, 0x01, 0x58, 0x76, 0x9e, 0x19, 0xae,
-	0x76, 0xac, 0xdc, 0x20, 0xbb, 0x40, 0x4e, 0x0c, 0xea, 0xb6, 0xd5, 0xa6, 0xd7, 0x50, 0x5d, 0x55,
-	0xe3, 0x7c, 0x4a, 0x09, 0x47, 0xe4, 0xb8, 0x16, 0x55, 0x8f, 0x74, 0xa5, 0xcc, 0x1b, 0x3a, 0x3d,
-	0x31, 0x34, 0x5d, 0x59, 0xc0, 0x41, 0x20, 0x65, 0x5d, 0x75, 0x74, 0xd9, 0x99, 0x98, 0x80, 0xa3,
-	0x9e, 0x18, 0xe6, 0x11, 0x4e, 0x60, 0x03, 0x56, 0x2d, 0x5b, 0xa7, 0xaa, 0x6b, 0x51, 0x65, 0x19,
-	0x95, 0xf4, 0x4c, 0xaf, 0xa7, 0xa4, 0x2b, 0xa8, 0x5a, 0x6a, 0x1c, 0x1d, 0xbb, 0x9e, 0x63, 0x7c,
-	0xa3, 0x53, 0x65, 0x95, 0x54, 0x61, 0xd7, 0x3d, 0xa6, 0xba, 0xee, 0xb9, 0x86, 0x4e, 0x3d, 0xd5,
-	0xb6, 0x9b, 0xb8, 0xa0, 0x86, 0x65, 0x2a, 0x6b, 0xd8, 0x59, 0x3a, 0xbc, 0x96, 0xaa, 0x1d, 0x1b,
-	0xa6, 0xae, 0x00, 0x4a, 0x6c, 0x18, 0xce, 0x53, 0x4f, 0xa5, 0x54, 0x7d, 0xae, 0xac, 0xf3, 0xf6,
-	0x78, 0xec, 0x1b, 0x84, 0xc0, 0x96, 0x61, 0x1e, 0x52, 0xd5, 0x71, 0x69, 0x5b, 0x73, 0xdb, 0x54,
-	0x57, 0x36, 0xc9, 0x2d, 0x50, 0xec, 0xe3, 0xe7, 0x8e, 0xa1, 0xe5, 0x24, 0x6d, 0xe1, 0xb0, 0xb5,
-	0x63, 0xd5, 0x71, 0x0c, 0x47, 0xd9, 0x26, 0xb7, 0x61, 0xa7, 0x69, 0x68, 0xba, 0xe9, 0x18, 0xe6,
-	0x91, 0x97, 0xce, 0x57, 0x21, 0x3b, 0xb0, 0x59, 0x6f, 0x3b, 0x86, 0xa9, 0x3b, 0x8e, 0xd7, 0x76,
-	0x74, 0xaa, 0xec, 0xa0, 0xd2, 0xa4, 0x72, 0x3c, 0xcd, 0x32, 0x5d, 0x6a, 0x35, 0x9b, 0x3a, 0x55,
-	0x08, 0x0e, 0xe4, 0xf8, 0xb9, 0x8d, 0x9c, 0x8e, 0x45, 0x95, 0x9b, 0x38, 0xfa, 0x8c, 0x55, 0x37,
-	0x5d, 0xc3, 0x7d, 0xae, 0xdc, 0x42, 0x9b, 0x35, 0x2c, 0xaf, 0x65, 0x35, 0xda, 0x4d, 0x5d, 0xb9,
-	0x8d, 0x83, 0x55, 0x35, 0x9c, 0xad, 0xd7, 0x52, 0x4d, 0xf5, 0x48, 0xa7, 0xca, 0x2e, 0x1a, 0xc6,
-	0x49, 0x53, 0x35, 0x95, 0x3b, 0xd8, 0x53, 0x4e, 0x21, 0xa9, 0x12, 0x2b, 0xa8, 0xe2, 0x54, 0xb2,
-	0x72, 0x97, 0xdc, 0x81, 0x9b, 0xa9, 0x96, 0xf2, 0xea, 0xab, 0x22, 0xc2, 0xd4, 0xdd, 0x67, 0x16,
-	0x7d, 0x8a, 0x73, 0xd2, 0xcd, 0x86, 0x6d, 0x19, 0xa6, 0xab, 0xbc, 0x86, 0xea, 0xc8, 0x46, 0xa6,
-	0x6a, 0x9a, 0xd5, 0x36, 0x5d, 0xe5, 0x1e, 0x59, 0x86, 0xb2, 0x61, 0x2b, 0xf7, 0xc9, 0x6b, 0x70,
-	0x47, 0xce, 0x5f, 0x0e, 0xdb, 0x73, 0xf5, 0x96, 0xdd, 0x54, 0x5d, 0x5d, 0x79, 0x1d, 0x07, 0x67,
-	0x5b, 0xd4, 0x55, 0xde, 0x40, 0xed, 0x49, 0xe9, 0xca, 0x1e, 0xdf, 0x31, 0xb9, 0xbe, 0xdf, 0x44,
-	0x80, 0x7b, 0x6c, 0x64, 0x13, 0xaf, 0x61, 0x9f, 0x9a, 0xd5, 0xb2, 0xdb, 0xae, 0xee, 0x51, 0xdd,
-	0xb1, 0xda, 0x54, 0xd3, 0x95, 0xb7, 0xc8, 0x0a, 0x2c, 0xb4, 0x54, 0x4d, 0x79, 0x1b, 0xa7, 0x64,
-	0xe0, 0x02, 0x9a, 0xba, 0xab, 0xbc, 0x83, 0x1b, 0xa6, 0x65, 0xe1, 0x5c, 0xdf, 0x45, 0x03, 0x6f,
-	0x18, 0x8e, 0x4b, 0x8d, 0x7a, 0xdb, 0xd5, 0x1b, 0x5e, 0x3a, 0x53, 0x1c, 0xc4, 0x11, 0xb5, 0xda,
-	0xb6, 0xf2, 0x1e, 0xea, 0x14, 0x17, 0x42, 0x35, 0x4c, 0x9d, 0x2a, 0xfb, 0xb8, 0x64, 0x59, 0xd3,
-	0xb3, 0xad, 0x86, 0xf2, 0x03, 0xa2, 0xc0, 0x46, 0xd3, 0x3a, 0xe2, 0xcb, 0x6f, 0x5b, 0x56, 0x53,
-	0x79, 0x9f, 0x13, 0x35, 0xad, 0x76, 0x23, 0x5b, 0xea, 0x0f, 0x70, 0x6a, 0x0d, 0x24, 0x7f, 0xc0,
-	0x57, 0x00, 0x7f, 0x7d, 0x88, 0xc3, 0x4a, 0xcd, 0x5d, 0x39, 0x40, 0xa6, 0xa6, 0xa5, 0x36, 0xbc,
-	0xba, 0xda, 0x54, 0x4d, 0x4d, 0xa7, 0xca, 0x47, 0xb8, 0x5d, 0xc7, 0xaa, 0xcc, 0x69, 0xe0, 0x21,
-	0x2e, 0xad, 0x4d, 0x2d, 0x4d, 0x77, 0x1c, 0x8b, 0x8a, 0x5e, 0x3f, 0x46, 0x58, 0x6a, 0x3a, 0x27,
-	0x56, 0xb3, 0xdd, 0xd2, 0x95, 0x47, 0x68, 0x78, 0x69, 0x8d, 0xd8, 0x33, 0x4c, 0xdc, 0xef, 0x9a,
-	0xae, 0x7c, 0x42, 0xde, 0x82, 0x37, 0xa6, 0xc0, 0x9e, 0x63, 0xeb, 0x9a, 0x71, 0x98, 0xf6, 0xf1,
-	0x29, 0xb9, 0x0f, 0x77, 0x1b, 0xba, 0x63, 0x50, 0xbd, 0xe1, 0x4d, 0xcb, 0xf8, 0x8c, 0x6c, 0x8c,
-	0x9d, 0xd0, 0x9f, 0x6e, 0xd7, 0x5c, 0x80, 0xf1, 0x9b, 0x4d, 0xb4, 0xd6, 0xf1, 0xab, 0x4d, 0xe1,
-	0x14, 0xb3, 0xf6, 0xe1, 0xa1, 0x52, 0x46, 0xad, 0x3a, 0x6d, 0xc7, 0xd6, 0xcd, 0x06, 0x2f, 0x5e,
-	0xef, 0x02, 0xe1, 0x78, 0xc7, 0x55, 0x5d, 0xdd, 0x4b, 0xc5, 0x2e, 0xd6, 0xfe, 0x4e, 0x29, 0xbb,
-	0xef, 0xe7, 0xee, 0x65, 0x07, 0x36, 0x8f, 0x74, 0x53, 0xa7, 0x86, 0xe6, 0xd5, 0x9b, 0x96, 0xf6,
-	0x54, 0xb8, 0x3f, 0xc3, 0xd1, 0x1c, 0x43, 0x29, 0x23, 0xf6, 0xd0, 0xa8, 0xeb, 0xd4, 0xd3, 0x8e,
-	0x55, 0xd3, 0x4c, 0xfd, 0xe0, 0xa1, 0x66, 0xa1, 0x1f, 0x04, 0x58, 0xb6, 0xea, 0x3f, 0xd5, 0x35,
-	0x57, 0x59, 0x42, 0xdb, 0x4d, 0xc5, 0x1c, 0x1a, 0x4d, 0xdd, 0x73, 0x9e, 0x3b, 0xae, 0xde, 0x52,
-	0x96, 0xd1, 0x62, 0xcc, 0x43, 0x47, 0x59, 0xc1, 0xa5, 0xd1, 0x8c, 0x43, 0xc7, 0x73, 0x5a, 0x75,
-	0x65, 0x95, 0xbb, 0x58, 0x4b, 0x53, 0x9b, 0xca, 0x1a, 0xfe, 0xb4, 0xdc, 0x63, 0x9d, 0x2a, 0xc0,
-	0x17, 0xb2, 0x75, 0xe8, 0x28, 0xeb, 0xb5, 0xdf, 0xc9, 0x6e, 0xd3, 0x26, 0x8a, 0xfc, 0xd2, 0x5c,
-	0x0e, 0x8d, 0xa3, 0x36, 0x15, 0x6a, 0x2d, 0x71, 0x4b, 0x30, 0x9c, 0xa7, 0xa2, 0x80, 0xef, 0x98,
-	0xaa, 0xed, 0x1c, 0x5b, 0xae, 0x28, 0xe0, 0xb7, 0xf4, 0x96, 0x45, 0x9f, 0x2b, 0x8b, 0xdc, 0x7d,
-	0x3f, 0x53, 0x6d, 0x65, 0x09, 0x47, 0xd4, 0xb4, 0x8e, 0xc4, 0xd0, 0x0c, 0xc7, 0x52, 0x56, 0x50,
-	0xb7, 0xba, 0xf3, 0xb5, 0x66, 0x99, 0x8e, 0xd5, 0x44, 0x0f, 0xfc, 0xc9, 0x8c, 0xba, 0x1f, 0x0d,
-	0x7b, 0xfc, 0x26, 0x21, 0xad, 0x41, 0x2a, 0x25, 0x6c, 0xd9, 0xd4, 0x6a, 0xb4, 0xd1, 0xb2, 0xca,
-	0xb5, 0x5f, 0xc0, 0xde, 0xcb, 0x2a, 0x65, 0xe8, 0x62, 0xd4, 0x26, 0xce, 0x9b, 0xfb, 0x07, 0x6e,
-	0x64, 0x25, 0x9c, 0x90, 0xad, 0x3e, 0xf7, 0x54, 0xc7, 0x7b, 0x6e, 0xb5, 0xbd, 0x23, 0x4b, 0x29,
-	0xe3, 0xe6, 0x13, 0xf6, 0x91, 0x23, 0x5c, 0xa8, 0xf5, 0x60, 0xc3, 0x1c, 0xe7, 0xa6, 0x31, 0xdf,
-	0xd1, 0xed, 0x96, 0xe7, 0x38, 0x78, 0x48, 0x12, 0xd8, 0xc2, 0xc6, 0x17, 0x8f, 0x1e, 0x3e, 0xf4,
-	0x50, 0x19, 0x8e, 0x58, 0x3d, 0x84, 0x7d, 0xfc, 0xf0, 0xa9, 0x04, 0x2d, 0x64, 0xa0, 0xcf, 0x52,
-	0xd0, 0x22, 0x1a, 0x34, 0x82, 0x4e, 0x1c, 0x9d, 0x1a, 0xba, 0x23, 0xc1, 0x4b, 0xb5, 0x27, 0xb0,
-	0x91, 0x7f, 0x09, 0x2d, 0xfd, 0xb8, 0x7c, 0x0b, 0x2d, 0xac, 0xc4, 0xa6, 0xd6, 0xd7, 0xcf, 0x95,
-	0x32, 0x3f, 0x24, 0x74, 0xbb, 0xa9, 0x6a, 0xba, 0x8a, 0x07, 0xf4, 0x42, 0x7d, 0x13, 0xd6, 0xc5,
-	0xeb, 0x6b, 0x7e, 0xcd, 0x50, 0xbf, 0x0d, 0x37, 0xd3, 0x37, 0x4b, 0x39, 0x70, 0xed, 0xaf, 0xdf,
-	0x87, 0x8d, 0x7c, 0xda, 0xf5, 0x1b, 0xce, 0xd3, 0xe4, 0xe5, 0x96, 0x28, 0x8d, 0xf0, 0xcb, 0x2d,
-	0x02, 0x8b, 0xa3, 0x38, 0xab, 0x88, 0xf0, 0xdf, 0x64, 0x0f, 0xd6, 0x45, 0x30, 0x2f, 0x62, 0xf3,
-	0x45, 0x8e, 0xca, 0x83, 0x0a, 0x05, 0x9a, 0xa5, 0x62, 0x81, 0x86, 0x3f, 0x39, 0x09, 0xfa, 0x41,
-	0xc2, 0x2f, 0x0a, 0x4b, 0x54, 0x34, 0xf8, 0x65, 0x03, 0xeb, 0x7c, 0xcb, 0x23, 0xd4, 0x12, 0xe5,
-	0xbf, 0xc9, 0x3d, 0x58, 0xee, 0x88, 0x2b, 0xf8, 0xd5, 0x5c, 0x1e, 0x26, 0x61, 0xe4, 0x2d, 0x58,
-	0x8b, 0x58, 0x1c, 0xfc, 0x92, 0x67, 0x7b, 0x6b, 0xf9, 0x9c, 0x6b, 0x0c, 0x9f, 0xac, 0xf9, 0xc0,
-	0x74, 0xcd, 0xa7, 0x02, 0x8b, 0xc9, 0x45, 0x30, 0xe0, 0x4f, 0x46, 0xd2, 0x2e, 0x38, 0x84, 0xfc,
-	0x00, 0x33, 0xca, 0xfe, 0x70, 0x94, 0x30, 0x9f, 0x87, 0xa4, 0x1b, 0xf9, 0x3e, 0x0a, 0x28, 0x0c,
-	0x0c, 0x51, 0x33, 0xc6, 0xa0, 0x1b, 0x89, 0xc4, 0x71, 0x93, 0x4f, 0xa3, 0x08, 0x24, 0x2a, 0xac,
-	0x60, 0xc6, 0xdb, 0xea, 0x0c, 0x2b, 0x5b, 0x3c, 0x79, 0x7f, 0x6f, 0xee, 0x2a, 0x8d, 0x9f, 0xe0,
-	0x37, 0x83, 0x38, 0xa1, 0x29, 0x1f, 0x4e, 0x3a, 0xe0, 0x51, 0xb0, 0xdd, 0xc5, 0xe8, 0x33, 0x3f,
-	0xe9, 0x0c, 0x8e, 0x99, 0xdd, 0x28, 0x09, 0x7a, 0xc1, 0x2f, 0xc5, 0x4b, 0x94, 0x8b, 0x88, 0xc5,
-	0x17, 0x61, 0x8f, 0xb3, 0x28, 0x7c, 0x5c, 0xf3, 0xd0, 0x84, 0xc2, 0xf6, 0x30, 0x0a, 0xba, 0xc1,
-	0xe0, 0xbc, 0xc5, 0x92, 0x0e, 0x7f, 0x2c, 0xb7, 0x33, 0xfd, 0xbc, 0x77, 0x62, 0xa4, 0x05, 0x7a,
-	0x3a, 0x29, 0x80, 0xfc, 0x02, 0x6e, 0xa5, 0x0f, 0xf2, 0xd0, 0x9e, 0x07, 0xdd, 0xab, 0xc2, 0x73,
-	0xe9, 0x0f, 0xe6, 0x4a, 0x96, 0x2e, 0xb7, 0x29, 0x98, 0xd2, 0xb7, 0xc3, 0xf1, 0x14, 0x94, 0xfc,
-	0x0c, 0x6e, 0xa6, 0x3d, 0x74, 0xf8, 0x0b, 0xb0, 0xc2, 0x1b, 0xea, 0xf7, 0x5f, 0xd6, 0x81, 0x78,
-	0x35, 0x96, 0xbe, 0x25, 0x8d, 0x27, 0x81, 0xe4, 0xcf, 0xc1, 0x9d, 0xcb, 0x54, 0xfe, 0xb0, 0x13,
-	0x25, 0xc1, 0xd4, 0xab, 0xea, 0xc2, 0x5b, 0xaf, 0x13, 0x29, 0xd6, 0x4e, 0x49, 0xb3, 0xe7, 0xc2,
-	0xf1, 0x0c, 0x04, 0xe9, 0x41, 0x25, 0x13, 0x3e, 0x7e, 0xcc, 0x53, 0x78, 0x5b, 0xfd, 0xd1, 0xcb,
-	0x66, 0x90, 0x7b, 0x05, 0x94, 0xbe, 0xb9, 0x8d, 0x67, 0x62, 0x88, 0x0a, 0x6b, 0x97, 0x7d, 0xd6,
-	0x17, 0xe2, 0xff, 0x59, 0x69, 0x7a, 0xf4, 0x05, 0xf1, 0x27, 0x2d, 0xd6, 0x97, 0xcf, 0x1e, 0x57,
-	0x91, 0x2d, 0x13, 0xd1, 0x1d, 0x8e, 0x84, 0x88, 0x7f, 0xfe, 0x52, 0x11, 0xda, 0x70, 0x94, 0x89,
-	0xe8, 0x8a, 0xdf, 0xd5, 0x1f, 0xf1, 0x0a, 0x4c, 0xce, 0xc0, 0xb3, 0xbb, 0x8c, 0x52, 0xee, 0x2e,
-	0x63, 0x17, 0x96, 0xf9, 0xf5, 0x45, 0x9c, 0xdd, 0x0c, 0xf1, 0x56, 0xf5, 0x6f, 0x94, 0x81, 0x4c,
-	0xdb, 0x06, 0x79, 0x02, 0x95, 0xf4, 0x4e, 0x28, 0x7b, 0xdd, 0x24, 0xf1, 0xa2, 0x8e, 0x43, 0xe7,
-	0xe2, 0xc9, 0xe7, 0xb0, 0x3b, 0x71, 0x9f, 0x94, 0x72, 0xf2, 0x62, 0x0e, 0x9d, 0x83, 0x25, 0x3f,
-	0x86, 0x6a, 0x8a, 0xc9, 0x3d, 0x36, 0x4a, 0x79, 0xf9, 0x7d, 0x15, 0xbd, 0x86, 0x82, 0x98, 0x50,
-	0x9b, 0x8f, 0x2d, 0x3c, 0x57, 0x5c, 0xa5, 0xaf, 0x40, 0x59, 0xfd, 0xbb, 0x25, 0xd8, 0x99, 0xb2,
-	0x6a, 0xfe, 0xb2, 0x69, 0x72, 0xe6, 0x86, 0x65, 0x3b, 0x52, 0x2d, 0xb3, 0x91, 0x98, 0x98, 0x4f,
-	0xcc, 0x9a, 0xf3, 0x08, 0x85, 0xcc, 0x42, 0xa1, 0xdf, 0x99, 0x31, 0x46, 0xce, 0x25, 0x54, 0x31,
-	0x0f, 0x5d, 0xfd, 0x12, 0x76, 0x67, 0x9b, 0x32, 0x79, 0x17, 0xb6, 0xd0, 0x89, 0xaa, 0xfe, 0x6f,
-	0x8f, 0xe2, 0x24, 0xab, 0xc9, 0x95, 0xe8, 0x04, 0xb4, 0xfa, 0x43, 0x58, 0x4d, 0xad, 0x95, 0x7c,
-	0x04, 0xdb, 0x17, 0x61, 0xa2, 0xfa, 0xfe, 0xb8, 0x26, 0x57, 0xa8, 0x1c, 0x4e, 0x62, 0xab, 0x7f,
-	0xbb, 0x04, 0xab, 0xa9, 0xa1, 0x7e, 0x6f, 0x6e, 0xf2, 0x19, 0x90, 0x8b, 0x30, 0xa1, 0xac, 0x1f,
-	0x5e, 0xb2, 0x39, 0x55, 0xc0, 0x19, 0x04, 0xd8, 0x4f, 0x10, 0x53, 0xd6, 0xe1, 0xef, 0x53, 0x58,
-	0xa4, 0x0d, 0x47, 0xc5, 0xab, 0xd5, 0x49, 0x6c, 0xf5, 0x05, 0x6c, 0x4f, 0x38, 0x5b, 0xc2, 0xe0,
-	0x8e, 0x74, 0xb7, 0xc7, 0x9d, 0x81, 0xdf, 0x63, 0x91, 0x59, 0xb8, 0x2e, 0x9c, 0xb8, 0x2c, 0xd6,
-	0x46, 0x71, 0x12, 0xf2, 0xda, 0x73, 0x83, 0x9d, 0x1d, 0xa4, 0x42, 0x32, 0x16, 0x3a, 0x4f, 0x56,
-	0xed, 0x4f, 0xd6, 0x61, 0xb3, 0x10, 0x37, 0xf0, 0xbc, 0xb2, 0xd9, 0x76, 0x30, 0x1d, 0xe5, 0xcf,
-	0x43, 0x30, 0xbf, 0x55, 0x1b, 0x8e, 0x08, 0xaa, 0x34, 0xbb, 0xed, 0x8d, 0x63, 0x36, 0x11, 0x9b,
-	0x99, 0xed, 0x16, 0x8f, 0x89, 0x65, 0x28, 0xe8, 0x88, 0x3c, 0xfb, 0xb0, 0x69, 0x3d, 0xcb, 0x93,
-	0xf2, 0x3c, 0xfb, 0xab, 0x8f, 0xbd, 0x13, 0xcd, 0x6e, 0x8b, 0x08, 0x39, 0xcd, 0x25, 0x6c, 0x6a,
-	0x9d, 0x18, 0x8e, 0x61, 0x99, 0x7a, 0x43, 0x59, 0x1e, 0x67, 0xb2, 0x98, 0x9f, 0xb6, 0x5a, 0x56,
-	0x03, 0x13, 0xb0, 0x95, 0x7c, 0xee, 0xa1, 0xb6, 0x78, 0xca, 0xb7, 0x8a, 0x11, 0xe7, 0x57, 0x1f,
-	0x7f, 0x2e, 0x24, 0xae, 0xf1, 0xd6, 0x27, 0x8f, 0x44, 0x0b, 0xc8, 0x5d, 0xb8, 0xed, 0xa8, 0x2d,
-	0xdd, 0x93, 0x53, 0xf1, 0x30, 0x21, 0xf3, 0x9c, 0x13, 0x4d, 0x59, 0xe7, 0xe3, 0xf8, 0x44, 0xd0,
-	0x6d, 0x60, 0x04, 0xe8, 0x34, 0xd5, 0x5c, 0x57, 0x9b, 0x98, 0xd3, 0x6b, 0xd4, 0x72, 0x9c, 0x69,
-	0xde, 0x2d, 0x9e, 0x94, 0x4e, 0x4c, 0xd7, 0xb3, 0x5b, 0xca, 0x76, 0x3e, 0xad, 0xce, 0x4d, 0x5a,
-	0xe1, 0x9d, 0x3d, 0x16, 0x9d, 0xed, 0x60, 0x90, 0xe8, 0xd8, 0xaa, 0xa6, 0x2b, 0x84, 0xc3, 0xe5,
-	0xd0, 0x6f, 0xf2, 0xe0, 0x11, 0xb3, 0x13, 0xe5, 0x16, 0x4f, 0x29, 0xf5, 0x96, 0x72, 0x1b, 0x55,
-	0x98, 0x0a, 0xc4, 0xe4, 0xd5, 0xd4, 0x9e, 0x2b, 0xbb, 0x9c, 0xeb, 0x0b, 0xc1, 0x75, 0x87, 0x2f,
-	0x94, 0x65, 0x35, 0x0d, 0xf3, 0x48, 0xa9, 0x88, 0x04, 0x88, 0xba, 0x3c, 0x33, 0xd1, 0x9b, 0xca,
-	0x5d, 0x9e, 0x3c, 0x20, 0x5d, 0x95, 0x33, 0x99, 0x82, 0xe9, 0x35, 0x14, 0x8b, 0x6b, 0x98, 0xd7,
-	0xf9, 0x3d, 0x54, 0xee, 0xb8, 0xac, 0xc1, 0x67, 0x7a, 0x1f, 0xf9, 0x71, 0xde, 0xca, 0xeb, 0x9c,
-	0x5f, 0xea, 0x95, 0xe7, 0xcd, 0x5f, 0x7d, 0x26, 0x1a, 0x7b, 0x3c, 0xbf, 0x78, 0xa6, 0xda, 0x36,
-	0x0e, 0xe1, 0x4d, 0x4c, 0x53, 0x1d, 0xfd, 0xa8, 0xa5, 0x9b, 0xae, 0x98, 0x7c, 0x8d, 0x27, 0x47,
-	0x4d, 0xeb, 0x99, 0xf2, 0x16, 0x2f, 0x76, 0xa9, 0xae, 0x8a, 0x33, 0xd2, 0x95, 0xb7, 0x31, 0xef,
-	0x4c, 0x55, 0x8c, 0x59, 0x6c, 0xa6, 0xe0, 0x77, 0x70, 0x7c, 0xb9, 0xa1, 0x34, 0x30, 0x4b, 0x7b,
-	0x17, 0x17, 0xc9, 0xb0, 0x3c, 0xf7, 0x98, 0x5a, 0xed, 0xa3, 0x63, 0xbb, 0xed, 0x2a, 0xef, 0xa1,
-	0x9e, 0x70, 0x0c, 0xfb, 0x18, 0x88, 0xd7, 0x51, 0xe3, 0x96, 0x89, 0xa3, 0xf8, 0x01, 0x22, 0x4e,
-	0x1a, 0x9a, 0xf2, 0x3e, 0xb7, 0x87, 0xcf, 0x3f, 0x15, 0x43, 0xfd, 0x00, 0xc9, 0x34, 0xcb, 0x34,
-	0x75, 0x5e, 0xae, 0x50, 0x1e, 0x60, 0x3f, 0x2d, 0xbd, 0x55, 0xd0, 0xc3, 0x87, 0xf9, 0xc2, 0xd1,
-	0x01, 0x4f, 0x21, 0x74, 0x37, 0xdf, 0xeb, 0x47, 0xe4, 0x1e, 0x54, 0xa6, 0x96, 0x3f, 0xe5, 0x78,
-	0xc8, 0xab, 0x06, 0x54, 0x35, 0x1d, 0x51, 0x13, 0x11, 0x09, 0x33, 0x76, 0x92, 0x33, 0x88, 0x47,
-	0x48, 0xd4, 0x70, 0xec, 0x96, 0xa7, 0x6a, 0x98, 0x5c, 0x2b, 0x9f, 0xe0, 0xe4, 0xa8, 0xee, 0xd8,
-	0x16, 0x5a, 0xbc, 0x6b, 0xb4, 0x74, 0xe5, 0x53, 0x91, 0xf8, 0xe9, 0x2d, 0xe5, 0x33, 0x44, 0xca,
-	0x0a, 0x8b, 0xad, 0xd3, 0x96, 0xe1, 0x2a, 0x9f, 0x4f, 0x54, 0x8c, 0xbe, 0x98, 0x2c, 0x5e, 0x3c,
-	0xce, 0x97, 0x36, 0x7e, 0x8b, 0xaf, 0x97, 0x54, 0xc2, 0x93, 0xbc, 0x4d, 0xa5, 0x5b, 0xfc, 0x87,
-	0x98, 0x16, 0xea, 0x5f, 0xbb, 0xba, 0xe9, 0x2a, 0x3f, 0xc2, 0xdf, 0x72, 0x5c, 0x7f, 0x86, 0x8f,
-	0x6b, 0xbc, 0x12, 0x6d, 0x5b, 0xf9, 0x31, 0x76, 0x75, 0xa2, 0xda, 0x76, 0x3a, 0xf6, 0x9f, 0x14,
-	0x76, 0xa5, 0x80, 0x7d, 0x89, 0x7a, 0x3f, 0x49, 0x75, 0xa2, 0xa2, 0x7f, 0x68, 0xa0, 0x92, 0xf2,
-	0x86, 0x51, 0xc7, 0x7e, 0x1a, 0x75, 0x0f, 0xa7, 0xa8, 0xe1, 0xa0, 0x72, 0x5a, 0xf3, 0x30, 0x19,
-	0x6d, 0xa0, 0x17, 0x68, 0xd4, 0x3d, 0x4d, 0xd5, 0x8e, 0x75, 0xef, 0xd8, 0x70, 0x3d, 0xaa, 0xba,
-	0xba, 0xa2, 0xe3, 0x00, 0x8e, 0x2d, 0x37, 0x53, 0xf9, 0x21, 0x37, 0x67, 0xab, 0xd9, 0x14, 0xcb,
-	0x2a, 0xd4, 0x77, 0x24, 0x0a, 0x44, 0x87, 0x87, 0x7c, 0x95, 0xd2, 0x6d, 0x7d, 0x4c, 0x5e, 0x87,
-	0xaa, 0x63, 0x1d, 0xba, 0xcf, 0x54, 0xaa, 0x7b, 0xd3, 0x1e, 0xc6, 0xe0, 0x93, 0x6b, 0x8d, 0x17,
-	0xe6, 0xa7, 0x68, 0xcf, 0xc7, 0x79, 0xcf, 0xf0, 0x54, 0x9a, 0x04, 0x6a, 0xd6, 0xb3, 0xad, 0xa6,
-	0xa1, 0x3d, 0x57, 0x9a, 0xbc, 0x6e, 0xab, 0xab, 0xb6, 0xd2, 0xe2, 0x63, 0xce, 0x4a, 0x7b, 0xa9,
-	0x18, 0x93, 0x7b, 0x22, 0x59, 0x90, 0x6a, 0xea, 0x27, 0x7a, 0x33, 0x53, 0xbd, 0xc5, 0x0b, 0x7b,
-	0xa2, 0xc8, 0x62, 0x98, 0x47, 0x5e, 0xdb, 0x34, 0x5c, 0x47, 0xb1, 0x71, 0x4e, 0xc7, 0x96, 0xe3,
-	0x7a, 0xcd, 0xb6, 0x99, 0x4a, 0xf9, 0x0a, 0x35, 0xa6, 0x59, 0x6d, 0xdb, 0x32, 0x15, 0x8a, 0xc3,
-	0x70, 0x75, 0x53, 0x35, 0xb5, 0xac, 0x17, 0x07, 0x61, 0xe9, 0xa4, 0x24, 0xcc, 0xe5, 0x9a, 0x95,
-	0xb5, 0xaf, 0x14, 0xd8, 0x2e, 0x56, 0x55, 0xea, 0x0a, 0x6c, 0x65, 0x69, 0xa2, 0xc8, 0x4e, 0x15,
-	0xd8, 0xba, 0x08, 0x13, 0x9e, 0x66, 0x89, 0xcf, 0xaa, 0x6a, 0x9f, 0xc1, 0xed, 0x99, 0x81, 0x2f,
-	0xff, 0xf6, 0x33, 0x05, 0xa4, 0xaf, 0xd3, 0x32, 0x40, 0xed, 0x5f, 0xdc, 0x82, 0xd5, 0xa3, 0x28,
-	0x1c, 0x0d, 0x31, 0x97, 0x55, 0xb3, 0x14, 0x38, 0x19, 0x7f, 0x47, 0xf1, 0xfd, 0x3e, 0xf8, 0x7e,
-	0x13, 0x36, 0x64, 0x72, 0xe7, 0x0d, 0xe6, 0x5c, 0xf2, 0xbf, 0x01, 0x70, 0x8e, 0x3d, 0x0a, 0x02,
-	0xfe, 0xe8, 0xed, 0xf8, 0x06, 0x5d, 0xe3, 0x30, 0x4e, 0x60, 0xc2, 0x76, 0x37, 0x1c, 0xc4, 0x49,
-	0xd4, 0x09, 0x06, 0x89, 0x17, 0x0c, 0xce, 0xc2, 0x59, 0x2f, 0xb6, 0xd3, 0x51, 0xf3, 0x4f, 0x7a,
-	0x05, 0xad, 0x31, 0x38, 0x0b, 0x8f, 0x6f, 0x88, 0x8f, 0x7a, 0xc7, 0x10, 0xf2, 0x35, 0xdc, 0x8c,
-	0x59, 0x8f, 0x75, 0x79, 0xda, 0x10, 0x0f, 0x59, 0xd7, 0xeb, 0x05, 0x71, 0x22, 0xdf, 0x4b, 0xbf,
-	0x3b, 0x53, 0xa6, 0x93, 0xd2, 0x3b, 0x43, 0xd6, 0xc5, 0x00, 0xf9, 0xb8, 0x44, 0x77, 0xe2, 0x49,
-	0x20, 0xd1, 0x60, 0xbd, 0xcf, 0xfa, 0xa7, 0x2c, 0x12, 0x12, 0x97, 0xa7, 0x1f, 0x8a, 0x64, 0x12,
-	0x5b, 0x9c, 0x2e, 0x96, 0xb2, 0x40, 0xb0, 0x71, 0x21, 0x3d, 0xb8, 0xdb, 0xf1, 0x7d, 0xe6, 0x7b,
-	0x9d, 0x81, 0xef, 0x45, 0x3c, 0x48, 0xf1, 0x3d, 0x81, 0x8f, 0x2b, 0x33, 0xbe, 0x0c, 0xcb, 0x44,
-	0xaa, 0xc8, 0xa5, 0x0e, 0x7c, 0x11, 0xd8, 0xf8, 0xc5, 0x1e, 0x76, 0x3b, 0x33, 0xb1, 0x64, 0x1f,
-	0xb6, 0xe3, 0x70, 0x14, 0x75, 0x99, 0x27, 0x16, 0x21, 0xf0, 0xc5, 0x53, 0xdd, 0xe3, 0x12, 0xdd,
-	0x14, 0x08, 0x2e, 0xdf, 0xf0, 0x67, 0x7e, 0xcc, 0xbe, 0xf6, 0x6b, 0x7d, 0xcc, 0x5e, 0xfc, 0xd0,
-	0x18, 0xbe, 0xf7, 0x87, 0xc6, 0xd5, 0x7f, 0xbc, 0x20, 0xee, 0xa8, 0x73, 0x8b, 0xdb, 0x2c, 0x18,
-	0x4b, 0x32, 0xae, 0xc0, 0xbc, 0xcc, 0x58, 0xb8, 0xe9, 0xe6, 0x4c, 0x85, 0x9b, 0xef, 0x5b, 0xb0,
-	0x99, 0x37, 0xbd, 0xf4, 0x5f, 0x17, 0x6c, 0xe4, 0x2c, 0xca, 0x27, 0x7b, 0xb0, 0x1a, 0xc4, 0xde,
-	0xe9, 0xe8, 0x6a, 0xf2, 0x31, 0xde, 0x4a, 0x10, 0xd7, 0x11, 0x4a, 0x7e, 0xca, 0x9f, 0x47, 0xb0,
-	0xc8, 0xeb, 0xb3, 0xa4, 0x23, 0x12, 0xb5, 0xc5, 0xe9, 0xd7, 0xf9, 0xd9, 0xa0, 0x38, 0x53, 0xf6,
-	0x69, 0xfd, 0xe6, 0x69, 0xbe, 0x49, 0x3e, 0x05, 0x32, 0x60, 0xcc, 0xf7, 0xba, 0x61, 0x7f, 0xd8,
-	0xe3, 0x75, 0x8c, 0x4e, 0x24, 0x8a, 0x3a, 0x59, 0xbf, 0x3b, 0x48, 0xa0, 0xe5, 0xf1, 0xe4, 0xbd,
-	0x82, 0x5a, 0xf8, 0x4e, 0x5b, 0xe6, 0x53, 0xc9, 0xcd, 0x98, 0x6f, 0xb6, 0xdf, 0x82, 0x5b, 0x67,
-	0x61, 0xa4, 0xbf, 0xe8, 0xf6, 0x46, 0xfe, 0xf8, 0x1d, 0xa1, 0x30, 0xbc, 0xf1, 0xf7, 0x1e, 0xb3,
-	0x48, 0xc8, 0xe7, 0x70, 0x27, 0xd7, 0x47, 0x61, 0xdb, 0x8b, 0xd7, 0xdf, 0xb7, 0xc7, 0xe8, 0x46,
-	0xee, 0xf3, 0xad, 0x9f, 0xc3, 0xce, 0xd4, 0xfe, 0x22, 0x06, 0x6c, 0x15, 0x37, 0x29, 0x7f, 0x7a,
-	0x32, 0x4f, 0x63, 0x05, 0x7e, 0xba, 0x59, 0xd8, 0x99, 0xd5, 0x77, 0x60, 0x3d, 0xb7, 0x17, 0x30,
-	0x8d, 0x15, 0xbb, 0x29, 0x7d, 0xf8, 0x28, 0x5a, 0xd5, 0x0b, 0xa8, 0xce, 0xdf, 0x41, 0xa4, 0x06,
-	0x1b, 0x7c, 0x07, 0x49, 0x98, 0xe4, 0x2d, 0xc0, 0xc4, 0x07, 0x3f, 0x79, 0x4e, 0x99, 0x28, 0x4f,
-	0x40, 0xab, 0x21, 0x6c, 0x16, 0x96, 0x18, 0x1d, 0x6d, 0xcc, 0xf8, 0x77, 0x91, 0xdf, 0xcf, 0xd1,
-	0x0a, 0x26, 0x6e, 0xa9, 0xaf, 0xc1, 0x4a, 0x27, 0xf1, 0xfa, 0x61, 0x9c, 0x70, 0x1f, 0xbb, 0xf3,
-	0xa4, 0xfc, 0xe1, 0xc7, 0x74, 0xb9, 0x93, 0xb4, 0xc2, 0x38, 0xa9, 0xfe, 0xc1, 0x0a, 0x6c, 0x16,
-	0x54, 0x44, 0xaa, 0xb0, 0x9a, 0x3e, 0xf6, 0x90, 0x39, 0x7e, 0xd6, 0x26, 0xdf, 0xc0, 0x36, 0x7b,
-	0x31, 0x8c, 0x58, 0x8c, 0x69, 0x9f, 0x18, 0x51, 0x99, 0x6f, 0xa1, 0x8f, 0x5f, 0xae, 0xfb, 0x03,
-	0x3d, 0xe3, 0x14, 0x1b, 0x8a, 0x15, 0xda, 0x98, 0xfa, 0xa6, 0xfd, 0x78, 0xbc, 0x7c, 0xe0, 0xf9,
-	0xe1, 0xe8, 0xb4, 0x27, 0xfc, 0x7e, 0x89, 0x7f, 0x2a, 0x2e, 0xd1, 0x27, 0x88, 0x6d, 0x70, 0xe4,
-	0x0c, 0xae, 0x38, 0x89, 0x82, 0xc1, 0xb9, 0x78, 0xfc, 0x35, 0xc5, 0xe5, 0x70, 0x24, 0x49, 0xa0,
-	0x3a, 0x93, 0x2b, 0xef, 0xee, 0x3f, 0x7b, 0x85, 0x29, 0xa5, 0x1e, 0x4c, 0x88, 0xe5, 0xfe, 0xf4,
-	0x06, 0xe6, 0x66, 0x53, 0x3d, 0x72, 0x43, 0x99, 0xee, 0x55, 0xcc, 0x30, 0x7f, 0x24, 0x7c, 0x9f,
-	0x5e, 0x85, 0x0a, 0x66, 0xf6, 0x3a, 0x46, 0x55, 0x7f, 0x08, 0x64, 0x7a, 0x98, 0xe4, 0x1d, 0xfe,
-	0xef, 0x2b, 0x72, 0x63, 0x91, 0x66, 0xbb, 0x59, 0x10, 0x93, 0x67, 0x1e, 0x8b, 0x9c, 0xc3, 0x5c,
-	0x9a, 0x60, 0xae, 0xfd, 0x83, 0x32, 0x6c, 0x15, 0x17, 0x1d, 0x83, 0x49, 0xfd, 0xab, 0xb6, 0xda,
-	0xf4, 0x5c, 0x4b, 0xb9, 0x81, 0x11, 0x99, 0x69, 0xb9, 0x5e, 0x06, 0xe1, 0xf7, 0x3e, 0x4d, 0x95,
-	0x1e, 0xe9, 0xd4, 0x73, 0x8f, 0x55, 0xcc, 0x47, 0x5f, 0x83, 0x3b, 0x39, 0x80, 0x67, 0xd1, 0x31,
-	0xf5, 0x02, 0xcf, 0x50, 0x5a, 0x6a, 0xb3, 0x99, 0x92, 0x2f, 0x62, 0x40, 0x9f, 0x87, 0x14, 0xe8,
-	0x97, 0xe4, 0x05, 0x87, 0xab, 0x1a, 0xa6, 0xa3, 0x2c, 0xa7, 0xbd, 0x67, 0x90, 0x15, 0x84, 0xa4,
-	0x77, 0x75, 0x0d, 0xaf, 0xfe, 0x5c, 0x59, 0xe5, 0xe9, 0xf0, 0x98, 0x46, 0x40, 0xf9, 0x9d, 0x0e,
-	0xd5, 0x8f, 0xf4, 0xaf, 0x15, 0xe0, 0x77, 0x79, 0x86, 0xe3, 0x7a, 0xd6, 0x89, 0x4e, 0x9b, 0xaa,
-	0xad, 0xac, 0x23, 0x0b, 0x87, 0x20, 0x5f, 0x0a, 0xdd, 0xc0, 0x7c, 0x92, 0x43, 0x0f, 0xdb, 0xcd,
-	0xe6, 0xb8, 0x4b, 0x9e, 0x9c, 0x4e, 0xc1, 0x45, 0x37, 0x5b, 0xf5, 0x6d, 0x98, 0x50, 0xe8, 0xdf,
-	0x2b, 0xe5, 0x0f, 0x35, 0xae, 0xd0, 0xbb, 0x70, 0xbb, 0xde, 0x7e, 0xae, 0x53, 0xcf, 0xd1, 0xf9,
-	0xac, 0xd5, 0xc3, 0x43, 0xc3, 0xc4, 0xe8, 0xf6, 0x06, 0x06, 0xc8, 0x45, 0x94, 0xe9, 0x1a, 0x63,
-	0x7c, 0x49, 0x5c, 0x16, 0x22, 0x5e, 0xfc, 0xcd, 0x30, 0x65, 0x72, 0x1f, 0xee, 0x16, 0x30, 0x05,
-	0xc6, 0x85, 0x7c, 0x45, 0x61, 0x91, 0x5f, 0x8e, 0xea, 0xf4, 0x48, 0x57, 0x96, 0xe6, 0x47, 0xc6,
-	0xcb, 0xf5, 0x65, 0x58, 0xc4, 0xe8, 0xac, 0xbe, 0x06, 0x2b, 0x32, 0x5e, 0xa9, 0x7d, 0x05, 0xeb,
-	0x5a, 0x38, 0x48, 0xd8, 0x0b, 0xf1, 0x10, 0xf3, 0x75, 0x80, 0xae, 0x68, 0x3e, 0xcd, 0xbe, 0xd9,
-	0xc9, 0x41, 0xd0, 0xcb, 0xca, 0xd6, 0x49, 0xee, 0x0b, 0x9e, 0x02, 0xac, 0xf6, 0xfb, 0x65, 0xd8,
-	0x9e, 0xf8, 0x67, 0x28, 0xe4, 0x16, 0x2c, 0xb1, 0x4b, 0x51, 0x8c, 0xe2, 0xcf, 0xac, 0x79, 0x43,
-	0xdc, 0x7a, 0x24, 0xec, 0x3c, 0x8c, 0xae, 0xa4, 0xa4, 0xac, 0xcd, 0x3f, 0x45, 0x1b, 0x9d, 0x6a,
-	0x29, 0x5a, 0xfe, 0xe7, 0xa1, 0x1c, 0x88, 0x5f, 0x55, 0xe4, 0x3e, 0x60, 0x92, 0x1f, 0xab, 0xe5,
-	0x40, 0xc4, 0x80, 0xd5, 0x98, 0x5d, 0xb2, 0x28, 0xbd, 0x55, 0xd9, 0x2a, 0x46, 0x42, 0x13, 0x83,
-	0x3c, 0x70, 0x24, 0xed, 0x93, 0x34, 0x96, 0xa7, 0x19, 0x7b, 0xed, 0x08, 0x56, 0x53, 0x74, 0xfe,
-	0x1d, 0xc7, 0x0d, 0x4c, 0x21, 0x4c, 0x8b, 0xb6, 0xd4, 0xa6, 0xb8, 0xae, 0x6a, 0x19, 0xa6, 0x45,
-	0x95, 0x32, 0xff, 0xa9, 0xfe, 0xd4, 0xa2, 0xca, 0x02, 0xb7, 0x77, 0x6a, 0xb8, 0x86, 0xa6, 0x36,
-	0x95, 0xc5, 0xda, 0xdf, 0x2c, 0xc1, 0x66, 0xa1, 0xae, 0x44, 0xe8, 0xe4, 0xa3, 0xf5, 0xef, 0x57,
-	0x85, 0x1a, 0x8f, 0x76, 0x2c, 0xa6, 0xf6, 0x18, 0x76, 0xa6, 0x08, 0x8b, 0xe3, 0xde, 0x05, 0x52,
-	0xcc, 0xba, 0x3c, 0xdd, 0x3e, 0x52, 0x4a, 0xb5, 0x7f, 0x59, 0x82, 0x9b, 0x33, 0x9e, 0x45, 0x92,
-	0xc7, 0xb0, 0x2c, 0xe2, 0xc3, 0x57, 0xfe, 0xbf, 0x52, 0x92, 0x1e, 0x13, 0x9a, 0x4e, 0x92, 0x44,
-	0xc1, 0xe9, 0x28, 0x49, 0x0d, 0x66, 0x0c, 0x40, 0x8b, 0x1b, 0xc5, 0xcc, 0x0d, 0x87, 0xa1, 0xfe,
-	0x22, 0x91, 0x65, 0xcf, 0x1c, 0x84, 0xe8, 0xb0, 0x9d, 0x6e, 0x3f, 0x59, 0x66, 0x93, 0xa1, 0x59,
-	0xe1, 0x9f, 0xef, 0xd8, 0x45, 0x12, 0x3a, 0xc9, 0x53, 0xfb, 0xa3, 0x12, 0x6c, 0x4f, 0x10, 0xf1,
-	0x77, 0xca, 0x2c, 0xb9, 0x90, 0x9f, 0xe7, 0x48, 0x63, 0x1f, 0x43, 0x26, 0xfe, 0x9d, 0x56, 0xf9,
-	0x57, 0xc8, 0xae, 0xde, 0x86, 0x4d, 0x3f, 0x88, 0x58, 0x37, 0xe9, 0x5d, 0xa9, 0xc3, 0x61, 0x2f,
-	0xad, 0x70, 0x17, 0x81, 0xe4, 0xc7, 0xb0, 0x31, 0x60, 0x2f, 0x12, 0xef, 0xe2, 0xd5, 0xe7, 0xb7,
-	0x8e, 0x0c, 0xe9, 0xdc, 0x0e, 0x81, 0xa4, 0xff, 0x8c, 0x87, 0x8d, 0xff, 0xb5, 0xd3, 0xc4, 0x27,
-	0x99, 0xe5, 0xd9, 0x5f, 0x7f, 0x96, 0xf9, 0x83, 0x2c, 0xfe, 0xbb, 0xf6, 0x87, 0x0b, 0xb0, 0x72,
-	0xd8, 0x0b, 0xbf, 0xc3, 0x0d, 0xfb, 0x0d, 0x54, 0x44, 0x76, 0x31, 0x2d, 0x99, 0x0b, 0x5b, 0x7f,
-	0xf4, 0xfa, 0xb4, 0x26, 0xf2, 0x54, 0x74, 0x2e, 0x3f, 0x39, 0x81, 0x5d, 0x9f, 0xc5, 0xc9, 0x0c,
-	0xc9, 0xe5, 0x57, 0x92, 0x3c, 0x87, 0x9b, 0x3c, 0xe6, 0x31, 0x53, 0x12, 0x76, 0xc3, 0x1e, 0x7f,
-	0xff, 0xb8, 0x55, 0xfc, 0xac, 0x40, 0x4e, 0x0d, 0x75, 0xc9, 0x69, 0x68, 0x46, 0x8d, 0x96, 0x70,
-	0xd6, 0x0b, 0xbf, 0x13, 0xff, 0xd8, 0x80, 0x3f, 0x8c, 0x2c, 0xd1, 0x1c, 0x84, 0xff, 0x3f, 0x00,
-	0x79, 0x47, 0xb1, 0xc4, 0x1f, 0x56, 0xa6, 0x4d, 0xf2, 0x00, 0x76, 0x92, 0xa8, 0x33, 0x88, 0xfb,
-	0x41, 0x92, 0x30, 0x5f, 0x0a, 0x58, 0xe6, 0x34, 0xd3, 0x08, 0x11, 0x80, 0x76, 0x59, 0x70, 0x99,
-	0x91, 0xae, 0x70, 0xd2, 0x09, 0x68, 0xed, 0x21, 0xac, 0xa6, 0xa3, 0x24, 0x2b, 0xb0, 0xe0, 0x6a,
-	0xb6, 0x52, 0xc2, 0x1f, 0xed, 0x86, 0xad, 0x94, 0x09, 0x81, 0x4d, 0xb9, 0x8f, 0x3d, 0x9b, 0x5a,
-	0xae, 0xa5, 0xfc, 0xf1, 0xca, 0xfb, 0xef, 0x02, 0x8c, 0x93, 0x31, 0xbe, 0xd3, 0x45, 0x3a, 0x26,
-	0xaa, 0xcd, 0x0d, 0xbd, 0xa9, 0x63, 0xa3, 0x54, 0x7f, 0x00, 0x6f, 0x74, 0xc3, 0xfe, 0xc1, 0x65,
-	0x3f, 0x19, 0x45, 0xa7, 0xe1, 0x41, 0xfa, 0xfe, 0x50, 0xea, 0xe9, 0xc0, 0x4f, 0xc2, 0xfa, 0x5a,
-	0xf6, 0x0f, 0xe7, 0xfe, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x45, 0x1b, 0x3e, 0xea, 0x7c, 0x4e,
-	0x00, 0x00,
+var fileDescriptor_2233245ab49fede8 = []byte{
+	// 10730 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0xbd, 0x4d, 0x8c, 0x24, 0x47,
+	0x76, 0x18, 0x3c, 0x55, 0xfd, 0xff, 0xfa, 0x2f, 0x3b, 0xa6, 0xa7, 0xa7, 0xa6, 0x66, 0x48, 0x0e,
+	0x8b, 0x5c, 0x72, 0x96, 0x4b, 0x0e, 0x87, 0x43, 0x72, 0x38, 0x9c, 0xa5, 0xb8, 0xcc, 0xae, 0xca,
+	0xee, 0xce, 0x9d, 0xaa, 0xca, 0x62, 0x64, 0x56, 0xf7, 0x0c, 0xa5, 0x55, 0x6e, 0x76, 0x55, 0x76,
+	0x77, 0x72, 0xaa, 0x2a, 0x4b, 0x99, 0x59, 0xcd, 0x69, 0xea, 0xfb, 0x0c, 0x59, 0xb2, 0x6c, 0xcb,
+	0x80, 0x6f, 0xb6, 0x60, 0x58, 0x10, 0x2c, 0xc3, 0xb0, 0x0e, 0x3a, 0xf8, 0x66, 0xc0, 0x3e, 0x18,
+	0x86, 0x2f, 0xb2, 0x7d, 0xf1, 0x45, 0xbe, 0xd8, 0x80, 0x61, 0x18, 0xb0, 0x0d, 0x59, 0x86, 0x7c,
+	0x30, 0x24, 0xff, 0xca, 0x5e, 0xe3, 0x45, 0x44, 0x66, 0x46, 0x66, 0xfd, 0x4c, 0x73, 0x77, 0x21,
+	0xc3, 0x97, 0x42, 0xc6, 0x8b, 0xf7, 0x5e, 0x44, 0xbc, 0xf8, 0x7b, 0xef, 0xc5, 0x8b, 0x28, 0xd8,
+	0xac, 0xfa, 0xfd, 0xbe, 0x3f, 0xa8, 0x59, 0xc6, 0xdd, 0x61, 0xe0, 0x47, 0x3e, 0x81, 0x0e, 0x03,
+	0xd8, 0xdd, 0xc8, 0xaf, 0xfc, 0xf2, 0x6f, 0x15, 0x60, 0x45, 0x1b, 0x44, 0x5e, 0x74, 0x51, 0xb3,
+	0x0c, 0xf2, 0x19, 0x80, 0xcb, 0x12, 0xd6, 0xc5, 0xd0, 0x2d, 0x15, 0x6e, 0x17, 0xef, 0x6c, 0xdc,
+	0xbf, 0x7d, 0x37, 0xc5, 0xbf, 0x9b, 0xa0, 0x8a, 0x2f, 0xc4, 0xa3, 0x12, 0x0d, 0xd9, 0x80, 0xa2,
+	0xd7, 0x2d, 0x15, 0x6f, 0x17, 0xef, 0xac, 0xd0, 0xa2, 0xd7, 0x25, 0xb7, 0x61, 0xb5, 0xeb, 0x85,
+	0xc3, 0x9e, 0x73, 0xd1, 0x74, 0xfa, 0x6e, 0x69, 0xee, 0x76, 0xe1, 0xce, 0x0a, 0x95, 0x41, 0x64,
+	0x17, 0x36, 0x59, 0x01, 0x5d, 0x2f, 0xf2, 0xdc, 0xd0, 0xf4, 0x7b, 0xdd, 0xd2, 0xfc, 0xed, 0xb9,
+	0x3b, 0xab, 0xf7, 0x4b, 0x72, 0xc1, 0x55, 0x81, 0x82, 0x65, 0xd3, 0x3c, 0x01, 0x31, 0x61, 0x4b,
+	0x02, 0xed, 0xfa, 0xa3, 0xd3, 0xb3, 0xa8, 0xb4, 0xc0, 0xb8, 0x7c, 0x6b, 0x72, 0xf5, 0x13, 0x7e,
+	0x1c, 0x99, 0x8e, 0xd3, 0x93, 0x0a, 0xc0, 0x68, 0xd0, 0x75, 0x83, 0xde, 0x85, 0x37, 0x38, 0x2d,
+	0x2d, 0xde, 0x9e, 0xbb, 0xb3, 0xb2, 0x5b, 0x2c, 0x15, 0xa8, 0x04, 0x25, 0x2d, 0x50, 0x78, 0xe3,
+	0x5b, 0x81, 0x3f, 0x74, 0x03, 0xa4, 0x2e, 0x2d, 0xb1, 0x72, 0x5f, 0x9f, 0x25, 0x36, 0x81, 0x7d,
+	0x41, 0xc7, 0xa8, 0xc9, 0x1e, 0x2c, 0xfa, 0x81, 0x77, 0xea, 0x0d, 0x4a, 0xcb, 0xb7, 0x0b, 0x77,
+	0x36, 0xee, 0x57, 0x66, 0xf1, 0x31, 0x18, 0xe6, 0x23, 0xa8, 0xe9, 0x66, 0xd5, 0x38, 0xd4, 0xa8,
+	0x56, 0xa3, 0x82, 0x9a, 0xb8, 0x70, 0x2d, 0x70, 0x87, 0x3d, 0xa7, 0xe3, 0xf6, 0xdd, 0x41, 0x24,
+	0x08, 0x9d, 0xc8, 0x29, 0xad, 0xdc, 0x2e, 0xdc, 0x59, 0xbd, 0xff, 0xee, 0x64, 0xb6, 0x34, 0x4f,
+	0xd2, 0x70, 0x23, 0x07, 0xc9, 0xe8, 0x64, 0x6e, 0xa4, 0x02, 0x2b, 0x7d, 0x7f, 0xe0, 0x45, 0x7e,
+	0xe0, 0x76, 0x4b, 0x70, 0xbb, 0x70, 0x67, 0xf9, 0xd1, 0x7c, 0x14, 0x8c, 0x5c, 0x9a, 0x82, 0x49,
+	0x1d, 0x60, 0xe8, 0x7f, 0xe5, 0x06, 0x66, 0xe4, 0x44, 0x6e, 0x69, 0x95, 0x35, 0x6b, 0xca, 0xa8,
+	0x6a, 0x25, 0x78, 0x8f, 0xa0, 0x65, 0x1c, 0x61, 0x8b, 0x6c, 0xa3, 0x49, 0x25, 0x7a, 0x52, 0x87,
+	0x8d, 0x8e, 0x3f, 0x08, 0x47, 0x7d, 0x37, 0x68, 0xf9, 0x3d, 0xaf, 0x73, 0x51, 0x5a, 0x63, 0x2d,
+	0x7a, 0x7d, 0x5a, 0x47, 0xcb, 0xb8, 0x34, 0x47, 0x8b, 0xdc, 0x86, 0x81, 0x7f, 0xee, 0x75, 0x13,
+	0x6e, 0xeb, 0xb3, 0xb8, 0xb5, 0x32, 0xb8, 0x34, 0x47, 0x4b, 0x4a, 0xb0, 0xe4, 0x7f, 0x35, 0x70,
+	0xbb, 0xbb, 0x17, 0xa5, 0x0d, 0x36, 0xd2, 0xe3, 0x24, 0xf9, 0x1e, 0xac, 0x0d, 0xfc, 0xc8, 0x3b,
+	0xf1, 0x3a, 0x4e, 0xe4, 0xf9, 0x83, 0xd2, 0x26, 0x1b, 0x24, 0x37, 0xe5, 0x52, 0x9a, 0x52, 0x3e,
+	0x8e, 0xf2, 0x0c, 0x01, 0x79, 0x1b, 0x36, 0x9e, 0xb9, 0xee, 0xd0, 0x8c, 0x9c, 0x41, 0xd7, 0xe9,
+	0xf9, 0x03, 0xb7, 0xa4, 0x48, 0xd2, 0xce, 0xe5, 0x91, 0x5b, 0xb0, 0x32, 0x0c, 0xfc, 0x13, 0xaf,
+	0xe7, 0xea, 0xdd, 0xd2, 0x16, 0xab, 0x4a, 0x0a, 0x20, 0xdf, 0x03, 0x18, 0x0d, 0xbb, 0x4e, 0xe4,
+	0xb2, 0x69, 0x4e, 0x58, 0x87, 0xec, 0xc8, 0x55, 0x69, 0x27, 0xb9, 0x8f, 0x96, 0xda, 0xad, 0x9a,
+	0x6a, 0x69, 0x35, 0x2a, 0x91, 0xe0, 0xac, 0xee, 0x39, 0x17, 0x6e, 0xe0, 0x76, 0x8d, 0x73, 0x37,
+	0x28, 0x5d, 0xc5, 0xb9, 0x41, 0x65, 0x10, 0x79, 0x0b, 0x14, 0x31, 0x60, 0x42, 0x2e, 0x3d, 0xbd,
+	0x5b, 0xda, 0x66, 0x68, 0x63, 0x70, 0xf2, 0x26, 0xac, 0xf6, 0x1d, 0x6f, 0x10, 0xb9, 0x03, 0x67,
+	0xd0, 0x71, 0x4b, 0xd7, 0x58, 0xbb, 0x16, 0x4e, 0x9c, 0x5e, 0xe8, 0x52, 0x39, 0x87, 0xbc, 0x0c,
+	0x80, 0xdd, 0xe7, 0x85, 0x51, 0x68, 0x9c, 0x94, 0x76, 0x18, 0x3b, 0x09, 0x42, 0xda, 0xb0, 0xe5,
+	0x74, 0x50, 0x5a, 0x5a, 0xcf, 0x3b, 0xf5, 0x8e, 0xbd, 0x9e, 0x17, 0x5d, 0x94, 0xae, 0xb3, 0xfe,
+	0x7c, 0x73, 0x72, 0x7f, 0xaa, 0x79, 0x74, 0x3a, 0xce, 0x81, 0xe8, 0xb8, 0xba, 0x0c, 0x06, 0x6e,
+	0x27, 0x72, 0xbb, 0x8c, 0x14, 0x67, 0x79, 0x69, 0xbc, 0x03, 0xab, 0x19, 0xa4, 0x0b, 0x3a, 0x4e,
+	0x45, 0xf6, 0x61, 0x2d, 0x8c, 0xfc, 0xc0, 0x39, 0x75, 0xed, 0x2e, 0x4e, 0xc6, 0x3f, 0x9a, 0x63,
+	0xb5, 0x7b, 0x75, 0x72, 0xed, 0x4c, 0x8e, 0x8a, 0x13, 0xed, 0xe0, 0x0a, 0x5d, 0x0d, 0xd3, 0x24,
+	0x69, 0xc2, 0x66, 0xd7, 0x0b, 0x9f, 0xd9, 0x4e, 0x10, 0x38, 0x17, 0x9c, 0xd7, 0x1f, 0x73, 0x5e,
+	0xaf, 0x4d, 0xe6, 0x55, 0xf3, 0xc2, 0x67, 0x2a, 0x22, 0x0b, 0x6e, 0xeb, 0x5d, 0x19, 0x40, 0x4c,
+	0x50, 0x9c, 0xe1, 0xb0, 0x27, 0x46, 0x1b, 0x67, 0xf8, 0x5f, 0x38, 0xc3, 0x29, 0x2b, 0xa8, 0x9a,
+	0xa2, 0x0b, 0x96, 0x9b, 0x4e, 0x16, 0x44, 0x7e, 0x00, 0xdb, 0xe7, 0x5e, 0x10, 0x8d, 0x9c, 0x9e,
+	0xdd, 0x77, 0x3a, 0x67, 0xde, 0x40, 0xb4, 0xfa, 0xbf, 0x72, 0xc6, 0x77, 0x26, 0x33, 0x3e, 0xe4,
+	0x24, 0x0d, 0x4e, 0x21, 0x78, 0x93, 0xf3, 0x31, 0x28, 0xf9, 0x21, 0x5c, 0x1b, 0x9e, 0x5d, 0x84,
+	0x5e, 0x27, 0xcf, 0xff, 0xbf, 0x71, 0xfe, 0xdf, 0x9e, 0x32, 0x87, 0x05, 0x4d, 0xb6, 0x80, 0xab,
+	0xc3, 0x71, 0x30, 0x39, 0x81, 0xeb, 0x71, 0x03, 0x90, 0x71, 0xc7, 0x1d, 0x44, 0x6e, 0xc0, 0xcb,
+	0xf8, 0xef, 0xbc, 0x8c, 0xef, 0xcc, 0x6c, 0x43, 0x2d, 0x21, 0x12, 0xa5, 0x5c, 0x3b, 0x9f, 0x94,
+	0x81, 0xe5, 0xc4, 0xc3, 0xa2, 0xe3, 0x0f, 0xa2, 0xc0, 0xef, 0xf5, 0xe2, 0x72, 0xfe, 0xc7, 0xcc,
+	0x72, 0xc4, 0x08, 0xa9, 0x26, 0x44, 0x71, 0x39, 0xe1, 0xa4, 0x0c, 0x62, 0xc1, 0x56, 0xcf, 0x3f,
+	0x65, 0x02, 0x1b, 0xfa, 0x3e, 0x6f, 0x54, 0xe9, 0x7f, 0xce, 0xec, 0xe6, 0x3a, 0xc7, 0x6f, 0xf9,
+	0x7e, 0x2f, 0xee, 0xe6, 0x5e, 0x16, 0x44, 0xfa, 0x50, 0x8a, 0xa5, 0x34, 0x36, 0x86, 0xfe, 0x84,
+	0x33, 0x7f, 0x7b, 0xa6, 0x98, 0x72, 0x43, 0x09, 0x77, 0xd9, 0x83, 0x2b, 0x74, 0xe7, 0x7c, 0x62,
+	0x2e, 0xf9, 0x02, 0xae, 0x0e, 0x03, 0xbf, 0xe3, 0x86, 0xa1, 0x1f, 0x48, 0xcd, 0xf8, 0x5f, 0x73,
+	0xb3, 0x26, 0x7a, 0x2b, 0xa6, 0x90, 0x1a, 0xb2, 0x35, 0xcc, 0x03, 0x49, 0x07, 0x76, 0x02, 0x37,
+	0x74, 0x83, 0x73, 0xb7, 0x6b, 0x7b, 0x83, 0x30, 0xc2, 0x65, 0x87, 0xb3, 0xff, 0xdf, 0x9c, 0xfd,
+	0x5b, 0xd3, 0xf6, 0x4d, 0x4e, 0xa4, 0x0b, 0x1a, 0x51, 0xc2, 0x76, 0x30, 0x01, 0x4e, 0x8e, 0x80,
+	0x60, 0x2f, 0x3b, 0xde, 0xc0, 0xc5, 0x06, 0x74, 0x79, 0x01, 0x3f, 0xe2, 0x05, 0xbc, 0x31, 0x75,
+	0x1b, 0xe3, 0x04, 0x2d, 0xbf, 0x2b, 0x98, 0x2b, 0x9d, 0x1c, 0x8c, 0x34, 0xd8, 0xd6, 0x28, 0x18,
+	0x33, 0xa6, 0xbf, 0x34, 0x3f, 0x6b, 0x4d, 0x48, 0x98, 0xc6, 0x6b, 0x42, 0x47, 0x06, 0xe0, 0xfc,
+	0x3a, 0x1e, 0x85, 0xde, 0xc0, 0x0d, 0x43, 0xdb, 0xe9, 0x74, 0xfc, 0xd1, 0x20, 0xe2, 0x5c, 0xff,
+	0xec, 0xfc, 0xac, 0xf9, 0xb5, 0x2b, 0x68, 0x54, 0x4e, 0x12, 0xcf, 0xaf, 0xe3, 0x71, 0x30, 0x8e,
+	0xc7, 0x8e, 0xdf, 0x1f, 0x8e, 0x22, 0xd7, 0x8e, 0xbc, 0xb8, 0xce, 0xbf, 0x3c, 0x3f, 0x6b, 0x3c,
+	0x56, 0x39, 0xbe, 0xe5, 0x25, 0xb5, 0xde, 0xec, 0x64, 0x41, 0x38, 0x40, 0xe2, 0xf1, 0x78, 0xee,
+	0xf7, 0x46, 0x7d, 0xd1, 0x83, 0xbf, 0x32, 0x3f, 0x6b, 0x80, 0x88, 0xa1, 0x78, 0xc8, 0x08, 0xe2,
+	0x01, 0x72, 0x9e, 0x07, 0x62, 0xdf, 0x25, 0x32, 0x19, 0x85, 0x71, 0x95, 0xff, 0xdc, 0xfc, 0xac,
+	0xbe, 0x8b, 0x05, 0xd2, 0x0e, 0x93, 0x3a, 0x2b, 0xc7, 0x39, 0x18, 0xa9, 0xc1, 0x6a, 0xe0, 0x9e,
+	0x26, 0xf3, 0xe6, 0x57, 0x39, 0xc7, 0xdb, 0xd3, 0x86, 0xdb, 0x69, 0xba, 0xec, 0x42, 0x90, 0xa4,
+	0x88, 0x07, 0xa5, 0xaf, 0xfc, 0xe0, 0x59, 0xcf, 0x77, 0xba, 0x63, 0x2b, 0xc9, 0x9f, 0x9f, 0x9f,
+	0x35, 0x15, 0x8f, 0x04, 0xd9, 0xd8, 0x52, 0xb2, 0xf3, 0xd5, 0xc4, 0x1c, 0x94, 0x04, 0xb2, 0x3d,
+	0x76, 0x42, 0xb9, 0xf3, 0xfe, 0xc2, 0x4c, 0x49, 0xd4, 0x04, 0x81, 0xd4, 0x7b, 0x4a, 0x37, 0x07,
+	0x23, 0x5f, 0xc2, 0x8d, 0x84, 0x31, 0x9b, 0x3d, 0x81, 0xc4, 0xff, 0x2f, 0xce, 0x6c, 0x44, 0xcc,
+	0xdf, 0x64, 0x64, 0x52, 0x29, 0x3b, 0xdd, 0x89, 0x39, 0x6c, 0x3f, 0x76, 0x83, 0x73, 0x2f, 0x9e,
+	0xe5, 0xbf, 0x36, 0x3f, 0x73, 0x3f, 0xe6, 0xa8, 0xc9, 0x7e, 0x9c, 0x26, 0x49, 0x08, 0xb7, 0xf2,
+	0x5b, 0x5d, 0xe0, 0xf6, 0x9c, 0xc8, 0x15, 0xb3, 0xfb, 0xf7, 0x97, 0x66, 0xa9, 0xdd, 0xd9, 0x2d,
+	0x8f, 0x72, 0x42, 0x56, 0x4c, 0x81, 0xde, 0x38, 0x9f, 0x96, 0x49, 0xce, 0xe1, 0xa5, 0xb1, 0x0d,
+	0x30, 0x53, 0xea, 0x7f, 0xe0, 0xa5, 0xde, 0xbb, 0xd4, 0x46, 0x98, 0x2d, 0xb6, 0x3c, 0x9c, 0x9a,
+	0x4b, 0xfe, 0x3f, 0x78, 0x65, 0xc2, 0x76, 0x95, 0x29, 0xf9, 0x0f, 0x78, 0xc9, 0xf7, 0x2f, 0xb9,
+	0x6d, 0x65, 0xcb, 0xbe, 0x15, 0xce, 0xc8, 0x2f, 0xff, 0x5e, 0x51, 0xd8, 0xb4, 0xa9, 0xf9, 0x86,
+	0x9a, 0x61, 0xac, 0x8a, 0xeb, 0x5d, 0x66, 0xb8, 0xae, 0x50, 0x09, 0x42, 0xee, 0xc1, 0xe2, 0x31,
+	0xb7, 0x0a, 0x8b, 0x2f, 0xb0, 0x2d, 0x05, 0x1e, 0xa9, 0xc1, 0x5a, 0x4c, 0xcf, 0xb4, 0xe4, 0xb9,
+	0x59, 0x66, 0x8b, 0x64, 0x0c, 0x67, 0xa8, 0xc8, 0x3e, 0xac, 0x86, 0xa3, 0xe3, 0x9a, 0x77, 0xee,
+	0x85, 0xa8, 0xf5, 0xcf, 0x5c, 0xd9, 0xcc, 0x14, 0x91, 0x59, 0x5c, 0x32, 0x25, 0xb1, 0x27, 0xa9,
+	0xb6, 0x8b, 0x8c, 0xdd, 0x7b, 0xb3, 0x54, 0x5b, 0x63, 0x10, 0x9b, 0x2c, 0xb3, 0x95, 0xdc, 0xb2,
+	0x0d, 0x5b, 0x63, 0xca, 0x30, 0x79, 0x03, 0xab, 0x1f, 0x0e, 0xdd, 0x41, 0xd7, 0x39, 0xee, 0xb9,
+	0xa5, 0x82, 0x64, 0x71, 0xc8, 0x19, 0x68, 0x05, 0x76, 0xd0, 0xee, 0x60, 0x58, 0x45, 0xd9, 0x0a,
+	0x4c, 0xc0, 0xe5, 0xff, 0x1f, 0x6e, 0xce, 0xa8, 0x12, 0x9a, 0x4e, 0x7d, 0xff, 0x3c, 0x2d, 0x86,
+	0xc6, 0x49, 0x64, 0x1e, 0x46, 0x4e, 0x10, 0x8d, 0x33, 0x4f, 0xc0, 0xe4, 0x36, 0x2c, 0x87, 0x1d,
+	0xa7, 0xc7, 0x50, 0xe6, 0x24, 0x94, 0x04, 0x5a, 0xfe, 0xc3, 0x02, 0x6c, 0xe6, 0x24, 0x4c, 0x5e,
+	0x87, 0x75, 0x49, 0xc6, 0xc9, 0xc0, 0xc9, 0x02, 0xc9, 0x1b, 0xb0, 0x11, 0xb8, 0xdd, 0xd1, 0xa0,
+	0xeb, 0x0c, 0x3a, 0xdc, 0x31, 0x52, 0x64, 0x06, 0x55, 0x0e, 0x4a, 0x3e, 0x80, 0x58, 0xeb, 0x52,
+	0x3b, 0xa8, 0x56, 0x54, 0x9d, 0xa1, 0xd3, 0xc1, 0x6e, 0xc2, 0x0a, 0x15, 0xe9, 0xe4, 0x4c, 0x99,
+	0xaa, 0x8f, 0xfb, 0x62, 0x42, 0x35, 0x9f, 0xa5, 0xca, 0x64, 0xe6, 0xdd, 0x2a, 0x0b, 0x63, 0x6e,
+	0x95, 0xf2, 0x1f, 0xaf, 0xc2, 0xaa, 0x64, 0x3f, 0x90, 0x2a, 0xc4, 0xf6, 0x83, 0xf0, 0xed, 0xe0,
+	0x70, 0x9e, 0x6d, 0x77, 0xb0, 0xf1, 0x2c, 0x53, 0x91, 0xdb, 0xb0, 0xe2, 0x0d, 0xd5, 0x6e, 0x37,
+	0x70, 0xc3, 0x90, 0x4b, 0x81, 0x79, 0x44, 0x52, 0x20, 0xa9, 0x00, 0xb8, 0xcf, 0x87, 0x7e, 0x10,
+	0xb5, 0x9c, 0xe8, 0x8c, 0xbb, 0x7b, 0xb8, 0xd3, 0x24, 0x85, 0x22, 0x17, 0xc1, 0x54, 0xef, 0xb2,
+	0x66, 0x0a, 0x2e, 0x09, 0x90, 0xdc, 0x82, 0xa5, 0xde, 0x68, 0xd0, 0x1e, 0x79, 0x5d, 0xde, 0x34,
+	0x96, 0x1f, 0x83, 0x48, 0x09, 0x16, 0x7a, 0x23, 0xec, 0x2e, 0x1c, 0xff, 0x0b, 0x2c, 0x8f, 0x03,
+	0xc8, 0x36, 0xcc, 0x7d, 0xf5, 0xd5, 0xa0, 0xb4, 0x94, 0xd0, 0x60, 0x92, 0xbc, 0x03, 0x1b, 0x03,
+	0x3f, 0xaa, 0xf6, 0x46, 0x61, 0xe4, 0x06, 0x6c, 0x88, 0x2c, 0xcb, 0x26, 0x66, 0x2e, 0x93, 0x54,
+	0x60, 0xcd, 0x7d, 0x1e, 0xb9, 0xc1, 0xc0, 0xe9, 0x31, 0xe1, 0xae, 0x30, 0x3b, 0x33, 0x03, 0x23,
+	0x8f, 0x61, 0x1e, 0x6d, 0xe9, 0x12, 0xb0, 0xd5, 0xe4, 0xa3, 0x17, 0x9a, 0x6f, 0xf1, 0xf7, 0x9e,
+	0xd7, 0x73, 0x6b, 0x6e, 0xd8, 0x09, 0xbc, 0x61, 0xe4, 0x07, 0x94, 0x31, 0xc1, 0xce, 0x8c, 0x85,
+	0xec, 0xb9, 0x01, 0x73, 0x90, 0xac, 0x50, 0x19, 0x44, 0xf6, 0x61, 0x71, 0x28, 0xfb, 0x3a, 0xde,
+	0xbd, 0x74, 0x81, 0xc2, 0x51, 0x21, 0xc8, 0x89, 0x01, 0xab, 0x81, 0xf3, 0x55, 0x32, 0xc6, 0xb8,
+	0xaf, 0xe3, 0x9d, 0x17, 0x73, 0xa3, 0x29, 0x11, 0x95, 0x39, 0x94, 0x7f, 0x77, 0x1e, 0xae, 0x4d,
+	0x6c, 0x1b, 0x21, 0x30, 0x3f, 0xc4, 0x31, 0xc0, 0xe7, 0x14, 0xfb, 0x26, 0x3b, 0xb0, 0x18, 0x7a,
+	0x5f, 0xbb, 0x8f, 0x8f, 0x99, 0x87, 0x70, 0x8e, 0x8a, 0x14, 0xb9, 0x0b, 0x04, 0x57, 0xe0, 0xd8,
+	0xd9, 0x61, 0x79, 0x7d, 0xb7, 0x11, 0x96, 0xe6, 0x18, 0xce, 0x84, 0x1c, 0xf2, 0x19, 0xcc, 0x47,
+	0x38, 0x8a, 0xe7, 0xd9, 0x28, 0x7e, 0xfb, 0x32, 0x9b, 0x2a, 0xd6, 0x8e, 0x0d, 0x68, 0x46, 0x49,
+	0xee, 0xc0, 0xa6, 0xe7, 0x0f, 0x43, 0xb6, 0x12, 0xe1, 0x3c, 0x77, 0xf9, 0x48, 0x5b, 0xa0, 0x79,
+	0xf0, 0x84, 0xe9, 0xbf, 0x38, 0x71, 0xfa, 0xbf, 0x0e, 0xeb, 0x81, 0x1b, 0xfa, 0xa3, 0xa0, 0xe3,
+	0xee, 0x07, 0xfe, 0x68, 0xc8, 0x47, 0x21, 0xcd, 0x02, 0xc9, 0x9b, 0xb0, 0xda, 0xf5, 0x9b, 0x7e,
+	0x54, 0x73, 0x7b, 0x6e, 0x94, 0x1b, 0x88, 0x72, 0x0e, 0xee, 0x68, 0x7e, 0x74, 0xe6, 0x06, 0x38,
+	0x63, 0x42, 0x31, 0x06, 0x25, 0x08, 0x8e, 0xd2, 0x4e, 0xe0, 0x26, 0x42, 0x61, 0xbe, 0xb7, 0x15,
+	0x9a, 0x81, 0xe1, 0x9a, 0x1a, 0x3e, 0x1b, 0xb1, 0x41, 0xcc, 0x07, 0x55, 0x9c, 0x44, 0xee, 0xe1,
+	0xc0, 0x19, 0x86, 0x67, 0x7e, 0xa4, 0x77, 0xd9, 0xa0, 0x5a, 0xa1, 0x12, 0x04, 0xf3, 0xb9, 0xea,
+	0xcc, 0x88, 0xd7, 0x79, 0x7e, 0x0a, 0x21, 0x2d, 0x50, 0x78, 0x4a, 0xf2, 0x7b, 0x6e, 0x7e, 0x13,
+	0xbf, 0x67, 0x9e, 0xba, 0xfc, 0x6f, 0x0b, 0xb0, 0x9e, 0x19, 0xb3, 0xa4, 0x01, 0x90, 0x8a, 0x58,
+	0x2c, 0x58, 0xb3, 0x87, 0x2a, 0x4d, 0xd0, 0x1b, 0x6e, 0x74, 0xe6, 0x77, 0xa9, 0xc4, 0x00, 0xc7,
+	0xd8, 0x89, 0xe3, 0xf5, 0x46, 0x81, 0x1b, 0x5a, 0xbe, 0xe5, 0xf7, 0xdc, 0xc0, 0x89, 0xf8, 0x52,
+	0xbe, 0x40, 0x27, 0xe4, 0x90, 0x7b, 0x70, 0x35, 0x1c, 0x3a, 0x1d, 0x97, 0x9b, 0x76, 0x4c, 0xa8,
+	0xad, 0x4e, 0xc4, 0x96, 0xb4, 0x05, 0x3a, 0x29, 0x0b, 0xd7, 0xbe, 0xc0, 0xf1, 0xba, 0x7b, 0x4e,
+	0x27, 0xf2, 0x03, 0xbe, 0x7e, 0xf3, 0xb5, 0x2f, 0x85, 0x96, 0x6d, 0x58, 0x95, 0xe6, 0x12, 0x29,
+	0xc3, 0x72, 0x27, 0x9e, 0x8c, 0xd8, 0xc2, 0x39, 0x9a, 0xa4, 0x71, 0x02, 0x9d, 0x04, 0x2e, 0xaf,
+	0xe2, 0x1c, 0x65, 0xdf, 0xb8, 0x54, 0x8c, 0x06, 0x28, 0x02, 0x2f, 0x8a, 0xdc, 0x2e, 0xab, 0xcc,
+	0x1c, 0x95, 0x41, 0xe5, 0x23, 0x50, 0xf2, 0xf6, 0x06, 0x5b, 0xfb, 0xdd, 0x30, 0xde, 0xf6, 0x4a,
+	0x05, 0xd6, 0x51, 0x53, 0x75, 0xdc, 0x50, 0xd2, 0x40, 0xd2, 0x44, 0xf9, 0x13, 0x80, 0xd4, 0xec,
+	0x20, 0x77, 0x61, 0xf9, 0xd4, 0xf5, 0xb9, 0xae, 0x57, 0x60, 0xab, 0xc8, 0x55, 0x99, 0xdf, 0xbe,
+	0xeb, 0x33, 0x0e, 0x4b, 0xa7, 0xfc, 0x03, 0xdb, 0x2d, 0x71, 0xc6, 0x49, 0x95, 0x55, 0x6b, 0xc5,
+	0x32, 0x91, 0x83, 0xe2, 0x34, 0x8d, 0xeb, 0x30, 0x0a, 0xb8, 0xe7, 0x94, 0xaf, 0x1c, 0x79, 0x70,
+	0xf9, 0x3f, 0x15, 0x60, 0x3d, 0xe3, 0xe3, 0x22, 0xb7, 0xe4, 0x6d, 0xa6, 0xc0, 0x26, 0x90, 0xb4,
+	0xc5, 0xbc, 0x0e, 0x6b, 0x38, 0xd3, 0x93, 0xa5, 0x90, 0x49, 0xf9, 0xe0, 0x0a, 0xcd, 0x40, 0xc9,
+	0xe7, 0x7c, 0x99, 0x10, 0x46, 0x27, 0x93, 0xde, 0xdc, 0x25, 0xac, 0x53, 0xdd, 0x1f, 0x86, 0xb1,
+	0x75, 0x9a, 0xa3, 0x27, 0x1f, 0xc3, 0x76, 0x38, 0x1a, 0xe2, 0x66, 0x18, 0x72, 0xbb, 0x92, 0xba,
+	0xb8, 0x0a, 0xb2, 0xf1, 0x92, 0x2c, 0x05, 0x13, 0x51, 0x76, 0x57, 0x61, 0x05, 0xb9, 0x31, 0xa9,
+	0x97, 0xff, 0x63, 0x01, 0x36, 0x73, 0xce, 0x99, 0x17, 0x34, 0x19, 0x55, 0x0d, 0x6e, 0xb2, 0xd4,
+	0xdd, 0x73, 0xb7, 0x67, 0x1c, 0x7f, 0xe9, 0x76, 0x22, 0xef, 0x3c, 0xd6, 0x67, 0x26, 0x67, 0x8e,
+	0x09, 0x6a, 0xee, 0xb2, 0x82, 0x9a, 0xff, 0xc9, 0x04, 0x95, 0x6d, 0xed, 0x3f, 0x2c, 0xc0, 0x66,
+	0xde, 0x11, 0x44, 0xc4, 0x2e, 0x50, 0x60, 0xd5, 0xe7, 0xeb, 0xfa, 0xad, 0x31, 0x0d, 0x45, 0xd6,
+	0x4e, 0x70, 0x4f, 0xf2, 0x83, 0x48, 0x1c, 0x43, 0xb1, 0x6f, 0xee, 0xa9, 0x66, 0xd6, 0x85, 0x9e,
+	0x10, 0x32, 0xa5, 0x84, 0x8e, 0xc1, 0xc9, 0x23, 0x58, 0xec, 0x1e, 0xb3, 0xc6, 0x2d, 0xb0, 0xc6,
+	0x55, 0x66, 0x9b, 0xa1, 0x6c, 0x0a, 0x08, 0x8a, 0xf2, 0x2f, 0x15, 0x60, 0x67, 0xb2, 0xbf, 0xeb,
+	0x27, 0x6c, 0xc8, 0x82, 0x68, 0x08, 0xaa, 0x11, 0xbc, 0x07, 0xad, 0x78, 0x6f, 0x5c, 0xa1, 0x32,
+	0xa8, 0x3c, 0xc2, 0x49, 0x98, 0xda, 0xac, 0x7f, 0x5a, 0xc5, 0xfe, 0x49, 0x01, 0xae, 0x4e, 0x70,
+	0x0a, 0xa1, 0x5e, 0x86, 0x7d, 0x5b, 0xf3, 0xc2, 0x8e, 0x7f, 0xee, 0x06, 0x6e, 0x57, 0x18, 0x18,
+	0xb1, 0x5e, 0x96, 0xcd, 0x24, 0x2f, 0x01, 0xc4, 0x5e, 0x28, 0x76, 0xc4, 0xc8, 0xea, 0x26, 0x20,
+	0x7a, 0x97, 0x34, 0xe1, 0xea, 0x30, 0xf0, 0x3a, 0xde, 0xe0, 0xd4, 0xf6, 0xba, 0xee, 0x20, 0xf2,
+	0x4e, 0x3c, 0x37, 0x40, 0x25, 0x02, 0x17, 0xbb, 0x97, 0xe4, 0x8e, 0x6a, 0x71, 0x34, 0x3d, 0xc1,
+	0xa2, 0x64, 0x98, 0x07, 0x85, 0x64, 0x1f, 0x14, 0x84, 0xba, 0x36, 0xb3, 0x30, 0xec, 0x67, 0xee,
+	0x45, 0x28, 0x0e, 0x26, 0x5f, 0xc0, 0x6c, 0x83, 0x91, 0x59, 0x48, 0xf5, 0xd8, 0xbd, 0x08, 0xcb,
+	0x7f, 0x38, 0xcf, 0xec, 0xd5, 0x8c, 0x8b, 0x6a, 0x07, 0x16, 0x4f, 0x9c, 0xbe, 0xd7, 0xbb, 0x10,
+	0xc2, 0x17, 0x29, 0xf2, 0x2a, 0xac, 0xfd, 0xc2, 0xc8, 0x8f, 0x1c, 0x5b, 0xe4, 0x0a, 0xc5, 0x9e,
+	0xc1, 0xf6, 0x38, 0xca, 0xaf, 0x15, 0xe0, 0x95, 0xae, 0xdb, 0xc5, 0xf1, 0xe3, 0x76, 0xed, 0xd8,
+	0x0e, 0x1f, 0xb8, 0xd1, 0x57, 0x7e, 0xf0, 0xcc, 0x0e, 0xa3, 0x78, 0x57, 0xdb, 0xb8, 0xbf, 0x7b,
+	0x29, 0x0f, 0xda, 0xdd, 0x5a, 0xcc, 0x4c, 0xec, 0xa2, 0x4d, 0xce, 0x8a, 0x9d, 0xb6, 0xd1, 0x5b,
+	0xdd, 0x19, 0xb9, 0xe4, 0x15, 0x58, 0x1d, 0x8c, 0xfa, 0x76, 0xc7, 0x1f, 0x0d, 0xfd, 0x41, 0x28,
+	0x86, 0x05, 0x0c, 0x46, 0xfd, 0x2a, 0x87, 0x90, 0x9b, 0xb0, 0xc2, 0x11, 0x02, 0x97, 0xcf, 0xaa,
+	0x05, 0xba, 0xcc, 0xb2, 0x03, 0x37, 0x24, 0x6f, 0x03, 0xc1, 0xcc, 0xd4, 0xcf, 0xea, 0x85, 0xcf,
+	0x42, 0xae, 0xd4, 0x53, 0x65, 0x30, 0xea, 0x27, 0x4e, 0x53, 0x84, 0x93, 0xf7, 0xe0, 0x5a, 0x06,
+	0xd3, 0xc6, 0x25, 0xd1, 0x3e, 0x3d, 0x66, 0x7a, 0xd6, 0x02, 0x25, 0x9e, 0x84, 0x6d, 0x7a, 0x5f,
+	0xbb, 0xfb, 0xc7, 0xc4, 0x02, 0x92, 0x25, 0x61, 0xc3, 0x9d, 0x9f, 0xab, 0x4e, 0xf1, 0x50, 0xc9,
+	0x65, 0x32, 0x75, 0x51, 0xf1, 0x72, 0x10, 0xd4, 0xbc, 0x8e, 0x47, 0x41, 0xc8, 0x86, 0x45, 0xb5,
+	0xd5, 0x66, 0x07, 0xaa, 0xcb, 0x34, 0x03, 0xab, 0x7c, 0x0d, 0xb7, 0x66, 0x89, 0x95, 0x6c, 0xc1,
+	0x7a, 0xd3, 0xb0, 0x6c, 0xb3, 0xdd, 0x6a, 0x19, 0xd4, 0xd2, 0x6a, 0x4a, 0x81, 0x5c, 0x87, 0xab,
+	0x55, 0xa3, 0xb9, 0xa7, 0xef, 0xb7, 0xa9, 0x56, 0xb3, 0x6b, 0xba, 0xa9, 0xee, 0xd6, 0xb5, 0x9a,
+	0x52, 0x24, 0x3b, 0x40, 0xa4, 0x0c, 0xad, 0xc9, 0xe1, 0x73, 0x08, 0x17, 0x09, 0x7b, 0xf7, 0xa9,
+	0x5d, 0xd3, 0xf6, 0xd4, 0x76, 0xdd, 0x52, 0xe6, 0xcb, 0xff, 0x66, 0x09, 0xb6, 0xc6, 0xbc, 0x99,
+	0xe4, 0x51, 0x7a, 0xc4, 0xe0, 0x30, 0x0b, 0xd4, 0xce, 0x28, 0x1e, 0x5c, 0x53, 0x99, 0x62, 0xa3,
+	0xca, 0xb4, 0xcc, 0x0e, 0x4d, 0x69, 0x8b, 0xe3, 0xb4, 0x59, 0x4b, 0xd5, 0x86, 0xcd, 0x54, 0x09,
+	0xe3, 0x1d, 0xc0, 0x5d, 0x29, 0x0f, 0x2e, 0xe9, 0x87, 0xbd, 0x4b, 0x33, 0x7a, 0xf6, 0x98, 0xde,
+	0x7d, 0x24, 0x4c, 0x31, 0x3e, 0x37, 0xab, 0x97, 0xe5, 0x9a, 0x81, 0x4c, 0x34, 0xcb, 0xb2, 0x3a,
+	0xf2, 0xc2, 0x98, 0x8e, 0xfc, 0x1a, 0xac, 0xc7, 0xda, 0xb6, 0x1d, 0xa1, 0x0a, 0xbe, 0xc8, 0xb4,
+	0xb1, 0xac, 0x0a, 0xfe, 0x10, 0x76, 0x3c, 0xdf, 0x8e, 0xce, 0x02, 0x7f, 0x74, 0x7a, 0x36, 0x1c,
+	0x49, 0x92, 0xc3, 0x61, 0x5b, 0x60, 0x92, 0xdb, 0xf6, 0x7c, 0x2b, 0x41, 0x48, 0x04, 0x77, 0x17,
+	0xae, 0x66, 0x29, 0x47, 0xa1, 0x73, 0xca, 0x47, 0x6f, 0x81, 0x6e, 0xc9, 0x24, 0x6d, 0xcc, 0x20,
+	0xc7, 0xa0, 0x38, 0x51, 0xe4, 0x74, 0xce, 0xfa, 0xee, 0x20, 0x12, 0xeb, 0xc0, 0x0a, 0x93, 0xf4,
+	0x47, 0x97, 0x95, 0x89, 0x9a, 0xd0, 0xf3, 0xc9, 0xbf, 0xe9, 0x64, 0x01, 0xb8, 0x3b, 0xb8, 0x83,
+	0x4e, 0x70, 0x31, 0x8c, 0xe2, 0xd3, 0x7e, 0x9a, 0x02, 0x70, 0x27, 0xf0, 0x42, 0x6d, 0x78, 0xe6,
+	0xf6, 0xdd, 0xc0, 0xe9, 0x31, 0x93, 0x63, 0x99, 0xca, 0xa0, 0xf2, 0xbf, 0x2a, 0xc0, 0xcd, 0x19,
+	0x82, 0x7f, 0xa1, 0xcd, 0x58, 0x90, 0x6c, 0xc6, 0xd8, 0x06, 0x9c, 0xfb, 0xb1, 0x6d, 0xc0, 0xc9,
+	0x56, 0xe7, 0x3c, 0x2b, 0x65, 0x92, 0xd5, 0x79, 0x1b, 0x56, 0x7b, 0xde, 0xe0, 0x99, 0xdb, 0xe5,
+	0x36, 0xd9, 0x82, 0x38, 0xf5, 0x4e, 0x41, 0x95, 0x77, 0x61, 0x33, 0x27, 0x43, 0xb2, 0x06, 0xcb,
+	0xaa, 0x65, 0xa9, 0xd5, 0x03, 0xad, 0xa6, 0x5c, 0x21, 0x1b, 0x00, 0xed, 0x66, 0x92, 0x2e, 0x54,
+	0x1e, 0xc0, 0x46, 0x76, 0x78, 0x93, 0x25, 0x98, 0xab, 0x53, 0x53, 0x29, 0xe0, 0xc7, 0x17, 0xd4,
+	0x54, 0x8a, 0xf8, 0xb1, 0x4f, 0x4d, 0x65, 0x8e, 0xac, 0xc0, 0x02, 0x55, 0xf1, 0x73, 0xbe, 0xfc,
+	0xf7, 0x56, 0x80, 0x8c, 0x9f, 0x93, 0x66, 0x77, 0x6f, 0xa1, 0xff, 0xa5, 0xbb, 0xf7, 0x47, 0xb0,
+	0x74, 0xde, 0x37, 0x93, 0x0d, 0x22, 0xb7, 0x91, 0x49, 0x42, 0x6b, 0xf0, 0xee, 0x8f, 0xb1, 0x91,
+	0xed, 0xe9, 0xc8, 0x0d, 0x23, 0x29, 0x84, 0x27, 0x05, 0x10, 0x1b, 0x36, 0x9c, 0xc1, 0xc0, 0x8f,
+	0x98, 0xa8, 0x9a, 0x7e, 0x14, 0x4f, 0xc5, 0x8f, 0x2e, 0x7b, 0xbc, 0x7b, 0x57, 0xcd, 0x90, 0xd3,
+	0x1c, 0x3b, 0xf2, 0x54, 0xcc, 0x70, 0x1e, 0xd0, 0xa3, 0x5d, 0x9a, 0xed, 0x78, 0xe7, 0x8f, 0xcd,
+	0xf1, 0x12, 0x2c, 0xe1, 0x76, 0x34, 0x1c, 0xc5, 0xfb, 0x4e, 0x9c, 0x24, 0x4f, 0x60, 0xf5, 0xd8,
+	0xeb, 0xf5, 0xbc, 0xc1, 0x29, 0x53, 0x6b, 0x96, 0x2e, 0xb1, 0x66, 0x65, 0xca, 0x6e, 0xec, 0xa6,
+	0xd4, 0x54, 0x66, 0x45, 0x3e, 0x81, 0x1b, 0xc7, 0x5e, 0xb7, 0xeb, 0x0d, 0x4e, 0x5b, 0x81, 0xdf,
+	0x1d, 0x75, 0xa2, 0xb8, 0x56, 0x68, 0xdd, 0x2c, 0x33, 0xe9, 0x4e, 0x47, 0x20, 0xaf, 0xc3, 0xfa,
+	0x60, 0xd4, 0xd7, 0x7a, 0x4e, 0x18, 0x79, 0x1d, 0x7d, 0x18, 0xb2, 0x39, 0xbe, 0x40, 0xb3, 0x40,
+	0x54, 0x6a, 0x93, 0xe0, 0x03, 0xb1, 0xf1, 0x30, 0x5f, 0xd5, 0x0a, 0x1d, 0x83, 0x13, 0x07, 0x58,
+	0x2c, 0x80, 0xe5, 0x8b, 0x8d, 0xaa, 0xb4, 0xca, 0xe4, 0xfc, 0xdd, 0x4b, 0xb7, 0xb5, 0x26, 0x53,
+	0x6b, 0x83, 0x28, 0xb8, 0xa0, 0x59, 0x8e, 0xe4, 0x09, 0xac, 0xf5, 0xbc, 0x8e, 0x3b, 0x08, 0xdd,
+	0x86, 0xdf, 0x75, 0x7b, 0xcc, 0xe1, 0x30, 0x35, 0xb4, 0xa9, 0x2e, 0x61, 0x3e, 0x52, 0xea, 0x7a,
+	0x55, 0x6b, 0x9a, 0x9a, 0xad, 0x37, 0xab, 0xf5, 0x76, 0x4d, 0xab, 0xd1, 0x0c, 0x27, 0x72, 0x1f,
+	0xb6, 0xb1, 0xe5, 0xf1, 0x0a, 0x23, 0x0a, 0x0c, 0x99, 0xcb, 0x62, 0x81, 0x4e, 0xcc, 0x2b, 0x3f,
+	0x84, 0x8d, 0xec, 0x88, 0x23, 0x0a, 0xcc, 0x3d, 0x73, 0x2f, 0xc4, 0xb2, 0x83, 0x9f, 0x64, 0x1b,
+	0x16, 0xce, 0x9d, 0xde, 0xc8, 0x15, 0xa1, 0x6c, 0x3c, 0x51, 0xfe, 0x9d, 0x02, 0xdc, 0x9a, 0x35,
+	0xaa, 0xf2, 0x06, 0x58, 0x31, 0x6b, 0x80, 0xc5, 0xcb, 0x5b, 0x71, 0xe2, 0xf2, 0x36, 0x37, 0x71,
+	0x79, 0xfb, 0xb1, 0x5d, 0x5c, 0xe5, 0xcf, 0x80, 0x8c, 0xf7, 0x4c, 0xda, 0xd4, 0xc2, 0x84, 0xa6,
+	0x16, 0x92, 0xa6, 0x3e, 0x2a, 0x3e, 0x2c, 0x54, 0x4c, 0x58, 0xcf, 0x8c, 0x63, 0x5c, 0xcc, 0x8c,
+	0x66, 0x4d, 0x6b, 0xa8, 0x4d, 0x5c, 0xcc, 0x56, 0x61, 0x69, 0x57, 0xaf, 0xd5, 0xf4, 0xe6, 0xbe,
+	0x52, 0x20, 0xeb, 0xb0, 0x52, 0xd3, 0x6a, 0x7a, 0x55, 0xb5, 0x98, 0xd2, 0xb2, 0x06, 0xcb, 0x54,
+	0x33, 0x35, 0x7a, 0xc8, 0x54, 0x15, 0x80, 0xc5, 0x83, 0xa7, 0xbb, 0x54, 0xaf, 0x29, 0xf3, 0xe5,
+	0xdf, 0x2e, 0xc0, 0x9a, 0x6c, 0x20, 0xa1, 0x04, 0xdc, 0xc1, 0x29, 0xf7, 0x01, 0x30, 0x5d, 0x98,
+	0xa7, 0x70, 0x6e, 0xba, 0x5d, 0x4f, 0xd8, 0xfc, 0xcc, 0x7b, 0x25, 0x92, 0x98, 0x73, 0xee, 0x06,
+	0xec, 0x44, 0x85, 0xaf, 0x46, 0x71, 0x92, 0xbc, 0x01, 0x1b, 0x5d, 0x77, 0xd8, 0xf3, 0x2f, 0x70,
+	0x01, 0x96, 0xec, 0x91, 0x1c, 0x14, 0x75, 0xb8, 0xcc, 0x80, 0xe4, 0xbb, 0x7b, 0x06, 0x56, 0xae,
+	0x81, 0x92, 0x3f, 0xaf, 0x94, 0xeb, 0x54, 0xc8, 0xd6, 0x29, 0xd5, 0xe8, 0x8b, 0xb2, 0x46, 0x5f,
+	0xbe, 0x07, 0x3b, 0x93, 0x4f, 0x25, 0xa7, 0xd9, 0x00, 0xe5, 0xdf, 0x2c, 0x24, 0x2e, 0xd5, 0xdc,
+	0x91, 0x6b, 0xde, 0x14, 0x2f, 0x5c, 0xd6, 0x14, 0x2f, 0xfe, 0x34, 0x4d, 0xf1, 0x3f, 0x03, 0x4a,
+	0x3e, 0x1a, 0x01, 0xc7, 0xfd, 0xc0, 0xe9, 0xbb, 0xcc, 0x2b, 0x26, 0x9a, 0x93, 0x02, 0x5e, 0x60,
+	0x54, 0x96, 0x61, 0xf9, 0x64, 0xd4, 0xeb, 0x49, 0x9b, 0x4b, 0x92, 0x4e, 0x0c, 0xce, 0xf9, 0xd4,
+	0x60, 0x2f, 0xff, 0xd5, 0x02, 0xac, 0x67, 0x22, 0x17, 0xfe, 0x34, 0x4b, 0xc7, 0x11, 0x30, 0xf4,
+	0xbb, 0xd2, 0xa9, 0x4b, 0x9c, 0x2c, 0xff, 0xb3, 0x05, 0xd8, 0x99, 0x7c, 0x8a, 0x4e, 0xf6, 0x51,
+	0x55, 0xf4, 0x07, 0xf6, 0x97, 0xfe, 0xb1, 0xec, 0x32, 0x9b, 0xe2, 0x82, 0xab, 0x06, 0xfe, 0xe0,
+	0xfb, 0xfe, 0x71, 0x7c, 0xcc, 0xdc, 0x49, 0x93, 0xe4, 0x18, 0x76, 0x3a, 0xa3, 0x30, 0xf2, 0xfb,
+	0x63, 0xa7, 0xfb, 0xc5, 0x59, 0xe1, 0x29, 0x55, 0x46, 0x33, 0x76, 0xb4, 0xbf, 0xdd, 0x99, 0x00,
+	0x27, 0x0d, 0xd8, 0xec, 0x3a, 0x2e, 0x32, 0x09, 0x5d, 0x11, 0xf0, 0x31, 0x3b, 0xb2, 0x8c, 0x21,
+	0x9b, 0x6e, 0x94, 0x44, 0x96, 0xc9, 0x00, 0x62, 0xc0, 0x66, 0x3a, 0xf9, 0x38, 0xbb, 0xf9, 0x59,
+	0x21, 0x96, 0xb5, 0x04, 0x59, 0xf0, 0x93, 0xe6, 0xae, 0xb0, 0x64, 0x96, 0x13, 0x39, 0x2e, 0xcc,
+	0xd2, 0x63, 0x52, 0x19, 0x2e, 0x7d, 0x29, 0xe4, 0xd7, 0xe2, 0x61, 0x89, 0x5e, 0xc7, 0x49, 0x1b,
+	0xb7, 0x38, 0xab, 0x36, 0x94, 0x63, 0xa7, 0xad, 0xdb, 0x08, 0x32, 0x10, 0xf2, 0x0b, 0x70, 0x53,
+	0x40, 0x98, 0x21, 0x90, 0xef, 0x96, 0xa5, 0x17, 0x45, 0xdb, 0x0a, 0xc2, 0xb1, 0xbe, 0xb9, 0x11,
+	0x4c, 0xcb, 0x24, 0x26, 0x6c, 0x31, 0xf5, 0xfe, 0x64, 0xd4, 0x4b, 0x5b, 0xb1, 0x3c, 0xf3, 0x68,
+	0x59, 0xa0, 0xa7, 0xcd, 0xd8, 0x0c, 0xb3, 0xa0, 0xdd, 0x2d, 0xd8, 0x94, 0xea, 0xce, 0x36, 0x90,
+	0x75, 0x58, 0x95, 0x86, 0x62, 0xb9, 0x0e, 0xdb, 0x93, 0xc6, 0x11, 0xf9, 0x60, 0xd2, 0x98, 0x94,
+	0x1c, 0x4b, 0x63, 0xa3, 0x8c, 0x39, 0x85, 0x36, 0x61, 0x3d, 0x33, 0x70, 0xca, 0x0a, 0x6c, 0x64,
+	0xbb, 0xbe, 0xbc, 0x02, 0x4b, 0x71, 0xd9, 0x0a, 0xea, 0xc9, 0xb2, 0xdc, 0xcb, 0x37, 0xe1, 0xc6,
+	0x54, 0xf1, 0x95, 0xb7, 0x60, 0x33, 0xd7, 0xe4, 0xf2, 0x3b, 0xb0, 0x24, 0xf4, 0x5a, 0x76, 0x5a,
+	0x1d, 0x2b, 0x41, 0x99, 0x33, 0xed, 0x14, 0x5c, 0xfe, 0x1b, 0x45, 0xb8, 0x3a, 0x21, 0x50, 0x10,
+	0x75, 0xe8, 0xa1, 0xd0, 0xa1, 0x0b, 0xb3, 0xc6, 0x5e, 0x2b, 0xd6, 0xa1, 0x05, 0xb6, 0xd0, 0xdb,
+	0xaa, 0xc3, 0x91, 0xe9, 0x77, 0x9e, 0xb9, 0x51, 0x28, 0x4e, 0x1e, 0xb2, 0x40, 0x34, 0x31, 0x38,
+	0x80, 0x79, 0x48, 0x84, 0x43, 0x45, 0x06, 0xa5, 0x7c, 0xac, 0xb3, 0xc0, 0x75, 0xba, 0xb1, 0x57,
+	0x25, 0x0b, 0x64, 0x91, 0xb2, 0x9c, 0xa2, 0x71, 0xf6, 0xb5, 0x38, 0xd9, 0x92, 0x20, 0x44, 0x85,
+	0x15, 0xd4, 0xd0, 0xf8, 0x41, 0xd5, 0x22, 0xd3, 0xf7, 0x66, 0xc4, 0x8d, 0x32, 0x34, 0xe6, 0xcc,
+	0x4c, 0xa9, 0xca, 0x6f, 0xc3, 0x92, 0x68, 0x24, 0x79, 0x15, 0x96, 0x4f, 0x1c, 0xaf, 0xe7, 0x9f,
+	0xbb, 0x41, 0xd6, 0x85, 0x97, 0x80, 0xcb, 0xff, 0xb8, 0x00, 0xe5, 0xb1, 0xa0, 0x48, 0x1c, 0x08,
+	0xad, 0xc0, 0x1f, 0x86, 0x44, 0x87, 0xf9, 0xc0, 0xef, 0xc5, 0xc7, 0xd2, 0x97, 0x0d, 0xaa, 0xa4,
+	0x7e, 0xcf, 0x7d, 0xb4, 0x5c, 0x35, 0x9a, 0x66, 0xbb, 0xa1, 0x51, 0xca, 0x58, 0x90, 0x77, 0x61,
+	0x33, 0x76, 0x9e, 0x37, 0xdd, 0x30, 0xf2, 0x06, 0xa7, 0x22, 0x68, 0x40, 0xd4, 0x29, 0x9f, 0xcb,
+	0x8e, 0x87, 0xdd, 0x30, 0x72, 0xbb, 0x71, 0xa8, 0xb8, 0x88, 0x20, 0x48, 0x8e, 0x87, 0x33, 0x99,
+	0xe5, 0xbf, 0x34, 0x07, 0xd7, 0x26, 0x86, 0x77, 0xe2, 0x86, 0x3e, 0xec, 0xb3, 0x43, 0x6b, 0x6e,
+	0x7a, 0x89, 0x14, 0xc2, 0xcf, 0x39, 0xbc, 0xc8, 0xe1, 0x3c, 0x45, 0xee, 0xa6, 0x35, 0x8d, 0x55,
+	0x6f, 0x39, 0x76, 0x21, 0x9f, 0x49, 0x0e, 0x61, 0xe3, 0xbc, 0xdb, 0x61, 0x53, 0xcb, 0x1e, 0xa2,
+	0xd8, 0xc4, 0x42, 0x7a, 0xef, 0x92, 0xe2, 0x4a, 0xc4, 0x4d, 0xd7, 0xce, 0xbb, 0x9d, 0x54, 0xf8,
+	0x67, 0xb0, 0x8d, 0x7c, 0x9d, 0x5e, 0xcf, 0x17, 0xab, 0x58, 0x3f, 0x51, 0x8a, 0x5e, 0x64, 0xf3,
+	0xa4, 0xdc, 0xd5, 0x84, 0x9c, 0xa9, 0x4f, 0x94, 0x9c, 0x77, 0x3b, 0x39, 0x18, 0xdf, 0x0b, 0xc2,
+	0x67, 0x91, 0x3f, 0x8c, 0x8f, 0x2c, 0xc4, 0xea, 0xfb, 0xad, 0x69, 0x7b, 0x41, 0x06, 0x99, 0xe6,
+	0xa9, 0xcb, 0x7f, 0x7b, 0x1e, 0x36, 0x73, 0x48, 0xa4, 0x0b, 0xeb, 0xc3, 0xf8, 0xfc, 0x56, 0xba,
+	0xc7, 0xf2, 0xe9, 0xa5, 0x8a, 0x90, 0xd3, 0x2d, 0x99, 0x0b, 0xcd, 0x32, 0x25, 0x4f, 0x44, 0xc8,
+	0x8b, 0x08, 0x08, 0xc1, 0x12, 0x1e, 0x7d, 0xe3, 0x12, 0xaa, 0x31, 0x07, 0x9a, 0x32, 0x23, 0xa7,
+	0xb0, 0xe1, 0x84, 0xa1, 0x77, 0x3a, 0x48, 0x74, 0xd8, 0x39, 0xc6, 0xfe, 0x7b, 0xdf, 0x98, 0xbd,
+	0x9a, 0x61, 0x43, 0x73, 0x6c, 0x71, 0xb1, 0xe9, 0x3b, 0x61, 0xe4, 0x06, 0x7a, 0x1f, 0xc7, 0x9e,
+	0xf0, 0xdc, 0x4b, 0x20, 0x54, 0x8e, 0x62, 0x87, 0x97, 0xd0, 0x76, 0x92, 0x74, 0xe5, 0x01, 0x94,
+	0xa6, 0xc9, 0x0a, 0x8d, 0x01, 0xa3, 0x69, 0xcb, 0x86, 0x42, 0xbb, 0xb5, 0x47, 0x8d, 0xa6, 0xa5,
+	0x14, 0x2a, 0x1f, 0xc3, 0xf6, 0x24, 0x09, 0x90, 0x65, 0x98, 0xdf, 0x6b, 0xd7, 0xeb, 0xca, 0x15,
+	0xb4, 0x16, 0xea, 0x7a, 0xf3, 0x31, 0xf3, 0x8a, 0xae, 0xc2, 0x92, 0xde, 0x34, 0x2d, 0xb5, 0x69,
+	0x29, 0xc5, 0xca, 0x43, 0xb8, 0x31, 0xb5, 0x75, 0x88, 0x59, 0x7b, 0xda, 0x54, 0x1b, 0x7a, 0x95,
+	0xfb, 0x59, 0x5a, 0x1a, 0x35, 0x75, 0xd3, 0xd2, 0xb0, 0xd0, 0xf2, 0x13, 0xd8, 0xc8, 0x9e, 0x40,
+	0xe7, 0x75, 0xc6, 0x62, 0x56, 0x67, 0x24, 0x30, 0x8f, 0x89, 0xd8, 0x52, 0xc3, 0xef, 0xd4, 0x4e,
+	0x9a, 0x93, 0x4d, 0xc2, 0xdf, 0x2d, 0xc0, 0x8d, 0xa9, 0xe1, 0x7b, 0xe4, 0x21, 0x2c, 0xf6, 0xdd,
+	0xbe, 0x1f, 0x5c, 0x88, 0xdd, 0x62, 0x4a, 0xfc, 0x58, 0x83, 0xe1, 0xf0, 0xe3, 0x22, 0x8e, 0x8f,
+	0x2b, 0x74, 0x12, 0x9e, 0x2c, 0x82, 0xd6, 0x5e, 0x7b, 0x41, 0x68, 0x33, 0x5f, 0xa1, 0x13, 0x2a,
+	0xf2, 0x36, 0x14, 0x3d, 0x5f, 0x1c, 0x80, 0xdc, 0x9a, 0xe2, 0xee, 0xe6, 0xc7, 0xb4, 0x45, 0xcf,
+	0x67, 0x2b, 0xf4, 0xf4, 0x88, 0xc0, 0xff, 0x97, 0x5a, 0xf2, 0x1b, 0x05, 0xb8, 0x35, 0x2b, 0xc2,
+	0xf0, 0xff, 0x6a, 0x5b, 0xca, 0x11, 0x40, 0xca, 0x58, 0xdc, 0x97, 0x2b, 0x4c, 0xbb, 0x2f, 0x57,
+	0x1c, 0xbf, 0x2f, 0x27, 0x87, 0x0c, 0xcc, 0x31, 0x67, 0x70, 0x1a, 0x32, 0x50, 0x82, 0xa5, 0xee,
+	0xc5, 0xc0, 0xe9, 0x7b, 0x1d, 0x7e, 0x9c, 0x4c, 0xe3, 0x64, 0xf9, 0x07, 0xb0, 0x9e, 0xa9, 0xd1,
+	0x4f, 0xb7, 0xe0, 0xf2, 0x10, 0x16, 0x79, 0x07, 0xfc, 0x18, 0x7c, 0xb7, 0x61, 0x21, 0x1c, 0xba,
+	0x22, 0x9a, 0xa1, 0x40, 0x79, 0x02, 0x35, 0x98, 0xbe, 0xd3, 0xc9, 0x1e, 0xc8, 0x4a, 0x90, 0x72,
+	0x95, 0x1f, 0xf7, 0x27, 0xaa, 0x09, 0xb9, 0x0f, 0xf3, 0xa8, 0x9c, 0x88, 0xe8, 0x86, 0x97, 0xa7,
+	0x6b, 0x33, 0xac, 0x43, 0x18, 0x6e, 0xf9, 0x0b, 0x58, 0x8e, 0x21, 0x48, 0x2f, 0xa9, 0x20, 0x33,
+	0xe8, 0x51, 0xeb, 0x10, 0xba, 0x86, 0x2c, 0x92, 0x62, 0x36, 0x7c, 0xa3, 0xfc, 0x07, 0x85, 0xe4,
+	0xd8, 0x2f, 0x36, 0xad, 0xc9, 0x4b, 0xb0, 0x78, 0x76, 0x71, 0x1c, 0x78, 0xb9, 0x93, 0x4e, 0x01,
+	0x44, 0x4d, 0xe4, 0xa4, 0xe7, 0x84, 0x67, 0xea, 0xb9, 0xe3, 0xf5, 0xa4, 0x70, 0xc7, 0x58, 0x13,
+	0xc9, 0x66, 0x92, 0xcf, 0xb8, 0x55, 0xae, 0x47, 0x6e, 0x3f, 0x3e, 0xe7, 0xac, 0x4c, 0x9b, 0x1c,
+	0x1c, 0x8d, 0x8f, 0xc5, 0x84, 0x88, 0xec, 0xc3, 0xcd, 0x8e, 0xd3, 0xeb, 0x8c, 0x70, 0x6a, 0xec,
+	0x05, 0x7e, 0xff, 0xc0, 0x0f, 0xe5, 0x3b, 0x4e, 0x99, 0x90, 0x84, 0x59, 0x98, 0xe5, 0x27, 0xb0,
+	0x26, 0x97, 0x41, 0x2a, 0xdc, 0x53, 0x81, 0x69, 0xd6, 0xed, 0x7c, 0x3c, 0x64, 0x60, 0xa8, 0xc9,
+	0xc6, 0xe9, 0xc3, 0xc4, 0xd5, 0x36, 0x47, 0xb3, 0xc0, 0xf2, 0x5f, 0x9f, 0xe7, 0x8a, 0xfe, 0xc4,
+	0x5b, 0x89, 0x2c, 0x8c, 0x8b, 0x9f, 0xbc, 0x5e, 0x70, 0x77, 0xe9, 0x50, 0xe8, 0x5e, 0x79, 0x30,
+	0xb1, 0x60, 0x4b, 0xba, 0xc1, 0xb8, 0xe7, 0xb9, 0xbd, 0x6e, 0x58, 0x72, 0x99, 0xd0, 0xa6, 0x1c,
+	0x05, 0x32, 0x1c, 0xa9, 0x68, 0x3a, 0xce, 0x80, 0x7c, 0xc6, 0xad, 0xbf, 0x4c, 0xe5, 0xa4, 0x90,
+	0xa8, 0x13, 0x56, 0x97, 0x59, 0x28, 0xe4, 0x87, 0xb0, 0x79, 0x3c, 0xc2, 0x5a, 0x56, 0xfd, 0x7e,
+	0x1f, 0x37, 0xb2, 0x50, 0xac, 0x2b, 0x0f, 0x5e, 0x78, 0x43, 0x33, 0x89, 0x5b, 0x8e, 0x37, 0x35,
+	0xae, 0x23, 0xe5, 0xd8, 0x91, 0x63, 0x50, 0x42, 0x97, 0xf9, 0xf0, 0xd2, 0x22, 0xe6, 0x7e, 0xa2,
+	0x22, 0xc6, 0xf8, 0x91, 0x3b, 0xb0, 0xee, 0x3e, 0x97, 0x1a, 0xc7, 0x8e, 0x00, 0x78, 0x08, 0x66,
+	0x36, 0x83, 0x3c, 0x06, 0x25, 0x03, 0xa8, 0xb9, 0x27, 0xc2, 0xb1, 0xff, 0x8a, 0x5c, 0x1b, 0xee,
+	0x2b, 0xcb, 0xa0, 0xd1, 0x31, 0xc2, 0xf2, 0xbf, 0x2b, 0x80, 0x92, 0xef, 0x26, 0x1c, 0x7b, 0x43,
+	0x51, 0x5b, 0x31, 0xf6, 0x98, 0x6f, 0x4f, 0x86, 0x91, 0x5a, 0xe2, 0x89, 0x9d, 0xa1, 0x40, 0xe7,
+	0x39, 0x73, 0x40, 0xcb, 0x89, 0xce, 0xb8, 0xef, 0xb6, 0x7c, 0x0a, 0x2b, 0x09, 0x08, 0x97, 0xb1,
+	0x13, 0x4c, 0x88, 0xf2, 0x78, 0x02, 0x0b, 0x1a, 0xb8, 0xcf, 0xa3, 0x1f, 0xbf, 0x20, 0xa4, 0x2e,
+	0xff, 0x95, 0x02, 0xdc, 0x7e, 0x51, 0xaf, 0x90, 0x3a, 0xac, 0xc7, 0x97, 0x98, 0xe5, 0xfb, 0xdb,
+	0x6f, 0x4c, 0x0b, 0x75, 0x4f, 0x13, 0x5c, 0xbf, 0xcd, 0x10, 0x8f, 0x49, 0x91, 0x9b, 0x2e, 0x19,
+	0x58, 0xf9, 0x5f, 0x17, 0x60, 0x23, 0x7b, 0xbf, 0x96, 0x7c, 0x07, 0xd6, 0xc3, 0x33, 0x7f, 0x18,
+	0x5a, 0xfe, 0xa9, 0x1b, 0x9d, 0xe5, 0xed, 0xc1, 0x6c, 0x1e, 0xb9, 0x03, 0x6b, 0xb1, 0xcb, 0x60,
+	0x2c, 0xb8, 0x3b, 0x93, 0x43, 0xde, 0x87, 0xad, 0x38, 0xae, 0xbe, 0x31, 0x0a, 0x23, 0xa6, 0x35,
+	0x66, 0xcd, 0xb4, 0xf1, 0x7c, 0x5c, 0x6d, 0xb9, 0x2b, 0x2a, 0xbb, 0x90, 0x09, 0x20, 0xa9, 0xc0,
+	0x4a, 0xd7, 0xed, 0xb9, 0x3c, 0xae, 0x7c, 0x41, 0x76, 0x03, 0x24, 0xe0, 0xf2, 0x2f, 0xc2, 0x46,
+	0xf6, 0xca, 0x2f, 0x79, 0x04, 0xd7, 0x9c, 0x78, 0x05, 0xde, 0xf3, 0x83, 0x56, 0xdc, 0x27, 0x19,
+	0x47, 0xc2, 0x64, 0x14, 0x5c, 0xdf, 0xd1, 0x1e, 0xea, 0x99, 0xdc, 0xb0, 0x73, 0xbb, 0xb9, 0xf5,
+	0x3d, 0x9b, 0x59, 0xfe, 0x47, 0x05, 0xd8, 0x1a, 0xbb, 0xb7, 0x46, 0x1e, 0xc0, 0x4e, 0xdf, 0x79,
+	0xee, 0xf5, 0x47, 0x7d, 0x91, 0xe7, 0x0d, 0x4e, 0xdb, 0x03, 0x2f, 0x0a, 0x59, 0x7f, 0x17, 0xe9,
+	0x94, 0x5c, 0xf2, 0x08, 0x4a, 0x49, 0xad, 0xf2, 0x94, 0x45, 0x46, 0x39, 0x35, 0x9f, 0x3c, 0x84,
+	0xeb, 0xf1, 0x4d, 0xb6, 0x3c, 0x29, 0x0f, 0x6e, 0x9f, 0x96, 0x5d, 0xfe, 0x9b, 0x6b, 0xb0, 0x3d,
+	0xe9, 0x72, 0x1c, 0xb9, 0x0b, 0x24, 0x7f, 0x39, 0x4e, 0x8f, 0xe7, 0xce, 0x84, 0x1c, 0x7e, 0xb2,
+	0xe2, 0x04, 0x11, 0x0b, 0x76, 0xe5, 0x3b, 0x45, 0x0a, 0xc0, 0x8d, 0xb8, 0x1b, 0x07, 0x08, 0xf2,
+	0xb0, 0xe1, 0x24, 0x4d, 0xba, 0xb0, 0x19, 0xc7, 0x70, 0x58, 0xec, 0x22, 0xf1, 0x45, 0x69, 0x7e,
+	0x96, 0xbd, 0x36, 0xa9, 0xba, 0x49, 0x5c, 0x88, 0xe0, 0x40, 0xf3, 0x2c, 0xc9, 0xcf, 0xc3, 0xba,
+	0x7f, 0x72, 0xe2, 0x06, 0xb8, 0x2c, 0xf6, 0x9c, 0x30, 0x2c, 0x2d, 0xb0, 0x32, 0x1e, 0x7e, 0x83,
+	0x32, 0x0c, 0x99, 0x9e, 0x66, 0xd9, 0x91, 0x9f, 0x85, 0xb5, 0x18, 0x20, 0x82, 0x90, 0x8b, 0xd3,
+	0x8f, 0xf6, 0x67, 0xb2, 0xe7, 0xd7, 0x54, 0x64, 0x66, 0xe4, 0x2d, 0x50, 0x44, 0xdf, 0xb3, 0xcb,
+	0x18, 0x5f, 0xe0, 0xec, 0xe2, 0xe1, 0xcb, 0x63, 0x70, 0x62, 0xc0, 0xf2, 0xb0, 0xe7, 0x44, 0x27,
+	0x7e, 0xd0, 0x2f, 0x2d, 0xb3, 0x4a, 0xbc, 0xff, 0x0d, 0x2a, 0xd1, 0x12, 0xa4, 0x34, 0x61, 0x82,
+	0x7b, 0xf8, 0x60, 0xd4, 0x3f, 0x76, 0x03, 0xe3, 0x44, 0x84, 0x0d, 0x95, 0x56, 0x6e, 0x17, 0xef,
+	0x2c, 0xd0, 0x3c, 0x98, 0xdc, 0x83, 0xab, 0x39, 0x50, 0x3b, 0x64, 0x81, 0x08, 0xc5, 0x3b, 0x05,
+	0x3a, 0x29, 0x0b, 0x47, 0xcd, 0x89, 0xf7, 0xdc, 0xed, 0x56, 0xfd, 0x30, 0x2a, 0xad, 0x32, 0xbc,
+	0x14, 0x80, 0xb9, 0x2c, 0xa8, 0x82, 0xe5, 0xae, 0xf1, 0xdc, 0x04, 0xc0, 0x03, 0xba, 0x3b, 0xa3,
+	0x80, 0xf5, 0x01, 0x62, 0xac, 0x33, 0x8c, 0x2c, 0x90, 0xec, 0xc0, 0x22, 0xbf, 0x7f, 0x57, 0xda,
+	0x60, 0x3a, 0x8e, 0x48, 0x31, 0xed, 0x46, 0x34, 0xbc, 0xea, 0x8f, 0x06, 0x51, 0x69, 0x93, 0xb5,
+	0x29, 0x0b, 0x94, 0x82, 0x0f, 0x5b, 0xc9, 0x75, 0x7d, 0x85, 0xf1, 0x19, 0x83, 0x23, 0x47, 0x76,
+	0xbd, 0xd6, 0xed, 0x9a, 0x1d, 0x1f, 0x37, 0xf1, 0x2d, 0xb6, 0x24, 0x67, 0x81, 0x28, 0xa3, 0xe1,
+	0x28, 0xe8, 0x9c, 0x39, 0x38, 0x07, 0xd5, 0x38, 0x3a, 0x8e, 0x5d, 0xf2, 0x5f, 0xa1, 0x93, 0xb2,
+	0xc8, 0x2d, 0x58, 0x0c, 0xcf, 0x9c, 0xc0, 0xed, 0x96, 0xae, 0x4a, 0x4b, 0x98, 0x80, 0x91, 0xfb,
+	0xb0, 0x1d, 0x57, 0xd9, 0xf4, 0xbe, 0x76, 0xf7, 0x7a, 0xee, 0x73, 0x0f, 0x17, 0xcc, 0x6d, 0x66,
+	0x5f, 0x4c, 0xcc, 0x4b, 0xe7, 0x36, 0x9b, 0x80, 0x46, 0xc0, 0x6f, 0x65, 0x5d, 0x93, 0xe7, 0xb6,
+	0x9c, 0x43, 0xee, 0xc3, 0x56, 0x3c, 0x1a, 0xec, 0x93, 0xb8, 0x80, 0x1d, 0x79, 0x69, 0x54, 0xe2,
+	0xfc, 0xa4, 0x8c, 0x12, 0x2c, 0xb9, 0x83, 0x2e, 0x5b, 0x0d, 0xae, 0x33, 0xcd, 0x3b, 0x4e, 0x56,
+	0x3e, 0x82, 0xcd, 0xdc, 0x6c, 0x65, 0xbe, 0x01, 0x11, 0x1f, 0x35, 0x76, 0x52, 0xb9, 0x0c, 0xf3,
+	0x07, 0x86, 0x69, 0x29, 0x73, 0x95, 0xbb, 0xb0, 0x9e, 0x99, 0x82, 0x64, 0x0d, 0x96, 0x4d, 0x4b,
+	0x6d, 0xd6, 0x54, 0x5a, 0x53, 0x0a, 0x64, 0x13, 0x56, 0xab, 0x46, 0xf3, 0x50, 0xa3, 0x96, 0xbe,
+	0x5b, 0xd7, 0x94, 0x62, 0xa5, 0x06, 0x6b, 0xf2, 0x9c, 0x42, 0x04, 0xb5, 0x5e, 0xb7, 0x13, 0x57,
+	0x07, 0xb9, 0x0a, 0x9b, 0x2d, 0x95, 0x5a, 0xba, 0x9a, 0x02, 0x8b, 0x64, 0x03, 0xa0, 0x69, 0x24,
+	0xe9, 0xb9, 0xca, 0x8f, 0x0a, 0xb0, 0x1c, 0xcf, 0x0a, 0xe6, 0x29, 0x69, 0x3e, 0x6e, 0x1a, 0x47,
+	0x4d, 0xa5, 0x40, 0x56, 0x60, 0xa1, 0xae, 0x37, 0xdb, 0x4f, 0x78, 0x25, 0xe9, 0x81, 0x56, 0x57,
+	0xe6, 0xf0, 0xcb, 0x6c, 0x9b, 0x9a, 0x32, 0x8f, 0xb8, 0x47, 0x7a, 0xb3, 0x66, 0x1c, 0x99, 0xca,
+	0x02, 0x79, 0x09, 0x6e, 0x88, 0x84, 0x7d, 0xa4, 0x5b, 0x07, 0xb6, 0xf9, 0x79, 0xdd, 0x4e, 0xea,
+	0xbe, 0x48, 0x4a, 0xb0, 0x3d, 0x96, 0x7d, 0xa4, 0xed, 0x2a, 0x4b, 0xe4, 0x0d, 0xa8, 0x8c, 0x13,
+	0x6a, 0xf4, 0x50, 0xa3, 0xb6, 0xd6, 0xb4, 0x34, 0xda, 0xa2, 0xba, 0xa9, 0x29, 0xcb, 0xe4, 0x26,
+	0x5c, 0x67, 0x95, 0x99, 0xc0, 0x7e, 0x85, 0xec, 0x00, 0xc9, 0x65, 0x22, 0x73, 0x20, 0xaf, 0xc3,
+	0xed, 0x3c, 0xd1, 0x18, 0xeb, 0xd5, 0xca, 0xbf, 0x07, 0x80, 0xf4, 0x06, 0x1d, 0x01, 0x58, 0x34,
+	0x8f, 0x74, 0xab, 0x7a, 0xa0, 0x5c, 0x41, 0xc6, 0x87, 0x3a, 0xb5, 0xda, 0x6a, 0xdd, 0xae, 0xa9,
+	0x96, 0x5a, 0x65, 0x74, 0xdc, 0x2d, 0x64, 0x5a, 0x06, 0x55, 0xf7, 0x35, 0xa5, 0xc8, 0x12, 0x1a,
+	0x3d, 0xd4, 0xab, 0x9a, 0x32, 0x87, 0x32, 0x47, 0xcc, 0x5d, 0xd5, 0xd4, 0x44, 0x61, 0x5c, 0x54,
+	0xa6, 0x7a, 0xa8, 0x37, 0xf7, 0x51, 0x54, 0x6b, 0xb0, 0x6c, 0xb4, 0x34, 0xaa, 0x5a, 0x06, 0x55,
+	0x16, 0xb1, 0x3b, 0x8e, 0xb4, 0xdd, 0x18, 0x75, 0x09, 0x3b, 0x91, 0xea, 0xfb, 0x07, 0x96, 0x6d,
+	0xea, 0x5f, 0x68, 0x54, 0x59, 0x26, 0x65, 0xd8, 0xb1, 0x0e, 0xa8, 0xa6, 0xd9, 0x96, 0xae, 0x51,
+	0x5b, 0x6d, 0xb5, 0xea, 0x38, 0x74, 0x74, 0xa3, 0xa9, 0xac, 0x60, 0x61, 0x71, 0xf5, 0x1a, 0x6a,
+	0xf5, 0x40, 0x6f, 0x6a, 0x0a, 0x20, 0xc7, 0x9a, 0x6e, 0x3e, 0xb6, 0x55, 0x4a, 0xd5, 0xa7, 0xca,
+	0x2a, 0x4b, 0xa7, 0x75, 0x5f, 0x23, 0x04, 0x36, 0xf4, 0xe6, 0x1e, 0x55, 0x4d, 0x8b, 0xb6, 0xab,
+	0x56, 0x9b, 0x6a, 0xca, 0x3a, 0xd9, 0x06, 0xa5, 0x75, 0xf0, 0xd4, 0xd4, 0xab, 0x12, 0xa7, 0x0d,
+	0xac, 0x76, 0xf5, 0x40, 0x35, 0x4d, 0xdd, 0x54, 0x36, 0xc9, 0x35, 0xd8, 0xe2, 0xb1, 0x10, 0x7a,
+	0x73, 0xdf, 0x8e, 0xdb, 0xab, 0x90, 0x2d, 0x58, 0xdf, 0x6d, 0x9b, 0x7a, 0x53, 0x33, 0x4d, 0xbb,
+	0x6d, 0x6a, 0x54, 0xd9, 0x42, 0xa1, 0x09, 0xe1, 0xd8, 0x55, 0xa3, 0x69, 0x51, 0xa3, 0x5e, 0xd7,
+	0xa8, 0x42, 0x90, 0xc3, 0xc1, 0xd3, 0x16, 0x52, 0x9a, 0x06, 0x8d, 0x5b, 0x7c, 0x15, 0x1b, 0x91,
+	0x70, 0xd0, 0x9a, 0x96, 0x6e, 0x3d, 0x55, 0xb6, 0x71, 0x92, 0xe8, 0x86, 0xdd, 0x30, 0x6a, 0xed,
+	0xba, 0xa6, 0x5c, 0xc3, 0x3a, 0xab, 0x55, 0x6c, 0xb4, 0xdd, 0x50, 0x9b, 0xea, 0xbe, 0x46, 0x95,
+	0x1d, 0x1c, 0x89, 0x87, 0x75, 0xb5, 0xa9, 0x5c, 0xc7, 0x02, 0x25, 0xb9, 0xc4, 0x9c, 0x4b, 0x28,
+	0xe9, 0x98, 0xb3, 0x72, 0x83, 0xdc, 0x84, 0xab, 0xb1, 0xb0, 0x64, 0x29, 0x96, 0xcb, 0xc5, 0x65,
+	0x16, 0xfd, 0xd8, 0xd4, 0xac, 0x23, 0x83, 0x3e, 0xc6, 0xe6, 0x69, 0xcd, 0x5a, 0xcb, 0xd0, 0x9b,
+	0x96, 0x72, 0x13, 0x25, 0x93, 0xd4, 0x4e, 0xad, 0x56, 0x8d, 0x76, 0xd3, 0x52, 0x6e, 0x91, 0x45,
+	0x28, 0xea, 0x2d, 0xe5, 0x25, 0x1c, 0x95, 0x42, 0x14, 0xa2, 0xea, 0xb6, 0xa5, 0x35, 0x5a, 0x75,
+	0xd5, 0xd2, 0x94, 0x97, 0xb1, 0x82, 0x2d, 0x83, 0x5a, 0xca, 0x2b, 0x28, 0x48, 0xc1, 0x5d, 0xb9,
+	0xcd, 0xa6, 0xa9, 0x54, 0xfe, 0xab, 0x08, 0xb0, 0x0e, 0xf4, 0xa4, 0xf1, 0x15, 0x2c, 0xb3, 0x6a,
+	0x34, 0x5a, 0x6d, 0x4b, 0xb3, 0xa9, 0x66, 0x1a, 0x6d, 0x5a, 0xd5, 0x94, 0xd7, 0xc8, 0x12, 0xcc,
+	0x35, 0xd4, 0xaa, 0xf2, 0x3a, 0x36, 0x4b, 0xc7, 0xbe, 0x6c, 0x6a, 0x96, 0xf2, 0x2d, 0x9c, 0xa5,
+	0x0d, 0x03, 0xdb, 0xfb, 0x06, 0x79, 0x15, 0x5e, 0xaa, 0xe9, 0xa6, 0x45, 0xf5, 0xdd, 0xb6, 0xa5,
+	0xd5, 0xec, 0xb8, 0xb5, 0x58, 0x89, 0x7d, 0x6a, 0xb4, 0x5b, 0xca, 0x9b, 0x28, 0x57, 0xec, 0x13,
+	0x55, 0x6f, 0x6a, 0x54, 0xb9, 0x83, 0xbd, 0x97, 0x24, 0xed, 0x96, 0x51, 0x53, 0xbe, 0x4d, 0x14,
+	0x58, 0xab, 0x1b, 0xfb, 0x6c, 0x24, 0xb4, 0x0c, 0xa3, 0xae, 0xbc, 0xc5, 0x90, 0xea, 0x46, 0xbb,
+	0x96, 0xf4, 0xfa, 0x77, 0xb0, 0x69, 0x35, 0x44, 0x7f, 0x9b, 0xf5, 0x02, 0x7e, 0xbd, 0x83, 0xd5,
+	0x8a, 0x47, 0xbe, 0x72, 0x17, 0x89, 0xea, 0x86, 0x5a, 0xb3, 0x77, 0xd5, 0xba, 0xda, 0xac, 0x6a,
+	0x54, 0x79, 0x17, 0x17, 0x81, 0x54, 0x94, 0x92, 0x04, 0xee, 0x61, 0xf7, 0xb6, 0xa8, 0x51, 0xd5,
+	0x4c, 0x1c, 0x18, 0xac, 0xd4, 0xf7, 0x10, 0x16, 0x8f, 0xa2, 0x43, 0xa3, 0xde, 0x6e, 0x68, 0xca,
+	0x7d, 0x1c, 0x41, 0x71, 0x54, 0x87, 0xcd, 0xdd, 0xb2, 0x55, 0x4d, 0x79, 0x9f, 0xbc, 0x06, 0xaf,
+	0x8c, 0x81, 0x6d, 0xb3, 0xa5, 0x55, 0xf5, 0xbd, 0xb8, 0x8c, 0x0f, 0x70, 0x85, 0xaa, 0x69, 0xa6,
+	0x4e, 0xb5, 0x9a, 0x3d, 0xce, 0xe3, 0x43, 0x9c, 0xf5, 0x54, 0xdb, 0x47, 0xd4, 0x07, 0x58, 0x8c,
+	0x7a, 0xa8, 0xea, 0x75, 0x75, 0x57, 0xaf, 0x63, 0x9f, 0x7e, 0x61, 0x34, 0x35, 0xe5, 0x23, 0x94,
+	0x4c, 0xdc, 0x2d, 0x38, 0x17, 0x95, 0x87, 0x08, 0x89, 0xeb, 0xc8, 0x20, 0x1f, 0x63, 0xb3, 0x93,
+	0xe9, 0xcf, 0x40, 0x8f, 0xb0, 0xd9, 0xb9, 0x15, 0x81, 0xe7, 0x7c, 0x17, 0x9b, 0x18, 0xf7, 0x91,
+	0x68, 0xe2, 0x27, 0x28, 0xc5, 0x43, 0x5d, 0x3b, 0x62, 0x9d, 0xf1, 0x33, 0x58, 0x40, 0x4d, 0x33,
+	0x1f, 0x5b, 0x46, 0x8b, 0x8b, 0xe5, 0x53, 0x1c, 0x1b, 0xf1, 0x88, 0x6b, 0x51, 0xe3, 0x50, 0xaf,
+	0x69, 0x54, 0xf9, 0x1e, 0x76, 0x6b, 0x53, 0x6d, 0x68, 0x66, 0x4b, 0xad, 0x6a, 0xca, 0x67, 0x38,
+	0x9a, 0x71, 0xb0, 0xb1, 0x0e, 0x90, 0xa6, 0xa0, 0x8a, 0x25, 0xa6, 0xfd, 0x8d, 0x12, 0x52, 0x76,
+	0xb1, 0x7e, 0x07, 0x55, 0xdd, 0x1e, 0x9b, 0xff, 0xd5, 0x4c, 0x87, 0x59, 0x54, 0x6d, 0x9a, 0x7c,
+	0x0e, 0x2a, 0x35, 0x72, 0x03, 0xae, 0xc9, 0x33, 0x0e, 0xc5, 0x62, 0x34, 0xb5, 0xa6, 0xa5, 0x68,
+	0x38, 0xd6, 0x0f, 0x1b, 0x9c, 0xf7, 0x1e, 0x59, 0x4b, 0xf7, 0x93, 0x1f, 0x6d, 0x56, 0x2c, 0x80,
+	0xf4, 0x81, 0x25, 0xe6, 0x23, 0x4f, 0x9e, 0x58, 0xe2, 0xfb, 0x5b, 0x92, 0xde, 0xdb, 0x53, 0x8a,
+	0xd8, 0x28, 0xb3, 0x6d, 0xb6, 0xb4, 0x66, 0x2d, 0x8e, 0x37, 0x66, 0xf9, 0xa6, 0xa5, 0x5a, 0x9a,
+	0x1d, 0xb3, 0x9d, 0xaf, 0x68, 0x70, 0x7d, 0xca, 0xfd, 0x2b, 0x1e, 0xb1, 0xa8, 0xd7, 0xee, 0x29,
+	0x57, 0xe2, 0xcf, 0xf7, 0xf8, 0xbe, 0x86, 0x9f, 0x1f, 0x2a, 0x0b, 0xf1, 0xe7, 0x03, 0x65, 0xb1,
+	0xf2, 0x77, 0x0a, 0xc9, 0x85, 0x55, 0xb6, 0x0d, 0x6c, 0xc1, 0xfa, 0xbe, 0xd6, 0xd4, 0xa8, 0x5e,
+	0xb5, 0x77, 0xeb, 0x46, 0xf5, 0x31, 0x27, 0xd4, 0xcd, 0xaa, 0xa9, 0x2b, 0x45, 0xcc, 0xdd, 0xd3,
+	0x77, 0x35, 0x6a, 0x57, 0x0f, 0xd4, 0x66, 0x33, 0xde, 0x19, 0xf7, 0xaa, 0x06, 0xee, 0x8c, 0x00,
+	0x8b, 0xc6, 0xee, 0xf7, 0xb5, 0xaa, 0xa5, 0x2c, 0x60, 0x57, 0xc4, 0x6c, 0xf6, 0xf4, 0xba, 0x66,
+	0x9b, 0x4f, 0x4d, 0x4b, 0x6b, 0x28, 0x8b, 0x38, 0x9d, 0x9b, 0x7b, 0xa6, 0xb2, 0x84, 0x3d, 0x5e,
+	0xd5, 0xf7, 0x4c, 0xdb, 0x6c, 0xec, 0x2a, 0xcb, 0x6c, 0xd3, 0x35, 0xaa, 0x6a, 0x5d, 0x59, 0xc1,
+	0x4f, 0xc3, 0x3a, 0xd0, 0xa8, 0x02, 0x6c, 0x96, 0x35, 0xf6, 0x4c, 0x65, 0x95, 0x7d, 0x99, 0x6a,
+	0x53, 0x59, 0xab, 0xfc, 0x62, 0x72, 0x9f, 0x23, 0x17, 0x7f, 0x25, 0x66, 0x35, 0x8b, 0xd8, 0xe6,
+	0xa3, 0xbf, 0xc0, 0x26, 0xac, 0x6e, 0x3e, 0xe6, 0x91, 0x51, 0x66, 0x53, 0x6d, 0x99, 0x07, 0x86,
+	0xc5, 0x23, 0xa3, 0x1a, 0x5a, 0xc3, 0xa0, 0x4f, 0x95, 0x79, 0xb6, 0xb5, 0x1f, 0xa9, 0x2d, 0x65,
+	0x81, 0x05, 0x81, 0x1a, 0xfb, 0xbc, 0x92, 0xba, 0x69, 0x28, 0x4b, 0xd8, 0x59, 0x9a, 0xf9, 0xa4,
+	0x6a, 0x34, 0x4d, 0xa3, 0xae, 0x29, 0xcb, 0x95, 0x67, 0xa0, 0xe4, 0x43, 0xd5, 0x91, 0xbe, 0x89,
+	0x33, 0x85, 0xc5, 0x8e, 0x1e, 0xd4, 0x6a, 0x3c, 0x76, 0xd4, 0x34, 0xb1, 0xf3, 0xd6, 0x60, 0xb9,
+	0x79, 0xd8, 0xd0, 0x6c, 0x4c, 0xcd, 0x63, 0xcf, 0xaa, 0x5f, 0xb4, 0xa9, 0x66, 0x23, 0x16, 0xa4,
+	0x49, 0xcc, 0x5d, 0x65, 0x0b, 0x24, 0x4b, 0xb6, 0xeb, 0x16, 0x55, 0x95, 0xb5, 0xca, 0x5d, 0x58,
+	0x93, 0x83, 0xf2, 0x70, 0x0e, 0xe4, 0xc3, 0xf2, 0x78, 0x13, 0xd5, 0x83, 0xf6, 0xae, 0x52, 0xac,
+	0xbc, 0x3f, 0xe1, 0x84, 0x94, 0xfa, 0x3d, 0x16, 0x3f, 0x16, 0x9f, 0xd6, 0x2a, 0x05, 0x4c, 0xb5,
+	0xa8, 0x51, 0x6b, 0xe3, 0xea, 0x54, 0xac, 0xfc, 0x10, 0x6e, 0xbf, 0xe8, 0x4c, 0x11, 0xb7, 0x2a,
+	0xb5, 0x8e, 0xdd, 0xc3, 0x46, 0x3d, 0x9b, 0x91, 0x05, 0x94, 0x76, 0x4b, 0x7d, 0x6a, 0xab, 0xa6,
+	0xfd, 0xd4, 0x68, 0xdb, 0xfb, 0x86, 0x52, 0xc4, 0x0a, 0xf2, 0x35, 0x46, 0x42, 0x9c, 0xab, 0xbc,
+	0xc3, 0xbd, 0xbd, 0xac, 0x26, 0x1b, 0x00, 0xd4, 0xa8, 0x6b, 0x76, 0x55, 0xad, 0x1e, 0x68, 0x9c,
+	0x89, 0x48, 0xb7, 0xd4, 0x2a, 0xee, 0x02, 0xc5, 0xca, 0xaf, 0x16, 0x60, 0x5d, 0x97, 0x1c, 0x96,
+	0x21, 0xdb, 0x46, 0xda, 0x0d, 0x26, 0xa5, 0x02, 0x4e, 0x65, 0x4c, 0x7c, 0x74, 0xff, 0xde, 0x3d,
+	0x1b, 0xbb, 0xd6, 0xe4, 0xa3, 0x12, 0x61, 0xef, 0xdd, 0x7b, 0x2c, 0x40, 0x73, 0x09, 0xe8, 0xc3,
+	0x18, 0x34, 0x8f, 0xcb, 0x1b, 0x82, 0x0e, 0x4d, 0x8d, 0xea, 0x9a, 0x29, 0xc0, 0x0b, 0x38, 0xbf,
+	0x10, 0xac, 0x1b, 0x2d, 0x53, 0xba, 0x18, 0xb0, 0x58, 0x79, 0x04, 0x6b, 0xf2, 0x6b, 0x6f, 0x42,
+	0xbf, 0x10, 0xef, 0xbd, 0xf1, 0x59, 0xd1, 0xa2, 0xc6, 0x93, 0xa7, 0x4a, 0x91, 0x29, 0x2f, 0x5a,
+	0xab, 0xae, 0x56, 0x35, 0x15, 0x55, 0xd4, 0xb9, 0xdd, 0x75, 0x58, 0xe5, 0x2f, 0xcc, 0xb1, 0x20,
+	0x91, 0xdd, 0x6b, 0x70, 0x35, 0x7e, 0xa5, 0x41, 0x02, 0x57, 0xfe, 0x32, 0x7b, 0x51, 0x21, 0xf3,
+	0x78, 0x15, 0x79, 0x3b, 0xff, 0xe8, 0xd5, 0x45, 0x62, 0x9e, 0x8f, 0x67, 0x10, 0xca, 0x5e, 0x9e,
+	0x41, 0x60, 0x7c, 0xe8, 0xca, 0xaf, 0xa0, 0xbc, 0x35, 0xe3, 0x7d, 0xac, 0x38, 0x1d, 0x1f, 0xb0,
+	0xe6, 0x38, 0x54, 0x9e, 0x33, 0xe7, 0x92, 0x04, 0x61, 0x82, 0x33, 0x68, 0x43, 0xad, 0xe3, 0xa2,
+	0xda, 0xd4, 0xaa, 0x62, 0x6e, 0x5d, 0x85, 0x4d, 0xe3, 0xa8, 0x69, 0xca, 0xc0, 0x22, 0xb9, 0x05,
+	0x25, 0x75, 0x7f, 0x9f, 0x6a, 0xfb, 0xa8, 0xe6, 0xdb, 0xbb, 0x4f, 0xe5, 0xdc, 0x39, 0xcc, 0x4d,
+	0xd6, 0xe5, 0x7c, 0xee, 0x7c, 0xe5, 0x5f, 0x32, 0xc7, 0x4b, 0xee, 0x5e, 0x0f, 0xf9, 0xb9, 0xc4,
+	0xd7, 0xec, 0xb9, 0x81, 0x3d, 0x88, 0xdd, 0xda, 0x39, 0xfb, 0x77, 0x8c, 0x6e, 0x1c, 0x82, 0x83,
+	0x89, 0x6e, 0x78, 0x99, 0x34, 0xf9, 0x36, 0x28, 0x12, 0x77, 0x39, 0xf6, 0x54, 0x2a, 0x95, 0xb9,
+	0xc4, 0x2b, 0x9f, 0xc0, 0xb5, 0x89, 0x3c, 0x99, 0x66, 0xbb, 0xb7, 0xa7, 0x51, 0x5b, 0xc7, 0x71,
+	0x71, 0x0d, 0xb6, 0xb4, 0x26, 0xb6, 0xb0, 0xa1, 0x35, 0x2d, 0xbb, 0xd9, 0x6e, 0xec, 0xb2, 0x79,
+	0xf6, 0x47, 0xdf, 0x86, 0x35, 0xd9, 0x0d, 0xf8, 0x53, 0xf6, 0x1b, 0x8a, 0xf8, 0xd2, 0x62, 0x1a,
+	0x5f, 0x4a, 0x60, 0x7e, 0x14, 0x26, 0xc7, 0x3b, 0xec, 0x9b, 0xdc, 0x86, 0x55, 0xc9, 0x0e, 0x64,
+	0xfe, 0xb9, 0x02, 0x95, 0x41, 0x99, 0xa3, 0x95, 0x85, 0xdc, 0x31, 0xd7, 0x36, 0x2c, 0xf4, 0xbc,
+	0xbe, 0x17, 0xb1, 0xe0, 0x81, 0x02, 0xe5, 0x09, 0x16, 0xad, 0xe7, 0x3a, 0xcf, 0xf8, 0xc5, 0x0a,
+	0xca, 0xbe, 0xd1, 0xb6, 0x75, 0xf8, 0x1d, 0xc7, 0x65, 0xd9, 0xb6, 0xe5, 0x30, 0xf2, 0x1a, 0xac,
+	0x04, 0x6e, 0xe8, 0x7d, 0xcd, 0x3c, 0x80, 0x2b, 0xb2, 0xbd, 0x99, 0xc2, 0xf3, 0x07, 0x58, 0x30,
+	0x7e, 0x80, 0x55, 0x82, 0xf9, 0xe8, 0xcc, 0x1b, 0xf0, 0x0b, 0x0f, 0xa2, 0x08, 0x06, 0x21, 0x6f,
+	0xc0, 0x9a, 0x78, 0x9c, 0xa8, 0xcb, 0x3c, 0x15, 0x6b, 0x88, 0xc1, 0xbc, 0xe2, 0x19, 0x38, 0x9a,
+	0xf6, 0x28, 0x16, 0x7d, 0xd0, 0x09, 0xb8, 0x33, 0x71, 0x9d, 0xb5, 0x21, 0x0b, 0x24, 0x2a, 0x2c,
+	0x0d, 0x03, 0x7f, 0xd8, 0x70, 0x86, 0xa5, 0x0d, 0xe6, 0x31, 0x7f, 0x73, 0x6a, 0x17, 0xa5, 0x07,
+	0x0c, 0x75, 0x2f, 0x8c, 0x68, 0x4c, 0x87, 0x2d, 0xf6, 0x98, 0x67, 0xa4, 0xd5, 0x89, 0x4a, 0x9b,
+	0x99, 0x16, 0x27, 0x70, 0x8e, 0xd4, 0x72, 0x9d, 0x67, 0x88, 0x74, 0x3d, 0x87, 0x24, 0xe0, 0xe4,
+	0x21, 0x5c, 0x1f, 0x45, 0x5e, 0xcf, 0xfb, 0x9a, 0xdf, 0x90, 0x38, 0x0b, 0xdc, 0xf0, 0xcc, 0xef,
+	0x31, 0xbe, 0x0a, 0xab, 0xfc, 0xb4, 0x6c, 0x42, 0x61, 0x53, 0x5c, 0xb7, 0x6b, 0xb8, 0x91, 0xc3,
+	0x82, 0xd7, 0xb6, 0xc6, 0xdf, 0x83, 0xcb, 0x35, 0x27, 0x83, 0x4f, 0xf3, 0x0c, 0x90, 0xa7, 0x54,
+	0x1c, 0x0b, 0x2c, 0x21, 0x2f, 0xe0, 0xd9, 0xce, 0xe2, 0xd3, 0x3c, 0x03, 0xf2, 0x21, 0x5c, 0xef,
+	0x7b, 0x83, 0xf8, 0xc6, 0xd3, 0x89, 0x1f, 0xd8, 0xf1, 0xdb, 0x91, 0xcc, 0x51, 0x52, 0xa0, 0xdb,
+	0x7d, 0x6f, 0xc0, 0x6f, 0x3b, 0xed, 0xf9, 0x41, 0xec, 0x07, 0x67, 0x64, 0xce, 0xf3, 0x89, 0x64,
+	0xdb, 0x82, 0xcc, 0x79, 0x3e, 0x4e, 0x66, 0x82, 0xc2, 0xfc, 0x95, 0x76, 0xd7, 0x1d, 0xba, 0x83,
+	0xae, 0x3b, 0xe8, 0x5c, 0x30, 0x8f, 0xc9, 0xac, 0x26, 0x50, 0x24, 0xa8, 0x25, 0xf8, 0x74, 0x33,
+	0xc8, 0x02, 0xc8, 0x07, 0x70, 0x6d, 0xe8, 0x06, 0xb8, 0x97, 0x7a, 0x3d, 0x57, 0x6a, 0x30, 0x73,
+	0xae, 0x14, 0xe8, 0xe4, 0x4c, 0xb2, 0x0f, 0x2f, 0x75, 0xce, 0xdc, 0xce, 0x33, 0x7b, 0x5a, 0xf3,
+	0x4b, 0xf2, 0x98, 0xb8, 0xc1, 0x70, 0x1b, 0x93, 0x44, 0xc1, 0xda, 0x34, 0x38, 0x75, 0xe5, 0x36,
+	0xdd, 0x78, 0x61, 0x9b, 0x06, 0xa7, 0x6e, 0xb6, 0x4d, 0x19, 0x00, 0xf9, 0x21, 0x6c, 0xc7, 0x97,
+	0xd1, 0x70, 0x27, 0x1b, 0x74, 0x2e, 0x32, 0x4f, 0x29, 0x7e, 0x67, 0x2a, 0x67, 0xa1, 0x5c, 0xd6,
+	0x39, 0x51, 0xfc, 0xae, 0x60, 0x38, 0x06, 0x25, 0x3f, 0x80, 0xab, 0xb9, 0xab, 0x72, 0xf2, 0xfb,
+	0x8a, 0x6f, 0xbd, 0xa8, 0x00, 0x7e, 0x79, 0x2e, 0x7e, 0x42, 0x2c, 0xcc, 0x03, 0xc9, 0xcf, 0xc1,
+	0xf5, 0xf3, 0x98, 0xff, 0xd0, 0x09, 0x22, 0x6f, 0xec, 0xc5, 0xc5, 0x4c, 0x5c, 0xf0, 0x61, 0xfc,
+	0x2a, 0x42, 0x8c, 0x9a, 0x3c, 0x25, 0x18, 0x4e, 0xc8, 0x20, 0x3d, 0x28, 0x25, 0xcc, 0xd3, 0x57,
+	0x2c, 0x32, 0xef, 0x2e, 0xbe, 0xfb, 0xa2, 0x16, 0x48, 0xcf, 0x5f, 0xc4, 0xef, 0x67, 0x85, 0x13,
+	0x73, 0x88, 0x0a, 0x2b, 0xe7, 0x7d, 0xb7, 0xcf, 0xd9, 0xff, 0x93, 0x09, 0x51, 0xcd, 0x19, 0xf6,
+	0x87, 0x0d, 0x7e, 0x3c, 0x7c, 0x50, 0xa0, 0xcb, 0x48, 0x96, 0xb0, 0xe8, 0x0c, 0x47, 0x9c, 0xc5,
+	0x3f, 0x7d, 0x21, 0x8b, 0xea, 0x70, 0x94, 0xb0, 0xe8, 0xf0, 0xef, 0xf2, 0x6f, 0x17, 0x60, 0x33,
+	0x37, 0x6e, 0x48, 0x03, 0x36, 0xd8, 0x0b, 0x62, 0xc9, 0xee, 0x24, 0x0e, 0xf6, 0x2f, 0xbd, 0xad,
+	0x21, 0x75, 0x02, 0x62, 0xcf, 0xb3, 0xb1, 0xa1, 0x1c, 0x8d, 0x86, 0x3d, 0x77, 0x52, 0xe8, 0xc7,
+	0xf8, 0x28, 0xb6, 0x10, 0x95, 0x42, 0x90, 0x7c, 0x97, 0x7f, 0xbd, 0x00, 0x90, 0x66, 0x91, 0x4f,
+	0xe1, 0x16, 0xab, 0xe3, 0xb4, 0xf5, 0xa2, 0xc0, 0x66, 0x69, 0x09, 0x71, 0x1a, 0x93, 0xd6, 0x8c,
+	0x03, 0x78, 0x35, 0x9e, 0x59, 0xd1, 0x54, 0x26, 0x45, 0xc6, 0xe4, 0xa5, 0x04, 0x71, 0x12, 0xa7,
+	0xf2, 0x39, 0x0a, 0x30, 0xbb, 0x76, 0xfc, 0x94, 0x05, 0xb8, 0x0d, 0x0b, 0x6c, 0x75, 0x12, 0x71,
+	0xaf, 0x3c, 0x51, 0xfe, 0x84, 0x9d, 0xaf, 0x49, 0x5b, 0x55, 0x12, 0x79, 0x55, 0x90, 0x22, 0xaf,
+	0x76, 0x60, 0x91, 0x29, 0x44, 0x61, 0x12, 0x40, 0xc9, 0x52, 0xe5, 0xbf, 0x56, 0x04, 0x32, 0x3e,
+	0xab, 0xc9, 0x23, 0x28, 0xc5, 0xa1, 0x93, 0xc9, 0x8b, 0x10, 0x22, 0x5f, 0xbc, 0x2d, 0x35, 0x35,
+	0x9f, 0x3c, 0x80, 0x9d, 0x5c, 0xd8, 0x65, 0x4c, 0xc9, 0x8e, 0xea, 0xe8, 0x94, 0x5c, 0xf2, 0x29,
+	0x94, 0xe3, 0x1c, 0xe9, 0x51, 0x86, 0x98, 0x96, 0x9d, 0x54, 0xd2, 0x19, 0x18, 0xa4, 0x09, 0x95,
+	0xe9, 0xb9, 0x99, 0x37, 0xa1, 0x96, 0xe9, 0x25, 0x30, 0xcb, 0x7f, 0xb7, 0x00, 0x5b, 0x63, 0xeb,
+	0x11, 0x7b, 0x01, 0x22, 0xdf, 0x72, 0xb4, 0x37, 0x84, 0x58, 0x26, 0x67, 0xb2, 0x97, 0x50, 0xb2,
+	0xad, 0x66, 0x34, 0x5c, 0x20, 0x93, 0xb2, 0x50, 0x39, 0x98, 0x50, 0x47, 0x46, 0xc5, 0x45, 0x31,
+	0x2d, 0xbb, 0xfc, 0x19, 0xec, 0x4c, 0x5e, 0x84, 0xc8, 0x1b, 0xb0, 0x81, 0xea, 0x90, 0xda, 0xfd,
+	0x72, 0x14, 0x46, 0xc9, 0x89, 0x6b, 0x81, 0xe6, 0xa0, 0xe5, 0xef, 0xc2, 0x72, 0xbc, 0xce, 0x90,
+	0x77, 0x61, 0xf3, 0xcc, 0x8f, 0xd4, 0x6e, 0x37, 0x3d, 0x71, 0xcd, 0x9c, 0x47, 0xe7, 0x73, 0xcb,
+	0x7f, 0xab, 0x00, 0xcb, 0xf1, 0x12, 0xf3, 0x8d, 0xa9, 0xc9, 0x87, 0x40, 0xce, 0xfc, 0x88, 0xba,
+	0x7d, 0xff, 0xdc, 0x9d, 0x72, 0xc6, 0x3b, 0x01, 0x01, 0xcb, 0xf1, 0x42, 0xea, 0x3a, 0xec, 0xc6,
+	0x9f, 0x1b, 0x54, 0x87, 0xa3, 0xec, 0xd1, 0x76, 0x3e, 0xb7, 0xfc, 0x1c, 0x36, 0x73, 0x1a, 0x11,
+	0x71, 0xe1, 0xba, 0xd0, 0x89, 0x0e, 0x9c, 0x41, 0xb7, 0xc7, 0x0d, 0x82, 0x34, 0xb8, 0x31, 0x17,
+	0x53, 0xcd, 0xe3, 0xf8, 0x71, 0x9a, 0xd6, 0xdc, 0x93, 0xbb, 0x31, 0x93, 0x84, 0x84, 0x4e, 0xe3,
+	0x55, 0xfe, 0x45, 0xd8, 0xcc, 0xe9, 0x4d, 0x38, 0xb1, 0x87, 0xbe, 0xc7, 0xba, 0x63, 0x0e, 0x95,
+	0x71, 0x96, 0x20, 0xf7, 0x61, 0xbb, 0xe7, 0x84, 0x51, 0x0b, 0x13, 0x96, 0xd7, 0x77, 0xc3, 0xc8,
+	0xe9, 0x0f, 0x1b, 0xa1, 0x38, 0xb9, 0x9d, 0x98, 0x47, 0x5e, 0x06, 0xf0, 0xd0, 0xea, 0x3f, 0x77,
+	0x7a, 0xe2, 0xf5, 0xa7, 0x05, 0x2a, 0x41, 0x2a, 0xbf, 0xae, 0xc0, 0x7a, 0x66, 0x8d, 0x61, 0x0e,
+	0xf2, 0x7a, 0xdb, 0xb4, 0x34, 0xca, 0xa3, 0x4c, 0xad, 0x03, 0xaa, 0xa9, 0x35, 0x93, 0x5b, 0xe7,
+	0xd5, 0x56, 0xdb, 0x4e, 0xbd, 0x05, 0xdc, 0x2b, 0xc0, 0xad, 0x20, 0x3b, 0x76, 0x42, 0x98, 0xfc,
+	0xc0, 0x60, 0xaf, 0x6e, 0x1c, 0xc9, 0xa8, 0xec, 0xc0, 0xe0, 0xf3, 0xf7, 0xec, 0xc3, 0x6a, 0xab,
+	0xcd, 0x5d, 0x48, 0xb1, 0x97, 0x91, 0xb9, 0xfc, 0x4c, 0xdd, 0x68, 0xa2, 0x65, 0x9e, 0xba, 0xe4,
+	0x35, 0xbb, 0x6a, 0x34, 0x1a, 0x46, 0x4d, 0xb7, 0x9e, 0x2a, 0x4b, 0xb2, 0xe7, 0x54, 0x6d, 0x30,
+	0x87, 0xf5, 0x32, 0x9a, 0x66, 0x9f, 0xbf, 0xf7, 0x80, 0x73, 0x5c, 0x61, 0xa9, 0xf7, 0xef, 0xf3,
+	0x14, 0x90, 0x1b, 0x70, 0xcd, 0x54, 0x1b, 0x9a, 0x2d, 0x9a, 0x62, 0x37, 0x8c, 0x43, 0xcd, 0x36,
+	0x0f, 0xab, 0xca, 0x2a, 0xab, 0xc7, 0xfb, 0x1c, 0x6f, 0x8d, 0x6c, 0xc1, 0xba, 0x59, 0x57, 0xa5,
+	0xa2, 0xd6, 0x49, 0x19, 0x76, 0xaa, 0xd4, 0x30, 0xcd, 0x71, 0xda, 0x0d, 0xe6, 0x52, 0xcf, 0x35,
+	0xd7, 0x6e, 0x35, 0x94, 0x4d, 0xf9, 0x7c, 0x40, 0x6a, 0xb4, 0xc2, 0x0a, 0x7b, 0xc8, 0x0b, 0xdb,
+	0x22, 0x2b, 0xb0, 0xc0, 0xbd, 0x99, 0x84, 0xc1, 0x45, 0xd5, 0xaf, 0x32, 0x6f, 0x83, 0x71, 0xa4,
+	0x51, 0x65, 0x9b, 0x39, 0xc4, 0xb5, 0x86, 0x72, 0x0d, 0x45, 0x18, 0x33, 0xac, 0xab, 0x96, 0xd6,
+	0xac, 0x3e, 0x55, 0x76, 0x18, 0xd5, 0x47, 0x9c, 0xea, 0x3a, 0xeb, 0x28, 0xc3, 0xa8, 0xeb, 0xcd,
+	0x7d, 0xa5, 0xc4, 0x1d, 0x8d, 0xd4, 0x62, 0xae, 0x3b, 0xad, 0xae, 0xdc, 0x60, 0x3e, 0x35, 0xc4,
+	0x2b, 0x33, 0xa2, 0x26, 0x27, 0xba, 0x89, 0x6c, 0xb1, 0x0f, 0x65, 0x99, 0xdf, 0x42, 0xe1, 0xa6,
+	0xe7, 0x33, 0xac, 0xa5, 0x2f, 0x21, 0x3d, 0xb6, 0x5b, 0x79, 0x99, 0xd1, 0x0b, 0xb9, 0x32, 0xaf,
+	0xff, 0xe7, 0x1f, 0xf2, 0xc4, 0x6d, 0xe6, 0x76, 0x3b, 0x52, 0x5b, 0x2d, 0xac, 0xc2, 0xab, 0xcc,
+	0x71, 0xac, 0xed, 0xa3, 0x61, 0xcc, 0x1b, 0x5f, 0x61, 0xde, 0xc3, 0xba, 0x71, 0xa4, 0xbc, 0xc6,
+	0xce, 0x07, 0x55, 0x4b, 0xc5, 0x16, 0x69, 0xca, 0xeb, 0xa4, 0x04, 0xdb, 0xb1, 0x88, 0x8d, 0x76,
+	0x2d, 0x15, 0xf0, 0xb7, 0xb0, 0x7e, 0x52, 0x55, 0x6a, 0xc6, 0x51, 0x53, 0x79, 0x03, 0x3b, 0x49,
+	0x37, 0x6c, 0xeb, 0x80, 0x1a, 0xed, 0xfd, 0x83, 0x56, 0xdb, 0x52, 0xde, 0x44, 0x39, 0x61, 0x1d,
+	0xee, 0x90, 0x0d, 0x80, 0x5d, 0x94, 0xb8, 0xd1, 0xc4, 0x5a, 0x7c, 0x1b, 0x33, 0x0e, 0x6b, 0x55,
+	0xe5, 0x2d, 0x36, 0x1e, 0x1e, 0x7c, 0xc0, 0xab, 0xfa, 0x1d, 0x44, 0x93, 0xdc, 0x11, 0x6f, 0x63,
+	0x39, 0x0d, 0xad, 0x91, 0x91, 0xc3, 0x3b, 0xf2, 0x09, 0xd8, 0x5d, 0xe6, 0x8b, 0xd2, 0x2c, 0xb9,
+	0xd4, 0x77, 0xc9, 0x2d, 0x28, 0x8d, 0x75, 0x7f, 0x4c, 0x71, 0x8f, 0x9d, 0x79, 0x48, 0x1e, 0x65,
+	0xe6, 0xee, 0xc7, 0x42, 0xa4, 0x01, 0x71, 0x1f, 0x91, 0x6a, 0x66, 0xab, 0x61, 0xab, 0xd5, 0xaa,
+	0x66, 0x9a, 0xca, 0xfb, 0xcc, 0x4b, 0xa6, 0x99, 0x2d, 0xa3, 0xc9, 0xbc, 0xeb, 0x0d, 0x4d, 0xf9,
+	0x80, 0x7b, 0x46, 0xb5, 0x86, 0xf2, 0x21, 0x66, 0x8a, 0x33, 0xa2, 0x96, 0x46, 0x1b, 0xba, 0xa5,
+	0x3c, 0xc8, 0x1d, 0x7d, 0x7d, 0x94, 0x3f, 0x7a, 0x79, 0x28, 0x1f, 0xcc, 0x7c, 0xcc, 0xfa, 0x4b,
+	0x08, 0xe1, 0x91, 0x3c, 0xa6, 0xe2, 0x29, 0xfe, 0x5d, 0x02, 0xb0, 0xa8, 0x3d, 0x61, 0x21, 0xdd,
+	0x9f, 0xe0, 0xb7, 0xa8, 0xd7, 0xcf, 0xb0, 0x7a, 0xa5, 0x3d, 0xd1, 0x6e, 0x29, 0x9f, 0x62, 0x51,
+	0x87, 0x6a, 0xab, 0x15, 0xd7, 0xfd, 0x7b, 0x99, 0x59, 0xc9, 0x61, 0x9f, 0x31, 0x67, 0x7f, 0x2c,
+	0x13, 0x15, 0xd7, 0x87, 0x1a, 0x0a, 0x49, 0x1e, 0x18, 0xbb, 0x58, 0x4e, 0x6d, 0xd7, 0xc6, 0x26,
+	0x56, 0xb1, 0x52, 0x92, 0xd4, 0xec, 0xba, 0xb1, 0xaf, 0xd4, 0x70, 0x15, 0xa8, 0xed, 0x72, 0x47,
+	0xa2, 0x7d, 0xa0, 0x5b, 0x36, 0x55, 0x2d, 0x4d, 0xd1, 0xb0, 0x02, 0x07, 0x86, 0x95, 0x88, 0x7c,
+	0x8f, 0x5c, 0x87, 0xcd, 0xaa, 0x51, 0xaf, 0xf3, 0x6e, 0xe5, 0xe2, 0xdb, 0x67, 0x67, 0x5f, 0xec,
+	0x88, 0x8b, 0xf9, 0x6d, 0xd2, 0xa9, 0x7d, 0x40, 0x5e, 0x86, 0xb2, 0x69, 0xec, 0x59, 0x47, 0x2a,
+	0xd5, 0xec, 0xf1, 0x55, 0x46, 0x67, 0x0d, 0x6c, 0xa4, 0x9d, 0xf3, 0x7d, 0x1c, 0xd3, 0x07, 0xf2,
+	0xea, 0xf0, 0x58, 0x0c, 0x0b, 0x94, 0xae, 0xdd, 0x32, 0xea, 0x7a, 0xf5, 0xa9, 0x52, 0x67, 0xc7,
+	0xdd, 0x9a, 0xda, 0x52, 0x1a, 0xac, 0xde, 0xc9, 0x39, 0x65, 0xcc, 0xa6, 0xc9, 0x56, 0x23, 0x71,
+	0xc0, 0x51, 0xd7, 0x0e, 0xb5, 0x7a, 0x22, 0x7e, 0x83, 0x9d, 0x52, 0xf2, 0x63, 0x22, 0xbd, 0xb9,
+	0x6f, 0xb7, 0x9b, 0xba, 0x65, 0x2a, 0x2d, 0x14, 0xca, 0x81, 0x61, 0x5a, 0x76, 0xbd, 0xdd, 0x8c,
+	0xb9, 0x7c, 0x8e, 0x52, 0xab, 0x1a, 0xed, 0x96, 0xd1, 0x54, 0x28, 0x56, 0xc3, 0xd2, 0x9a, 0x6a,
+	0xb3, 0x9a, 0x94, 0x62, 0x22, 0x2c, 0x6e, 0x94, 0x80, 0x59, 0x4c, 0xba, 0xe2, 0xf4, 0x2e, 0x06,
+	0xb6, 0x99, 0xe3, 0xba, 0xdd, 0x60, 0x4e, 0x52, 0xe5, 0x10, 0x6b, 0xcf, 0x0e, 0x83, 0x8e, 0x98,
+	0x2b, 0xb8, 0x6a, 0xe9, 0x38, 0x19, 0xb1, 0x3e, 0x46, 0xd3, 0x54, 0x9e, 0x30, 0x8f, 0xb2, 0x61,
+	0xd4, 0x6d, 0x1c, 0x42, 0x4f, 0x93, 0x14, 0xf6, 0xdd, 0x17, 0x28, 0x1e, 0x96, 0x8a, 0x3b, 0xe4,
+	0x67, 0xd9, 0x19, 0x67, 0x83, 0x0d, 0xb0, 0x56, 0x5b, 0xf9, 0xb9, 0x34, 0x89, 0xf8, 0x3f, 0x60,
+	0x13, 0x99, 0x25, 0x63, 0x82, 0x9f, 0xc7, 0x85, 0x33, 0x39, 0xde, 0x62, 0xa2, 0xc3, 0xe1, 0xa6,
+	0xd8, 0xe3, 0x70, 0xeb, 0x69, 0x4b, 0x53, 0x7e, 0xc8, 0xcf, 0x66, 0xa9, 0x69, 0xc5, 0x87, 0x70,
+	0x8a, 0x93, 0x69, 0xe3, 0x9e, 0xda, 0xd0, 0xeb, 0x4f, 0x95, 0x63, 0x14, 0x46, 0x7c, 0x34, 0x26,
+	0x84, 0xd6, 0xc1, 0xea, 0xe2, 0x4c, 0xb0, 0xa9, 0xf6, 0x79, 0x5b, 0x33, 0x2d, 0xa5, 0xcb, 0x20,
+	0x38, 0x45, 0x63, 0x88, 0x4b, 0x5e, 0x86, 0x1d, 0x09, 0x45, 0x9e, 0xbb, 0x27, 0x6c, 0x60, 0xbd,
+	0x0c, 0x3b, 0x12, 0x81, 0x9c, 0x7f, 0xca, 0xf2, 0x6f, 0xc2, 0xf5, 0x78, 0x7c, 0xb0, 0x03, 0xcd,
+	0x3d, 0xb5, 0x8a, 0x63, 0x0c, 0x77, 0xac, 0x33, 0x76, 0x78, 0xab, 0x57, 0xeb, 0xfa, 0xe7, 0x6d,
+	0x4d, 0xf1, 0xb0, 0xeb, 0x59, 0x75, 0xea, 0x7a, 0x43, 0xb7, 0xec, 0xcf, 0xdb, 0x86, 0xa5, 0x2a,
+	0x5f, 0x32, 0x28, 0x96, 0x20, 0x43, 0x9f, 0xb1, 0x43, 0x7b, 0xb9, 0x5e, 0x1c, 0xde, 0x63, 0x70,
+	0xb9, 0x3e, 0x1c, 0xde, 0x67, 0x87, 0x67, 0xed, 0x86, 0x7d, 0x58, 0xc5, 0x05, 0x77, 0x80, 0x03,
+	0x90, 0x6a, 0x0d, 0x55, 0xc7, 0x45, 0xd2, 0xde, 0xaf, 0xa6, 0x2e, 0x79, 0x1f, 0x17, 0xcc, 0xc7,
+	0x2d, 0x5d, 0x19, 0x66, 0xcf, 0xb5, 0x76, 0x15, 0xd8, 0x48, 0xac, 0x14, 0xee, 0xe8, 0x56, 0x60,
+	0xe3, 0xcc, 0x8f, 0x98, 0x13, 0x8f, 0xbf, 0xec, 0x5c, 0xf9, 0x10, 0xae, 0x4d, 0xb4, 0xa4, 0xd9,
+	0x5f, 0x65, 0xc4, 0x80, 0xf8, 0xf2, 0x70, 0x02, 0xa8, 0xfc, 0xca, 0x0d, 0x58, 0xe6, 0x31, 0xe6,
+	0x96, 0x41, 0xd4, 0xc4, 0x9b, 0x1e, 0xa5, 0x6f, 0xa8, 0x7e, 0xb3, 0xff, 0xc7, 0x79, 0x15, 0xd6,
+	0x84, 0xeb, 0xd0, 0x1e, 0x4c, 0x89, 0x87, 0x7f, 0x05, 0xe0, 0x14, 0x4b, 0xe4, 0x08, 0xec, 0x4e,
+	0xf2, 0xc1, 0x15, 0xba, 0xc2, 0x60, 0x0c, 0xa1, 0xc9, 0xae, 0x6a, 0x86, 0x51, 0xe0, 0x78, 0x83,
+	0xc8, 0xf6, 0x06, 0x27, 0x7e, 0x69, 0xc2, 0x33, 0xef, 0x71, 0xad, 0xd9, 0x3f, 0xa0, 0x70, 0x5c,
+	0x7d, 0x70, 0xe2, 0x1f, 0x5c, 0xe1, 0xff, 0x81, 0x92, 0x42, 0xc8, 0x13, 0xb8, 0x1a, 0xba, 0x3d,
+	0xee, 0x67, 0xb7, 0xc3, 0xa1, 0xdb, 0xb1, 0x7b, 0x5e, 0x18, 0x89, 0xbb, 0xb5, 0x6f, 0x4c, 0xe4,
+	0x69, 0xc6, 0xf8, 0xe6, 0xd0, 0xed, 0xa0, 0xdd, 0x76, 0x50, 0xa0, 0x5b, 0x61, 0x1e, 0x48, 0xaa,
+	0xb0, 0xda, 0x77, 0xfb, 0xc7, 0x6e, 0xc0, 0x39, 0x2e, 0x8e, 0xdf, 0xb6, 0x48, 0x38, 0x36, 0x18,
+	0x5e, 0x28, 0x78, 0x01, 0x27, 0x63, 0x4c, 0x7a, 0x70, 0xc3, 0xe9, 0x76, 0xdd, 0xae, 0xed, 0x0c,
+	0xba, 0x76, 0xc0, 0x74, 0xe7, 0xae, 0xcd, 0xf3, 0xc3, 0x49, 0xf7, 0x6b, 0x13, 0x96, 0x2a, 0x52,
+	0xa9, 0x83, 0x2e, 0xd7, 0xb7, 0xbb, 0xd9, 0x12, 0x76, 0x9c, 0x89, 0xb9, 0xec, 0xc5, 0x41, 0xf6,
+	0x5e, 0xa7, 0xcd, 0x3b, 0xc1, 0xeb, 0xf2, 0x37, 0x39, 0x0e, 0x0a, 0x74, 0x5d, 0x7a, 0xc8, 0x53,
+	0xef, 0x4e, 0xfc, 0xef, 0x9f, 0x95, 0x9f, 0xe8, 0xbf, 0x7f, 0xb2, 0xff, 0xcb, 0x02, 0xdf, 0xfc,
+	0x7f, 0x59, 0x34, 0xe0, 0xc3, 0x84, 0xd1, 0xaf, 0x8e, 0x5f, 0x64, 0x48, 0x44, 0xb3, 0x1f, 0x63,
+	0x3d, 0x5a, 0xa2, 0xda, 0x7e, 0xbb, 0xae, 0x52, 0x9a, 0x52, 0x92, 0x8f, 0x61, 0xdb, 0x0b, 0xab,
+	0xfc, 0x7f, 0x55, 0xdc, 0x41, 0xc4, 0x5e, 0x1f, 0xf4, 0x06, 0xa7, 0xdc, 0x7d, 0x9d, 0x3c, 0x51,
+	0x38, 0x09, 0x85, 0xdc, 0x87, 0xf9, 0xc8, 0x39, 0x0d, 0x4b, 0xeb, 0xe3, 0xb7, 0x30, 0x92, 0xc2,
+	0x2d, 0xe7, 0x34, 0xe4, 0xcf, 0x84, 0x30, 0x5c, 0xb4, 0x20, 0xfc, 0xaf, 0x06, 0x6e, 0x20, 0xfe,
+	0x33, 0x87, 0x27, 0xca, 0xaf, 0xc2, 0x8a, 0xe5, 0x9c, 0xb2, 0x13, 0x8f, 0x30, 0xbd, 0x7b, 0xc5,
+	0xa3, 0xfb, 0xc5, 0xdd, 0xab, 0x23, 0x86, 0x12, 0x4e, 0x7b, 0xd8, 0xe2, 0x03, 0xf9, 0x61, 0x8b,
+	0x19, 0x95, 0xe1, 0x65, 0x48, 0x0f, 0x5f, 0x94, 0xff, 0xf3, 0x1c, 0x0f, 0x6c, 0x96, 0x26, 0x49,
+	0x3d, 0x33, 0xe9, 0xa2, 0xf4, 0x9c, 0xe4, 0x45, 0x93, 0x2e, 0x39, 0xdb, 0x92, 0xd2, 0xec, 0xed,
+	0x28, 0x69, 0x0a, 0xc7, 0xff, 0x98, 0xb5, 0x26, 0xcd, 0xcc, 0x2e, 0xb9, 0x0d, 0xcb, 0x5e, 0x68,
+	0x1f, 0x8f, 0x2e, 0xf2, 0x57, 0x52, 0x97, 0xbc, 0x70, 0x17, 0xa1, 0xe4, 0xfb, 0xec, 0xf2, 0x80,
+	0x1b, 0xd8, 0x7d, 0x37, 0x72, 0xe4, 0xbb, 0xf5, 0x95, 0x89, 0x95, 0x62, 0x44, 0xc9, 0x3f, 0x3a,
+	0xad, 0x1f, 0xcb, 0x49, 0xf2, 0x01, 0x90, 0x81, 0xeb, 0x76, 0xed, 0x8e, 0xdf, 0x1f, 0xf6, 0xd8,
+	0x81, 0x83, 0x13, 0x5c, 0x88, 0xb8, 0xe8, 0x38, 0xc6, 0x1a, 0x11, 0xaa, 0x72, 0x3e, 0x79, 0x33,
+	0x23, 0x16, 0xb6, 0x62, 0x2d, 0xf2, 0x97, 0x3c, 0x53, 0x30, 0x5b, 0xb4, 0x3e, 0x86, 0xed, 0x13,
+	0x3f, 0xd0, 0x9e, 0x77, 0x7a, 0xa3, 0x6e, 0x7a, 0x9b, 0x96, 0x4f, 0xe0, 0x74, 0x4c, 0x4d, 0x42,
+	0x21, 0x0f, 0xe0, 0xba, 0x54, 0x46, 0x66, 0xf9, 0xe4, 0xcf, 0xe5, 0x5c, 0x4b, 0xb3, 0x6b, 0xd2,
+	0x42, 0xfa, 0x0e, 0x10, 0x57, 0x30, 0xb3, 0x23, 0xb7, 0x3f, 0xec, 0x39, 0x91, 0x1b, 0x3f, 0xa5,
+	0xbb, 0x15, 0xe7, 0x58, 0x71, 0x46, 0xf9, 0xe7, 0x61, 0x6b, 0x6c, 0x59, 0x23, 0x3a, 0x6c, 0x64,
+	0xd7, 0x46, 0x71, 0xbf, 0xa8, 0xf2, 0xe2, 0x65, 0x91, 0xae, 0x67, 0x16, 0xc4, 0xf2, 0xb7, 0x60,
+	0x55, 0x5a, 0x82, 0xc8, 0x0e, 0xbb, 0x84, 0x76, 0xcc, 0xdc, 0x7c, 0xcc, 0xa9, 0xc5, 0x53, 0xe5,
+	0x33, 0x28, 0x4f, 0x5f, 0xb8, 0x48, 0x05, 0xd6, 0xd8, 0xc2, 0x25, 0x60, 0x82, 0x36, 0x03, 0xe3,
+	0x2f, 0x16, 0xcb, 0x94, 0xc2, 0x6d, 0x96, 0x83, 0x96, 0x7d, 0x58, 0xcf, 0x8c, 0x08, 0xdc, 0xdf,
+	0x42, 0x37, 0x7b, 0x7d, 0xff, 0x52, 0xfb, 0x1b, 0x27, 0x62, 0x03, 0xfb, 0x26, 0x2c, 0x39, 0x91,
+	0xdd, 0xf7, 0x43, 0x7e, 0xe5, 0x61, 0xeb, 0x51, 0xf1, 0x9d, 0xf7, 0xe8, 0xa2, 0x13, 0x35, 0xfc,
+	0x30, 0x2a, 0xff, 0xce, 0x12, 0xac, 0x67, 0x44, 0x44, 0xca, 0xb0, 0x1c, 0xdf, 0x28, 0x10, 0x1e,
+	0xbf, 0x24, 0x4d, 0xbe, 0x80, 0x4d, 0xf7, 0xf9, 0x30, 0xe0, 0xef, 0xbc, 0xf2, 0x1a, 0xf1, 0x7b,
+	0xb6, 0xef, 0xbd, 0x58, 0xf6, 0x77, 0xb5, 0x84, 0x92, 0xcf, 0x3f, 0x37, 0x93, 0x66, 0x07, 0x23,
+	0xa2, 0x1c, 0x7e, 0xd6, 0x6a, 0x77, 0xfd, 0x51, 0xfc, 0x78, 0x7c, 0x81, 0xfd, 0x1d, 0x90, 0xc8,
+	0x66, 0x8b, 0x43, 0x8d, 0x65, 0x4e, 0xa0, 0x0a, 0xa3, 0x00, 0x17, 0xc6, 0x79, 0xb1, 0x49, 0x67,
+	0xa9, 0x4c, 0x96, 0x49, 0x22, 0x28, 0x4f, 0xa4, 0x92, 0x77, 0xd9, 0x0f, 0x2f, 0xd1, 0xa4, 0x78,
+	0xe3, 0xe0, 0x6c, 0xd9, 0x36, 0x76, 0x85, 0x5e, 0x9f, 0x50, 0x22, 0x1b, 0x28, 0xe3, 0xa5, 0xf2,
+	0x16, 0xca, 0x3b, 0xf1, 0x37, 0x29, 0x95, 0x8b, 0x60, 0x62, 0xa9, 0x69, 0x56, 0xf9, 0xbb, 0x40,
+	0xc6, 0xab, 0x49, 0xbe, 0xc5, 0xfe, 0x64, 0x4d, 0xaa, 0x8b, 0x18, 0xb6, 0xeb, 0x19, 0x36, 0x32,
+	0x71, 0xca, 0x72, 0x0a, 0x71, 0x21, 0x47, 0x5c, 0xf9, 0x07, 0x45, 0xd8, 0xc8, 0x76, 0x3a, 0x6a,
+	0xb0, 0xda, 0xe7, 0x6d, 0xb5, 0x6e, 0x5b, 0x86, 0x72, 0x05, 0xd5, 0xe7, 0xa6, 0x61, 0xd9, 0x09,
+	0x84, 0x05, 0x3c, 0xd5, 0x55, 0xba, 0xaf, 0x51, 0xdb, 0x3a, 0x50, 0x9b, 0x4a, 0x91, 0xc5, 0xb8,
+	0xa6, 0x00, 0xdb, 0xa0, 0x29, 0xf6, 0x1c, 0x73, 0x19, 0x34, 0xd4, 0x7a, 0x3d, 0x46, 0x9f, 0x47,
+	0x0b, 0x5b, 0x86, 0x64, 0xf0, 0x17, 0x44, 0xac, 0x8b, 0xa5, 0xea, 0x4d, 0x53, 0x59, 0x8c, 0x4b,
+	0x4f, 0x20, 0x4b, 0x3c, 0x9a, 0x8d, 0x87, 0x82, 0xd5, 0xec, 0xdd, 0xa7, 0xca, 0x32, 0xf3, 0x4f,
+	0xa5, 0x38, 0x1c, 0xca, 0xa2, 0x90, 0xa8, 0xb6, 0xaf, 0x3d, 0x51, 0x80, 0x85, 0x06, 0xea, 0xa6,
+	0x65, 0x1b, 0x87, 0x1a, 0xad, 0xab, 0x2d, 0x65, 0x95, 0x47, 0xe2, 0x98, 0x96, 0x8d, 0x74, 0x31,
+	0x74, 0x8d, 0x87, 0xe3, 0x9a, 0x96, 0xbd, 0xd7, 0xae, 0xd7, 0xd3, 0x22, 0x99, 0xb7, 0x68, 0x0c,
+	0xce, 0x8b, 0xd9, 0xd8, 0xdd, 0x84, 0x9c, 0x40, 0x7f, 0xab, 0x00, 0x2b, 0x89, 0x9a, 0x80, 0xb6,
+	0xb9, 0x50, 0x14, 0x94, 0x2b, 0xe2, 0x71, 0x27, 0x1e, 0x17, 0x59, 0x64, 0x0e, 0x12, 0x11, 0x96,
+	0xc7, 0xec, 0xc0, 0xd8, 0x5e, 0x9c, 0x23, 0xaf, 0xc1, 0x2b, 0x71, 0x4e, 0x2e, 0x4c, 0x36, 0x41,
+	0x9a, 0x9f, 0x64, 0xe8, 0x2f, 0xa0, 0x45, 0xb4, 0xab, 0xd7, 0xeb, 0x68, 0x01, 0x08, 0x2b, 0x69,
+	0xb1, 0x32, 0xbf, 0x5c, 0x50, 0x0a, 0x6f, 0x49, 0xb1, 0x2f, 0x95, 0xdf, 0x2b, 0xc8, 0xdb, 0x34,
+	0xab, 0xe7, 0x0d, 0xb8, 0xb6, 0xdb, 0x7e, 0xaa, 0x51, 0xdb, 0xd4, 0x58, 0xc7, 0xa8, 0x7b, 0x7b,
+	0x7a, 0x13, 0x8d, 0x87, 0x2b, 0x68, 0x50, 0x67, 0xb3, 0x9a, 0x96, 0x9e, 0xe6, 0x17, 0x78, 0xb4,
+	0x1d, 0xe6, 0xf3, 0xdf, 0x24, 0xa7, 0x48, 0x5e, 0x82, 0x1b, 0x99, 0x9c, 0x0c, 0xe1, 0x1c, 0xd9,
+	0x4c, 0xbd, 0x90, 0xf3, 0xcc, 0xae, 0x5a, 0x81, 0x85, 0x86, 0x46, 0xf7, 0x35, 0x65, 0x61, 0xba,
+	0x35, 0xbd, 0x88, 0xbd, 0x94, 0x98, 0x82, 0xda, 0x13, 0x84, 0xa3, 0x65, 0xb6, 0xb4, 0xbb, 0x08,
+	0xf3, 0xa8, 0xd3, 0xef, 0xae, 0xc0, 0x92, 0xd0, 0x72, 0x2b, 0x9f, 0xc3, 0x6a, 0xd5, 0x1f, 0x44,
+	0xee, 0x73, 0xfe, 0xe6, 0x0c, 0xff, 0x1f, 0x3c, 0x4c, 0x3e, 0x4e, 0x5e, 0x2d, 0x93, 0x20, 0xec,
+	0x6d, 0x78, 0x9e, 0x3a, 0x94, 0xe2, 0x48, 0x32, 0xb0, 0xca, 0x6f, 0x14, 0x61, 0x33, 0xf7, 0x8f,
+	0x83, 0xa8, 0x65, 0xb9, 0xe7, 0xdc, 0xb3, 0xce, 0x6e, 0xb8, 0xb3, 0x04, 0x8f, 0xc4, 0x88, 0xdc,
+	0x53, 0x3f, 0xb8, 0x10, 0x9c, 0x92, 0x34, 0x7b, 0xfc, 0x77, 0x74, 0x5c, 0x8d, 0xb3, 0xc5, 0xdf,
+	0x7b, 0x4a, 0x20, 0x16, 0x3e, 0x21, 0xbd, 0x6f, 0x27, 0x1e, 0x19, 0x90, 0x40, 0x44, 0x87, 0xe5,
+	0xd0, 0x3d, 0x77, 0x83, 0x38, 0xd2, 0x63, 0x23, 0xab, 0x3f, 0xe7, 0x2a, 0x79, 0xd7, 0x14, 0xb8,
+	0x8f, 0x62, 0x0b, 0x90, 0x26, 0xe4, 0x95, 0x7d, 0x58, 0x8e, 0xb3, 0xe5, 0x50, 0x7a, 0xf6, 0xa4,
+	0x00, 0x8f, 0x1c, 0xe2, 0xf1, 0x52, 0x0d, 0xbd, 0x69, 0x50, 0xa5, 0xc8, 0x3e, 0xd5, 0xef, 0x1b,
+	0x94, 0x07, 0xc8, 0x55, 0xa9, 0x6e, 0xe9, 0x55, 0xb5, 0xae, 0xcc, 0x57, 0x7e, 0xb3, 0x00, 0xeb,
+	0x19, 0x27, 0x39, 0xa1, 0xf9, 0xf7, 0x02, 0xbe, 0x99, 0x4b, 0x3d, 0xad, 0x6d, 0xca, 0xa6, 0xf2,
+	0x10, 0xb6, 0xc6, 0x10, 0xb3, 0xf5, 0xde, 0x01, 0x92, 0xf5, 0xe0, 0xd8, 0x5a, 0x6b, 0x5f, 0x29,
+	0x54, 0xfe, 0x79, 0x01, 0xae, 0x4e, 0xb8, 0x22, 0x49, 0x1e, 0xc2, 0x22, 0xb7, 0x2a, 0x2e, 0xfd,
+	0xe7, 0xad, 0x02, 0x1f, 0xcd, 0x60, 0x27, 0x8a, 0x02, 0xef, 0x78, 0x14, 0xc5, 0x03, 0x26, 0x05,
+	0xe0, 0x88, 0x1b, 0x85, 0xae, 0xe5, 0x0f, 0x7d, 0xed, 0x79, 0x24, 0xce, 0x70, 0x24, 0x08, 0xd1,
+	0x60, 0x33, 0x5e, 0x3d, 0xc4, 0x99, 0x81, 0x50, 0x44, 0x6f, 0x66, 0x63, 0xa3, 0x32, 0x28, 0x34,
+	0x4f, 0x53, 0xf9, 0x17, 0x05, 0xd8, 0xcc, 0x21, 0xb1, 0x8b, 0xe0, 0x2c, 0x9a, 0x54, 0xba, 0x48,
+	0x2c, 0x41, 0x72, 0xff, 0x59, 0x5b, 0xfc, 0x31, 0x6c, 0xf2, 0xd7, 0x61, 0xbd, 0xeb, 0x05, 0x6e,
+	0x27, 0xea, 0x5d, 0xa8, 0xc3, 0x61, 0x2f, 0x3e, 0xae, 0xcb, 0x02, 0xc9, 0xa7, 0xb0, 0x36, 0x70,
+	0x9f, 0x47, 0xf6, 0xd9, 0xe5, 0xdb, 0xb7, 0x8a, 0x04, 0x71, 0xdb, 0xf6, 0x80, 0xc4, 0xe1, 0x72,
+	0x6e, 0xfa, 0xff, 0xa9, 0xb9, 0x17, 0x3b, 0x8b, 0x93, 0xdf, 0xdb, 0x2e, 0xb2, 0xb3, 0x10, 0xf6,
+	0x5d, 0xf9, 0xfb, 0x73, 0xb0, 0xb4, 0xd7, 0xf3, 0xbf, 0xc2, 0x09, 0xfb, 0x05, 0x94, 0xb8, 0x4d,
+	0x3a, 0xce, 0x99, 0x31, 0x9b, 0x78, 0x0f, 0x5e, 0xc6, 0xa2, 0x53, 0xe9, 0xc9, 0x21, 0xec, 0x74,
+	0xdd, 0x30, 0x9a, 0xc0, 0xb9, 0x78, 0x29, 0xce, 0x53, 0xa8, 0xc9, 0x43, 0xa6, 0xf2, 0x45, 0x7e,
+	0xc7, 0xef, 0x89, 0x87, 0x4d, 0x32, 0x2f, 0x3a, 0x88, 0xa6, 0xa1, 0x2c, 0x19, 0x0e, 0x4d, 0xb0,
+	0x71, 0x24, 0x9c, 0xf4, 0xfc, 0xaf, 0xf8, 0xe9, 0x35, 0xbb, 0xc3, 0x57, 0xa0, 0x12, 0x84, 0x94,
+	0x60, 0x49, 0x44, 0x84, 0xb0, 0xcb, 0x77, 0x73, 0x34, 0x4e, 0x92, 0xb7, 0x61, 0x2b, 0x0a, 0x9c,
+	0x41, 0xc8, 0xff, 0x23, 0x41, 0x30, 0x58, 0x64, 0x38, 0xe3, 0x19, 0x5c, 0x7f, 0xee, 0xb8, 0xde,
+	0x79, 0x82, 0xba, 0xc4, 0x50, 0x73, 0xd0, 0xca, 0x3d, 0x58, 0x8e, 0x6b, 0x49, 0x96, 0x60, 0xce,
+	0xaa, 0xb6, 0x78, 0xe8, 0x6d, 0xbb, 0xd6, 0x52, 0x8a, 0x84, 0xc0, 0xba, 0x98, 0xc7, 0x76, 0x8b,
+	0x1a, 0x96, 0xa1, 0xfc, 0xfe, 0x52, 0xa5, 0x0a, 0x4b, 0xe2, 0x9f, 0x11, 0x70, 0x55, 0xed, 0x39,
+	0x91, 0x17, 0x8d, 0xba, 0x7c, 0x50, 0x17, 0x68, 0x92, 0xc6, 0x41, 0xd1, 0xf3, 0x07, 0xa7, 0x3c,
+	0xb3, 0xc8, 0xef, 0xa5, 0x25, 0x80, 0xb7, 0xde, 0x07, 0x48, 0xfd, 0x00, 0xfc, 0x6d, 0x15, 0xe6,
+	0x09, 0xe0, 0x47, 0x60, 0x35, 0xad, 0xae, 0x59, 0xf1, 0xd3, 0x29, 0xe2, 0xf6, 0x91, 0x52, 0xdc,
+	0x7d, 0x1b, 0x5e, 0xe9, 0xf8, 0xfd, 0xbb, 0xe7, 0xfd, 0x68, 0x14, 0x1c, 0xfb, 0x77, 0xe3, 0xeb,
+	0x54, 0x42, 0xf2, 0x77, 0xbb, 0x91, 0xbf, 0xbb, 0x92, 0xfc, 0x51, 0xf4, 0xff, 0x09, 0x00, 0x00,
+	0xff, 0xff, 0xe6, 0x34, 0x4d, 0xd9, 0x34, 0x7a, 0x00, 0x00,
 }

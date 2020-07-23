@@ -3,14 +3,22 @@
 
 package proto
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
+import (
+	fmt "fmt"
+	proto "github.com/golang/protobuf/proto"
+	math "math"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // The types of discovery supported by SDK framework. FULL discovery is supported by default.
 type DiscoveryType int32
@@ -29,6 +37,7 @@ var DiscoveryType_name = map[int32]string{
 	1: "INCREMENTAL",
 	2: "PERFORMANCE",
 }
+
 var DiscoveryType_value = map[string]int32{
 	"FULL":        0,
 	"INCREMENTAL": 1,
@@ -40,9 +49,11 @@ func (x DiscoveryType) Enum() *DiscoveryType {
 	*p = x
 	return p
 }
+
 func (x DiscoveryType) String() string {
 	return proto.EnumName(DiscoveryType_name, int32(x))
 }
+
 func (x *DiscoveryType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(DiscoveryType_value, data, "DiscoveryType")
 	if err != nil {
@@ -51,7 +62,10 @@ func (x *DiscoveryType) UnmarshalJSON(data []byte) error {
 	*x = DiscoveryType(value)
 	return nil
 }
-func (DiscoveryType) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+
+func (DiscoveryType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{0}
+}
 
 // Enum, determining the type of primitive value. All the primitive values are
 // always stored in string value holder, but are interpreted differently
@@ -71,6 +85,7 @@ var CustomAccountDefEntry_PrimitiveValue_name = map[int32]string{
 	2: "NUMERIC",
 	3: "BOOLEAN",
 }
+
 var CustomAccountDefEntry_PrimitiveValue_value = map[string]int32{
 	"STRING":  1,
 	"NUMERIC": 2,
@@ -82,9 +97,11 @@ func (x CustomAccountDefEntry_PrimitiveValue) Enum() *CustomAccountDefEntry_Prim
 	*p = x
 	return p
 }
+
 func (x CustomAccountDefEntry_PrimitiveValue) String() string {
 	return proto.EnumName(CustomAccountDefEntry_PrimitiveValue_name, int32(x))
 }
+
 func (x *CustomAccountDefEntry_PrimitiveValue) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(CustomAccountDefEntry_PrimitiveValue_value, data, "CustomAccountDefEntry_PrimitiveValue")
 	if err != nil {
@@ -93,8 +110,9 @@ func (x *CustomAccountDefEntry_PrimitiveValue) UnmarshalJSON(data []byte) error 
 	*x = CustomAccountDefEntry_PrimitiveValue(value)
 	return nil
 }
+
 func (CustomAccountDefEntry_PrimitiveValue) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor2, []int{2, 0}
+	return fileDescriptor_e3fe94e0f094b633, []int{7, 0}
 }
 
 type ErrorDTO_ErrorSeverity int32
@@ -108,6 +126,7 @@ var ErrorDTO_ErrorSeverity_name = map[int32]string{
 	0: "CRITICAL",
 	1: "WARNING",
 }
+
 var ErrorDTO_ErrorSeverity_value = map[string]int32{
 	"CRITICAL": 0,
 	"WARNING":  1,
@@ -118,9 +137,11 @@ func (x ErrorDTO_ErrorSeverity) Enum() *ErrorDTO_ErrorSeverity {
 	*p = x
 	return p
 }
+
 func (x ErrorDTO_ErrorSeverity) String() string {
 	return proto.EnumName(ErrorDTO_ErrorSeverity_name, int32(x))
 }
+
 func (x *ErrorDTO_ErrorSeverity) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(ErrorDTO_ErrorSeverity_value, data, "ErrorDTO_ErrorSeverity")
 	if err != nil {
@@ -129,7 +150,10 @@ func (x *ErrorDTO_ErrorSeverity) UnmarshalJSON(data []byte) error {
 	*x = ErrorDTO_ErrorSeverity(value)
 	return nil
 }
-func (ErrorDTO_ErrorSeverity) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{4, 0} }
+
+func (ErrorDTO_ErrorSeverity) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{9, 0}
+}
 
 // Type of the serialized data
 type CustomMetadataDTO_Type int32
@@ -143,6 +167,7 @@ var CustomMetadataDTO_Type_name = map[int32]string{
 	0: "JSON",
 	1: "XML",
 }
+
 var CustomMetadataDTO_Type_value = map[string]int32{
 	"JSON": 0,
 	"XML":  1,
@@ -153,9 +178,11 @@ func (x CustomMetadataDTO_Type) Enum() *CustomMetadataDTO_Type {
 	*p = x
 	return p
 }
+
 func (x CustomMetadataDTO_Type) String() string {
 	return proto.EnumName(CustomMetadataDTO_Type_name, int32(x))
 }
+
 func (x *CustomMetadataDTO_Type) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(CustomMetadataDTO_Type_value, data, "CustomMetadataDTO_Type")
 	if err != nil {
@@ -164,24 +191,360 @@ func (x *CustomMetadataDTO_Type) UnmarshalJSON(data []byte) error {
 	*x = CustomMetadataDTO_Type(value)
 	return nil
 }
-func (CustomMetadataDTO_Type) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{5, 0} }
+
+func (CustomMetadataDTO_Type) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{10, 0}
+}
 
 // ValidateResponse is the response of a ValidateRequest message.
 // It contains the response, and any errors encountered during the target validation attempt.
 type ValidationResponse struct {
 	// Errors, discovered during external probe operation
-	ErrorDTO         []*ErrorDTO `protobuf:"bytes,1,rep,name=errorDTO" json:"errorDTO,omitempty"`
-	XXX_unrecognized []byte      `json:"-"`
+	ErrorDTO             []*ErrorDTO `protobuf:"bytes,1,rep,name=errorDTO" json:"errorDTO,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
-func (m *ValidationResponse) Reset()                    { *m = ValidationResponse{} }
-func (m *ValidationResponse) String() string            { return proto.CompactTextString(m) }
-func (*ValidationResponse) ProtoMessage()               {}
-func (*ValidationResponse) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+func (m *ValidationResponse) Reset()         { *m = ValidationResponse{} }
+func (m *ValidationResponse) String() string { return proto.CompactTextString(m) }
+func (*ValidationResponse) ProtoMessage()    {}
+func (*ValidationResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{0}
+}
+
+func (m *ValidationResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ValidationResponse.Unmarshal(m, b)
+}
+func (m *ValidationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ValidationResponse.Marshal(b, m, deterministic)
+}
+func (m *ValidationResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ValidationResponse.Merge(m, src)
+}
+func (m *ValidationResponse) XXX_Size() int {
+	return xxx_messageInfo_ValidationResponse.Size(m)
+}
+func (m *ValidationResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ValidationResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ValidationResponse proto.InternalMessageInfo
 
 func (m *ValidationResponse) GetErrorDTO() []*ErrorDTO {
 	if m != nil {
 		return m.ErrorDTO
+	}
+	return nil
+}
+
+// We define which entities with which action types must be merged.
+//Spec will be created per target entity and action type.
+// For example -
+//  - one spec per deployment for container vcpu/vmem resize.
+//  - one spec per deployment for each container pod provision.
+type ActionMergeSpec struct {
+	// Incoming action spec
+	// The list of entities for which the actions must be merged.
+	// They are to be matched to the EntityDTO.id.
+	EntityIds []string `protobuf:"bytes,1,rep,name=entity_ids,json=entityIds" json:"entity_ids,omitempty"`
+	// Outgoing action spec
+	// Target entity for de-duplicating actions for all the entities
+	// belonging to the same auto-scaling or deployment group.
+	// Example: the ASG that will handle the resize for all the VMs in its auto-scaling group
+	// or the container spec handling the resize for all the containers configured by the spec
+	TargetEntity      *string `protobuf:"bytes,2,opt,name=target_entity,json=targetEntity" json:"target_entity,omitempty"`
+	TargetDescription *string `protobuf:"bytes,3,opt,name=target_description,json=targetDescription" json:"target_description,omitempty"`
+	// Entity where the action will be executed after deduplication and merge
+	// Example: Workload controller where all the actions for different container specs will be executed
+	AggregationEntity      *string `protobuf:"bytes,7,opt,name=aggregation_entity,json=aggregationEntity" json:"aggregation_entity,omitempty"`
+	AggregationDescription *string `protobuf:"bytes,8,opt,name=aggregation_description,json=aggregationDescription" json:"aggregation_description,omitempty"`
+	// Types that are valid to be assigned to ActionSpec:
+	//	*ActionMergeSpec_MoveSpec
+	//	*ActionMergeSpec_ResizeSpec
+	//	*ActionMergeSpec_ProvisionSpec
+	ActionSpec           isActionMergeSpec_ActionSpec `protobuf_oneof:"actionSpec"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
+}
+
+func (m *ActionMergeSpec) Reset()         { *m = ActionMergeSpec{} }
+func (m *ActionMergeSpec) String() string { return proto.CompactTextString(m) }
+func (*ActionMergeSpec) ProtoMessage()    {}
+func (*ActionMergeSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{1}
+}
+
+func (m *ActionMergeSpec) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ActionMergeSpec.Unmarshal(m, b)
+}
+func (m *ActionMergeSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ActionMergeSpec.Marshal(b, m, deterministic)
+}
+func (m *ActionMergeSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ActionMergeSpec.Merge(m, src)
+}
+func (m *ActionMergeSpec) XXX_Size() int {
+	return xxx_messageInfo_ActionMergeSpec.Size(m)
+}
+func (m *ActionMergeSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_ActionMergeSpec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ActionMergeSpec proto.InternalMessageInfo
+
+func (m *ActionMergeSpec) GetEntityIds() []string {
+	if m != nil {
+		return m.EntityIds
+	}
+	return nil
+}
+
+func (m *ActionMergeSpec) GetTargetEntity() string {
+	if m != nil && m.TargetEntity != nil {
+		return *m.TargetEntity
+	}
+	return ""
+}
+
+func (m *ActionMergeSpec) GetTargetDescription() string {
+	if m != nil && m.TargetDescription != nil {
+		return *m.TargetDescription
+	}
+	return ""
+}
+
+func (m *ActionMergeSpec) GetAggregationEntity() string {
+	if m != nil && m.AggregationEntity != nil {
+		return *m.AggregationEntity
+	}
+	return ""
+}
+
+func (m *ActionMergeSpec) GetAggregationDescription() string {
+	if m != nil && m.AggregationDescription != nil {
+		return *m.AggregationDescription
+	}
+	return ""
+}
+
+type isActionMergeSpec_ActionSpec interface {
+	isActionMergeSpec_ActionSpec()
+}
+
+type ActionMergeSpec_MoveSpec struct {
+	MoveSpec *MoveTransformSpec `protobuf:"bytes,4,opt,name=moveSpec,oneof"`
+}
+
+type ActionMergeSpec_ResizeSpec struct {
+	ResizeSpec *ResizeTransformSpec `protobuf:"bytes,5,opt,name=resizeSpec,oneof"`
+}
+
+type ActionMergeSpec_ProvisionSpec struct {
+	ProvisionSpec *ProvisionTransformSpec `protobuf:"bytes,6,opt,name=provisionSpec,oneof"`
+}
+
+func (*ActionMergeSpec_MoveSpec) isActionMergeSpec_ActionSpec() {}
+
+func (*ActionMergeSpec_ResizeSpec) isActionMergeSpec_ActionSpec() {}
+
+func (*ActionMergeSpec_ProvisionSpec) isActionMergeSpec_ActionSpec() {}
+
+func (m *ActionMergeSpec) GetActionSpec() isActionMergeSpec_ActionSpec {
+	if m != nil {
+		return m.ActionSpec
+	}
+	return nil
+}
+
+func (m *ActionMergeSpec) GetMoveSpec() *MoveTransformSpec {
+	if x, ok := m.GetActionSpec().(*ActionMergeSpec_MoveSpec); ok {
+		return x.MoveSpec
+	}
+	return nil
+}
+
+func (m *ActionMergeSpec) GetResizeSpec() *ResizeTransformSpec {
+	if x, ok := m.GetActionSpec().(*ActionMergeSpec_ResizeSpec); ok {
+		return x.ResizeSpec
+	}
+	return nil
+}
+
+func (m *ActionMergeSpec) GetProvisionSpec() *ProvisionTransformSpec {
+	if x, ok := m.GetActionSpec().(*ActionMergeSpec_ProvisionSpec); ok {
+		return x.ProvisionSpec
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*ActionMergeSpec) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*ActionMergeSpec_MoveSpec)(nil),
+		(*ActionMergeSpec_ResizeSpec)(nil),
+		(*ActionMergeSpec_ProvisionSpec)(nil),
+	}
+}
+
+type ProvisionTransformSpec struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ProvisionTransformSpec) Reset()         { *m = ProvisionTransformSpec{} }
+func (m *ProvisionTransformSpec) String() string { return proto.CompactTextString(m) }
+func (*ProvisionTransformSpec) ProtoMessage()    {}
+func (*ProvisionTransformSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{2}
+}
+
+func (m *ProvisionTransformSpec) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ProvisionTransformSpec.Unmarshal(m, b)
+}
+func (m *ProvisionTransformSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ProvisionTransformSpec.Marshal(b, m, deterministic)
+}
+func (m *ProvisionTransformSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProvisionTransformSpec.Merge(m, src)
+}
+func (m *ProvisionTransformSpec) XXX_Size() int {
+	return xxx_messageInfo_ProvisionTransformSpec.Size(m)
+}
+func (m *ProvisionTransformSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProvisionTransformSpec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProvisionTransformSpec proto.InternalMessageInfo
+
+type MoveTransformSpec struct {
+	// provider for the move
+	ProviderType         *EntityDTO_EntityType `protobuf:"varint,1,req,name=providerType,enum=common_dto.EntityDTO_EntityType" json:"providerType,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
+}
+
+func (m *MoveTransformSpec) Reset()         { *m = MoveTransformSpec{} }
+func (m *MoveTransformSpec) String() string { return proto.CompactTextString(m) }
+func (*MoveTransformSpec) ProtoMessage()    {}
+func (*MoveTransformSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{3}
+}
+
+func (m *MoveTransformSpec) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MoveTransformSpec.Unmarshal(m, b)
+}
+func (m *MoveTransformSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MoveTransformSpec.Marshal(b, m, deterministic)
+}
+func (m *MoveTransformSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MoveTransformSpec.Merge(m, src)
+}
+func (m *MoveTransformSpec) XXX_Size() int {
+	return xxx_messageInfo_MoveTransformSpec.Size(m)
+}
+func (m *MoveTransformSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_MoveTransformSpec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MoveTransformSpec proto.InternalMessageInfo
+
+func (m *MoveTransformSpec) GetProviderType() EntityDTO_EntityType {
+	if m != nil && m.ProviderType != nil {
+		return *m.ProviderType
+	}
+	return EntityDTO_SWITCH
+}
+
+type ResizeTransformSpec struct {
+	// Specifies the commodity to be changed.
+	CommodityType []CommodityDTO_CommodityType `protobuf:"varint,1,rep,name=commodity_type,json=commodityType,enum=common_dto.CommodityDTO_CommodityType" json:"commodity_type,omitempty"`
+	// The type of the changed attribute.
+	ChangedAttr          []ActionItemDTO_CommodityAttribute `protobuf:"varint,2,rep,name=changed_attr,json=changedAttr,enum=common_dto.ActionItemDTO_CommodityAttribute" json:"changed_attr,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                           `json:"-"`
+	XXX_unrecognized     []byte                             `json:"-"`
+	XXX_sizecache        int32                              `json:"-"`
+}
+
+func (m *ResizeTransformSpec) Reset()         { *m = ResizeTransformSpec{} }
+func (m *ResizeTransformSpec) String() string { return proto.CompactTextString(m) }
+func (*ResizeTransformSpec) ProtoMessage()    {}
+func (*ResizeTransformSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{4}
+}
+
+func (m *ResizeTransformSpec) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ResizeTransformSpec.Unmarshal(m, b)
+}
+func (m *ResizeTransformSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ResizeTransformSpec.Marshal(b, m, deterministic)
+}
+func (m *ResizeTransformSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ResizeTransformSpec.Merge(m, src)
+}
+func (m *ResizeTransformSpec) XXX_Size() int {
+	return xxx_messageInfo_ResizeTransformSpec.Size(m)
+}
+func (m *ResizeTransformSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_ResizeTransformSpec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ResizeTransformSpec proto.InternalMessageInfo
+
+func (m *ResizeTransformSpec) GetCommodityType() []CommodityDTO_CommodityType {
+	if m != nil {
+		return m.CommodityType
+	}
+	return nil
+}
+
+func (m *ResizeTransformSpec) GetChangedAttr() []ActionItemDTO_CommodityAttribute {
+	if m != nil {
+		return m.ChangedAttr
+	}
+	return nil
+}
+
+// The message identifying the probe-specified action merge and transformation specifications.
+type DiscoveredActionSpec struct {
+	// The list of action merge and transform spec.
+	Specs                []*ActionMergeSpec `protobuf:"bytes,1,rep,name=specs" json:"specs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
+}
+
+func (m *DiscoveredActionSpec) Reset()         { *m = DiscoveredActionSpec{} }
+func (m *DiscoveredActionSpec) String() string { return proto.CompactTextString(m) }
+func (*DiscoveredActionSpec) ProtoMessage()    {}
+func (*DiscoveredActionSpec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{5}
+}
+
+func (m *DiscoveredActionSpec) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DiscoveredActionSpec.Unmarshal(m, b)
+}
+func (m *DiscoveredActionSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DiscoveredActionSpec.Marshal(b, m, deterministic)
+}
+func (m *DiscoveredActionSpec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DiscoveredActionSpec.Merge(m, src)
+}
+func (m *DiscoveredActionSpec) XXX_Size() int {
+	return xxx_messageInfo_DiscoveredActionSpec.Size(m)
+}
+func (m *DiscoveredActionSpec) XXX_DiscardUnknown() {
+	xxx_messageInfo_DiscoveredActionSpec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DiscoveredActionSpec proto.InternalMessageInfo
+
+func (m *DiscoveredActionSpec) GetSpecs() []*ActionMergeSpec {
+	if m != nil {
+		return m.Specs
 	}
 	return nil
 }
@@ -211,14 +574,53 @@ type DiscoveryResponse struct {
 	// Non market entities, discovered by external probe
 	NonMarketEntityDTO []*NonMarketEntityDTO `protobuf:"bytes,9,rep,name=nonMarketEntityDTO" json:"nonMarketEntityDTO,omitempty"`
 	// Flows, discovered by external probe
-	FlowDTO          []*FlowDTO `protobuf:"bytes,11,rep,name=flowDTO" json:"flowDTO,omitempty"`
-	XXX_unrecognized []byte     `json:"-"`
+	FlowDTO []*FlowDTO `protobuf:"bytes,11,rep,name=flowDTO" json:"flowDTO,omitempty"`
+	// Discovery context contains data that needs to be sent back to the probe in the next
+	// discovery request
+	DiscoveryContext *DiscoveryContextDTO `protobuf:"bytes,12,opt,name=discoveryContext" json:"discoveryContext,omitempty"`
+	// Costs/Spend/Discount for Account, CloudService, Templates etc.
+	CostDTO []*CostDataDTO `protobuf:"bytes,13,rep,name=costDTO" json:"costDTO,omitempty"`
+	// Price table discovered by the cloud cost probes. (see PricingDTO.proto)
+	// The cloud provider is giving us prices for the different services and product offerings that
+	// they have available. Different products/options combination leads to a different price.
+	// Those prices are used to calculate the bottom-up cost of a specific entity (by adding up
+	// the different products that are part of it, like compute,storage,license,ip,...).
+	PriceTable *PriceTable `protobuf:"bytes,14,opt,name=priceTable" json:"priceTable,omitempty"`
+	// Workflows discovered by external probe (formerly appeared as NonMarketEntityDTOs)
+	Workflow []*Workflow `protobuf:"bytes,15,rep,name=workflow" json:"workflow,omitempty"`
+	// Indicates no change since the previous discovery.
+	NoChange *NoChange `protobuf:"bytes,16,opt,name=no_change,json=noChange" json:"no_change,omitempty"`
+	// The list of action merge specs discovered by a probe.
+	ActionMergeSpecs     []*ActionMergeSpec `protobuf:"bytes,17,rep,name=actionMergeSpecs" json:"actionMergeSpecs,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
 }
 
-func (m *DiscoveryResponse) Reset()                    { *m = DiscoveryResponse{} }
-func (m *DiscoveryResponse) String() string            { return proto.CompactTextString(m) }
-func (*DiscoveryResponse) ProtoMessage()               {}
-func (*DiscoveryResponse) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
+func (m *DiscoveryResponse) Reset()         { *m = DiscoveryResponse{} }
+func (m *DiscoveryResponse) String() string { return proto.CompactTextString(m) }
+func (*DiscoveryResponse) ProtoMessage()    {}
+func (*DiscoveryResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{6}
+}
+
+func (m *DiscoveryResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DiscoveryResponse.Unmarshal(m, b)
+}
+func (m *DiscoveryResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DiscoveryResponse.Marshal(b, m, deterministic)
+}
+func (m *DiscoveryResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DiscoveryResponse.Merge(m, src)
+}
+func (m *DiscoveryResponse) XXX_Size() int {
+	return xxx_messageInfo_DiscoveryResponse.Size(m)
+}
+func (m *DiscoveryResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DiscoveryResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DiscoveryResponse proto.InternalMessageInfo
 
 func (m *DiscoveryResponse) GetErrorDTO() []*ErrorDTO {
 	if m != nil {
@@ -290,6 +692,48 @@ func (m *DiscoveryResponse) GetFlowDTO() []*FlowDTO {
 	return nil
 }
 
+func (m *DiscoveryResponse) GetDiscoveryContext() *DiscoveryContextDTO {
+	if m != nil {
+		return m.DiscoveryContext
+	}
+	return nil
+}
+
+func (m *DiscoveryResponse) GetCostDTO() []*CostDataDTO {
+	if m != nil {
+		return m.CostDTO
+	}
+	return nil
+}
+
+func (m *DiscoveryResponse) GetPriceTable() *PriceTable {
+	if m != nil {
+		return m.PriceTable
+	}
+	return nil
+}
+
+func (m *DiscoveryResponse) GetWorkflow() []*Workflow {
+	if m != nil {
+		return m.Workflow
+	}
+	return nil
+}
+
+func (m *DiscoveryResponse) GetNoChange() *NoChange {
+	if m != nil {
+		return m.NoChange
+	}
+	return nil
+}
+
+func (m *DiscoveryResponse) GetActionMergeSpecs() []*ActionMergeSpec {
+	if m != nil {
+		return m.ActionMergeSpecs
+	}
+	return nil
+}
+
 // Custom user-defined account values. These construction is used, when SDK probe writers
 // define their own account values, instead of reusing existing ones.
 // Custom fields should be used, when there is not predefined field to match the purpose
@@ -314,38 +758,40 @@ type CustomAccountDefEntry struct {
 	// Types that are valid to be assigned to FieldType:
 	//	*CustomAccountDefEntry_PrimitiveValue_
 	//	*CustomAccountDefEntry_GroupScope
-	FieldType        isCustomAccountDefEntry_FieldType `protobuf_oneof:"fieldType"`
-	XXX_unrecognized []byte                            `json:"-"`
+	//	*CustomAccountDefEntry_EntityScope
+	FieldType            isCustomAccountDefEntry_FieldType `protobuf_oneof:"fieldType"`
+	XXX_NoUnkeyedLiteral struct{}                          `json:"-"`
+	XXX_unrecognized     []byte                            `json:"-"`
+	XXX_sizecache        int32                             `json:"-"`
 }
 
-func (m *CustomAccountDefEntry) Reset()                    { *m = CustomAccountDefEntry{} }
-func (m *CustomAccountDefEntry) String() string            { return proto.CompactTextString(m) }
-func (*CustomAccountDefEntry) ProtoMessage()               {}
-func (*CustomAccountDefEntry) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{2} }
+func (m *CustomAccountDefEntry) Reset()         { *m = CustomAccountDefEntry{} }
+func (m *CustomAccountDefEntry) String() string { return proto.CompactTextString(m) }
+func (*CustomAccountDefEntry) ProtoMessage()    {}
+func (*CustomAccountDefEntry) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{7}
+}
+
+func (m *CustomAccountDefEntry) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CustomAccountDefEntry.Unmarshal(m, b)
+}
+func (m *CustomAccountDefEntry) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CustomAccountDefEntry.Marshal(b, m, deterministic)
+}
+func (m *CustomAccountDefEntry) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CustomAccountDefEntry.Merge(m, src)
+}
+func (m *CustomAccountDefEntry) XXX_Size() int {
+	return xxx_messageInfo_CustomAccountDefEntry.Size(m)
+}
+func (m *CustomAccountDefEntry) XXX_DiscardUnknown() {
+	xxx_messageInfo_CustomAccountDefEntry.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CustomAccountDefEntry proto.InternalMessageInfo
 
 const Default_CustomAccountDefEntry_VerificationRegex string = ".*"
 const Default_CustomAccountDefEntry_IsSecret bool = false
-
-type isCustomAccountDefEntry_FieldType interface {
-	isCustomAccountDefEntry_FieldType()
-}
-
-type CustomAccountDefEntry_PrimitiveValue_ struct {
-	PrimitiveValue CustomAccountDefEntry_PrimitiveValue `protobuf:"varint,6,opt,name=primitive_value,json=primitiveValue,enum=common_dto.CustomAccountDefEntry_PrimitiveValue,oneof"`
-}
-type CustomAccountDefEntry_GroupScope struct {
-	GroupScope *CustomAccountDefEntry_GroupScopePropertySet `protobuf:"bytes,7,opt,name=group_scope,json=groupScope,oneof"`
-}
-
-func (*CustomAccountDefEntry_PrimitiveValue_) isCustomAccountDefEntry_FieldType() {}
-func (*CustomAccountDefEntry_GroupScope) isCustomAccountDefEntry_FieldType()      {}
-
-func (m *CustomAccountDefEntry) GetFieldType() isCustomAccountDefEntry_FieldType {
-	if m != nil {
-		return m.FieldType
-	}
-	return nil
-}
 
 func (m *CustomAccountDefEntry) GetName() string {
 	if m != nil && m.Name != nil {
@@ -382,6 +828,35 @@ func (m *CustomAccountDefEntry) GetIsSecret() bool {
 	return Default_CustomAccountDefEntry_IsSecret
 }
 
+type isCustomAccountDefEntry_FieldType interface {
+	isCustomAccountDefEntry_FieldType()
+}
+
+type CustomAccountDefEntry_PrimitiveValue_ struct {
+	PrimitiveValue CustomAccountDefEntry_PrimitiveValue `protobuf:"varint,6,opt,name=primitive_value,json=primitiveValue,enum=common_dto.CustomAccountDefEntry_PrimitiveValue,oneof"`
+}
+
+type CustomAccountDefEntry_GroupScope struct {
+	GroupScope *CustomAccountDefEntry_GroupScopePropertySet `protobuf:"bytes,7,opt,name=group_scope,json=groupScope,oneof"`
+}
+
+type CustomAccountDefEntry_EntityScope struct {
+	EntityScope *CustomAccountDefEntry_GroupScopePropertySet `protobuf:"bytes,8,opt,name=entity_scope,json=entityScope,oneof"`
+}
+
+func (*CustomAccountDefEntry_PrimitiveValue_) isCustomAccountDefEntry_FieldType() {}
+
+func (*CustomAccountDefEntry_GroupScope) isCustomAccountDefEntry_FieldType() {}
+
+func (*CustomAccountDefEntry_EntityScope) isCustomAccountDefEntry_FieldType() {}
+
+func (m *CustomAccountDefEntry) GetFieldType() isCustomAccountDefEntry_FieldType {
+	if m != nil {
+		return m.FieldType
+	}
+	return nil
+}
+
 func (m *CustomAccountDefEntry) GetPrimitiveValue() CustomAccountDefEntry_PrimitiveValue {
 	if x, ok := m.GetFieldType().(*CustomAccountDefEntry_PrimitiveValue_); ok {
 		return x.PrimitiveValue
@@ -396,73 +871,20 @@ func (m *CustomAccountDefEntry) GetGroupScope() *CustomAccountDefEntry_GroupScop
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*CustomAccountDefEntry) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _CustomAccountDefEntry_OneofMarshaler, _CustomAccountDefEntry_OneofUnmarshaler, _CustomAccountDefEntry_OneofSizer, []interface{}{
-		(*CustomAccountDefEntry_PrimitiveValue_)(nil),
-		(*CustomAccountDefEntry_GroupScope)(nil),
-	}
-}
-
-func _CustomAccountDefEntry_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*CustomAccountDefEntry)
-	// fieldType
-	switch x := m.FieldType.(type) {
-	case *CustomAccountDefEntry_PrimitiveValue_:
-		b.EncodeVarint(6<<3 | proto.WireVarint)
-		b.EncodeVarint(uint64(x.PrimitiveValue))
-	case *CustomAccountDefEntry_GroupScope:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.GroupScope); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("CustomAccountDefEntry.FieldType has unexpected type %T", x)
+func (m *CustomAccountDefEntry) GetEntityScope() *CustomAccountDefEntry_GroupScopePropertySet {
+	if x, ok := m.GetFieldType().(*CustomAccountDefEntry_EntityScope); ok {
+		return x.EntityScope
 	}
 	return nil
 }
 
-func _CustomAccountDefEntry_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*CustomAccountDefEntry)
-	switch tag {
-	case 6: // fieldType.primitive_value
-		if wire != proto.WireVarint {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeVarint()
-		m.FieldType = &CustomAccountDefEntry_PrimitiveValue_{CustomAccountDefEntry_PrimitiveValue(x)}
-		return true, err
-	case 7: // fieldType.group_scope
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CustomAccountDefEntry_GroupScopePropertySet)
-		err := b.DecodeMessage(msg)
-		m.FieldType = &CustomAccountDefEntry_GroupScope{msg}
-		return true, err
-	default:
-		return false, nil
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*CustomAccountDefEntry) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*CustomAccountDefEntry_PrimitiveValue_)(nil),
+		(*CustomAccountDefEntry_GroupScope)(nil),
+		(*CustomAccountDefEntry_EntityScope)(nil),
 	}
-}
-
-func _CustomAccountDefEntry_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*CustomAccountDefEntry)
-	// fieldType
-	switch x := m.FieldType.(type) {
-	case *CustomAccountDefEntry_PrimitiveValue_:
-		n += proto.SizeVarint(6<<3 | proto.WireVarint)
-		n += proto.SizeVarint(uint64(x.PrimitiveValue))
-	case *CustomAccountDefEntry_GroupScope:
-		s := proto.Size(x.GroupScope)
-		n += proto.SizeVarint(7<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
-	}
-	return n
 }
 
 // Entity type with a set of properties for group scope account definition
@@ -470,8 +892,10 @@ type CustomAccountDefEntry_GroupScopePropertySet struct {
 	// Entity type
 	EntityType *EntityDTO_EntityType `protobuf:"varint,1,req,name=entityType,enum=common_dto.EntityDTO_EntityType" json:"entityType,omitempty"`
 	// Set of properties
-	Property         []*CustomAccountDefEntry_GroupScopeProperty `protobuf:"bytes,2,rep,name=property" json:"property,omitempty"`
-	XXX_unrecognized []byte                                      `json:"-"`
+	Property             []*CustomAccountDefEntry_GroupScopeProperty `protobuf:"bytes,2,rep,name=property" json:"property,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                                    `json:"-"`
+	XXX_unrecognized     []byte                                      `json:"-"`
+	XXX_sizecache        int32                                       `json:"-"`
 }
 
 func (m *CustomAccountDefEntry_GroupScopePropertySet) Reset() {
@@ -482,8 +906,26 @@ func (m *CustomAccountDefEntry_GroupScopePropertySet) String() string {
 }
 func (*CustomAccountDefEntry_GroupScopePropertySet) ProtoMessage() {}
 func (*CustomAccountDefEntry_GroupScopePropertySet) Descriptor() ([]byte, []int) {
-	return fileDescriptor2, []int{2, 0}
+	return fileDescriptor_e3fe94e0f094b633, []int{7, 0}
 }
+
+func (m *CustomAccountDefEntry_GroupScopePropertySet) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CustomAccountDefEntry_GroupScopePropertySet.Unmarshal(m, b)
+}
+func (m *CustomAccountDefEntry_GroupScopePropertySet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CustomAccountDefEntry_GroupScopePropertySet.Marshal(b, m, deterministic)
+}
+func (m *CustomAccountDefEntry_GroupScopePropertySet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CustomAccountDefEntry_GroupScopePropertySet.Merge(m, src)
+}
+func (m *CustomAccountDefEntry_GroupScopePropertySet) XXX_Size() int {
+	return xxx_messageInfo_CustomAccountDefEntry_GroupScopePropertySet.Size(m)
+}
+func (m *CustomAccountDefEntry_GroupScopePropertySet) XXX_DiscardUnknown() {
+	xxx_messageInfo_CustomAccountDefEntry_GroupScopePropertySet.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CustomAccountDefEntry_GroupScopePropertySet proto.InternalMessageInfo
 
 func (m *CustomAccountDefEntry_GroupScopePropertySet) GetEntityType() EntityDTO_EntityType {
 	if m != nil && m.EntityType != nil {
@@ -504,8 +946,10 @@ type CustomAccountDefEntry_GroupScopeProperty struct {
 	// The name of the property
 	PropertyName *string `protobuf:"bytes,1,req,name=propertyName" json:"propertyName,omitempty"`
 	// Checks if property is mandatory or optional
-	IsMandatory      *bool  `protobuf:"varint,2,opt,name=isMandatory,def=1" json:"isMandatory,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	IsMandatory          *bool    `protobuf:"varint,2,opt,name=isMandatory,def=1" json:"isMandatory,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *CustomAccountDefEntry_GroupScopeProperty) Reset() {
@@ -514,8 +958,26 @@ func (m *CustomAccountDefEntry_GroupScopeProperty) Reset() {
 func (m *CustomAccountDefEntry_GroupScopeProperty) String() string { return proto.CompactTextString(m) }
 func (*CustomAccountDefEntry_GroupScopeProperty) ProtoMessage()    {}
 func (*CustomAccountDefEntry_GroupScopeProperty) Descriptor() ([]byte, []int) {
-	return fileDescriptor2, []int{2, 1}
+	return fileDescriptor_e3fe94e0f094b633, []int{7, 1}
 }
+
+func (m *CustomAccountDefEntry_GroupScopeProperty) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CustomAccountDefEntry_GroupScopeProperty.Unmarshal(m, b)
+}
+func (m *CustomAccountDefEntry_GroupScopeProperty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CustomAccountDefEntry_GroupScopeProperty.Marshal(b, m, deterministic)
+}
+func (m *CustomAccountDefEntry_GroupScopeProperty) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CustomAccountDefEntry_GroupScopeProperty.Merge(m, src)
+}
+func (m *CustomAccountDefEntry_GroupScopeProperty) XXX_Size() int {
+	return xxx_messageInfo_CustomAccountDefEntry_GroupScopeProperty.Size(m)
+}
+func (m *CustomAccountDefEntry_GroupScopeProperty) XXX_DiscardUnknown() {
+	xxx_messageInfo_CustomAccountDefEntry_GroupScopeProperty.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CustomAccountDefEntry_GroupScopeProperty proto.InternalMessageInfo
 
 const Default_CustomAccountDefEntry_GroupScopeProperty_IsMandatory bool = true
 
@@ -552,16 +1014,51 @@ type AccountDefEntry struct {
 	Mandatory *bool `protobuf:"varint,4,opt,name=mandatory,def=1" json:"mandatory,omitempty"`
 	// Default value the probe declares for this field. This can only be set if the field is
 	// optional.
-	DefaultValue     *string `protobuf:"bytes,5,opt,name=defaultValue" json:"defaultValue,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	DefaultValue *string `protobuf:"bytes,5,opt,name=defaultValue" json:"defaultValue,omitempty"`
+	// Whether this field should be used as the display name.
+	// If multiple fields have this attribute, the target display name will be the concatenation of them.
+	// If no field has this attribute, the identifying fields in the probe info will be used.
+	IsTargetDisplayName *bool `protobuf:"varint,6,opt,name=isTargetDisplayName,def=0" json:"isTargetDisplayName,omitempty"`
+	// Values to which this field is allowed to be set. If empty, the field can be set to any value.
+	AllowedValues []string `protobuf:"bytes,7,rep,name=allowed_values,json=allowedValues" json:"allowed_values,omitempty"`
+	// Reference to a field name that this field is dependent upon - the named field can enable or
+	// disable this field based on the named field's value.
+	DependencyKey *string `protobuf:"bytes,8,opt,name=dependencyKey" json:"dependencyKey,omitempty"`
+	// Regular expression for a value of field specified in dependencyKey that is used to
+	// enable this field
+	DependencyValue      *string  `protobuf:"bytes,9,opt,name=dependencyValue" json:"dependencyValue,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *AccountDefEntry) Reset()                    { *m = AccountDefEntry{} }
-func (m *AccountDefEntry) String() string            { return proto.CompactTextString(m) }
-func (*AccountDefEntry) ProtoMessage()               {}
-func (*AccountDefEntry) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{3} }
+func (m *AccountDefEntry) Reset()         { *m = AccountDefEntry{} }
+func (m *AccountDefEntry) String() string { return proto.CompactTextString(m) }
+func (*AccountDefEntry) ProtoMessage()    {}
+func (*AccountDefEntry) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{8}
+}
+
+func (m *AccountDefEntry) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AccountDefEntry.Unmarshal(m, b)
+}
+func (m *AccountDefEntry) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AccountDefEntry.Marshal(b, m, deterministic)
+}
+func (m *AccountDefEntry) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AccountDefEntry.Merge(m, src)
+}
+func (m *AccountDefEntry) XXX_Size() int {
+	return xxx_messageInfo_AccountDefEntry.Size(m)
+}
+func (m *AccountDefEntry) XXX_DiscardUnknown() {
+	xxx_messageInfo_AccountDefEntry.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AccountDefEntry proto.InternalMessageInfo
 
 const Default_AccountDefEntry_Mandatory bool = true
+const Default_AccountDefEntry_IsTargetDisplayName bool = false
 
 type isAccountDefEntry_Definition interface {
 	isAccountDefEntry_Definition()
@@ -570,12 +1067,14 @@ type isAccountDefEntry_Definition interface {
 type AccountDefEntry_PredefinedDefinition struct {
 	PredefinedDefinition string `protobuf:"bytes,2,opt,name=predefined_definition,json=predefinedDefinition,oneof"`
 }
+
 type AccountDefEntry_CustomDefinition struct {
 	CustomDefinition *CustomAccountDefEntry `protobuf:"bytes,3,opt,name=custom_definition,json=customDefinition,oneof"`
 }
 
 func (*AccountDefEntry_PredefinedDefinition) isAccountDefEntry_Definition() {}
-func (*AccountDefEntry_CustomDefinition) isAccountDefEntry_Definition()     {}
+
+func (*AccountDefEntry_CustomDefinition) isAccountDefEntry_Definition() {}
 
 func (m *AccountDefEntry) GetDefinition() isAccountDefEntry_Definition {
 	if m != nil {
@@ -612,74 +1111,40 @@ func (m *AccountDefEntry) GetDefaultValue() string {
 	return ""
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*AccountDefEntry) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
-	return _AccountDefEntry_OneofMarshaler, _AccountDefEntry_OneofUnmarshaler, _AccountDefEntry_OneofSizer, []interface{}{
-		(*AccountDefEntry_PredefinedDefinition)(nil),
-		(*AccountDefEntry_CustomDefinition)(nil),
+func (m *AccountDefEntry) GetIsTargetDisplayName() bool {
+	if m != nil && m.IsTargetDisplayName != nil {
+		return *m.IsTargetDisplayName
 	}
+	return Default_AccountDefEntry_IsTargetDisplayName
 }
 
-func _AccountDefEntry_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*AccountDefEntry)
-	// definition
-	switch x := m.Definition.(type) {
-	case *AccountDefEntry_PredefinedDefinition:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		b.EncodeStringBytes(x.PredefinedDefinition)
-	case *AccountDefEntry_CustomDefinition:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.CustomDefinition); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("AccountDefEntry.Definition has unexpected type %T", x)
+func (m *AccountDefEntry) GetAllowedValues() []string {
+	if m != nil {
+		return m.AllowedValues
 	}
 	return nil
 }
 
-func _AccountDefEntry_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*AccountDefEntry)
-	switch tag {
-	case 2: // definition.predefined_definition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		x, err := b.DecodeStringBytes()
-		m.Definition = &AccountDefEntry_PredefinedDefinition{x}
-		return true, err
-	case 3: // definition.custom_definition
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(CustomAccountDefEntry)
-		err := b.DecodeMessage(msg)
-		m.Definition = &AccountDefEntry_CustomDefinition{msg}
-		return true, err
-	default:
-		return false, nil
+func (m *AccountDefEntry) GetDependencyKey() string {
+	if m != nil && m.DependencyKey != nil {
+		return *m.DependencyKey
 	}
+	return ""
 }
 
-func _AccountDefEntry_OneofSizer(msg proto.Message) (n int) {
-	m := msg.(*AccountDefEntry)
-	// definition
-	switch x := m.Definition.(type) {
-	case *AccountDefEntry_PredefinedDefinition:
-		n += proto.SizeVarint(2<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(len(x.PredefinedDefinition)))
-		n += len(x.PredefinedDefinition)
-	case *AccountDefEntry_CustomDefinition:
-		s := proto.Size(x.CustomDefinition)
-		n += proto.SizeVarint(3<<3 | proto.WireBytes)
-		n += proto.SizeVarint(uint64(s))
-		n += s
-	case nil:
-	default:
-		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+func (m *AccountDefEntry) GetDependencyValue() string {
+	if m != nil && m.DependencyValue != nil {
+		return *m.DependencyValue
 	}
-	return n
+	return ""
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*AccountDefEntry) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*AccountDefEntry_PredefinedDefinition)(nil),
+		(*AccountDefEntry_CustomDefinition)(nil),
+	}
 }
 
 // Error DTO. Represent some errors, occurred during operations inside the Mediation Container.
@@ -691,14 +1156,36 @@ type ErrorDTO struct {
 	// UUID of the entity the error is related to, if any.
 	EntityUuid *string `protobuf:"bytes,3,opt,name=entityUuid" json:"entityUuid,omitempty"`
 	// Type of the entity the error is related to, if any.
-	EntityType       *string `protobuf:"bytes,4,opt,name=entityType" json:"entityType,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	EntityType           *string  `protobuf:"bytes,4,opt,name=entityType" json:"entityType,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ErrorDTO) Reset()                    { *m = ErrorDTO{} }
-func (m *ErrorDTO) String() string            { return proto.CompactTextString(m) }
-func (*ErrorDTO) ProtoMessage()               {}
-func (*ErrorDTO) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{4} }
+func (m *ErrorDTO) Reset()         { *m = ErrorDTO{} }
+func (m *ErrorDTO) String() string { return proto.CompactTextString(m) }
+func (*ErrorDTO) ProtoMessage()    {}
+func (*ErrorDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{9}
+}
+
+func (m *ErrorDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ErrorDTO.Unmarshal(m, b)
+}
+func (m *ErrorDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ErrorDTO.Marshal(b, m, deterministic)
+}
+func (m *ErrorDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ErrorDTO.Merge(m, src)
+}
+func (m *ErrorDTO) XXX_Size() int {
+	return xxx_messageInfo_ErrorDTO.Size(m)
+}
+func (m *ErrorDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_ErrorDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ErrorDTO proto.InternalMessageInfo
 
 func (m *ErrorDTO) GetSeverity() ErrorDTO_ErrorSeverity {
 	if m != nil && m.Severity != nil {
@@ -739,14 +1226,36 @@ type CustomMetadataDTO struct {
 	// Type of data
 	DataType *CustomMetadataDTO_Type `protobuf:"varint,3,req,name=dataType,enum=common_dto.CustomMetadataDTO_Type" json:"dataType,omitempty"`
 	// Serializable Data
-	Payload          *string `protobuf:"bytes,4,req,name=payload" json:"payload,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Payload              *string  `protobuf:"bytes,4,req,name=payload" json:"payload,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CustomMetadataDTO) Reset()                    { *m = CustomMetadataDTO{} }
-func (m *CustomMetadataDTO) String() string            { return proto.CompactTextString(m) }
-func (*CustomMetadataDTO) ProtoMessage()               {}
-func (*CustomMetadataDTO) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{5} }
+func (m *CustomMetadataDTO) Reset()         { *m = CustomMetadataDTO{} }
+func (m *CustomMetadataDTO) String() string { return proto.CompactTextString(m) }
+func (*CustomMetadataDTO) ProtoMessage()    {}
+func (*CustomMetadataDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{10}
+}
+
+func (m *CustomMetadataDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CustomMetadataDTO.Unmarshal(m, b)
+}
+func (m *CustomMetadataDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CustomMetadataDTO.Marshal(b, m, deterministic)
+}
+func (m *CustomMetadataDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CustomMetadataDTO.Merge(m, src)
+}
+func (m *CustomMetadataDTO) XXX_Size() int {
+	return xxx_messageInfo_CustomMetadataDTO.Size(m)
+}
+func (m *CustomMetadataDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_CustomMetadataDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CustomMetadataDTO proto.InternalMessageInfo
 
 func (m *CustomMetadataDTO) GetNamespace() CustomTypeDef_MetadataNamespace {
 	if m != nil && m.Namespace != nil {
@@ -788,13 +1297,35 @@ type AccountValue struct {
 	StringValue *string `protobuf:"bytes,2,opt,name=stringValue" json:"stringValue,omitempty"`
 	// Set of property value lists
 	GroupScopePropertyValues []*AccountValue_PropertyValueList `protobuf:"bytes,3,rep,name=groupScopePropertyValues" json:"groupScopePropertyValues,omitempty"`
+	XXX_NoUnkeyedLiteral     struct{}                          `json:"-"`
 	XXX_unrecognized         []byte                            `json:"-"`
+	XXX_sizecache            int32                             `json:"-"`
 }
 
-func (m *AccountValue) Reset()                    { *m = AccountValue{} }
-func (m *AccountValue) String() string            { return proto.CompactTextString(m) }
-func (*AccountValue) ProtoMessage()               {}
-func (*AccountValue) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{6} }
+func (m *AccountValue) Reset()         { *m = AccountValue{} }
+func (m *AccountValue) String() string { return proto.CompactTextString(m) }
+func (*AccountValue) ProtoMessage()    {}
+func (*AccountValue) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{11}
+}
+
+func (m *AccountValue) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AccountValue.Unmarshal(m, b)
+}
+func (m *AccountValue) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AccountValue.Marshal(b, m, deterministic)
+}
+func (m *AccountValue) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AccountValue.Merge(m, src)
+}
+func (m *AccountValue) XXX_Size() int {
+	return xxx_messageInfo_AccountValue.Size(m)
+}
+func (m *AccountValue) XXX_DiscardUnknown() {
+	xxx_messageInfo_AccountValue.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AccountValue proto.InternalMessageInfo
 
 func (m *AccountValue) GetKey() string {
 	if m != nil && m.Key != nil {
@@ -818,16 +1349,36 @@ func (m *AccountValue) GetGroupScopePropertyValues() []*AccountValue_PropertyVal
 }
 
 type AccountValue_PropertyValueList struct {
-	Value            []string `protobuf:"bytes,1,rep,name=value" json:"value,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	Value                []string `protobuf:"bytes,1,rep,name=value" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *AccountValue_PropertyValueList) Reset()         { *m = AccountValue_PropertyValueList{} }
 func (m *AccountValue_PropertyValueList) String() string { return proto.CompactTextString(m) }
 func (*AccountValue_PropertyValueList) ProtoMessage()    {}
 func (*AccountValue_PropertyValueList) Descriptor() ([]byte, []int) {
-	return fileDescriptor2, []int{6, 0}
+	return fileDescriptor_e3fe94e0f094b633, []int{11, 0}
 }
+
+func (m *AccountValue_PropertyValueList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AccountValue_PropertyValueList.Unmarshal(m, b)
+}
+func (m *AccountValue_PropertyValueList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AccountValue_PropertyValueList.Marshal(b, m, deterministic)
+}
+func (m *AccountValue_PropertyValueList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AccountValue_PropertyValueList.Merge(m, src)
+}
+func (m *AccountValue_PropertyValueList) XXX_Size() int {
+	return xxx_messageInfo_AccountValue_PropertyValueList.Size(m)
+}
+func (m *AccountValue_PropertyValueList) XXX_DiscardUnknown() {
+	xxx_messageInfo_AccountValue_PropertyValueList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AccountValue_PropertyValueList proto.InternalMessageInfo
 
 func (m *AccountValue_PropertyValueList) GetValue() []string {
 	if m != nil {
@@ -853,17 +1404,42 @@ type DerivedTargetSpecificationDTO struct {
 	// Whether the target should be created with dependence on the target being discovered.
 	// When updating an existing target, it can change from independent to dependent.
 	// But not from dependent to independent, or to dependent from another target.
-	Dependent        *bool  `protobuf:"varint,4,opt,name=dependent,def=1" json:"dependent,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	Dependent *bool `protobuf:"varint,4,opt,name=dependent,def=1" json:"dependent,omitempty"`
+	// Whether the target cannot be changed through public APIs.
+	Readonly             *bool    `protobuf:"varint,5,opt,name=readonly,def=0" json:"readonly,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *DerivedTargetSpecificationDTO) Reset()                    { *m = DerivedTargetSpecificationDTO{} }
-func (m *DerivedTargetSpecificationDTO) String() string            { return proto.CompactTextString(m) }
-func (*DerivedTargetSpecificationDTO) ProtoMessage()               {}
-func (*DerivedTargetSpecificationDTO) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{7} }
+func (m *DerivedTargetSpecificationDTO) Reset()         { *m = DerivedTargetSpecificationDTO{} }
+func (m *DerivedTargetSpecificationDTO) String() string { return proto.CompactTextString(m) }
+func (*DerivedTargetSpecificationDTO) ProtoMessage()    {}
+func (*DerivedTargetSpecificationDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{12}
+}
+
+func (m *DerivedTargetSpecificationDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DerivedTargetSpecificationDTO.Unmarshal(m, b)
+}
+func (m *DerivedTargetSpecificationDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DerivedTargetSpecificationDTO.Marshal(b, m, deterministic)
+}
+func (m *DerivedTargetSpecificationDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DerivedTargetSpecificationDTO.Merge(m, src)
+}
+func (m *DerivedTargetSpecificationDTO) XXX_Size() int {
+	return xxx_messageInfo_DerivedTargetSpecificationDTO.Size(m)
+}
+func (m *DerivedTargetSpecificationDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_DerivedTargetSpecificationDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DerivedTargetSpecificationDTO proto.InternalMessageInfo
 
 const Default_DerivedTargetSpecificationDTO_Hidden bool = true
 const Default_DerivedTargetSpecificationDTO_Dependent bool = true
+const Default_DerivedTargetSpecificationDTO_Readonly bool = false
 
 func (m *DerivedTargetSpecificationDTO) GetProbeType() string {
 	if m != nil && m.ProbeType != nil {
@@ -893,8 +1469,97 @@ func (m *DerivedTargetSpecificationDTO) GetDependent() bool {
 	return Default_DerivedTargetSpecificationDTO_Dependent
 }
 
+func (m *DerivedTargetSpecificationDTO) GetReadonly() bool {
+	if m != nil && m.Readonly != nil {
+		return *m.Readonly
+	}
+	return Default_DerivedTargetSpecificationDTO_Readonly
+}
+
+// Discovery context is sent by the probe to the server and then returned back to the probe
+// in the next discovery request. Discovery context contains a list of properties represented as
+// name-value pairs.
+type DiscoveryContextDTO struct {
+	ContextEntry         map[string]string `protobuf:"bytes,1,rep,name=contextEntry" json:"contextEntry,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
+}
+
+func (m *DiscoveryContextDTO) Reset()         { *m = DiscoveryContextDTO{} }
+func (m *DiscoveryContextDTO) String() string { return proto.CompactTextString(m) }
+func (*DiscoveryContextDTO) ProtoMessage()    {}
+func (*DiscoveryContextDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{13}
+}
+
+func (m *DiscoveryContextDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DiscoveryContextDTO.Unmarshal(m, b)
+}
+func (m *DiscoveryContextDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DiscoveryContextDTO.Marshal(b, m, deterministic)
+}
+func (m *DiscoveryContextDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DiscoveryContextDTO.Merge(m, src)
+}
+func (m *DiscoveryContextDTO) XXX_Size() int {
+	return xxx_messageInfo_DiscoveryContextDTO.Size(m)
+}
+func (m *DiscoveryContextDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_DiscoveryContextDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DiscoveryContextDTO proto.InternalMessageInfo
+
+func (m *DiscoveryContextDTO) GetContextEntry() map[string]string {
+	if m != nil {
+		return m.ContextEntry
+	}
+	return nil
+}
+
+type NoChange struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NoChange) Reset()         { *m = NoChange{} }
+func (m *NoChange) String() string { return proto.CompactTextString(m) }
+func (*NoChange) ProtoMessage()    {}
+func (*NoChange) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e3fe94e0f094b633, []int{14}
+}
+
+func (m *NoChange) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NoChange.Unmarshal(m, b)
+}
+func (m *NoChange) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NoChange.Marshal(b, m, deterministic)
+}
+func (m *NoChange) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NoChange.Merge(m, src)
+}
+func (m *NoChange) XXX_Size() int {
+	return xxx_messageInfo_NoChange.Size(m)
+}
+func (m *NoChange) XXX_DiscardUnknown() {
+	xxx_messageInfo_NoChange.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NoChange proto.InternalMessageInfo
+
 func init() {
+	proto.RegisterEnum("common_dto.DiscoveryType", DiscoveryType_name, DiscoveryType_value)
+	proto.RegisterEnum("common_dto.CustomAccountDefEntry_PrimitiveValue", CustomAccountDefEntry_PrimitiveValue_name, CustomAccountDefEntry_PrimitiveValue_value)
+	proto.RegisterEnum("common_dto.ErrorDTO_ErrorSeverity", ErrorDTO_ErrorSeverity_name, ErrorDTO_ErrorSeverity_value)
+	proto.RegisterEnum("common_dto.CustomMetadataDTO_Type", CustomMetadataDTO_Type_name, CustomMetadataDTO_Type_value)
 	proto.RegisterType((*ValidationResponse)(nil), "common_dto.ValidationResponse")
+	proto.RegisterType((*ActionMergeSpec)(nil), "common_dto.ActionMergeSpec")
+	proto.RegisterType((*ProvisionTransformSpec)(nil), "common_dto.ProvisionTransformSpec")
+	proto.RegisterType((*MoveTransformSpec)(nil), "common_dto.MoveTransformSpec")
+	proto.RegisterType((*ResizeTransformSpec)(nil), "common_dto.ResizeTransformSpec")
+	proto.RegisterType((*DiscoveredActionSpec)(nil), "common_dto.DiscoveredActionSpec")
 	proto.RegisterType((*DiscoveryResponse)(nil), "common_dto.DiscoveryResponse")
 	proto.RegisterType((*CustomAccountDefEntry)(nil), "common_dto.CustomAccountDefEntry")
 	proto.RegisterType((*CustomAccountDefEntry_GroupScopePropertySet)(nil), "common_dto.CustomAccountDefEntry.GroupScopePropertySet")
@@ -905,86 +1570,123 @@ func init() {
 	proto.RegisterType((*AccountValue)(nil), "common_dto.AccountValue")
 	proto.RegisterType((*AccountValue_PropertyValueList)(nil), "common_dto.AccountValue.PropertyValueList")
 	proto.RegisterType((*DerivedTargetSpecificationDTO)(nil), "common_dto.DerivedTargetSpecificationDTO")
-	proto.RegisterEnum("common_dto.DiscoveryType", DiscoveryType_name, DiscoveryType_value)
-	proto.RegisterEnum("common_dto.CustomAccountDefEntry_PrimitiveValue", CustomAccountDefEntry_PrimitiveValue_name, CustomAccountDefEntry_PrimitiveValue_value)
-	proto.RegisterEnum("common_dto.ErrorDTO_ErrorSeverity", ErrorDTO_ErrorSeverity_name, ErrorDTO_ErrorSeverity_value)
-	proto.RegisterEnum("common_dto.CustomMetadataDTO_Type", CustomMetadataDTO_Type_name, CustomMetadataDTO_Type_value)
+	proto.RegisterType((*DiscoveryContextDTO)(nil), "common_dto.DiscoveryContextDTO")
+	proto.RegisterMapType((map[string]string)(nil), "common_dto.DiscoveryContextDTO.ContextEntryEntry")
+	proto.RegisterType((*NoChange)(nil), "common_dto.NoChange")
 }
 
-func init() { proto.RegisterFile("Discovery.proto", fileDescriptor2) }
+func init() {
+	proto.RegisterFile("Discovery.proto", fileDescriptor_e3fe94e0f094b633)
+}
 
-var fileDescriptor2 = []byte{
-	// 1143 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0xdd, 0x8e, 0xda, 0xc6,
-	0x17, 0x5f, 0x03, 0xbb, 0xe0, 0x03, 0xbb, 0xc0, 0xfc, 0xb3, 0x92, 0xff, 0xdb, 0x24, 0x25, 0xbe,
-	0xa8, 0xc8, 0xb6, 0x45, 0x51, 0xfa, 0x25, 0xa5, 0x55, 0x52, 0xbe, 0x36, 0x4b, 0x05, 0x06, 0x0d,
-	0x24, 0xad, 0xda, 0x8b, 0xad, 0x63, 0x0f, 0xd4, 0x0a, 0x78, 0xac, 0xf1, 0x40, 0xcb, 0xdb, 0xf4,
-	0xbe, 0xcf, 0xd0, 0x97, 0xa8, 0x54, 0xa9, 0x2f, 0xd0, 0xfb, 0x3e, 0x42, 0x35, 0xe3, 0x6f, 0xbc,
-	0x69, 0xa4, 0x5c, 0x31, 0x3e, 0xe7, 0xf7, 0xfb, 0xcd, 0x99, 0xf3, 0x31, 0x03, 0xd4, 0x07, 0x8e,
-	0x6f, 0xd1, 0x1d, 0x61, 0xfb, 0x8e, 0xc7, 0x28, 0xa7, 0x08, 0x2c, 0xba, 0xd9, 0x50, 0xf7, 0xc6,
-	0xe6, 0xf4, 0xa2, 0xde, 0x97, 0xeb, 0xc1, 0x62, 0x1a, 0x38, 0x2f, 0x1a, 0x33, 0x46, 0x97, 0xce,
-	0x9a, 0x24, 0x16, 0xcd, 0xa0, 0xee, 0xc4, 0x64, 0xaf, 0x09, 0x1f, 0xba, 0xdc, 0xe1, 0xfb, 0xd8,
-	0xa3, 0x5f, 0x01, 0x7a, 0x69, 0xae, 0x1d, 0xdb, 0xe4, 0x0e, 0x75, 0x31, 0xf1, 0x3d, 0xea, 0xfa,
-	0x04, 0x3d, 0x82, 0x0a, 0x61, 0x8c, 0xb2, 0xc1, 0x62, 0xaa, 0x29, 0xad, 0x62, 0xbb, 0xfa, 0xf8,
-	0x4e, 0x27, 0xd9, 0xb1, 0x33, 0x0c, 0x7d, 0x38, 0x46, 0xe9, 0xbf, 0x1e, 0x43, 0x33, 0x0e, 0xf2,
-	0xdd, 0x75, 0xd0, 0x27, 0xa0, 0x92, 0x28, 0x44, 0xad, 0x20, 0x29, 0xe7, 0x19, 0x4a, 0xe4, 0xc4,
-	0x09, 0x0e, 0x3d, 0x85, 0xba, 0x1d, 0xee, 0x4d, 0xec, 0xe7, 0x8c, 0x6e, 0x3d, 0xad, 0x98, 0xdf,
-	0x4d, 0x3a, 0x04, 0xf3, 0x10, 0x8c, 0x7a, 0x70, 0x1a, 0x88, 0x85, 0x89, 0xd3, 0x4a, 0x92, 0x7d,
-	0x37, 0xbf, 0x71, 0x92, 0x59, 0x9c, 0xa5, 0x20, 0x03, 0x9a, 0x36, 0xf1, 0xd6, 0x74, 0xbf, 0x21,
-	0x2e, 0x8f, 0x74, 0x8e, 0xa5, 0x4e, 0x2b, 0xad, 0x33, 0x38, 0x04, 0x09, 0xad, 0x3c, 0x15, 0x3d,
-	0x83, 0x9a, 0x4b, 0xb9, 0xb3, 0x74, 0x2c, 0x59, 0x1a, 0xed, 0x44, 0x4a, 0xbd, 0x97, 0x96, 0x32,
-	0x52, 0x7e, 0xa1, 0x92, 0x21, 0xa0, 0x67, 0x50, 0xdd, 0x10, 0x6e, 0xda, 0x26, 0x37, 0x45, 0x2e,
-	0xcb, 0x92, 0x7f, 0x2f, 0xcd, 0xef, 0x6f, 0x7d, 0x4e, 0x37, 0x93, 0x04, 0x84, 0xd3, 0x0c, 0x34,
-	0x85, 0x53, 0x9b, 0x30, 0x67, 0x47, 0xec, 0x85, 0xc9, 0x56, 0x84, 0x6b, 0x15, 0x29, 0xf1, 0x30,
-	0x7b, 0x9a, 0x14, 0x60, 0xee, 0x11, 0x2b, 0x13, 0x50, 0x96, 0x8f, 0x0c, 0x40, 0x6e, 0xae, 0x0f,
-	0x35, 0x55, 0xaa, 0xde, 0xcf, 0x1e, 0xec, 0x10, 0x85, 0x6f, 0x61, 0xa2, 0x8f, 0xa1, 0xbc, 0x5c,
-	0xd3, 0x9f, 0x85, 0x48, 0x55, 0x8a, 0xfc, 0x2f, 0x2d, 0x72, 0x15, 0xb8, 0x70, 0x84, 0xd1, 0xff,
-	0x38, 0x86, 0xf3, 0xe0, 0xc8, 0x5d, 0xcb, 0xa2, 0x5b, 0x97, 0x0f, 0xc8, 0x72, 0xe8, 0x72, 0xb6,
-	0x47, 0x08, 0x4a, 0xae, 0xb9, 0x21, 0x9a, 0xd2, 0x2a, 0xb4, 0x55, 0x2c, 0xd7, 0xa8, 0x05, 0x55,
-	0xdb, 0xf1, 0xbd, 0xb5, 0xb9, 0x37, 0x84, 0xab, 0x20, 0x5d, 0x69, 0x93, 0x44, 0x10, 0xdf, 0x62,
-	0x8e, 0x27, 0x0b, 0x54, 0x0c, 0x11, 0x89, 0x09, 0x3d, 0x82, 0xe6, 0x8e, 0xb0, 0x38, 0x25, 0x98,
-	0xac, 0xc8, 0x2f, 0x5a, 0xa9, 0xa5, 0xb4, 0xd5, 0x27, 0x85, 0xce, 0x25, 0xce, 0x3b, 0xd1, 0x03,
-	0xa8, 0x38, 0xfe, 0x9c, 0x58, 0x8c, 0x70, 0xed, 0xb8, 0xa5, 0xb4, 0x2b, 0x4f, 0x8e, 0x97, 0xe6,
-	0xda, 0x27, 0x38, 0x36, 0xa3, 0x1f, 0xa0, 0xee, 0x31, 0x67, 0xe3, 0x70, 0x67, 0x47, 0x6e, 0x76,
-	0xe6, 0x7a, 0x4b, 0xb4, 0x93, 0x96, 0xd2, 0x3e, 0x7b, 0xfc, 0x28, 0x5f, 0xdb, 0x83, 0x83, 0x76,
-	0x66, 0x11, 0xf1, 0xa5, 0xe0, 0x5d, 0x1f, 0xe1, 0x33, 0x2f, 0x63, 0x41, 0xdf, 0x43, 0x75, 0x25,
-	0x46, 0xe2, 0xc6, 0xb7, 0xa8, 0x47, 0xb4, 0x72, 0x4b, 0x69, 0x57, 0x1f, 0x7f, 0xf1, 0x76, 0x61,
-	0x39, 0x47, 0x73, 0xc1, 0x99, 0x31, 0xea, 0x11, 0xc6, 0xf7, 0x73, 0xc2, 0xaf, 0x8f, 0x30, 0xac,
-	0x62, 0xc7, 0xc5, 0x6f, 0x0a, 0x9c, 0xdf, 0x8a, 0x43, 0x5f, 0x03, 0x04, 0xc3, 0xb4, 0xd8, 0x7b,
-	0x41, 0x15, 0xce, 0xb2, 0x43, 0x93, 0xdc, 0x5a, 0xc3, 0x18, 0x87, 0x53, 0x1c, 0x34, 0x83, 0x8a,
-	0x17, 0x0a, 0x86, 0xb7, 0xc6, 0xa7, 0xef, 0x12, 0x34, 0x8e, 0x55, 0x2e, 0x7e, 0x04, 0x94, 0xf7,
-	0x23, 0x1d, 0x6a, 0x11, 0xc2, 0x48, 0x3a, 0x26, 0x63, 0x43, 0x1f, 0x40, 0xd5, 0xf1, 0x27, 0xa6,
-	0x6b, 0x9b, 0x9c, 0x32, 0x11, 0x8e, 0x28, 0x63, 0x89, 0xb3, 0x2d, 0xc1, 0x69, 0x87, 0xfe, 0x39,
-	0x9c, 0x65, 0xeb, 0x81, 0x00, 0x4e, 0xe6, 0x0b, 0x3c, 0x32, 0x9e, 0x37, 0x14, 0x54, 0x85, 0xb2,
-	0xf1, 0x62, 0x32, 0xc4, 0xa3, 0x7e, 0xa3, 0x20, 0x3e, 0x7a, 0xd3, 0xe9, 0x78, 0xd8, 0x35, 0x1a,
-	0xc5, 0x5e, 0x15, 0xd4, 0xa5, 0x43, 0xd6, 0xb6, 0x38, 0xb8, 0xfe, 0x8f, 0x02, 0xf5, 0xc3, 0x76,
-	0xfe, 0x0c, 0xce, 0x3d, 0x46, 0x6c, 0xb2, 0x74, 0x5c, 0x62, 0xdf, 0xc8, 0x5f, 0x47, 0xb6, 0xa8,
-	0x08, 0x45, 0xbd, 0x3e, 0xc2, 0x77, 0x12, 0xf7, 0x20, 0xf6, 0xa2, 0x19, 0x34, 0x2d, 0x99, 0xa7,
-	0x34, 0xa5, 0x28, 0x3b, 0xe0, 0xc1, 0x5b, 0x93, 0x79, 0x7d, 0x84, 0x1b, 0x01, 0x3b, 0xa5, 0xa8,
-	0x83, 0xba, 0x89, 0xf3, 0x50, 0x4a, 0xe5, 0x21, 0x31, 0x8b, 0x8c, 0xda, 0x64, 0x69, 0x6e, 0xd7,
-	0x5c, 0xe6, 0x40, 0x76, 0xbd, 0x8a, 0x33, 0xb6, 0x5e, 0x0d, 0x20, 0x09, 0x49, 0xff, 0x4b, 0x81,
-	0x4a, 0xf4, 0x72, 0xa0, 0xa7, 0x50, 0xf1, 0x89, 0x98, 0x23, 0xbe, 0x0f, 0x1b, 0x47, 0xbf, 0xed,
-	0x85, 0x09, 0x16, 0xf3, 0x10, 0x89, 0x63, 0xce, 0xe1, 0x10, 0x17, 0xf2, 0x43, 0x7c, 0x3f, 0x6a,
-	0xce, 0x17, 0x5b, 0xc7, 0x96, 0xf9, 0x50, 0x71, 0xca, 0x92, 0xf8, 0x65, 0xf3, 0x96, 0xd2, 0x7e,
-	0x59, 0xa1, 0x4b, 0x38, 0xcd, 0x6c, 0x8e, 0x6a, 0x50, 0xe9, 0xe3, 0xd1, 0x62, 0xd4, 0xef, 0x8e,
-	0x1b, 0x47, 0xa2, 0xb4, 0xdf, 0x76, 0xb1, 0x21, 0x8b, 0xae, 0xff, 0xad, 0x40, 0x33, 0x77, 0x2b,
-	0xa3, 0x11, 0xa8, 0xe2, 0x4a, 0xf2, 0x3d, 0xd3, 0x8a, 0xa6, 0xe3, 0xc3, 0x7c, 0x41, 0xc4, 0x66,
-	0x03, 0xb2, 0xec, 0x44, 0x4c, 0x23, 0xa2, 0xe0, 0x84, 0x8d, 0x1a, 0x50, 0x7c, 0x4d, 0x82, 0x9e,
-	0x54, 0xb1, 0x58, 0x8a, 0x04, 0x0a, 0xb4, 0x0c, 0xbe, 0x98, 0x4f, 0x60, 0x2e, 0x9a, 0x8e, 0x9c,
-	0xbd, 0x98, 0x83, 0x34, 0x28, 0x7b, 0xe6, 0x7e, 0x4d, 0x4d, 0x5b, 0x2b, 0xc9, 0xe4, 0x45, 0x9f,
-	0xfa, 0xff, 0xa1, 0x24, 0x11, 0x15, 0x28, 0x7d, 0x33, 0x9f, 0x1a, 0x8d, 0x23, 0x54, 0x86, 0xe2,
-	0x77, 0x93, 0x71, 0x43, 0xd1, 0xff, 0x54, 0xa0, 0x16, 0x36, 0x50, 0xd0, 0xf9, 0x61, 0x5c, 0xc1,
-	0x38, 0xc9, 0xb8, 0x5a, 0x50, 0xf5, 0x39, 0x73, 0xdc, 0x55, 0xd0, 0x16, 0x41, 0xc4, 0x69, 0x13,
-	0x5a, 0x82, 0xb6, 0xca, 0x4d, 0xa8, 0x74, 0xf9, 0xe1, 0xf3, 0x7f, 0x99, 0x3e, 0x49, 0x7a, 0xbf,
-	0x4e, 0x06, 0x3e, 0x76, 0x7c, 0x8e, 0xdf, 0xa8, 0x75, 0xf1, 0x10, 0x9a, 0x39, 0x38, 0xba, 0x03,
-	0xc7, 0xc1, 0xdd, 0x2b, 0xfe, 0xd6, 0xa8, 0x38, 0xf8, 0xd0, 0x7f, 0x57, 0xe0, 0xde, 0x7f, 0x3e,
-	0x89, 0xe8, 0x2e, 0xa8, 0x1e, 0xa3, 0xaf, 0x48, 0x7c, 0xd3, 0xa9, 0x38, 0x31, 0xa0, 0xaf, 0xa0,
-	0x66, 0xa6, 0xc2, 0x0c, 0xaf, 0x32, 0xed, 0x4d, 0xc7, 0xc0, 0x19, 0x34, 0xba, 0x0b, 0x27, 0x3f,
-	0x39, 0xb6, 0x4d, 0x82, 0xa9, 0x8d, 0x66, 0x2d, 0xb4, 0x89, 0x61, 0xb4, 0x89, 0x47, 0x5c, 0x9b,
-	0xb8, 0x3c, 0x3b, 0x8c, 0xb1, 0xf9, 0xf2, 0x4b, 0x38, 0x8d, 0xff, 0xc4, 0x45, 0xb5, 0xbb, 0x7a,
-	0x31, 0x16, 0x7d, 0x5a, 0x87, 0xea, 0xc8, 0xe8, 0xe3, 0xe1, 0x64, 0x68, 0x2c, 0xba, 0xe3, 0x86,
-	0x22, 0x0c, 0xb3, 0x21, 0xbe, 0x9a, 0xe2, 0x49, 0xd7, 0xe8, 0x0f, 0x1b, 0x85, 0xde, 0x47, 0xf0,
-	0xbe, 0x45, 0x37, 0x9d, 0xdd, 0x86, 0x6f, 0xd9, 0x2b, 0xda, 0xf1, 0xd6, 0x26, 0x5f, 0x52, 0xb6,
-	0x09, 0x83, 0xef, 0xd8, 0x9c, 0xf6, 0xd4, 0x58, 0xfd, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x78,
-	0x0e, 0x4d, 0xef, 0xd3, 0x0a, 0x00, 0x00,
+var fileDescriptor_e3fe94e0f094b633 = []byte{
+	// 1716 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x57, 0xdb, 0x72, 0xdb, 0xc6,
+	0x19, 0x16, 0x0f, 0x92, 0x80, 0x9f, 0xe7, 0xb5, 0xe4, 0xa0, 0xaa, 0x9d, 0x28, 0x68, 0x9b, 0x51,
+	0xdc, 0x84, 0x63, 0xab, 0x6d, 0xdc, 0x71, 0x3a, 0x71, 0x29, 0x92, 0xb6, 0x99, 0x88, 0xa4, 0x66,
+	0x45, 0x25, 0x3d, 0xcd, 0xb0, 0x10, 0xb0, 0x64, 0x30, 0x26, 0xb1, 0x98, 0xc5, 0x92, 0x36, 0xfb,
+	0x00, 0x7d, 0x8e, 0xde, 0x77, 0x3a, 0xd3, 0x9b, 0xbe, 0x42, 0xdf, 0xa0, 0x33, 0xbd, 0xec, 0x4d,
+	0xdf, 0xa3, 0xb3, 0xbb, 0x38, 0x12, 0x4c, 0x35, 0x75, 0x6f, 0x24, 0xe0, 0xff, 0xbf, 0xef, 0xdb,
+	0x03, 0xfe, 0x13, 0xa1, 0xd1, 0x73, 0x03, 0x9b, 0xae, 0x09, 0xdb, 0xb4, 0x7d, 0x46, 0x39, 0x45,
+	0x60, 0xd3, 0xe5, 0x92, 0x7a, 0x53, 0x87, 0xd3, 0x93, 0x46, 0x57, 0x3e, 0xf7, 0x26, 0x63, 0xe5,
+	0x3c, 0x69, 0x5e, 0x31, 0x3a, 0x73, 0x17, 0x24, 0xb1, 0x18, 0x23, 0xea, 0x0d, 0x2d, 0xf6, 0x9a,
+	0xf0, 0xbe, 0xc7, 0x5d, 0xbe, 0xc9, 0x60, 0x5d, 0xdb, 0xf5, 0xe6, 0x89, 0xe5, 0xb8, 0x63, 0x73,
+	0x97, 0x7a, 0xfd, 0xb7, 0xc4, 0x5e, 0x89, 0x07, 0x65, 0x36, 0x5f, 0x00, 0xfa, 0xda, 0x5a, 0xb8,
+	0x8e, 0x25, 0x6c, 0x98, 0x04, 0x3e, 0xf5, 0x02, 0x82, 0x1e, 0x83, 0x46, 0x18, 0xa3, 0xac, 0x37,
+	0x19, 0x1b, 0x85, 0xd3, 0xd2, 0x59, 0xe5, 0xfc, 0xa8, 0x9d, 0x6c, 0xad, 0xdd, 0x0f, 0x7d, 0x38,
+	0x46, 0x99, 0x7f, 0x2f, 0x41, 0x43, 0xad, 0x30, 0x24, 0x6c, 0x4e, 0xae, 0x7d, 0x62, 0xa3, 0x87,
+	0x00, 0x44, 0xee, 0x6b, 0xea, 0x3a, 0x81, 0xd4, 0xd1, 0xb1, 0xae, 0x2c, 0x03, 0x27, 0x40, 0x3f,
+	0x80, 0x1a, 0xb7, 0xd8, 0x9c, 0xf0, 0xa9, 0xb2, 0x19, 0xc5, 0xd3, 0xc2, 0x99, 0x8e, 0xab, 0xca,
+	0xa8, 0x4e, 0x84, 0x3e, 0x05, 0x14, 0x82, 0x1c, 0x12, 0xd8, 0xcc, 0xf5, 0xc5, 0x12, 0x46, 0x49,
+	0x22, 0x5b, 0xca, 0xd3, 0x4b, 0x1c, 0x02, 0x6e, 0xcd, 0xe7, 0x8c, 0xcc, 0xe5, 0x79, 0x22, 0xe1,
+	0x43, 0x05, 0x4f, 0x79, 0x42, 0xf5, 0xa7, 0xf0, 0x5e, 0x1a, 0x9e, 0x5e, 0x42, 0x93, 0x9c, 0xfb,
+	0x29, 0x77, 0x7a, 0x9d, 0xcf, 0x41, 0x5b, 0xd2, 0xb5, 0x3c, 0xa6, 0x51, 0x3e, 0x2d, 0x9c, 0x55,
+	0xce, 0x1f, 0xa6, 0x2f, 0x68, 0x48, 0xd7, 0x64, 0xc2, 0x2c, 0x2f, 0x98, 0x51, 0xb6, 0x14, 0xa0,
+	0x57, 0x7b, 0x38, 0x26, 0xa0, 0x0e, 0x00, 0x23, 0x81, 0xfb, 0x07, 0x45, 0xdf, 0x97, 0xf4, 0x0f,
+	0xd2, 0x74, 0x2c, 0xbd, 0xdb, 0x02, 0x29, 0x12, 0xfa, 0x12, 0x6a, 0x3e, 0xa3, 0x6b, 0x37, 0x70,
+	0xa9, 0x27, 0x55, 0x0e, 0xa4, 0x8a, 0x99, 0x56, 0xb9, 0x8a, 0x00, 0xdb, 0x42, 0x59, 0xea, 0x45,
+	0x15, 0xc0, 0x92, 0x5f, 0x4e, 0xbc, 0x99, 0x06, 0xdc, 0xdf, 0x4d, 0x34, 0x7f, 0x0d, 0xad, 0xdc,
+	0xb9, 0x50, 0x0f, 0xaa, 0x52, 0xcd, 0x21, 0x6c, 0xb2, 0xf1, 0x89, 0x51, 0x38, 0x2d, 0x9e, 0xd5,
+	0xcf, 0x4f, 0x33, 0xd1, 0x12, 0xc7, 0xa6, 0x7a, 0x12, 0x38, 0x9c, 0x61, 0x99, 0x7f, 0x2b, 0xc0,
+	0xbd, 0x1d, 0x87, 0x46, 0x43, 0xa8, 0x4b, 0x21, 0x47, 0x04, 0x11, 0x57, 0xfa, 0xa5, 0xb3, 0xfa,
+	0xf9, 0x47, 0x69, 0xfd, 0x6e, 0x84, 0x10, 0x4b, 0xc4, 0x2f, 0x72, 0x95, 0x9a, 0x9d, 0x7e, 0x45,
+	0x63, 0xa8, 0xda, 0xdf, 0x5a, 0xde, 0x9c, 0x38, 0x53, 0x8b, 0x73, 0x66, 0x14, 0xa5, 0xd8, 0x27,
+	0x69, 0x31, 0x15, 0xc3, 0x03, 0x4e, 0x96, 0x19, 0xb5, 0x0e, 0xe7, 0xcc, 0xbd, 0x5d, 0x71, 0x82,
+	0x2b, 0xa1, 0x82, 0xb0, 0x98, 0x03, 0x38, 0x8a, 0x52, 0x98, 0x38, 0x9d, 0xf8, 0x12, 0xd1, 0x13,
+	0xd8, 0x0f, 0x7c, 0x62, 0x07, 0x61, 0xf2, 0x7c, 0x3f, 0xbf, 0x42, 0x9c, 0x25, 0x58, 0x21, 0xcd,
+	0x3f, 0x6a, 0xd0, 0x8a, 0xcb, 0xc1, 0xbb, 0x27, 0x22, 0xfa, 0x09, 0x84, 0x29, 0x26, 0x28, 0x45,
+	0x49, 0x39, 0xde, 0xf9, 0x35, 0x70, 0x82, 0x43, 0x5f, 0x40, 0xc3, 0x89, 0xcf, 0xf1, 0x92, 0xd1,
+	0x95, 0x6f, 0x94, 0xf2, 0xab, 0x49, 0x87, 0x60, 0x6e, 0x83, 0xd1, 0x05, 0xd4, 0x94, 0x58, 0x58,
+	0xa2, 0x8c, 0xb2, 0x64, 0x3f, 0xc8, 0x2f, 0x9c, 0xd4, 0x30, 0x9c, 0xa5, 0xa0, 0x11, 0xb4, 0x1c,
+	0xe2, 0x2f, 0xe8, 0x66, 0x49, 0x3c, 0x1e, 0xe9, 0xec, 0x4b, 0x9d, 0x4c, 0x38, 0xf5, 0xb6, 0x41,
+	0x42, 0x2b, 0x4f, 0x45, 0xcf, 0xa1, 0xea, 0x51, 0xee, 0xce, 0x5c, 0x5b, 0x66, 0xaf, 0x71, 0x90,
+	0xff, 0x14, 0xa3, 0x94, 0x5f, 0xa8, 0x64, 0x08, 0xe8, 0x39, 0x54, 0x96, 0x84, 0x5b, 0x8e, 0xc5,
+	0x2d, 0x71, 0x97, 0x87, 0x92, 0x9f, 0x49, 0xf3, 0xee, 0x2a, 0xe0, 0x74, 0x39, 0x4c, 0x40, 0x38,
+	0xcd, 0x40, 0x63, 0xa8, 0x39, 0x84, 0xb9, 0x6b, 0xe2, 0x4c, 0x64, 0xa1, 0x32, 0x34, 0x29, 0xf1,
+	0x71, 0xf6, 0x34, 0x29, 0x80, 0x88, 0x87, 0xcc, 0x86, 0xb2, 0x7c, 0x34, 0x02, 0xe4, 0xe5, 0x2a,
+	0xbe, 0xa1, 0x4b, 0xd5, 0xf7, 0xb3, 0x07, 0xdb, 0x46, 0xe1, 0x1d, 0x4c, 0xf4, 0x29, 0x1c, 0xce,
+	0x16, 0xf4, 0x8d, 0x10, 0xa9, 0x48, 0x91, 0x7b, 0x69, 0x91, 0x17, 0xca, 0x85, 0x23, 0x0c, 0xfa,
+	0x0a, 0x9a, 0xd1, 0x87, 0xdf, 0x74, 0xa9, 0xc7, 0xc9, 0x5b, 0x6e, 0x54, 0xf3, 0xd5, 0xab, 0xb7,
+	0x85, 0x11, 0x1a, 0x39, 0x22, 0x7a, 0x02, 0x87, 0x36, 0x0d, 0x84, 0xd3, 0xa8, 0xc9, 0xb5, 0xdf,
+	0xcb, 0xe6, 0x74, 0xc0, 0x7b, 0xe1, 0x9d, 0x46, 0x38, 0xf4, 0x19, 0x80, 0xcf, 0x5c, 0x9b, 0x4c,
+	0xac, 0xdb, 0x05, 0x31, 0xea, 0x72, 0xe5, 0xfb, 0xd9, 0x8a, 0x17, 0x79, 0x71, 0x0a, 0x29, 0x92,
+	0xe8, 0x0d, 0x65, 0xaf, 0xc5, 0x31, 0x8c, 0x46, 0x3e, 0xac, 0xbf, 0x09, 0x7d, 0x38, 0x46, 0xa1,
+	0x27, 0xa0, 0x7b, 0x74, 0xaa, 0x32, 0xdd, 0x68, 0xca, 0x85, 0x8e, 0xb2, 0xf7, 0xdb, 0x95, 0x3e,
+	0xac, 0x79, 0xe1, 0x13, 0x7a, 0x09, 0x4d, 0x2b, 0x9b, 0xd9, 0x81, 0xd1, 0xba, 0x3b, 0xfb, 0x73,
+	0x24, 0xf3, 0xaf, 0x07, 0x70, 0xac, 0x02, 0xab, 0x63, 0xdb, 0x74, 0xe5, 0xf1, 0x1e, 0x99, 0xf5,
+	0x3d, 0xce, 0x36, 0x08, 0x41, 0xd9, 0xb3, 0x96, 0xaa, 0xc6, 0xea, 0x58, 0x3e, 0xa3, 0x53, 0xa8,
+	0x38, 0x6e, 0xe0, 0x2f, 0xac, 0xcd, 0x48, 0xb8, 0x8a, 0xd2, 0x95, 0x36, 0x49, 0x44, 0xa6, 0x75,
+	0x2a, 0x44, 0xaa, 0x99, 0x3d, 0x86, 0xd6, 0x9a, 0xb0, 0x38, 0xf0, 0x30, 0x99, 0x93, 0xb7, 0xb2,
+	0xab, 0xe9, 0xcf, 0x8a, 0xed, 0x47, 0x38, 0xef, 0x44, 0x1f, 0x82, 0xe6, 0x06, 0xd7, 0xc4, 0x66,
+	0x84, 0xcb, 0xfe, 0xa5, 0x3d, 0xdb, 0x9f, 0x59, 0x8b, 0x80, 0xe0, 0xd8, 0x8c, 0x7e, 0x0b, 0x0d,
+	0x9f, 0xb9, 0x4b, 0x97, 0xbb, 0x6b, 0x32, 0x5d, 0x5b, 0x8b, 0x15, 0x91, 0x3d, 0xaa, 0x7e, 0xfe,
+	0x38, 0x9f, 0x41, 0x5b, 0x07, 0x15, 0xdf, 0x51, 0x11, 0xbf, 0x16, 0xbc, 0x57, 0x7b, 0xb8, 0xee,
+	0x67, 0x2c, 0xe8, 0x37, 0x50, 0x99, 0x8b, 0xc2, 0x33, 0x0d, 0x6c, 0xea, 0x13, 0xd9, 0xdf, 0x2b,
+	0xe7, 0x4f, 0xef, 0x16, 0x96, 0xd5, 0xea, 0x5a, 0x70, 0xae, 0x18, 0xf5, 0x09, 0xe3, 0x9b, 0x6b,
+	0xc2, 0x45, 0x6b, 0x9d, 0xc7, 0x0e, 0xf4, 0x3b, 0xa8, 0x86, 0x53, 0x8b, 0x12, 0xd7, 0xfe, 0x5f,
+	0xf1, 0x8a, 0x92, 0x93, 0x9e, 0x93, 0x3f, 0x17, 0xe0, 0x78, 0x27, 0x10, 0xfd, 0x32, 0x9a, 0x96,
+	0xfe, 0xa7, 0x3e, 0x9a, 0xe2, 0xa0, 0x2b, 0xd0, 0xfc, 0x50, 0x30, 0xac, 0xfc, 0x3f, 0x7d, 0x97,
+	0x5d, 0xe3, 0x58, 0xe5, 0xe4, 0xf7, 0x80, 0xf2, 0x7e, 0x64, 0xca, 0x9e, 0x2f, 0x9f, 0x47, 0x49,
+	0x3c, 0x66, 0x6c, 0xe8, 0x23, 0xa8, 0xb8, 0xc1, 0xd0, 0xf2, 0x1c, 0x8b, 0x53, 0xa6, 0x46, 0x3b,
+	0xed, 0x59, 0x99, 0xb3, 0x15, 0xc1, 0x69, 0x87, 0xf9, 0x19, 0xd4, 0xb3, 0x5f, 0x1b, 0x01, 0x1c,
+	0x5c, 0x4f, 0xf0, 0x60, 0xf4, 0xb2, 0x59, 0x40, 0x15, 0x38, 0x1c, 0xdd, 0x0c, 0xfb, 0x78, 0xd0,
+	0x6d, 0x16, 0xc5, 0xcb, 0xc5, 0x78, 0x7c, 0xd9, 0xef, 0x8c, 0x9a, 0xa5, 0x8b, 0x0a, 0xe8, 0x33,
+	0x97, 0x2c, 0x1c, 0x39, 0x3e, 0xfc, 0x49, 0x0e, 0x9f, 0xd9, 0x64, 0xf9, 0x19, 0x1c, 0xfb, 0x8c,
+	0x38, 0x64, 0xe6, 0x7a, 0xc4, 0x99, 0xca, 0xff, 0xae, 0x4c, 0x00, 0x39, 0x65, 0xbe, 0xda, 0xc3,
+	0x47, 0x89, 0xbb, 0x17, 0x7b, 0xd1, 0x15, 0xb4, 0x6c, 0x79, 0x4f, 0x69, 0x4a, 0x49, 0x86, 0xc0,
+	0x87, 0x77, 0x5e, 0xe6, 0xab, 0x3d, 0xdc, 0x54, 0xec, 0x94, 0xa2, 0x09, 0xfa, 0x32, 0xbe, 0x87,
+	0x72, 0xea, 0x1e, 0x12, 0xb3, 0xb8, 0x51, 0x87, 0xcc, 0xac, 0xd5, 0x82, 0xcb, 0x3b, 0x90, 0x39,
+	0xa5, 0xe3, 0x8c, 0x0d, 0x3d, 0x85, 0x7b, 0x6e, 0xa0, 0x1a, 0x41, 0x2f, 0x95, 0xf1, 0x07, 0xe9,
+	0xf4, 0xdb, 0x85, 0x40, 0x3f, 0x82, 0xba, 0xb5, 0x58, 0xd0, 0x37, 0xc4, 0x51, 0x79, 0x18, 0xc8,
+	0x56, 0xa6, 0xe3, 0x5a, 0x68, 0x95, 0xf2, 0x01, 0xfa, 0xa1, 0xe8, 0x56, 0x3e, 0xf1, 0x1c, 0xe2,
+	0xd9, 0x9b, 0xaf, 0xc8, 0x26, 0x9c, 0x80, 0xb3, 0x46, 0x74, 0x06, 0x8d, 0xc4, 0xa0, 0x36, 0xab,
+	0x4b, 0xdc, 0xb6, 0x59, 0x8c, 0x95, 0xc9, 0x15, 0x9a, 0xff, 0x2c, 0x80, 0x16, 0x4d, 0x2b, 0xe8,
+	0x0b, 0xd0, 0x02, 0x22, 0xaa, 0x0a, 0xdf, 0x84, 0x81, 0x6e, 0xee, 0x9a, 0x6a, 0xd4, 0xc3, 0x75,
+	0x88, 0xc4, 0x31, 0x67, 0xbb, 0xa4, 0x15, 0xf3, 0x25, 0xed, 0xfd, 0x28, 0x99, 0x6e, 0x56, 0xae,
+	0x13, 0xfe, 0x5c, 0x48, 0x59, 0x12, 0xbf, 0x4c, 0xb6, 0x72, 0xda, 0x2f, 0x23, 0xea, 0x11, 0xd4,
+	0x32, 0x8b, 0xa3, 0x2a, 0x68, 0x5d, 0x3c, 0x98, 0x0c, 0xba, 0x9d, 0xcb, 0xe6, 0x9e, 0x08, 0xc5,
+	0x6f, 0x3a, 0x78, 0x24, 0x83, 0xd4, 0xfc, 0x77, 0x01, 0x5a, 0xb9, 0x49, 0x00, 0x0d, 0x40, 0x17,
+	0x05, 0x3a, 0xf0, 0x2d, 0x3b, 0xca, 0xe6, 0x1f, 0xe7, 0x03, 0x48, 0x2c, 0xd6, 0x23, 0xb3, 0x76,
+	0xc4, 0x1c, 0x45, 0x14, 0x9c, 0xb0, 0x51, 0x13, 0x4a, 0xaf, 0x49, 0xf4, 0xf3, 0x48, 0x3c, 0x8a,
+	0x0b, 0x14, 0x68, 0xb9, 0xf9, 0x52, 0xfe, 0x02, 0x73, 0xbb, 0x69, 0xcb, 0x5a, 0x11, 0x73, 0x90,
+	0x01, 0x87, 0xbe, 0xb5, 0x59, 0x50, 0xcb, 0x31, 0xca, 0xf2, 0xf2, 0xa2, 0x57, 0xf3, 0x7b, 0x50,
+	0x96, 0x08, 0x0d, 0xca, 0x5f, 0x5e, 0x8f, 0x47, 0xcd, 0x3d, 0x74, 0x08, 0xa5, 0x5f, 0x0d, 0x2f,
+	0x9b, 0x05, 0xf3, 0x1f, 0x05, 0xa8, 0x86, 0x01, 0xaf, 0x22, 0x32, 0xdc, 0x97, 0x4a, 0x7f, 0xb9,
+	0xaf, 0x53, 0xa8, 0x04, 0x9c, 0xb9, 0xde, 0x5c, 0x45, 0x86, 0xda, 0x71, 0xda, 0x84, 0x66, 0x60,
+	0xcc, 0x73, 0x15, 0x45, 0x45, 0x60, 0x38, 0x72, 0x3e, 0xca, 0xb6, 0xcb, 0x64, 0xbd, 0x76, 0x06,
+	0x7e, 0xe9, 0x06, 0x1c, 0x7f, 0xa7, 0xd6, 0xc9, 0xc7, 0xd0, 0xca, 0xc1, 0xd1, 0x11, 0xec, 0xab,
+	0x4e, 0xa4, 0x7e, 0x8b, 0xaa, 0x17, 0xf3, 0x5f, 0x05, 0x78, 0xf8, 0x5f, 0xc7, 0x30, 0xf4, 0x00,
+	0x74, 0x9f, 0xd1, 0x5b, 0x12, 0x57, 0x66, 0x1d, 0x27, 0x06, 0xf4, 0x0b, 0xa8, 0x5a, 0xa9, 0x6d,
+	0x86, 0xa5, 0xd7, 0xf8, 0xae, 0x63, 0xe0, 0x0c, 0x1a, 0x3d, 0x80, 0x83, 0x6f, 0x5d, 0xc7, 0x21,
+	0xaa, 0xca, 0x44, 0xb5, 0x21, 0xb4, 0x89, 0xe2, 0x11, 0xe5, 0x15, 0xcf, 0x16, 0x8f, 0xd8, 0x2c,
+	0x9a, 0x31, 0x23, 0x96, 0x43, 0xbd, 0xc5, 0x66, 0xab, 0x19, 0x47, 0x66, 0xf3, 0x2f, 0x05, 0xb8,
+	0xb7, 0x63, 0x2c, 0x43, 0x37, 0x50, 0xb5, 0xd5, 0x9b, 0xac, 0x5f, 0xe1, 0x4f, 0x8c, 0x27, 0x77,
+	0x4c, 0x73, 0xed, 0x6e, 0x8a, 0x23, 0xff, 0xe0, 0x8c, 0xcc, 0xc9, 0x73, 0x68, 0xe5, 0x20, 0x49,
+	0xb4, 0xc4, 0x51, 0x1c, 0x7f, 0x0e, 0x15, 0x27, 0xea, 0xe5, 0x59, 0xf1, 0xe7, 0x05, 0x13, 0x40,
+	0x8b, 0x46, 0xac, 0x47, 0x9f, 0x43, 0x2d, 0xde, 0x43, 0x14, 0x9a, 0x2f, 0x6e, 0x2e, 0x45, 0x1a,
+	0x36, 0xa0, 0x32, 0x18, 0x75, 0x71, 0x7f, 0xd8, 0x1f, 0x4d, 0x3a, 0x97, 0xcd, 0x82, 0x30, 0x5c,
+	0xf5, 0xf1, 0x8b, 0x31, 0x1e, 0x76, 0x46, 0xdd, 0x7e, 0xb3, 0x78, 0xf1, 0x09, 0x7c, 0x60, 0xd3,
+	0x65, 0x7b, 0xbd, 0xe4, 0x2b, 0x76, 0x4b, 0xdb, 0xfe, 0xc2, 0xe2, 0xe2, 0xc7, 0x65, 0x78, 0xc0,
+	0xb6, 0xc3, 0xe9, 0x85, 0x1e, 0xab, 0xff, 0x27, 0x00, 0x00, 0xff, 0xff, 0x72, 0x20, 0xf9, 0xa2,
+	0x90, 0x11, 0x00, 0x00,
 }

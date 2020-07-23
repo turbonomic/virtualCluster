@@ -17,7 +17,7 @@ func (app *Application) BuildDTO(docker *Container, pod *Pod) (*proto.EntityDTO,
 	//TODO: do we need ApplicationProperties?
 
 	entity, err := builder.
-		NewEntityDTOBuilder(proto.EntityDTO_APPLICATION, app.UUID).
+		NewEntityDTOBuilder(proto.EntityDTO_APPLICATION_COMPONENT, app.UUID).
 		DisplayName(app.Name).
 		Provider(provider).
 		BuysCommodities(bought).

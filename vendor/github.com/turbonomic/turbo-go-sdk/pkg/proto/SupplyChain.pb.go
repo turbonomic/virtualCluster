@@ -3,14 +3,22 @@
 
 package proto
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
+import (
+	fmt "fmt"
+	proto "github.com/golang/protobuf/proto"
+	math "math"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type TemplateDTO_TemplateType int32
 
@@ -23,6 +31,7 @@ var TemplateDTO_TemplateType_name = map[int32]string{
 	0: "BASE",
 	1: "EXTENSION",
 }
+
 var TemplateDTO_TemplateType_value = map[string]int32{
 	"BASE":      0,
 	"EXTENSION": 1,
@@ -33,9 +42,11 @@ func (x TemplateDTO_TemplateType) Enum() *TemplateDTO_TemplateType {
 	*p = x
 	return p
 }
+
 func (x TemplateDTO_TemplateType) String() string {
 	return proto.EnumName(TemplateDTO_TemplateType_name, int32(x))
 }
+
 func (x *TemplateDTO_TemplateType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(TemplateDTO_TemplateType_value, data, "TemplateDTO_TemplateType")
 	if err != nil {
@@ -44,7 +55,10 @@ func (x *TemplateDTO_TemplateType) UnmarshalJSON(data []byte) error {
 	*x = TemplateDTO_TemplateType(value)
 	return nil
 }
-func (TemplateDTO_TemplateType) EnumDescriptor() ([]byte, []int) { return fileDescriptor7, []int{0, 0} }
+
+func (TemplateDTO_TemplateType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{0, 0}
+}
 
 type Provider_ProviderType int32
 
@@ -60,6 +74,7 @@ var Provider_ProviderType_name = map[int32]string{
 	0: "HOSTING",
 	1: "LAYERED_OVER",
 }
+
 var Provider_ProviderType_value = map[string]int32{
 	"HOSTING":      0,
 	"LAYERED_OVER": 1,
@@ -70,9 +85,11 @@ func (x Provider_ProviderType) Enum() *Provider_ProviderType {
 	*p = x
 	return p
 }
+
 func (x Provider_ProviderType) String() string {
 	return proto.EnumName(Provider_ProviderType_name, int32(x))
 }
+
 func (x *Provider_ProviderType) UnmarshalJSON(data []byte) error {
 	value, err := proto.UnmarshalJSONEnum(Provider_ProviderType_value, data, "Provider_ProviderType")
 	if err != nil {
@@ -81,7 +98,51 @@ func (x *Provider_ProviderType) UnmarshalJSON(data []byte) error {
 	*x = Provider_ProviderType(value)
 	return nil
 }
-func (Provider_ProviderType) EnumDescriptor() ([]byte, []int) { return fileDescriptor7, []int{2, 0} }
+
+func (Provider_ProviderType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{2, 0}
+}
+
+// Deprecated. Kept for backward compatibility.
+// The type of the matching value we will use.  String or List<String>
+type MergedEntityMetadata_ReturnType int32 // Deprecated: Do not use.
+const (
+	MergedEntityMetadata_STRING      MergedEntityMetadata_ReturnType = 1
+	MergedEntityMetadata_LIST_STRING MergedEntityMetadata_ReturnType = 2
+)
+
+var MergedEntityMetadata_ReturnType_name = map[int32]string{
+	1: "STRING",
+	2: "LIST_STRING",
+}
+
+var MergedEntityMetadata_ReturnType_value = map[string]int32{
+	"STRING":      1,
+	"LIST_STRING": 2,
+}
+
+func (x MergedEntityMetadata_ReturnType) Enum() *MergedEntityMetadata_ReturnType {
+	p := new(MergedEntityMetadata_ReturnType)
+	*p = x
+	return p
+}
+
+func (x MergedEntityMetadata_ReturnType) String() string {
+	return proto.EnumName(MergedEntityMetadata_ReturnType_name, int32(x))
+}
+
+func (x *MergedEntityMetadata_ReturnType) UnmarshalJSON(data []byte) error {
+	value, err := proto.UnmarshalJSONEnum(MergedEntityMetadata_ReturnType_value, data, "MergedEntityMetadata_ReturnType")
+	if err != nil {
+		return err
+	}
+	*x = MergedEntityMetadata_ReturnType(value)
+	return nil
+}
+
+func (MergedEntityMetadata_ReturnType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 0}
+}
 
 //
 // The TemplateDTO message represents entity types (templates) that the probe expects to
@@ -133,14 +194,41 @@ type TemplateDTO struct {
 	ExternalLink []*TemplateDTO_ExternalEntityLinkProp `protobuf:"bytes,7,rep,name=externalLink" json:"externalLink,omitempty"`
 	// Each set represents a case where the entity must buy one commodity of the set ( a logical or of the set)
 	// Note, the entity may buy more than one of the commodities in the set.
-	CommBoughtOrSet  []*TemplateDTO_CommBoughtProviderOrSet `protobuf:"bytes,8,rep,name=commBoughtOrSet" json:"commBoughtOrSet,omitempty"`
-	XXX_unrecognized []byte                                 `json:"-"`
+	CommBoughtOrSet []*TemplateDTO_CommBoughtProviderOrSet `protobuf:"bytes,8,rep,name=commBoughtOrSet" json:"commBoughtOrSet,omitempty"`
+	// If this template represents an entity class that will be a proxy entity,
+	// add MergedEntityMetadata that defines how to identify the matching entity in the server and
+	// also what data from the proxy entity to copy over to the matching entity.
+	// For details see the comment with the message definition of MergedEntityMetadata.
+	MergedEntityMetaData *MergedEntityMetadata `protobuf:"bytes,9,opt,name=mergedEntityMetaData" json:"mergedEntityMetaData,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
 }
 
-func (m *TemplateDTO) Reset()                    { *m = TemplateDTO{} }
-func (m *TemplateDTO) String() string            { return proto.CompactTextString(m) }
-func (*TemplateDTO) ProtoMessage()               {}
-func (*TemplateDTO) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{0} }
+func (m *TemplateDTO) Reset()         { *m = TemplateDTO{} }
+func (m *TemplateDTO) String() string { return proto.CompactTextString(m) }
+func (*TemplateDTO) ProtoMessage()    {}
+func (*TemplateDTO) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{0}
+}
+
+func (m *TemplateDTO) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TemplateDTO.Unmarshal(m, b)
+}
+func (m *TemplateDTO) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TemplateDTO.Marshal(b, m, deterministic)
+}
+func (m *TemplateDTO) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TemplateDTO.Merge(m, src)
+}
+func (m *TemplateDTO) XXX_Size() int {
+	return xxx_messageInfo_TemplateDTO.Size(m)
+}
+func (m *TemplateDTO) XXX_DiscardUnknown() {
+	xxx_messageInfo_TemplateDTO.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TemplateDTO proto.InternalMessageInfo
 
 func (m *TemplateDTO) GetTemplateClass() EntityDTO_EntityType {
 	if m != nil && m.TemplateClass != nil {
@@ -191,6 +279,13 @@ func (m *TemplateDTO) GetCommBoughtOrSet() []*TemplateDTO_CommBoughtProviderOrSe
 	return nil
 }
 
+func (m *TemplateDTO) GetMergedEntityMetaData() *MergedEntityMetadata {
+	if m != nil {
+		return m.MergedEntityMetaData
+	}
+	return nil
+}
+
 // In some cases, an entity may buy one commodity or another, but it must buy one of the two
 // This set represents the set of commodities where the entity must buy one of these.
 // It could be that the set contains multiple commodities from the same provider - where only
@@ -198,16 +293,36 @@ func (m *TemplateDTO) GetCommBoughtOrSet() []*TemplateDTO_CommBoughtProviderOrSe
 // entity must buy one.  However, for this set, the entity is only required to buy one of the
 // commodities.
 type TemplateDTO_CommBoughtProviderOrSet struct {
-	CommBought       []*TemplateDTO_CommBoughtProviderProp `protobuf:"bytes,1,rep,name=commBought" json:"commBought,omitempty"`
-	XXX_unrecognized []byte                                `json:"-"`
+	CommBought           []*TemplateDTO_CommBoughtProviderProp `protobuf:"bytes,1,rep,name=commBought" json:"commBought,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                              `json:"-"`
+	XXX_unrecognized     []byte                                `json:"-"`
+	XXX_sizecache        int32                                 `json:"-"`
 }
 
 func (m *TemplateDTO_CommBoughtProviderOrSet) Reset()         { *m = TemplateDTO_CommBoughtProviderOrSet{} }
 func (m *TemplateDTO_CommBoughtProviderOrSet) String() string { return proto.CompactTextString(m) }
 func (*TemplateDTO_CommBoughtProviderOrSet) ProtoMessage()    {}
 func (*TemplateDTO_CommBoughtProviderOrSet) Descriptor() ([]byte, []int) {
-	return fileDescriptor7, []int{0, 0}
+	return fileDescriptor_433ea2f7708f0dad, []int{0, 0}
 }
+
+func (m *TemplateDTO_CommBoughtProviderOrSet) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TemplateDTO_CommBoughtProviderOrSet.Unmarshal(m, b)
+}
+func (m *TemplateDTO_CommBoughtProviderOrSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TemplateDTO_CommBoughtProviderOrSet.Marshal(b, m, deterministic)
+}
+func (m *TemplateDTO_CommBoughtProviderOrSet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TemplateDTO_CommBoughtProviderOrSet.Merge(m, src)
+}
+func (m *TemplateDTO_CommBoughtProviderOrSet) XXX_Size() int {
+	return xxx_messageInfo_TemplateDTO_CommBoughtProviderOrSet.Size(m)
+}
+func (m *TemplateDTO_CommBoughtProviderOrSet) XXX_DiscardUnknown() {
+	xxx_messageInfo_TemplateDTO_CommBoughtProviderOrSet.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TemplateDTO_CommBoughtProviderOrSet proto.InternalMessageInfo
 
 func (m *TemplateDTO_CommBoughtProviderOrSet) GetCommBought() []*TemplateDTO_CommBoughtProviderProp {
 	if m != nil {
@@ -222,16 +337,36 @@ type TemplateDTO_CommBoughtProviderProp struct {
 	// The list of commodities bought from the provider specified as key.
 	Value []*TemplateCommodity `protobuf:"bytes,2,rep,name=value" json:"value,omitempty"`
 	// Specifies if the provider is optional or not.
-	IsOptional       *bool  `protobuf:"varint,3,opt,name=isOptional,def=0" json:"isOptional,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	IsOptional           *bool    `protobuf:"varint,3,opt,name=isOptional,def=0" json:"isOptional,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *TemplateDTO_CommBoughtProviderProp) Reset()         { *m = TemplateDTO_CommBoughtProviderProp{} }
 func (m *TemplateDTO_CommBoughtProviderProp) String() string { return proto.CompactTextString(m) }
 func (*TemplateDTO_CommBoughtProviderProp) ProtoMessage()    {}
 func (*TemplateDTO_CommBoughtProviderProp) Descriptor() ([]byte, []int) {
-	return fileDescriptor7, []int{0, 1}
+	return fileDescriptor_433ea2f7708f0dad, []int{0, 1}
 }
+
+func (m *TemplateDTO_CommBoughtProviderProp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TemplateDTO_CommBoughtProviderProp.Unmarshal(m, b)
+}
+func (m *TemplateDTO_CommBoughtProviderProp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TemplateDTO_CommBoughtProviderProp.Marshal(b, m, deterministic)
+}
+func (m *TemplateDTO_CommBoughtProviderProp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TemplateDTO_CommBoughtProviderProp.Merge(m, src)
+}
+func (m *TemplateDTO_CommBoughtProviderProp) XXX_Size() int {
+	return xxx_messageInfo_TemplateDTO_CommBoughtProviderProp.Size(m)
+}
+func (m *TemplateDTO_CommBoughtProviderProp) XXX_DiscardUnknown() {
+	xxx_messageInfo_TemplateDTO_CommBoughtProviderProp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TemplateDTO_CommBoughtProviderProp proto.InternalMessageInfo
 
 const Default_TemplateDTO_CommBoughtProviderProp_IsOptional bool = false
 
@@ -257,17 +392,37 @@ func (m *TemplateDTO_CommBoughtProviderProp) GetIsOptional() bool {
 }
 
 type TemplateDTO_ExternalEntityLinkProp struct {
-	Key              *EntityDTO_EntityType `protobuf:"varint,1,req,name=key,enum=common_dto.EntityDTO_EntityType" json:"key,omitempty"`
-	Value            *ExternalEntityLink   `protobuf:"bytes,2,req,name=value" json:"value,omitempty"`
-	XXX_unrecognized []byte                `json:"-"`
+	Key                  *EntityDTO_EntityType `protobuf:"varint,1,req,name=key,enum=common_dto.EntityDTO_EntityType" json:"key,omitempty"`
+	Value                *ExternalEntityLink   `protobuf:"bytes,2,req,name=value" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
 }
 
 func (m *TemplateDTO_ExternalEntityLinkProp) Reset()         { *m = TemplateDTO_ExternalEntityLinkProp{} }
 func (m *TemplateDTO_ExternalEntityLinkProp) String() string { return proto.CompactTextString(m) }
 func (*TemplateDTO_ExternalEntityLinkProp) ProtoMessage()    {}
 func (*TemplateDTO_ExternalEntityLinkProp) Descriptor() ([]byte, []int) {
-	return fileDescriptor7, []int{0, 2}
+	return fileDescriptor_433ea2f7708f0dad, []int{0, 2}
 }
+
+func (m *TemplateDTO_ExternalEntityLinkProp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TemplateDTO_ExternalEntityLinkProp.Unmarshal(m, b)
+}
+func (m *TemplateDTO_ExternalEntityLinkProp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TemplateDTO_ExternalEntityLinkProp.Marshal(b, m, deterministic)
+}
+func (m *TemplateDTO_ExternalEntityLinkProp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TemplateDTO_ExternalEntityLinkProp.Merge(m, src)
+}
+func (m *TemplateDTO_ExternalEntityLinkProp) XXX_Size() int {
+	return xxx_messageInfo_TemplateDTO_ExternalEntityLinkProp.Size(m)
+}
+func (m *TemplateDTO_ExternalEntityLinkProp) XXX_DiscardUnknown() {
+	xxx_messageInfo_TemplateDTO_ExternalEntityLinkProp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TemplateDTO_ExternalEntityLinkProp proto.InternalMessageInfo
 
 func (m *TemplateDTO_ExternalEntityLinkProp) GetKey() EntityDTO_EntityType {
 	if m != nil && m.Key != nil {
@@ -286,17 +441,62 @@ func (m *TemplateDTO_ExternalEntityLinkProp) GetValue() *ExternalEntityLink {
 type TemplateCommodity struct {
 	CommodityType *CommodityDTO_CommodityType `protobuf:"varint,1,req,name=commodityType,enum=common_dto.CommodityDTO_CommodityType" json:"commodityType,omitempty"`
 	Key           *string                     `protobuf:"bytes,2,opt,name=key" json:"key,omitempty"`
-	// Type of the commodity, that charges this one. This must be on of the commodities from
+	// Type of the bought commodity, that charges this one. This must be one of the commodities
 	// the entity (template) is expected to buy. So, this is a link between bought and sold
 	// commodity of the same entity
-	ChargedBy        []CommodityDTO_CommodityType `protobuf:"varint,3,rep,name=chargedBy,enum=common_dto.CommodityDTO_CommodityType" json:"chargedBy,omitempty"`
-	XXX_unrecognized []byte                       `json:"-"`
+	ChargedBy []CommodityDTO_CommodityType `protobuf:"varint,3,rep,name=chargedBy,enum=common_dto.CommodityDTO_CommodityType" json:"chargedBy,omitempty"`
+	// Flag indicating that this commodity is optional. If a commodity is not optional, then it
+	// is mandatory. If commodity is mandatory it is a validation exception not to have
+	// this commodity set up
+	Optional *bool `protobuf:"varint,4,opt,name=optional,def=0" json:"optional,omitempty"`
+	// Type of the sold commodity, that charges this one. This must be one of the commodities the
+	// entity (template) is expected to sell. So, this is a linek between sold commodities of the
+	// same entity.
+	ChargedBySold []CommodityDTO_CommodityType `protobuf:"varint,5,rep,name=chargedBySold,enum=common_dto.CommodityDTO_CommodityType" json:"chargedBySold,omitempty"`
+	// A resold commodity is designed to model situations in which the true source of supply for
+	// that resold commodity is further down the supply chain rather than directly through the entity
+	// providing the commodity. In these cases, the true supplier is responsible for setting the
+	// price of the resold commodity. For a real-life economic analogy, consider the case of buying
+	// a BigMac at McDonald's - the individual restaurant does not get to set the price. Instead,
+	// the price may be set by the franchise based on national or regional prices of its
+	// ingredients along with other factors. Useful in situations where an entity's direct provider
+	// represents more of a logical grouping of entities rather than a proper supplier of resources ie
+	// a Container buying from a ContainerPod.
+	//
+	// Note that this property is NOT used in stitching.
+	IsResold             *bool    `protobuf:"varint,6,opt,name=isResold,def=0" json:"isResold,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *TemplateCommodity) Reset()                    { *m = TemplateCommodity{} }
-func (m *TemplateCommodity) String() string            { return proto.CompactTextString(m) }
-func (*TemplateCommodity) ProtoMessage()               {}
-func (*TemplateCommodity) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{1} }
+func (m *TemplateCommodity) Reset()         { *m = TemplateCommodity{} }
+func (m *TemplateCommodity) String() string { return proto.CompactTextString(m) }
+func (*TemplateCommodity) ProtoMessage()    {}
+func (*TemplateCommodity) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{1}
+}
+
+func (m *TemplateCommodity) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_TemplateCommodity.Unmarshal(m, b)
+}
+func (m *TemplateCommodity) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_TemplateCommodity.Marshal(b, m, deterministic)
+}
+func (m *TemplateCommodity) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TemplateCommodity.Merge(m, src)
+}
+func (m *TemplateCommodity) XXX_Size() int {
+	return xxx_messageInfo_TemplateCommodity.Size(m)
+}
+func (m *TemplateCommodity) XXX_DiscardUnknown() {
+	xxx_messageInfo_TemplateCommodity.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TemplateCommodity proto.InternalMessageInfo
+
+const Default_TemplateCommodity_Optional bool = false
+const Default_TemplateCommodity_IsResold bool = false
 
 func (m *TemplateCommodity) GetCommodityType() CommodityDTO_CommodityType {
 	if m != nil && m.CommodityType != nil {
@@ -317,6 +517,27 @@ func (m *TemplateCommodity) GetChargedBy() []CommodityDTO_CommodityType {
 		return m.ChargedBy
 	}
 	return nil
+}
+
+func (m *TemplateCommodity) GetOptional() bool {
+	if m != nil && m.Optional != nil {
+		return *m.Optional
+	}
+	return Default_TemplateCommodity_Optional
+}
+
+func (m *TemplateCommodity) GetChargedBySold() []CommodityDTO_CommodityType {
+	if m != nil {
+		return m.ChargedBySold
+	}
+	return nil
+}
+
+func (m *TemplateCommodity) GetIsResold() bool {
+	if m != nil && m.IsResold != nil {
+		return *m.IsResold
+	}
+	return Default_TemplateCommodity_IsResold
 }
 
 // The Provider class creates a template entity that sells commodities to a
@@ -346,14 +567,36 @@ type Provider struct {
 	// For LAYERED_OVER providers, the maximum number of providers allowed for the consumer.
 	CardinalityMax *int32 `protobuf:"varint,3,req,name=cardinalityMax" json:"cardinalityMax,omitempty"`
 	// For LAYERED_OVER providers, the minimum number of providers allowed for the consumer.
-	CardinalityMin   *int32 `protobuf:"varint,4,req,name=cardinalityMin" json:"cardinalityMin,omitempty"`
-	XXX_unrecognized []byte `json:"-"`
+	CardinalityMin       *int32   `protobuf:"varint,4,req,name=cardinalityMin" json:"cardinalityMin,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Provider) Reset()                    { *m = Provider{} }
-func (m *Provider) String() string            { return proto.CompactTextString(m) }
-func (*Provider) ProtoMessage()               {}
-func (*Provider) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{2} }
+func (m *Provider) Reset()         { *m = Provider{} }
+func (m *Provider) String() string { return proto.CompactTextString(m) }
+func (*Provider) ProtoMessage()    {}
+func (*Provider) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{2}
+}
+
+func (m *Provider) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Provider.Unmarshal(m, b)
+}
+func (m *Provider) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Provider.Marshal(b, m, deterministic)
+}
+func (m *Provider) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Provider.Merge(m, src)
+}
+func (m *Provider) XXX_Size() int {
+	return xxx_messageInfo_Provider.Size(m)
+}
+func (m *Provider) XXX_DiscardUnknown() {
+	xxx_messageInfo_Provider.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Provider proto.InternalMessageInfo
 
 func (m *Provider) GetTemplateClass() EntityDTO_EntityType {
 	if m != nil && m.TemplateClass != nil {
@@ -431,14 +674,36 @@ type ExternalEntityLink struct {
 	// give a list of EntityTypes it can replace.  For example, a LogicalPool can replace
 	// a DiskArray or LogicalPool created by another probe.  The replaced entity must be
 	// marked REPLACEABLE by the probe that creates it.
-	ReplacesEntity   []EntityDTO_EntityType `protobuf:"varint,9,rep,name=replacesEntity,enum=common_dto.EntityDTO_EntityType" json:"replacesEntity,omitempty"`
-	XXX_unrecognized []byte                 `json:"-"`
+	ReplacesEntity       []EntityDTO_EntityType `protobuf:"varint,9,rep,name=replacesEntity,enum=common_dto.EntityDTO_EntityType" json:"replacesEntity,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
+	XXX_unrecognized     []byte                 `json:"-"`
+	XXX_sizecache        int32                  `json:"-"`
 }
 
-func (m *ExternalEntityLink) Reset()                    { *m = ExternalEntityLink{} }
-func (m *ExternalEntityLink) String() string            { return proto.CompactTextString(m) }
-func (*ExternalEntityLink) ProtoMessage()               {}
-func (*ExternalEntityLink) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{3} }
+func (m *ExternalEntityLink) Reset()         { *m = ExternalEntityLink{} }
+func (m *ExternalEntityLink) String() string { return proto.CompactTextString(m) }
+func (*ExternalEntityLink) ProtoMessage()    {}
+func (*ExternalEntityLink) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{3}
+}
+
+func (m *ExternalEntityLink) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ExternalEntityLink.Unmarshal(m, b)
+}
+func (m *ExternalEntityLink) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ExternalEntityLink.Marshal(b, m, deterministic)
+}
+func (m *ExternalEntityLink) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExternalEntityLink.Merge(m, src)
+}
+func (m *ExternalEntityLink) XXX_Size() int {
+	return xxx_messageInfo_ExternalEntityLink.Size(m)
+}
+func (m *ExternalEntityLink) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExternalEntityLink.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExternalEntityLink proto.InternalMessageInfo
 
 func (m *ExternalEntityLink) GetBuyerRef() EntityDTO_EntityType {
 	if m != nil && m.BuyerRef != nil {
@@ -504,17 +769,37 @@ func (m *ExternalEntityLink) GetReplacesEntity() []EntityDTO_EntityType {
 }
 
 type ExternalEntityLink_CommodityDef struct {
-	Type             *CommodityDTO_CommodityType `protobuf:"varint,1,req,name=type,enum=common_dto.CommodityDTO_CommodityType" json:"type,omitempty"`
-	HasKey           *bool                       `protobuf:"varint,2,opt,name=hasKey,def=0" json:"hasKey,omitempty"`
-	XXX_unrecognized []byte                      `json:"-"`
+	Type                 *CommodityDTO_CommodityType `protobuf:"varint,1,req,name=type,enum=common_dto.CommodityDTO_CommodityType" json:"type,omitempty"`
+	HasKey               *bool                       `protobuf:"varint,2,opt,name=hasKey,def=0" json:"hasKey,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                    `json:"-"`
+	XXX_unrecognized     []byte                      `json:"-"`
+	XXX_sizecache        int32                       `json:"-"`
 }
 
 func (m *ExternalEntityLink_CommodityDef) Reset()         { *m = ExternalEntityLink_CommodityDef{} }
 func (m *ExternalEntityLink_CommodityDef) String() string { return proto.CompactTextString(m) }
 func (*ExternalEntityLink_CommodityDef) ProtoMessage()    {}
 func (*ExternalEntityLink_CommodityDef) Descriptor() ([]byte, []int) {
-	return fileDescriptor7, []int{3, 0}
+	return fileDescriptor_433ea2f7708f0dad, []int{3, 0}
 }
+
+func (m *ExternalEntityLink_CommodityDef) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ExternalEntityLink_CommodityDef.Unmarshal(m, b)
+}
+func (m *ExternalEntityLink_CommodityDef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ExternalEntityLink_CommodityDef.Marshal(b, m, deterministic)
+}
+func (m *ExternalEntityLink_CommodityDef) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExternalEntityLink_CommodityDef.Merge(m, src)
+}
+func (m *ExternalEntityLink_CommodityDef) XXX_Size() int {
+	return xxx_messageInfo_ExternalEntityLink_CommodityDef.Size(m)
+}
+func (m *ExternalEntityLink_CommodityDef) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExternalEntityLink_CommodityDef.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExternalEntityLink_CommodityDef proto.InternalMessageInfo
 
 const Default_ExternalEntityLink_CommodityDef_HasKey bool = false
 
@@ -553,16 +838,36 @@ type ExternalEntityLink_EntityPropertyDef struct {
 	// An entity property name
 	Name *string `protobuf:"bytes,1,req,name=name" json:"name,omitempty"`
 	// An arbitrary description
-	Description      *string `protobuf:"bytes,2,req,name=description" json:"description,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	Description          *string  `protobuf:"bytes,2,req,name=description" json:"description,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *ExternalEntityLink_EntityPropertyDef) Reset()         { *m = ExternalEntityLink_EntityPropertyDef{} }
 func (m *ExternalEntityLink_EntityPropertyDef) String() string { return proto.CompactTextString(m) }
 func (*ExternalEntityLink_EntityPropertyDef) ProtoMessage()    {}
 func (*ExternalEntityLink_EntityPropertyDef) Descriptor() ([]byte, []int) {
-	return fileDescriptor7, []int{3, 1}
+	return fileDescriptor_433ea2f7708f0dad, []int{3, 1}
 }
+
+func (m *ExternalEntityLink_EntityPropertyDef) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ExternalEntityLink_EntityPropertyDef.Unmarshal(m, b)
+}
+func (m *ExternalEntityLink_EntityPropertyDef) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ExternalEntityLink_EntityPropertyDef.Marshal(b, m, deterministic)
+}
+func (m *ExternalEntityLink_EntityPropertyDef) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ExternalEntityLink_EntityPropertyDef.Merge(m, src)
+}
+func (m *ExternalEntityLink_EntityPropertyDef) XXX_Size() int {
+	return xxx_messageInfo_ExternalEntityLink_EntityPropertyDef.Size(m)
+}
+func (m *ExternalEntityLink_EntityPropertyDef) XXX_DiscardUnknown() {
+	xxx_messageInfo_ExternalEntityLink_EntityPropertyDef.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ExternalEntityLink_EntityPropertyDef proto.InternalMessageInfo
 
 func (m *ExternalEntityLink_EntityPropertyDef) GetName() string {
 	if m != nil && m.Name != nil {
@@ -578,7 +883,576 @@ func (m *ExternalEntityLink_EntityPropertyDef) GetDescription() string {
 	return ""
 }
 
+// MergedEntityMetadata provides data that defines how to merge entities of this template type
+// discovered by this probe with entities (referred to here as external entities) that were
+// discovered by other probes and exist in the server.  There should be a MergedEntityMetadata entry
+// for each entity type in the probe that is reported as origin "proxy".  The XL server will
+// process the MergedEntityMetadata for each probe and create stitching operations for that probe.
+// When processing topology from all the probes, XL will process the topology through the set of
+// stitching operations to combine proxy instances with their matching external entities.
+// The MergedEntityMetadata combines information that was previously contained in
+// various places (e.g. external entity link, replacement entity metadata, and hardcoded in
+// OpsManager stitching code).  It is currently used in XL for stitching,
+// but is not used by OpsManager.  It consists of two parts: one part describes how to
+// match two entities to know they are the same and the other part describes which properties and
+// commodities to transfer from the proxy entity to the external entity it matches.  Matching can be
+// done based on an entity property or field.  You specify one field or property to use on the entity
+// that this probe discovers and one field or property for the external entity.  You may also
+// specify multiple fields on either side in which case they will be concatenated together to
+// form the matching value.  For the transfer, you can specify a list of entity properties, a list
+// of entity fields, a list of sold commodities and/or a list of bought commodities.
+type MergedEntityMetadata struct {
+	// Should this entity type reported by the probe be kept in the topology if no stitching match
+	// is found?  If yes, keepStandalone should be true.  If no, it should be false.
+	KeepStandalone *bool `protobuf:"varint,1,opt,name=keepStandalone,def=1" json:"keepStandalone,omitempty"`
+	// MatchingMetadata contains the information for matching this proxy entity with an external
+	// entity
+	MatchingMetadata *MergedEntityMetadata_MatchingMetadata `protobuf:"bytes,2,req,name=matchingMetadata" json:"matchingMetadata,omitempty"`
+	// Names of entity properties that will be patched during merging.
+	// Entities will be searched in EntityDTO.propMap.
+	// These properties will be taken from the internal entity and written to the external entity.
+	// If the external entity already has a property with the same key, it will be replaced by the
+	// internal entity's property value.
+	PatchedProperties []*MergedEntityMetadata_EntityPropertyName `protobuf:"bytes,3,rep,name=patchedProperties" json:"patchedProperties,omitempty"`
+	// Similar to patched properties, we can have a list of fields in the EntityDTO to patch.
+	// Again, if a field is specified here and exists in both the internal and external entities,
+	// the value from the internal entity will overwrite the value from the external entity.
+	PatchedFields []*MergedEntityMetadata_EntityField `protobuf:"bytes,4,rep,name=patchedFields" json:"patchedFields,omitempty"`
+	// List of sold commodities that must be merged.
+	CommoditiesSold []CommodityDTO_CommodityType `protobuf:"varint,5,rep,name=commoditiesSold,enum=common_dto.CommodityDTO_CommodityType" json:"commoditiesSold,omitempty"` // Deprecated: Do not use.
+	// List of bought commodities that must be merged.
+	CommoditiesBought []*MergedEntityMetadata_CommodityBoughtMetadata `protobuf:"bytes,6,rep,name=commoditiesBought" json:"commoditiesBought,omitempty"`
+	// List of metadata for the sold commodities that must be merged.
+	CommoditiesSoldMetadata []*MergedEntityMetadata_CommoditySoldMetadata `protobuf:"bytes,7,rep,name=commodities_sold_metadata,json=commoditiesSoldMetadata" json:"commodities_sold_metadata,omitempty"`
+	XXX_NoUnkeyedLiteral    struct{}                                      `json:"-"`
+	XXX_unrecognized        []byte                                        `json:"-"`
+	XXX_sizecache           int32                                         `json:"-"`
+}
+
+func (m *MergedEntityMetadata) Reset()         { *m = MergedEntityMetadata{} }
+func (m *MergedEntityMetadata) String() string { return proto.CompactTextString(m) }
+func (*MergedEntityMetadata) ProtoMessage()    {}
+func (*MergedEntityMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4}
+}
+
+func (m *MergedEntityMetadata) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata.Merge(m, src)
+}
+func (m *MergedEntityMetadata) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata.Size(m)
+}
+func (m *MergedEntityMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata proto.InternalMessageInfo
+
+const Default_MergedEntityMetadata_KeepStandalone bool = true
+
+func (m *MergedEntityMetadata) GetKeepStandalone() bool {
+	if m != nil && m.KeepStandalone != nil {
+		return *m.KeepStandalone
+	}
+	return Default_MergedEntityMetadata_KeepStandalone
+}
+
+func (m *MergedEntityMetadata) GetMatchingMetadata() *MergedEntityMetadata_MatchingMetadata {
+	if m != nil {
+		return m.MatchingMetadata
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata) GetPatchedProperties() []*MergedEntityMetadata_EntityPropertyName {
+	if m != nil {
+		return m.PatchedProperties
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata) GetPatchedFields() []*MergedEntityMetadata_EntityField {
+	if m != nil {
+		return m.PatchedFields
+	}
+	return nil
+}
+
+// Deprecated: Do not use.
+func (m *MergedEntityMetadata) GetCommoditiesSold() []CommodityDTO_CommodityType {
+	if m != nil {
+		return m.CommoditiesSold
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata) GetCommoditiesBought() []*MergedEntityMetadata_CommodityBoughtMetadata {
+	if m != nil {
+		return m.CommoditiesBought
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata) GetCommoditiesSoldMetadata() []*MergedEntityMetadata_CommoditySoldMetadata {
+	if m != nil {
+		return m.CommoditiesSoldMetadata
+	}
+	return nil
+}
+
+type MergedEntityMetadata_MatchingMetadata struct {
+	ReturnType *MergedEntityMetadata_ReturnType `protobuf:"varint,1,opt,name=returnType,enum=common_dto.MergedEntityMetadata_ReturnType" json:"returnType,omitempty"` // Deprecated: Do not use.
+	// This is the field/property or combination of fields and properties that we extract from
+	// the internal entity for matching.  It is not repeated in most cases.  The only use case
+	// for repeated fields here is if you want to merge multiple String fields and/or properties
+	// into a single value for matching purposes.
+	MatchingData []*MergedEntityMetadata_MatchingData `protobuf:"bytes,2,rep,name=matchingData" json:"matchingData,omitempty"`
+	// Kept for backward compatibility. No longer needed.
+	// Previously used for specifying external stitching property type
+	ExternalEntityReturnType *MergedEntityMetadata_ReturnType `protobuf:"varint,3,opt,name=externalEntityReturnType,enum=common_dto.MergedEntityMetadata_ReturnType" json:"externalEntityReturnType,omitempty"` // Deprecated: Do not use.
+	// This defines fields and/or properties we will extract from server side to attempt to
+	// match an external entity with the internal entity
+	ExternalEntityMatchingProperty []*MergedEntityMetadata_MatchingData `protobuf:"bytes,4,rep,name=externalEntityMatchingProperty" json:"externalEntityMatchingProperty,omitempty"`
+	XXX_NoUnkeyedLiteral           struct{}                             `json:"-"`
+	XXX_unrecognized               []byte                               `json:"-"`
+	XXX_sizecache                  int32                                `json:"-"`
+}
+
+func (m *MergedEntityMetadata_MatchingMetadata) Reset()         { *m = MergedEntityMetadata_MatchingMetadata{} }
+func (m *MergedEntityMetadata_MatchingMetadata) String() string { return proto.CompactTextString(m) }
+func (*MergedEntityMetadata_MatchingMetadata) ProtoMessage()    {}
+func (*MergedEntityMetadata_MatchingMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 0}
+}
+
+func (m *MergedEntityMetadata_MatchingMetadata) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_MatchingMetadata.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_MatchingMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_MatchingMetadata.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_MatchingMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_MatchingMetadata.Merge(m, src)
+}
+func (m *MergedEntityMetadata_MatchingMetadata) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_MatchingMetadata.Size(m)
+}
+func (m *MergedEntityMetadata_MatchingMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_MatchingMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_MatchingMetadata proto.InternalMessageInfo
+
+// Deprecated: Do not use.
+func (m *MergedEntityMetadata_MatchingMetadata) GetReturnType() MergedEntityMetadata_ReturnType {
+	if m != nil && m.ReturnType != nil {
+		return *m.ReturnType
+	}
+	return MergedEntityMetadata_STRING
+}
+
+func (m *MergedEntityMetadata_MatchingMetadata) GetMatchingData() []*MergedEntityMetadata_MatchingData {
+	if m != nil {
+		return m.MatchingData
+	}
+	return nil
+}
+
+// Deprecated: Do not use.
+func (m *MergedEntityMetadata_MatchingMetadata) GetExternalEntityReturnType() MergedEntityMetadata_ReturnType {
+	if m != nil && m.ExternalEntityReturnType != nil {
+		return *m.ExternalEntityReturnType
+	}
+	return MergedEntityMetadata_STRING
+}
+
+func (m *MergedEntityMetadata_MatchingMetadata) GetExternalEntityMatchingProperty() []*MergedEntityMetadata_MatchingData {
+	if m != nil {
+		return m.ExternalEntityMatchingProperty
+	}
+	return nil
+}
+
+// The kind of data we will extract for matching. It can be a property which is extracted from
+// the entity property map, or it can be a field which is named within the entityDTO itself, or
+// the entity OID in XL repository. In some cases, we encode a List of Strings as a single string.
+// In that case, one can specify a delimiter that separates different strings in the value.
+// For example, we have a PM_UUID_LIST property where we have a comma separated list of UUIDs
+// in a single string.
+type MergedEntityMetadata_MatchingData struct {
+	// Types that are valid to be assigned to MatchingData:
+	//	*MergedEntityMetadata_MatchingData_MatchingProperty
+	//	*MergedEntityMetadata_MatchingData_MatchingField
+	//	*MergedEntityMetadata_MatchingData_MatchingEntityOid
+	MatchingData         isMergedEntityMetadata_MatchingData_MatchingData `protobuf_oneof:"matching_data"`
+	Delimiter            *string                                          `protobuf:"bytes,200,opt,name=delimiter" json:"delimiter,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                                         `json:"-"`
+	XXX_unrecognized     []byte                                           `json:"-"`
+	XXX_sizecache        int32                                            `json:"-"`
+}
+
+func (m *MergedEntityMetadata_MatchingData) Reset()         { *m = MergedEntityMetadata_MatchingData{} }
+func (m *MergedEntityMetadata_MatchingData) String() string { return proto.CompactTextString(m) }
+func (*MergedEntityMetadata_MatchingData) ProtoMessage()    {}
+func (*MergedEntityMetadata_MatchingData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 1}
+}
+
+func (m *MergedEntityMetadata_MatchingData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_MatchingData.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_MatchingData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_MatchingData.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_MatchingData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_MatchingData.Merge(m, src)
+}
+func (m *MergedEntityMetadata_MatchingData) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_MatchingData.Size(m)
+}
+func (m *MergedEntityMetadata_MatchingData) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_MatchingData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_MatchingData proto.InternalMessageInfo
+
+type isMergedEntityMetadata_MatchingData_MatchingData interface {
+	isMergedEntityMetadata_MatchingData_MatchingData()
+}
+
+type MergedEntityMetadata_MatchingData_MatchingProperty struct {
+	MatchingProperty *MergedEntityMetadata_EntityPropertyName `protobuf:"bytes,100,opt,name=matching_property,json=matchingProperty,oneof"`
+}
+
+type MergedEntityMetadata_MatchingData_MatchingField struct {
+	MatchingField *MergedEntityMetadata_EntityField `protobuf:"bytes,101,opt,name=matching_field,json=matchingField,oneof"`
+}
+
+type MergedEntityMetadata_MatchingData_MatchingEntityOid struct {
+	MatchingEntityOid *MergedEntityMetadata_EntityOid `protobuf:"bytes,102,opt,name=matching_entity_oid,json=matchingEntityOid,oneof"`
+}
+
+func (*MergedEntityMetadata_MatchingData_MatchingProperty) isMergedEntityMetadata_MatchingData_MatchingData() {
+}
+
+func (*MergedEntityMetadata_MatchingData_MatchingField) isMergedEntityMetadata_MatchingData_MatchingData() {
+}
+
+func (*MergedEntityMetadata_MatchingData_MatchingEntityOid) isMergedEntityMetadata_MatchingData_MatchingData() {
+}
+
+func (m *MergedEntityMetadata_MatchingData) GetMatchingData() isMergedEntityMetadata_MatchingData_MatchingData {
+	if m != nil {
+		return m.MatchingData
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata_MatchingData) GetMatchingProperty() *MergedEntityMetadata_EntityPropertyName {
+	if x, ok := m.GetMatchingData().(*MergedEntityMetadata_MatchingData_MatchingProperty); ok {
+		return x.MatchingProperty
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata_MatchingData) GetMatchingField() *MergedEntityMetadata_EntityField {
+	if x, ok := m.GetMatchingData().(*MergedEntityMetadata_MatchingData_MatchingField); ok {
+		return x.MatchingField
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata_MatchingData) GetMatchingEntityOid() *MergedEntityMetadata_EntityOid {
+	if x, ok := m.GetMatchingData().(*MergedEntityMetadata_MatchingData_MatchingEntityOid); ok {
+		return x.MatchingEntityOid
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata_MatchingData) GetDelimiter() string {
+	if m != nil && m.Delimiter != nil {
+		return *m.Delimiter
+	}
+	return ""
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*MergedEntityMetadata_MatchingData) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*MergedEntityMetadata_MatchingData_MatchingProperty)(nil),
+		(*MergedEntityMetadata_MatchingData_MatchingField)(nil),
+		(*MergedEntityMetadata_MatchingData_MatchingEntityOid)(nil),
+	}
+}
+
+// The name of a property to extract from the entity property map.
+type MergedEntityMetadata_EntityPropertyName struct {
+	PropertyName         *string  `protobuf:"bytes,1,req,name=propertyName" json:"propertyName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *MergedEntityMetadata_EntityPropertyName) Reset() {
+	*m = MergedEntityMetadata_EntityPropertyName{}
+}
+func (m *MergedEntityMetadata_EntityPropertyName) String() string { return proto.CompactTextString(m) }
+func (*MergedEntityMetadata_EntityPropertyName) ProtoMessage()    {}
+func (*MergedEntityMetadata_EntityPropertyName) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 2}
+}
+
+func (m *MergedEntityMetadata_EntityPropertyName) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_EntityPropertyName.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_EntityPropertyName) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_EntityPropertyName.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_EntityPropertyName) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_EntityPropertyName.Merge(m, src)
+}
+func (m *MergedEntityMetadata_EntityPropertyName) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_EntityPropertyName.Size(m)
+}
+func (m *MergedEntityMetadata_EntityPropertyName) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_EntityPropertyName.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_EntityPropertyName proto.InternalMessageInfo
+
+func (m *MergedEntityMetadata_EntityPropertyName) GetPropertyName() string {
+	if m != nil && m.PropertyName != nil {
+		return *m.PropertyName
+	}
+	return ""
+}
+
+// A string or ordered sequence of strings describing the field in the entity DTO to use.  For
+// example, for storage stitching we use messagePath={"storage_data"}, fieldName="externalName".
+type MergedEntityMetadata_EntityField struct {
+	MessagePath          []string `protobuf:"bytes,1,rep,name=messagePath" json:"messagePath,omitempty"`
+	FieldName            *string  `protobuf:"bytes,2,req,name=fieldName" json:"fieldName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *MergedEntityMetadata_EntityField) Reset()         { *m = MergedEntityMetadata_EntityField{} }
+func (m *MergedEntityMetadata_EntityField) String() string { return proto.CompactTextString(m) }
+func (*MergedEntityMetadata_EntityField) ProtoMessage()    {}
+func (*MergedEntityMetadata_EntityField) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 3}
+}
+
+func (m *MergedEntityMetadata_EntityField) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_EntityField.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_EntityField) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_EntityField.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_EntityField) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_EntityField.Merge(m, src)
+}
+func (m *MergedEntityMetadata_EntityField) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_EntityField.Size(m)
+}
+func (m *MergedEntityMetadata_EntityField) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_EntityField.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_EntityField proto.InternalMessageInfo
+
+func (m *MergedEntityMetadata_EntityField) GetMessagePath() []string {
+	if m != nil {
+		return m.MessagePath
+	}
+	return nil
+}
+
+func (m *MergedEntityMetadata_EntityField) GetFieldName() string {
+	if m != nil && m.FieldName != nil {
+		return *m.FieldName
+	}
+	return ""
+}
+
+// Empty message representing the fact that TopologyEntity OID is used as the matching field.
+type MergedEntityMetadata_EntityOid struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *MergedEntityMetadata_EntityOid) Reset()         { *m = MergedEntityMetadata_EntityOid{} }
+func (m *MergedEntityMetadata_EntityOid) String() string { return proto.CompactTextString(m) }
+func (*MergedEntityMetadata_EntityOid) ProtoMessage()    {}
+func (*MergedEntityMetadata_EntityOid) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 4}
+}
+
+func (m *MergedEntityMetadata_EntityOid) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_EntityOid.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_EntityOid) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_EntityOid.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_EntityOid) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_EntityOid.Merge(m, src)
+}
+func (m *MergedEntityMetadata_EntityOid) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_EntityOid.Size(m)
+}
+func (m *MergedEntityMetadata_EntityOid) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_EntityOid.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_EntityOid proto.InternalMessageInfo
+
+type MergedEntityMetadata_CommodityBoughtMetadata struct {
+	ProviderType *EntityDTO_EntityType `protobuf:"varint,1,req,name=providerType,enum=common_dto.EntityDTO_EntityType" json:"providerType,omitempty"`
+	// If specified, this provider will replace the provider of the replacesProvider EntityType
+	// of the externalEntity
+	ReplacesProvider     *EntityDTO_EntityType        `protobuf:"varint,2,opt,name=replacesProvider,enum=common_dto.EntityDTO_EntityType" json:"replacesProvider,omitempty"`
+	CommodityMetadata    []CommodityDTO_CommodityType `protobuf:"varint,3,rep,name=commodityMetadata,enum=common_dto.CommodityDTO_CommodityType" json:"commodityMetadata,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
+}
+
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) Reset() {
+	*m = MergedEntityMetadata_CommodityBoughtMetadata{}
+}
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) String() string {
+	return proto.CompactTextString(m)
+}
+func (*MergedEntityMetadata_CommodityBoughtMetadata) ProtoMessage() {}
+func (*MergedEntityMetadata_CommodityBoughtMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 5}
+}
+
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_CommodityBoughtMetadata.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_CommodityBoughtMetadata.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_CommodityBoughtMetadata.Merge(m, src)
+}
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_CommodityBoughtMetadata.Size(m)
+}
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_CommodityBoughtMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_CommodityBoughtMetadata proto.InternalMessageInfo
+
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) GetProviderType() EntityDTO_EntityType {
+	if m != nil && m.ProviderType != nil {
+		return *m.ProviderType
+	}
+	return EntityDTO_SWITCH
+}
+
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) GetReplacesProvider() EntityDTO_EntityType {
+	if m != nil && m.ReplacesProvider != nil {
+		return *m.ReplacesProvider
+	}
+	return EntityDTO_SWITCH
+}
+
+func (m *MergedEntityMetadata_CommodityBoughtMetadata) GetCommodityMetadata() []CommodityDTO_CommodityType {
+	if m != nil {
+		return m.CommodityMetadata
+	}
+	return nil
+}
+
+type MergedEntityMetadata_CommoditySoldMetadata struct {
+	// type of the sold commodity which should be merged during stitching
+	CommodityType *CommodityDTO_CommodityType `protobuf:"varint,1,opt,name=commodity_type,json=commodityType,enum=common_dto.CommodityDTO_CommodityType" json:"commodity_type,omitempty"`
+	// do not merge if commodity of this type (ignoring key) already exists in the external
+	// entity, this ONLY covers the case where it is a keyed commodity and the external entity
+	// has the same commodity with a different key. It is used to ensure there is only one
+	// commodity of this type on the final stitched entity.
+	// For example: ACM probe discovers a proxy VM selling Application commodity with
+	// key "key1", and VC probe discovers a real VM selling Application commodity with key
+	// "key2" (the keys are different due to different info exposed in different probes),
+	// we only want to keep one Application commodity after stitching. Probe writer can mark
+	// this to be true so that the Application commodity from proxy VM is ignored
+	IgnoreIfPresent *bool `protobuf:"varint,2,opt,name=ignore_if_present,json=ignoreIfPresent,def=0" json:"ignore_if_present,omitempty"`
+	// if specified, it will only patch the provided fields, otherwise it will patch all.
+	// For example: the "used" value is meaningful so it should be patched, but other fields
+	// like "capacity" is less meaningful than that of the external entity
+	PatchedFields        []*MergedEntityMetadata_EntityField `protobuf:"bytes,3,rep,name=patched_fields,json=patchedFields" json:"patched_fields,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                            `json:"-"`
+	XXX_unrecognized     []byte                              `json:"-"`
+	XXX_sizecache        int32                               `json:"-"`
+}
+
+func (m *MergedEntityMetadata_CommoditySoldMetadata) Reset() {
+	*m = MergedEntityMetadata_CommoditySoldMetadata{}
+}
+func (m *MergedEntityMetadata_CommoditySoldMetadata) String() string {
+	return proto.CompactTextString(m)
+}
+func (*MergedEntityMetadata_CommoditySoldMetadata) ProtoMessage() {}
+func (*MergedEntityMetadata_CommoditySoldMetadata) Descriptor() ([]byte, []int) {
+	return fileDescriptor_433ea2f7708f0dad, []int{4, 6}
+}
+
+func (m *MergedEntityMetadata_CommoditySoldMetadata) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MergedEntityMetadata_CommoditySoldMetadata.Unmarshal(m, b)
+}
+func (m *MergedEntityMetadata_CommoditySoldMetadata) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MergedEntityMetadata_CommoditySoldMetadata.Marshal(b, m, deterministic)
+}
+func (m *MergedEntityMetadata_CommoditySoldMetadata) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MergedEntityMetadata_CommoditySoldMetadata.Merge(m, src)
+}
+func (m *MergedEntityMetadata_CommoditySoldMetadata) XXX_Size() int {
+	return xxx_messageInfo_MergedEntityMetadata_CommoditySoldMetadata.Size(m)
+}
+func (m *MergedEntityMetadata_CommoditySoldMetadata) XXX_DiscardUnknown() {
+	xxx_messageInfo_MergedEntityMetadata_CommoditySoldMetadata.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MergedEntityMetadata_CommoditySoldMetadata proto.InternalMessageInfo
+
+const Default_MergedEntityMetadata_CommoditySoldMetadata_IgnoreIfPresent bool = false
+
+func (m *MergedEntityMetadata_CommoditySoldMetadata) GetCommodityType() CommodityDTO_CommodityType {
+	if m != nil && m.CommodityType != nil {
+		return *m.CommodityType
+	}
+	return CommodityDTO_CLUSTER
+}
+
+func (m *MergedEntityMetadata_CommoditySoldMetadata) GetIgnoreIfPresent() bool {
+	if m != nil && m.IgnoreIfPresent != nil {
+		return *m.IgnoreIfPresent
+	}
+	return Default_MergedEntityMetadata_CommoditySoldMetadata_IgnoreIfPresent
+}
+
+func (m *MergedEntityMetadata_CommoditySoldMetadata) GetPatchedFields() []*MergedEntityMetadata_EntityField {
+	if m != nil {
+		return m.PatchedFields
+	}
+	return nil
+}
+
 func init() {
+	proto.RegisterEnum("common_dto.TemplateDTO_TemplateType", TemplateDTO_TemplateType_name, TemplateDTO_TemplateType_value)
+	proto.RegisterEnum("common_dto.Provider_ProviderType", Provider_ProviderType_name, Provider_ProviderType_value)
+	proto.RegisterEnum("common_dto.MergedEntityMetadata_ReturnType", MergedEntityMetadata_ReturnType_name, MergedEntityMetadata_ReturnType_value)
 	proto.RegisterType((*TemplateDTO)(nil), "common_dto.TemplateDTO")
 	proto.RegisterType((*TemplateDTO_CommBoughtProviderOrSet)(nil), "common_dto.TemplateDTO.CommBoughtProviderOrSet")
 	proto.RegisterType((*TemplateDTO_CommBoughtProviderProp)(nil), "common_dto.TemplateDTO.CommBoughtProviderProp")
@@ -588,64 +1462,109 @@ func init() {
 	proto.RegisterType((*ExternalEntityLink)(nil), "common_dto.ExternalEntityLink")
 	proto.RegisterType((*ExternalEntityLink_CommodityDef)(nil), "common_dto.ExternalEntityLink.CommodityDef")
 	proto.RegisterType((*ExternalEntityLink_EntityPropertyDef)(nil), "common_dto.ExternalEntityLink.EntityPropertyDef")
-	proto.RegisterEnum("common_dto.TemplateDTO_TemplateType", TemplateDTO_TemplateType_name, TemplateDTO_TemplateType_value)
-	proto.RegisterEnum("common_dto.Provider_ProviderType", Provider_ProviderType_name, Provider_ProviderType_value)
+	proto.RegisterType((*MergedEntityMetadata)(nil), "common_dto.MergedEntityMetadata")
+	proto.RegisterType((*MergedEntityMetadata_MatchingMetadata)(nil), "common_dto.MergedEntityMetadata.MatchingMetadata")
+	proto.RegisterType((*MergedEntityMetadata_MatchingData)(nil), "common_dto.MergedEntityMetadata.MatchingData")
+	proto.RegisterType((*MergedEntityMetadata_EntityPropertyName)(nil), "common_dto.MergedEntityMetadata.EntityPropertyName")
+	proto.RegisterType((*MergedEntityMetadata_EntityField)(nil), "common_dto.MergedEntityMetadata.EntityField")
+	proto.RegisterType((*MergedEntityMetadata_EntityOid)(nil), "common_dto.MergedEntityMetadata.EntityOid")
+	proto.RegisterType((*MergedEntityMetadata_CommodityBoughtMetadata)(nil), "common_dto.MergedEntityMetadata.CommodityBoughtMetadata")
+	proto.RegisterType((*MergedEntityMetadata_CommoditySoldMetadata)(nil), "common_dto.MergedEntityMetadata.CommoditySoldMetadata")
 }
 
-func init() { proto.RegisterFile("SupplyChain.proto", fileDescriptor7) }
+func init() {
+	proto.RegisterFile("SupplyChain.proto", fileDescriptor_433ea2f7708f0dad)
+}
 
-var fileDescriptor7 = []byte{
-	// 823 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xdd, 0x8e, 0xe2, 0x36,
-	0x14, 0xde, 0xf0, 0x37, 0x70, 0x60, 0x66, 0xc1, 0xaa, 0xa6, 0x11, 0xd2, 0x76, 0x29, 0x6a, 0xa7,
-	0xa8, 0x3f, 0x69, 0x45, 0x7b, 0xb5, 0xaa, 0x2a, 0x2d, 0x90, 0x76, 0x46, 0x9d, 0xc2, 0xd4, 0xa0,
-	0x6a, 0xf7, 0x6a, 0xe4, 0x21, 0x66, 0xb1, 0x36, 0xc4, 0x91, 0x63, 0xd0, 0xe6, 0xb6, 0x4f, 0xd1,
-	0x8b, 0xbe, 0x47, 0xd5, 0xc7, 0xe8, 0x1b, 0x55, 0x71, 0x02, 0x71, 0x08, 0x33, 0xcb, 0x54, 0xbd,
-	0x73, 0xec, 0xef, 0xfb, 0xce, 0xf1, 0xf1, 0x39, 0x9f, 0x02, 0xad, 0xe9, 0xda, 0xf7, 0xdd, 0x70,
-	0xb8, 0x24, 0xcc, 0xb3, 0x7c, 0xc1, 0x25, 0x47, 0x30, 0xe7, 0xab, 0x15, 0xf7, 0x6e, 0x1d, 0xc9,
-	0xdb, 0x4f, 0x87, 0x6a, 0x3d, 0x9a, 0x4d, 0xe2, 0xc3, 0xee, 0x3f, 0x27, 0x50, 0x9f, 0xd1, 0x95,
-	0xef, 0x12, 0x49, 0x47, 0xb3, 0x09, 0xfa, 0x11, 0x4e, 0x65, 0xf2, 0x39, 0x74, 0x49, 0x10, 0x98,
-	0x46, 0xa7, 0xd0, 0x3b, 0xeb, 0x77, 0xac, 0x54, 0xc4, 0xb2, 0x3d, 0xc9, 0x64, 0x18, 0x69, 0xc4,
-	0xab, 0x59, 0xe8, 0x53, 0x9c, 0xa5, 0xa1, 0x4b, 0x68, 0x6c, 0x37, 0xa2, 0x63, 0xb3, 0xa0, 0x64,
-	0x3e, 0xd1, 0x65, 0xb4, 0xb0, 0xbb, 0xb5, 0x92, 0xca, 0x30, 0xd1, 0xe7, 0xd0, 0xdc, 0x7e, 0xdf,
-	0x08, 0xc6, 0x05, 0x93, 0xa1, 0x59, 0xec, 0x14, 0x7a, 0x65, 0x9c, 0xdb, 0x47, 0x43, 0x38, 0x55,
-	0x01, 0x1c, 0x26, 0xc3, 0x29, 0x77, 0x1d, 0xb3, 0xdc, 0x29, 0xf6, 0xea, 0xfd, 0x67, 0x87, 0xc2,
-	0x0e, 0xb7, 0x40, 0x9c, 0xe5, 0xa0, 0x57, 0xf0, 0x74, 0xb7, 0x31, 0xe0, 0xeb, 0x37, 0x4b, 0x69,
-	0x56, 0x94, 0x8c, 0x75, 0x5f, 0xf6, 0x91, 0x54, 0x8c, 0xbc, 0x11, 0x7c, 0xc3, 0x1c, 0x2a, 0x6e,
-	0x04, 0xf7, 0xf1, 0xbe, 0x0c, 0xc2, 0xd0, 0xa0, 0xef, 0x24, 0x15, 0x1e, 0x71, 0xaf, 0x99, 0xf7,
-	0xd6, 0x3c, 0x79, 0x58, 0xd6, 0x4e, 0xb0, 0x71, 0x95, 0x23, 0x86, 0x92, 0xcd, 0x68, 0xa0, 0xd7,
-	0x71, 0xb6, 0x71, 0x84, 0x89, 0x98, 0x52, 0x69, 0x56, 0x95, 0xec, 0xd7, 0xc7, 0x67, 0xab, 0x68,
-	0x78, 0x5f, 0xa7, 0xcd, 0xe0, 0xc3, 0x7b, 0xb0, 0x68, 0x0c, 0x90, 0xa2, 0x4d, 0xe3, 0x3f, 0x95,
-	0x47, 0x53, 0x68, 0xff, 0x69, 0xc0, 0xf9, 0x61, 0x18, 0xba, 0x80, 0xe2, 0x5b, 0x1a, 0xaa, 0x3e,
-	0xac, 0xf7, 0x3f, 0xd0, 0x63, 0x6c, 0x61, 0x38, 0x02, 0xa0, 0x6f, 0xa1, 0xbc, 0x21, 0xee, 0x3a,
-	0x6a, 0xb5, 0x23, 0xde, 0x3c, 0xc6, 0xa2, 0x4f, 0x01, 0x58, 0x30, 0xf1, 0x25, 0xe3, 0x1e, 0x71,
-	0xcd, 0x62, 0xc7, 0xe8, 0x55, 0x5f, 0x94, 0x17, 0xc4, 0x0d, 0x28, 0xd6, 0x0e, 0xda, 0xbf, 0x1b,
-	0x70, 0x7e, 0xf8, 0x35, 0x50, 0x3f, 0x4d, 0xef, 0x98, 0x31, 0x51, 0xa9, 0x7e, 0x97, 0xa6, 0x1a,
-	0x5d, 0xea, 0xa3, 0x0c, 0x2b, 0x17, 0x26, 0xc9, 0xb5, 0xfb, 0x19, 0x34, 0xf4, 0x31, 0x41, 0x55,
-	0x28, 0x0d, 0x5e, 0x4e, 0xed, 0xe6, 0x13, 0x74, 0x0a, 0x35, 0xfb, 0xd5, 0xcc, 0x1e, 0x4f, 0xaf,
-	0x26, 0xe3, 0xa6, 0xd1, 0xfd, 0xdb, 0x80, 0x56, 0xee, 0xc6, 0xe8, 0x5a, 0x9b, 0x0d, 0x35, 0x92,
-	0x71, 0xca, 0x17, 0x7a, 0xf0, 0x1d, 0x7a, 0xfb, 0x6c, 0x3b, 0x34, 0xce, 0x92, 0x51, 0x33, 0xbe,
-	0x76, 0xa1, 0x63, 0xf4, 0x6a, 0xf1, 0xa5, 0x46, 0x50, 0x9b, 0x2f, 0x89, 0x78, 0x43, 0x9d, 0x41,
-	0x34, 0xa0, 0xc5, 0x47, 0x68, 0xa7, 0xc4, 0xee, 0x1f, 0x05, 0xa8, 0x6e, 0xdf, 0xf5, 0x7f, 0x33,
-	0x23, 0x1b, 0x1a, 0x7e, 0xa2, 0xa9, 0x99, 0xd1, 0xc7, 0x87, 0x7a, 0x69, 0xb7, 0x88, 0x9d, 0x48,
-	0xa7, 0xa1, 0x0b, 0x38, 0x9b, 0x13, 0xe1, 0x30, 0x8f, 0xb8, 0x4c, 0x86, 0xbf, 0x90, 0x77, 0x89,
-	0x0f, 0xed, 0xed, 0xee, 0xe3, 0x98, 0x67, 0x96, 0xf2, 0x38, 0xe6, 0x75, 0xbf, 0x82, 0x86, 0x1e,
-	0x0d, 0xd5, 0xe1, 0xe4, 0x72, 0x32, 0x9d, 0x5d, 0x8d, 0x7f, 0x6a, 0x3e, 0x41, 0x4d, 0x68, 0x5c,
-	0xbf, 0x7c, 0x6d, 0x63, 0x7b, 0x74, 0x3b, 0xf9, 0xcd, 0xc6, 0x4d, 0xa3, 0xfb, 0x57, 0x05, 0x50,
-	0xbe, 0x3b, 0xd0, 0xf7, 0x50, 0xbd, 0x5b, 0x87, 0x54, 0x60, 0xba, 0x38, 0xba, 0x3e, 0x3b, 0x06,
-	0xfa, 0x01, 0x6a, 0x01, 0x75, 0xdd, 0x98, 0x5e, 0x38, 0x92, 0x9e, 0x52, 0xa2, 0xd2, 0x0a, 0xea,
-	0x92, 0x68, 0x4e, 0x82, 0x25, 0xf3, 0x55, 0x45, 0x8e, 0x2b, 0xad, 0x4e, 0x43, 0xbf, 0x6a, 0xcd,
-	0x39, 0xa2, 0x8b, 0xc0, 0x2c, 0xa9, 0x21, 0xfe, 0xe2, 0xe1, 0xc9, 0xd0, 0x7a, 0x8a, 0x2e, 0x70,
-	0x56, 0x61, 0xdb, 0xa1, 0xe5, 0xb4, 0x43, 0xbf, 0x84, 0xd6, 0x92, 0x04, 0x59, 0x19, 0xb3, 0x12,
-	0xcd, 0x3c, 0xce, 0x1f, 0xa0, 0x25, 0x9c, 0xfb, 0x82, 0xdf, 0xd1, 0xf8, 0x33, 0x9a, 0x75, 0x2a,
-	0x94, 0x74, 0x62, 0xdb, 0xdf, 0xbc, 0x27, 0xb7, 0x1c, 0x0f, 0xdf, 0xa3, 0x87, 0x6e, 0xa1, 0x4d,
-	0x33, 0x7c, 0xed, 0x30, 0x48, 0xdc, 0xfc, 0xb9, 0x1e, 0x6d, 0x4a, 0xc5, 0x86, 0x8a, 0x14, 0x1b,
-	0x89, 0x3f, 0x20, 0x81, 0x2e, 0xe1, 0x4c, 0x50, 0xdf, 0x25, 0x73, 0x1a, 0x24, 0xb7, 0xae, 0xa9,
-	0xf9, 0x7c, 0xff, 0x4b, 0xef, 0xf1, 0xda, 0x0c, 0x1a, 0x7a, 0xcd, 0xd1, 0x0b, 0x28, 0xc9, 0xc7,
-	0x7b, 0x89, 0xe2, 0xa0, 0x67, 0x50, 0x59, 0x92, 0xe0, 0xe7, 0xc4, 0x45, 0x76, 0xbe, 0x9b, 0x6c,
-	0xb6, 0xaf, 0xa0, 0x95, 0x2f, 0x15, 0x82, 0x92, 0x47, 0x56, 0x71, 0xbc, 0x1a, 0x56, 0x6b, 0xd4,
-	0x81, 0xba, 0x43, 0x83, 0xb9, 0x60, 0xca, 0xad, 0x55, 0x13, 0xd7, 0xb0, 0xbe, 0x35, 0xb0, 0xe0,
-	0xf9, 0x9c, 0xaf, 0xac, 0xcd, 0x4a, 0xae, 0xc5, 0x1d, 0xb7, 0x22, 0x67, 0x58, 0x70, 0xb1, 0x4a,
-	0xb2, 0xb5, 0x1c, 0xc9, 0x07, 0x75, 0xed, 0xbf, 0xe9, 0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x69,
-	0x47, 0x98, 0xbb, 0x45, 0x09, 0x00, 0x00,
+var fileDescriptor_433ea2f7708f0dad = []byte{
+	// 1412 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0x5d, 0x6f, 0xdb, 0xd4,
+	0x1b, 0xaf, 0xd3, 0x97, 0x25, 0x4f, 0xd2, 0x34, 0x79, 0xfe, 0xfb, 0x6f, 0xc6, 0x62, 0x5b, 0x16,
+	0xc1, 0x88, 0xc6, 0x16, 0x58, 0x87, 0xd0, 0x34, 0x21, 0xa4, 0xa5, 0xc9, 0x68, 0x45, 0xdb, 0x74,
+	0x27, 0x01, 0x6d, 0x12, 0x28, 0x3a, 0x8d, 0x4f, 0x1a, 0xab, 0x8e, 0x6d, 0xd9, 0x4e, 0xb5, 0xdc,
+	0xc2, 0x97, 0x40, 0x88, 0x7b, 0x3e, 0x02, 0x97, 0xdc, 0x72, 0xc3, 0x35, 0xdf, 0x82, 0xcf, 0x80,
+	0xce, 0xf1, 0xdb, 0x71, 0x9c, 0xae, 0x49, 0xe1, 0xce, 0x79, 0xce, 0xf3, 0xfb, 0x3d, 0x2f, 0x7e,
+	0x5e, 0x8e, 0x03, 0xd5, 0xde, 0xd4, 0x71, 0xcc, 0xd9, 0xde, 0x98, 0x1a, 0x56, 0xd3, 0x71, 0x6d,
+	0xdf, 0x46, 0x18, 0xda, 0x93, 0x89, 0x6d, 0x0d, 0x74, 0xdf, 0xd6, 0x76, 0xf6, 0xc4, 0x73, 0xbb,
+	0xdf, 0x0d, 0x0e, 0xeb, 0xbf, 0xe6, 0xa1, 0xd8, 0x67, 0x13, 0xc7, 0xa4, 0x3e, 0x6b, 0xf7, 0xbb,
+	0xf8, 0x12, 0xb6, 0xfd, 0xf0, 0xe7, 0x9e, 0x49, 0x3d, 0x4f, 0x55, 0x6a, 0xb9, 0x46, 0x79, 0xb7,
+	0xd6, 0x4c, 0x48, 0x9a, 0x1d, 0xcb, 0x37, 0xfc, 0x19, 0xe7, 0x08, 0x9e, 0xfa, 0x33, 0x87, 0x91,
+	0x34, 0x0c, 0xf7, 0xa1, 0x14, 0x09, 0xf8, 0xb1, 0x9a, 0x13, 0x34, 0x1f, 0xc8, 0x34, 0x92, 0xd9,
+	0xf8, 0x59, 0x50, 0xa5, 0x90, 0xf8, 0x10, 0x2a, 0xd1, 0xef, 0x13, 0xd7, 0xb0, 0x5d, 0xc3, 0x9f,
+	0xa9, 0xeb, 0xb5, 0x5c, 0x63, 0x93, 0x64, 0xe4, 0xb8, 0x07, 0xdb, 0xc2, 0x80, 0x6e, 0xf8, 0xb3,
+	0x9e, 0x6d, 0xea, 0xea, 0x66, 0x6d, 0xbd, 0x51, 0xdc, 0xbd, 0xb3, 0xc8, 0xec, 0x5e, 0xa4, 0x48,
+	0xd2, 0x18, 0x7c, 0x0d, 0x3b, 0xb1, 0xa0, 0x65, 0x4f, 0xcf, 0xc6, 0xbe, 0xba, 0x25, 0x68, 0x9a,
+	0x97, 0x79, 0xcf, 0xa9, 0x02, 0xcd, 0x13, 0xd7, 0xbe, 0x30, 0x74, 0xe6, 0x9e, 0xb8, 0xb6, 0x43,
+	0xe6, 0x69, 0x90, 0x40, 0x89, 0xbd, 0xf5, 0x99, 0x6b, 0x51, 0xf3, 0xd0, 0xb0, 0xce, 0xd5, 0x1b,
+	0xef, 0xa6, 0xed, 0x84, 0xba, 0x41, 0x96, 0x39, 0x42, 0xd0, 0xa6, 0x38, 0xf0, 0x4d, 0xe0, 0x6d,
+	0x60, 0xa1, 0xeb, 0xf6, 0x98, 0xaf, 0xe6, 0x05, 0xed, 0x27, 0xcb, 0x7b, 0x2b, 0x60, 0x64, 0x9e,
+	0x07, 0xfb, 0x70, 0x73, 0xc2, 0xdc, 0x33, 0xa6, 0x07, 0x0e, 0x1c, 0x31, 0x9f, 0xb6, 0xa9, 0x4f,
+	0xd5, 0x42, 0x4d, 0x69, 0x14, 0xd3, 0x25, 0x71, 0x34, 0xa7, 0xa7, 0x53, 0x9f, 0x92, 0x85, 0x68,
+	0xcd, 0x80, 0xdb, 0x97, 0x78, 0x80, 0xc7, 0x00, 0x89, 0x0f, 0xaa, 0x72, 0xad, 0xa4, 0x4b, 0x0c,
+	0xda, 0x2f, 0x0a, 0xdc, 0x5a, 0xac, 0x86, 0x0f, 0x60, 0xfd, 0x9c, 0xcd, 0x44, 0x75, 0x17, 0x77,
+	0x6f, 0xca, 0x36, 0x22, 0x35, 0xc2, 0x15, 0xf0, 0x29, 0x6c, 0x5e, 0x50, 0x73, 0xca, 0x0b, 0x78,
+	0x89, 0x4a, 0x0a, 0x74, 0xf1, 0x43, 0x00, 0xc3, 0xeb, 0x3a, 0xbe, 0x61, 0x5b, 0xd4, 0x54, 0xd7,
+	0x6b, 0x4a, 0x23, 0xff, 0x7c, 0x73, 0x44, 0x4d, 0x8f, 0x11, 0xe9, 0x40, 0xfb, 0x41, 0x81, 0x5b,
+	0x8b, 0xdf, 0x31, 0xee, 0x26, 0xee, 0x2d, 0xd3, 0x7c, 0xc2, 0xd5, 0xcf, 0x12, 0x57, 0x79, 0x50,
+	0x77, 0x53, 0xa8, 0x8c, 0x99, 0xd0, 0xd7, 0xfa, 0x47, 0x50, 0x92, 0x9b, 0x0f, 0xf3, 0xb0, 0xd1,
+	0x7a, 0xd1, 0xeb, 0x54, 0xd6, 0x70, 0x1b, 0x0a, 0x9d, 0xd7, 0xfd, 0xce, 0x71, 0xef, 0xa0, 0x7b,
+	0x5c, 0x51, 0xea, 0x7f, 0xe6, 0xa0, 0x9a, 0x89, 0x18, 0x0f, 0xa5, 0x8e, 0x13, 0x8d, 0x1e, 0xb8,
+	0xfc, 0x40, 0x36, 0x1e, 0x6b, 0x47, 0xaf, 0x2d, 0xd6, 0x26, 0x69, 0x30, 0x56, 0x82, 0xb0, 0x73,
+	0x35, 0xa5, 0x51, 0x08, 0x82, 0x6a, 0x43, 0x61, 0x38, 0xa6, 0xbc, 0x8c, 0x5a, 0xbc, 0xed, 0xd7,
+	0x57, 0xe0, 0x4e, 0x80, 0x78, 0x1f, 0xf2, 0x76, 0xf4, 0x3a, 0x36, 0xe4, 0xd7, 0x11, 0x8b, 0x45,
+	0x20, 0x91, 0x7e, 0x3c, 0x3a, 0x56, 0x09, 0x44, 0x06, 0x73, 0x83, 0x86, 0x47, 0x98, 0xc7, 0x89,
+	0xb6, 0x52, 0x06, 0x23, 0x71, 0xfd, 0xa7, 0x1c, 0xe4, 0xa3, 0x5a, 0xfb, 0xcf, 0xc6, 0x6e, 0x07,
+	0x4a, 0x4e, 0xc8, 0x29, 0x8d, 0xdd, 0xfb, 0x8b, 0xea, 0x3b, 0x7e, 0x08, 0x66, 0xae, 0x0c, 0xc3,
+	0x07, 0x50, 0x1e, 0x52, 0x57, 0x37, 0x2c, 0x6a, 0xf2, 0xd6, 0xa5, 0x6f, 0xc3, 0x89, 0x3b, 0x27,
+	0x9d, 0xd7, 0x33, 0x2c, 0x75, 0x23, 0xab, 0x67, 0x58, 0xf5, 0xc7, 0x50, 0x92, 0xad, 0x61, 0x11,
+	0x6e, 0xec, 0x77, 0x7b, 0xfd, 0x83, 0xe3, 0xaf, 0x2a, 0x6b, 0x58, 0x81, 0xd2, 0xe1, 0x8b, 0x37,
+	0x1d, 0xd2, 0x69, 0x0f, 0xba, 0xdf, 0x76, 0x48, 0x45, 0xa9, 0xff, 0xb6, 0x05, 0x98, 0xad, 0x58,
+	0xfc, 0x02, 0xf2, 0xa7, 0xd3, 0x19, 0x73, 0x09, 0x1b, 0x2d, 0x9d, 0x9f, 0x18, 0x81, 0x5f, 0x42,
+	0xc1, 0x63, 0xa6, 0x19, 0xc0, 0x73, 0x4b, 0xc2, 0x13, 0x08, 0x4f, 0xad, 0xcb, 0x4c, 0xca, 0xcb,
+	0xc5, 0x1b, 0x1b, 0x8e, 0xc8, 0xc8, 0x72, 0xa9, 0x95, 0x61, 0xf8, 0x4a, 0x6a, 0x98, 0x36, 0x1b,
+	0x79, 0xea, 0x86, 0x18, 0x2c, 0x1f, 0xbf, 0xbb, 0x5b, 0xa5, 0xd2, 0x63, 0x23, 0x92, 0x66, 0x88,
+	0xba, 0x66, 0x33, 0xe9, 0x9a, 0x47, 0x50, 0x1d, 0x53, 0x2f, 0x4d, 0x13, 0xd4, 0x21, 0xc9, 0x1e,
+	0xe0, 0x18, 0x6e, 0x39, 0xae, 0x7d, 0xca, 0x82, 0x9f, 0x7c, 0xfe, 0x30, 0x57, 0x50, 0x87, 0x0b,
+	0xea, 0xd3, 0x2b, 0x7c, 0xcb, 0xe0, 0xc8, 0x25, 0x7c, 0x38, 0x00, 0x8d, 0xa5, 0xf0, 0xd2, 0xa1,
+	0x17, 0xee, 0xad, 0x7b, 0xb2, 0xb5, 0x1e, 0x73, 0x2f, 0x98, 0x9b, 0xe8, 0x72, 0xf2, 0x77, 0x50,
+	0xe0, 0x3e, 0x94, 0x5d, 0xe6, 0x98, 0x74, 0xc8, 0xbc, 0x30, 0xea, 0x82, 0x68, 0xe3, 0xab, 0xdf,
+	0xf4, 0x1c, 0x4e, 0x33, 0xa0, 0x24, 0xe7, 0x1c, 0x9f, 0xc3, 0x86, 0xbf, 0xfa, 0x7c, 0x13, 0x18,
+	0xbc, 0x03, 0x5b, 0x63, 0xea, 0x7d, 0x1d, 0x4e, 0xb6, 0x78, 0x16, 0x84, 0x42, 0xed, 0x00, 0xaa,
+	0xd9, 0x54, 0x21, 0x6c, 0x58, 0x74, 0x12, 0xd8, 0x2b, 0x10, 0xf1, 0x8c, 0x35, 0x28, 0xea, 0xcc,
+	0x1b, 0xba, 0x86, 0x18, 0x5a, 0xa2, 0x88, 0x0b, 0x44, 0x16, 0xd5, 0x7f, 0xaf, 0xc0, 0xcd, 0x45,
+	0xbb, 0x18, 0x1f, 0x41, 0xf9, 0x9c, 0x31, 0xa7, 0xe7, 0x53, 0x4b, 0xa7, 0xa6, 0x6d, 0x71, 0x62,
+	0xee, 0xca, 0x86, 0xef, 0x4e, 0x19, 0x99, 0x3b, 0xc3, 0xef, 0xa1, 0x32, 0xa1, 0xfe, 0x70, 0x6c,
+	0x58, 0x67, 0x11, 0x43, 0xb8, 0x55, 0x9e, 0x5c, 0xb5, 0xf5, 0x9b, 0x47, 0x73, 0x40, 0x92, 0xa1,
+	0x42, 0x0a, 0x55, 0x87, 0xcb, 0x98, 0x1e, 0x46, 0x6c, 0x30, 0x4f, 0x0c, 0xf7, 0xe2, 0xee, 0xd3,
+	0x2b, 0xf9, 0xd3, 0xa9, 0x3a, 0xa6, 0x13, 0x46, 0xb2, 0x6c, 0x48, 0x60, 0x3b, 0x14, 0xbe, 0x34,
+	0x98, 0xa9, 0x47, 0x6d, 0xf6, 0x68, 0x49, 0x7a, 0x01, 0x22, 0x69, 0x0a, 0xec, 0x27, 0x17, 0x43,
+	0x83, 0x79, 0xab, 0x2f, 0x89, 0x56, 0x4e, 0x55, 0xc8, 0x3c, 0x05, 0x8e, 0xa0, 0x2a, 0x89, 0x52,
+	0x17, 0xce, 0x67, 0x57, 0x7a, 0xbb, 0x97, 0xbe, 0x61, 0xc6, 0x39, 0xcf, 0x52, 0xa2, 0x0b, 0xef,
+	0x49, 0xc2, 0x01, 0xdf, 0x41, 0x83, 0x49, 0xf4, 0x72, 0x83, 0x46, 0xff, 0x7c, 0x79, 0x7b, 0xdc,
+	0xf5, 0xd8, 0xda, 0xed, 0xb9, 0x98, 0xa2, 0x03, 0xed, 0xe7, 0x75, 0xa8, 0xcc, 0xd7, 0x03, 0x76,
+	0x01, 0x5c, 0xe6, 0x4f, 0x5d, 0x2b, 0xbc, 0x2f, 0x28, 0x8d, 0x72, 0x7a, 0xfc, 0x2d, 0xb4, 0x4c,
+	0x62, 0x88, 0x48, 0xa3, 0x44, 0x81, 0xaf, 0xa0, 0x14, 0x95, 0x58, 0x3b, 0xa8, 0x54, 0x1e, 0xcc,
+	0xe3, 0xa5, 0x2b, 0x95, 0x83, 0x48, 0x8a, 0x02, 0xcf, 0x41, 0x4d, 0x4f, 0x99, 0xc4, 0xbc, 0xb8,
+	0xcf, 0x5d, 0xc3, 0xe3, 0x4b, 0x09, 0x71, 0x0a, 0x77, 0xd3, 0x67, 0x91, 0x63, 0x51, 0x91, 0x87,
+	0xc5, 0xbb, 0x62, 0x44, 0x57, 0x90, 0x6a, 0x7f, 0xe5, 0xa0, 0x24, 0x03, 0xf0, 0x14, 0xaa, 0x51,
+	0x12, 0x06, 0x4e, 0x64, 0x5a, 0x17, 0x97, 0xfd, 0xeb, 0xb4, 0xe5, 0xfe, 0x5a, 0xd2, 0xfa, 0x91,
+	0x1c, 0xbf, 0x81, 0x72, 0x6c, 0x63, 0xc4, 0xdb, 0x4a, 0x65, 0xc2, 0xc0, 0x4a, 0x8d, 0xb9, 0xbf,
+	0x46, 0xb6, 0x23, 0x16, 0x21, 0xc0, 0xef, 0xe0, 0x7f, 0x31, 0x2d, 0x13, 0x8a, 0x03, 0xdb, 0xd0,
+	0xd5, 0x91, 0xe0, 0x7e, 0xb8, 0x24, 0x77, 0xd7, 0xe0, 0xcc, 0x71, 0x0e, 0x62, 0x21, 0xde, 0x81,
+	0x82, 0xce, 0x4c, 0x63, 0x62, 0xf8, 0xcc, 0x55, 0xff, 0x50, 0xc4, 0x9e, 0x4d, 0x24, 0xad, 0x1d,
+	0x88, 0xbd, 0x19, 0x88, 0xb2, 0x7f, 0x06, 0x98, 0x4d, 0x07, 0xd6, 0xc5, 0xdd, 0x2c, 0xfe, 0x1d,
+	0x4e, 0xf6, 0x94, 0x4c, 0x3b, 0x82, 0xa2, 0x14, 0x27, 0x1f, 0xf8, 0x13, 0xe6, 0x79, 0xf4, 0x8c,
+	0x9d, 0x50, 0x7f, 0x2c, 0xbe, 0x88, 0x0a, 0x44, 0x16, 0xe1, 0xfb, 0x50, 0x10, 0x69, 0x14, 0x8c,
+	0xc1, 0x42, 0x48, 0x04, 0x5a, 0x11, 0x0a, 0x71, 0x14, 0xda, 0x8f, 0xb9, 0xe0, 0xcb, 0x6b, 0xc1,
+	0xbc, 0xc0, 0xf6, 0xdc, 0xbd, 0x71, 0xd9, 0xeb, 0x55, 0xfa, 0xda, 0x78, 0x08, 0x95, 0x68, 0x8b,
+	0x46, 0x37, 0x20, 0xb1, 0xf1, 0x96, 0x61, 0xca, 0x20, 0xb1, 0x9f, 0x0c, 0xc6, 0xf8, 0x4d, 0xad,
+	0xf8, 0x09, 0x90, 0x25, 0xd0, 0xfe, 0x56, 0xe0, 0xff, 0x0b, 0xa7, 0x18, 0x1e, 0x41, 0x39, 0x56,
+	0x1f, 0xf8, 0xc9, 0x6c, 0xba, 0xe6, 0xb7, 0xcc, 0x13, 0xa8, 0x1a, 0x67, 0x96, 0xed, 0xb2, 0x81,
+	0x31, 0x1a, 0x38, 0x2e, 0xf3, 0x98, 0xe5, 0xa7, 0xf7, 0xff, 0x4e, 0x70, 0x7e, 0x30, 0x3a, 0x09,
+	0x4e, 0xb1, 0x07, 0xe5, 0x70, 0xe3, 0x04, 0xbd, 0x11, 0x2d, 0xc5, 0x7f, 0xb3, 0xb5, 0xea, 0x8f,
+	0x01, 0xa4, 0x59, 0x03, 0xb0, 0xd5, 0xeb, 0x13, 0x7e, 0xf1, 0x56, 0x70, 0x07, 0x8a, 0x87, 0x07,
+	0xbd, 0xfe, 0x20, 0x14, 0xe4, 0xb4, 0x9c, 0xaa, 0xb4, 0x9a, 0x70, 0x6f, 0x68, 0x4f, 0x9a, 0x17,
+	0x13, 0x7f, 0xea, 0x9e, 0xda, 0x4d, 0xfe, 0x6d, 0x31, 0xb2, 0xdd, 0x49, 0xe8, 0x41, 0x53, 0xf7,
+	0xed, 0x56, 0x51, 0xfa, 0x8f, 0xe9, 0x9f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x11, 0xbf, 0xec, 0xd5,
+	0x71, 0x12, 0x00, 0x00,
 }
