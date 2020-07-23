@@ -51,7 +51,7 @@ func (node *Node) addPMRelatedData(e *proto.EntityDTO) error {
 		Processor: []*proto.EntityDTO_ProcessorData{cpu},
 	}
 
-	e.RelatedEntityData = &proto.EntityDTO_PhysicalMachineRelatedData_{relatedData}
+	e.RelatedEntityData = &proto.EntityDTO_PhysicalMachineRelatedData_{PhysicalMachineRelatedData: relatedData}
 	return nil
 }
 

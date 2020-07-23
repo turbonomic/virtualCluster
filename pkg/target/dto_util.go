@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	defaultInfiniteCapacity = 1E10
+	defaultInfiniteCapacity = 110
 )
 
 func CreateCommodityBoughtWithReservation(res *Resource, reserved float64, ctype proto.CommodityDTO_CommodityType) (*proto.CommodityDTO, error) {

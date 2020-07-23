@@ -9,11 +9,12 @@ import (
 
 // Configuration Parameters to connect to an example Target
 type TargetConf struct {
-	Address       string
-	Username      string
-	Password      string
-	ProbeCategory string
-	TargetType    string
+	Address         string
+	Username        string
+	Password        string
+	ProbeCategory   string
+	TargetType      string
+	ProbeUICategory string
 }
 
 // Create a new ExampleClientConf from file. Other fields have default values and can be overridden.

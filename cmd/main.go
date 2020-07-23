@@ -7,6 +7,7 @@ import (
 
 	"github.com/turbonomic/virtualCluster/pkg/action"
 	"github.com/turbonomic/virtualCluster/pkg/discovery"
+	"github.com/turbonomic/virtualCluster/pkg/discovery/stitching"
 	"github.com/turbonomic/virtualCluster/pkg/registration"
 	"github.com/turbonomic/virtualCluster/pkg/target"
 	"github.com/turbonomic/virtualCluster/pkg/topology"
@@ -19,9 +20,9 @@ var (
 	targetConf   string
 	opsMgrConf   string
 	topologyConf string
-	stitchType   string = "IP"
-	clusterName  string = "clusterName-1"
-	clusterId    string = "clusterId-1"
+	stitchType   stitching.StitchingPropertyType = "IP"
+	clusterName  string                          = "clusterName-1"
+	clusterId    string                          = "clusterId-1"
 )
 
 func getFlags() {
@@ -67,7 +68,7 @@ func buildClusterHandler(topoConf string) (*target.ClusterHandler, error) {
 	return handler, nil
 }
 
-func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.ProbeBuilder, error) {
+func buildProbe(pType stitching.StitchingPropertyType, targetConf, topoConf string, stop chan struct{}) (*probe.ProbeBuilder, error) {
 
 	//1. generate the target Cluster Handler
 	clusterHandler, err := buildClusterHandler(topologyConf)
@@ -83,11 +84,11 @@ func buildProbe(stype, targetConf, topoConf string, stop chan struct{}) (*probe.
 		return nil, fmt.Errorf("failed to load json conf:%v", err.Error())
 	}
 
-	regClient := registration.NewRegClient(stype)
+	regClient := registration.NewRegClient(pType)
 	discoveryClient := discovery.NewDiscoveryClient(config, clusterHandler)
 	actionHandler := action.NewActionHandler(clusterHandler, stop)
 
-	builder := probe.NewProbeBuilder(config.TargetType, config.ProbeCategory).
+	builder := probe.NewProbeBuilder(config.TargetType, config.ProbeCategory, config.ProbeUICategory).
 		RegisteredBy(regClient).
 		WithActionPolicies(regClient).
 		WithEntityMetadata(regClient).

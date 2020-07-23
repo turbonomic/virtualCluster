@@ -4,6 +4,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/turbonomic/turbo-go-sdk/pkg/builder"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
+	"github.com/turbonomic/virtualCluster/pkg/discovery/stitching"
 )
 
 const (
@@ -13,12 +14,12 @@ const (
 )
 
 type DemoRegClient struct {
-	stitchingType string
+	stitchingType stitching.StitchingPropertyType
 }
 
-func NewRegClient(stype string) *DemoRegClient {
+func NewRegClient(pType stitching.StitchingPropertyType) *DemoRegClient {
 	return &DemoRegClient{
-		stitchingType: stype,
+		stitchingType: pType,
 	}
 }
 
@@ -26,9 +27,9 @@ func (rClient *DemoRegClient) GetSupplyChainDefinition() []*proto.TemplateDTO {
 	supplyChainFactory := NewSupplyChainFactory(rClient.stitchingType)
 	supplyChain, err := supplyChainFactory.createSupplyChain()
 	if err != nil {
+		glog.Errorf("Failed to create supply chain: %v", err)
 		// TODO error handling
 	}
-
 	return supplyChain
 }
 
@@ -64,30 +65,55 @@ func (rClient *DemoRegClient) GetActionPolicy() []*proto.ActionPolicyDTO {
 	recommend := proto.ActionPolicyDTO_NOT_EXECUTABLE
 	notSupported := proto.ActionPolicyDTO_NOT_SUPPORTED
 
-	//1. containerPod: move, provision; not resize;
+	// 1. containerPod: support move, provision and suspend; not resize;
 	pod := proto.EntityDTO_CONTAINER_POD
-	podCap := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
-	podCap[proto.ActionItemDTO_MOVE] = supported
-	podCap[proto.ActionItemDTO_PROVISION] = supported
-	podCap[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
-	rClient.addActionPolicy(ab, pod, podCap)
+	podPolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
+	podPolicy[proto.ActionItemDTO_MOVE] = supported
+	podPolicy[proto.ActionItemDTO_PROVISION] = supported
+	podPolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
+	podPolicy[proto.ActionItemDTO_SUSPEND] = supported
 
-	//2. container: support resize; recommend provision; not move;
+	rClient.addActionPolicy(ab, pod, podPolicy)
+
+	// 2. container: support resize; recommend provision and suspend; not move;
 	container := proto.EntityDTO_CONTAINER
 	containerPolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
 	containerPolicy[proto.ActionItemDTO_RIGHT_SIZE] = supported
-	//containerPolicy[proto.ActionItemDTO_RESIZE_CAPACITY] = supported
 	containerPolicy[proto.ActionItemDTO_PROVISION] = recommend
 	containerPolicy[proto.ActionItemDTO_MOVE] = notSupported
+	containerPolicy[proto.ActionItemDTO_SUSPEND] = recommend
+
 	rClient.addActionPolicy(ab, container, containerPolicy)
 
-	//3. application: only recommend provision; all else are not supported
-	app := proto.EntityDTO_APPLICATION
+	// 3. application: only recommend provision and suspend; all else are not supported
+	app := proto.EntityDTO_APPLICATION_COMPONENT
 	appPolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
 	appPolicy[proto.ActionItemDTO_PROVISION] = recommend
-	appPolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
+	appPolicy[proto.ActionItemDTO_RIGHT_SIZE] = recommend
 	appPolicy[proto.ActionItemDTO_MOVE] = notSupported
+	appPolicy[proto.ActionItemDTO_SUSPEND] = recommend
+
 	rClient.addActionPolicy(ab, app, appPolicy)
+
+	// 4. service: no actions are supported
+	service := proto.EntityDTO_SERVICE
+	servicePolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
+	servicePolicy[proto.ActionItemDTO_PROVISION] = notSupported
+	servicePolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
+	servicePolicy[proto.ActionItemDTO_MOVE] = notSupported
+	servicePolicy[proto.ActionItemDTO_SUSPEND] = notSupported
+
+	rClient.addActionPolicy(ab, service, servicePolicy)
+
+	// 5. node: support provision and suspend; not resize; do not set move
+	node := proto.EntityDTO_VIRTUAL_MACHINE
+	nodePolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
+	nodePolicy[proto.ActionItemDTO_PROVISION] = supported
+	nodePolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
+	nodePolicy[proto.ActionItemDTO_SCALE] = notSupported
+	nodePolicy[proto.ActionItemDTO_SUSPEND] = supported
+
+	rClient.addActionPolicy(ab, node, nodePolicy)
 
 	return ab.Create()
 }
@@ -104,15 +130,18 @@ func (rClient *DemoRegClient) addActionPolicy(ab *builder.ActionPolicyBuilder,
 func (rclient *DemoRegClient) GetEntityMetadata() []*proto.EntityIdentityMetadata {
 	glog.V(3).Infof("Begin to build EntityIdentityMetadata")
 
-	result := []*proto.EntityIdentityMetadata{}
+	var result []*proto.EntityIdentityMetadata
 
 	entities := []proto.EntityDTO_EntityType{
 		proto.EntityDTO_PHYSICAL_MACHINE,
+		proto.EntityDTO_NAMESPACE,
+		proto.EntityDTO_WORKLOAD_CONTROLLER,
 		proto.EntityDTO_VIRTUAL_MACHINE,
+		proto.EntityDTO_CONTAINER_SPEC,
 		proto.EntityDTO_CONTAINER_POD,
 		proto.EntityDTO_CONTAINER,
-		proto.EntityDTO_APPLICATION,
-		proto.EntityDTO_VIRTUAL_APPLICATION,
+		proto.EntityDTO_APPLICATION_COMPONENT,
+		proto.EntityDTO_SERVICE,
 	}
 
 	for _, etype := range entities {
@@ -126,7 +155,7 @@ func (rclient *DemoRegClient) GetEntityMetadata() []*proto.EntityIdentityMetadat
 }
 
 func (rclient *DemoRegClient) newIdMetaData(etype proto.EntityDTO_EntityType, names []string) *proto.EntityIdentityMetadata {
-	data := []*proto.EntityIdentityMetadata_PropertyMetadata{}
+	var data []*proto.EntityIdentityMetadata_PropertyMetadata
 	for _, name := range names {
 		dat := &proto.EntityIdentityMetadata_PropertyMetadata{
 			Name: &name,
