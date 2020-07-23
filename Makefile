@@ -6,14 +6,8 @@ bin=vCluster
 product: clean
 	env GOOS=linux GOARCH=amd64 go build -o ${OUTPUT_DIR}/${bin}.linux ./cmd
 
-debug-product: clean
-    env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -gcflags "-N -l" -o ${OUTPUT_DIR}/${bin}.linux.debug ./cmd
-
 build: clean
 	go build -o ${OUTPUT_DIR}/${bin} ./cmd
-
-debug: clean
-    env CGO_ENABLED=0 go build -gcflags "-N -l" -o ${OUTPUT_DIR}/${bin}.debug ./cmd
 
 test: clean
 	@go test -v -race ./pkg/...
