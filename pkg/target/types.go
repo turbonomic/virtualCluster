@@ -12,6 +12,7 @@ const (
 	KindVirtualApp = "service"
 	KindVNode      = "vhost"
 	KindNode       = "host"
+	KindSwitch     = "switch"
 	KindCluster    = "cluster"
 
 	emptyProvider = "None"
@@ -94,6 +95,8 @@ type VNode struct {
 type Node struct {
 	ObjectMeta
 
+	NetworkThroughput Resource
+
 	CPU    Resource
 	Memory Resource
 
@@ -105,8 +108,22 @@ type Node struct {
 	VMs map[string]*VNode
 }
 
+// network switch
+type Switch struct {
+	ObjectMeta
+
+	NetworkThroughput Resource
+
+	ClusterId string
+
+	//Map for easy of deletion
+	// key = pm.UUID
+	PMs map[string]*Node
+}
+
 type Cluster struct {
 	ObjectMeta
+	Switches map[string]*Switch
 	Nodes    map[string]*Node
 	Services []*VirtualApp
 }
@@ -145,6 +162,16 @@ func NewNode(name, id string) *Node {
 	return &Node{
 		ObjectMeta: ObjectMeta{
 			Kind: KindNode,
+			Name: name,
+			UUID: id,
+		},
+	}
+}
+
+func NewSwitch(name, id string) *Switch {
+	return &Switch{
+		ObjectMeta: ObjectMeta{
+			Kind: KindSwitch,
 			Name: name,
 			UUID: id,
 		},

@@ -15,6 +15,7 @@ type ClusterHandler struct {
 	pods       map[string]*Pod
 	vnodes     map[string]*VNode
 	nodes      map[string]*Node
+	switches   map[string]*Switch
 
 	Ready bool
 	mux   sync.Mutex
@@ -48,6 +49,7 @@ func (h *ClusterHandler) BuildIndex() {
 	pods := make(map[string]*Pod)
 	vnodes := make(map[string]*VNode)
 	nodes := make(map[string]*Node)
+	switches := make(map[string]*Switch)
 
 	c := h.cluster
 	for _, host := range c.Nodes {
@@ -66,6 +68,7 @@ func (h *ClusterHandler) BuildIndex() {
 		}
 	}
 
+	h.switches = switches
 	h.nodes = nodes
 	h.vnodes = vnodes
 	h.pods = pods

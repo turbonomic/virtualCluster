@@ -106,14 +106,14 @@ func (rClient *DemoRegClient) GetActionPolicy() []*proto.ActionPolicyDTO {
 	rClient.addActionPolicy(ab, service, servicePolicy)
 
 	// 5. node: support provision and suspend; not resize; do not set move
-	node := proto.EntityDTO_VIRTUAL_MACHINE
-	nodePolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
-	nodePolicy[proto.ActionItemDTO_PROVISION] = supported
-	nodePolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
-	nodePolicy[proto.ActionItemDTO_SCALE] = notSupported
-	nodePolicy[proto.ActionItemDTO_SUSPEND] = supported
+	vnode := proto.EntityDTO_VIRTUAL_MACHINE
+	vnodePolicy := make(map[proto.ActionItemDTO_ActionType]proto.ActionPolicyDTO_ActionCapability)
+	vnodePolicy[proto.ActionItemDTO_PROVISION] = supported
+	vnodePolicy[proto.ActionItemDTO_RIGHT_SIZE] = notSupported
+	vnodePolicy[proto.ActionItemDTO_SCALE] = notSupported
+	vnodePolicy[proto.ActionItemDTO_SUSPEND] = supported
 
-	rClient.addActionPolicy(ab, node, nodePolicy)
+	rClient.addActionPolicy(ab, vnode, vnodePolicy)
 
 	return ab.Create()
 }
@@ -133,6 +133,7 @@ func (rclient *DemoRegClient) GetEntityMetadata() []*proto.EntityIdentityMetadat
 	var result []*proto.EntityIdentityMetadata
 
 	entities := []proto.EntityDTO_EntityType{
+		proto.EntityDTO_SWITCH,
 		proto.EntityDTO_PHYSICAL_MACHINE,
 		proto.EntityDTO_NAMESPACE,
 		proto.EntityDTO_WORKLOAD_CONTROLLER,

@@ -8,28 +8,51 @@ import (
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-//  ---------- Virtual Machine Node ------------------
-func (node *Node) BuildDTO() (*proto.EntityDTO, error) {
-	//bought, _ := node.createCommoditiesBought(node.ClusterID)
+//  ---------- Physical Machine Node ------------------
+func (node *Node) BuildDTO(networkswitch *Switch) (*proto.EntityDTO, error) {
 	sold, _ := node.createCommoditiesSold()
+	//bought, _ := node.createCommoditiesBought(node.ClusterID)
 
-	entity, err := builder.
-		NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
-		WithPowerState(proto.EntityDTO_POWERED_ON).
-		DisplayName(node.Name).
-		SellsCommodities(sold).
-		Create()
+	if networkswitch != nil {
+		bought, _ := node.createCommoditiesBought()
+		provider := builder.CreateProvider(proto.EntityDTO_SWITCH, networkswitch.UUID)
+		entity, err := builder.
+			NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
+			WithPowerState(proto.EntityDTO_POWERED_ON).
+			DisplayName(node.Name).
+			Provider(provider).
+			SellsCommodities(sold).
+			BuysCommodities(bought).
+			Create()
+		if err != nil {
+			msg := fmt.Errorf("Failed to build EntityDTO for pod(%v): %v",
+				node.Name, err.Error())
+			glog.Error(msg.Error())
+			return nil, msg
+		}
 
-	if err != nil {
-		msg := fmt.Errorf("Failed to build EntityDTO for pod(%v): %v",
-			node.Name, err.Error())
-		glog.Error(msg.Error())
-		return nil, msg
+		node.addPMRelatedData(entity)
+
+		return entity, nil
+	} else {
+		entity, err := builder.
+			NewEntityDTOBuilder(proto.EntityDTO_PHYSICAL_MACHINE, node.UUID).
+			WithPowerState(proto.EntityDTO_POWERED_ON).
+			DisplayName(node.Name).
+			SellsCommodities(sold).
+			Create()
+
+		if err != nil {
+			msg := fmt.Errorf("Failed to build EntityDTO for pod(%v): %v",
+				node.Name, err.Error())
+			glog.Error(msg.Error())
+			return nil, msg
+		}
+
+		node.addPMRelatedData(entity)
+
+		return entity, nil
 	}
-
-	node.addPMRelatedData(entity)
-
-	return entity, nil
 }
 
 func (node *Node) addPMRelatedData(e *proto.EntityDTO) error {
@@ -53,6 +76,12 @@ func (node *Node) addPMRelatedData(e *proto.EntityDTO) error {
 
 	e.RelatedEntityData = &proto.EntityDTO_PhysicalMachineRelatedData_{PhysicalMachineRelatedData: relatedData}
 	return nil
+}
+
+func (node *Node) createCommoditiesBought() ([]*proto.CommodityDTO, error) {
+	netComm, _ := builder.NewCommodityDTOBuilder(proto.CommodityDTO_NET_THROUGHPUT).Used(node.NetworkThroughput.Capacity).Create()
+
+	return []*proto.CommodityDTO{netComm}, nil
 }
 
 func (node *Node) createCommoditiesSold() ([]*proto.CommodityDTO, error) {

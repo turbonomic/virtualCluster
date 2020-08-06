@@ -18,24 +18,45 @@ func (c *Cluster) GenerateDTOs() ([]*proto.EntityDTO, error) {
 	//0. calculate the resource usage
 	c.SetResourceAmount()
 
-	//1. node, pod, container, app DTOs
-	for _, host := range c.Nodes {
-		hostDTO, err := host.BuildDTO()
-		if err != nil {
-			e := fmt.Errorf("failed to build hostDTO for node[%s]", host.Name)
-			glog.Error(e.Error())
-			continue
-		}
-		result = append(result, hostDTO)
+	//1. switch, node, pod, container, app DTOs
+	if c.Switches != nil {
+		for _, networkswitch := range c.Switches {
+			switchDTO, err := networkswitch.BuildDTO()
+			if err != nil {
+				e := fmt.Errorf("failed to build switchDTO for switch[%s]", networkswitch.Name)
+				glog.Error(e.Error())
+				continue
+			}
+			result = append(result, switchDTO)
 
-		subDTOs, err := host.BuildSubDTOs()
-		if err != nil {
-			e := fmt.Errorf("failed to build subHostDTOs for node[%s]", host.Name)
-			glog.Error(e.Error())
-			continue
+			subDTOs, err := networkswitch.BuildSubDTOs()
+			if err != nil {
+				e := fmt.Errorf("failed to build subHostDTOs for node[%s]", networkswitch.Name)
+				glog.Error(e.Error())
+				continue
+			}
+			result = append(result, subDTOs...)
+			glog.V(3).Infof("There are %d DTOs on node[%s].", len(subDTOs)+1, networkswitch.Name)
 		}
-		result = append(result, subDTOs...)
-		glog.V(3).Infof("There are %d DTOs on node[%s].", len(subDTOs)+1, host.Name)
+	} else {
+		for _, host := range c.Nodes {
+			hostDTO, err := host.BuildDTO(nil)
+			if err != nil {
+				e := fmt.Errorf("failed to build hostDTO for node[%s]", host.Name)
+				glog.Error(e.Error())
+				continue
+			}
+			result = append(result, hostDTO)
+
+			subDTOs, err := host.BuildSubDTOs()
+			if err != nil {
+				e := fmt.Errorf("failed to build subHostDTOs for node[%s]", host.Name)
+				glog.Error(e.Error())
+				continue
+			}
+			result = append(result, subDTOs...)
+			glog.V(3).Infof("There are %d DTOs on node[%s].", len(subDTOs)+1, host.Name)
+		}
 	}
 
 	//2. service DTOs

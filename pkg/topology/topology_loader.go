@@ -15,6 +15,11 @@ const (
 	defaultQPSLimit = float64(120)
 )
 
+type serviceTemplate struct {
+	Key  string
+	Pods []string
+}
+
 type containerTemplate struct {
 	Key    string
 	CPU    target.Resource
@@ -51,13 +56,19 @@ type nodeTemplate struct {
 	VMs    []string
 }
 
-type serviceTemplate struct {
-	Key  string
-	Pods []string
+// switch
+type switchTemplate struct {
+	Key string
+
+	NetworkThroughput float64
+	PMs               []string
 }
 
 type TargetTopology struct {
 	ClusterId string
+
+	//serviceTemplate map
+	ServiceTemplateMap map[string]*serviceTemplate
 
 	// containerTemplate map
 	ContainerTemplateMap map[string]*containerTemplate
@@ -71,8 +82,8 @@ type TargetTopology struct {
 	//physicalMachine map
 	NodeTemplateMap map[string]*nodeTemplate
 
-	//serviceTemplate amp
-	ServiceTemplateMap map[string]*serviceTemplate
+	//switch map
+	SwitchTemplateMap map[string]*switchTemplate
 }
 
 func NewTargetTopology(clusterId string) *TargetTopology {
@@ -82,6 +93,7 @@ func NewTargetTopology(clusterId string) *TargetTopology {
 		PodTemplateMap:       make(map[string]*podTemplate),
 		VNodeTemplateMap:     make(map[string]*vnodeTemplate),
 		NodeTemplateMap:      make(map[string]*nodeTemplate),
+		SwitchTemplateMap:    make(map[string]*switchTemplate),
 		ServiceTemplateMap:   make(map[string]*serviceTemplate),
 	}
 
@@ -226,6 +238,32 @@ func loadNode(t *TargetTopology, input *InputLine) error {
 	return nil
 }
 
+// load switchTemplate from a line
+// switch.key, net, node1, node2, ...
+func loadSwitch(t *TargetTopology, input *InputLine) error {
+	if _, exist := t.SwitchTemplateMap[input.key]; exist {
+		err := fmt.Errorf("switch [%s] already exists", input.key)
+		glog.Error(err.Error())
+		return err
+	}
+
+	net := input.getFloat()
+
+	if input.RemainingFieldCount() < 1 {
+		return fmt.Errorf("missing node list in switch declaration")
+	}
+
+	networkswitch := &switchTemplate{
+		Key:               input.key,
+		NetworkThroughput: net,
+		PMs:               input.GetRestOfFields(),
+	}
+
+	t.SwitchTemplateMap[input.key] = networkswitch
+	glog.V(4).Infof("[switch] %+v", networkswitch)
+	return nil
+}
+
 // load serviceTemplate from a line
 // service-key, pod1, pod2, ...
 func loadService(t *TargetTopology, input *InputLine) error {
@@ -332,6 +370,7 @@ var loadHandlers = map[string]HandlerFunction{
 	"pod":       loadPod,
 	"vnode":     loadVNode,
 	"node":      loadNode,
+	"switch":    loadSwitch,
 	"service":   loadService,
 	"comment":   noop,
 }
@@ -389,6 +428,7 @@ func (t *TargetTopology) PrintTemplateInfo() {
 	glog.V(1).Infof("podTemplate.num=%d", len(t.PodTemplateMap))
 	glog.V(1).Infof("vnodeTemplate.num=%d", len(t.VNodeTemplateMap))
 	glog.V(1).Infof("nodeTemplate.num=%d", len(t.NodeTemplateMap))
+	glog.V(1).Infof("switchTemplate.num=%d", len(t.SwitchTemplateMap))
 	glog.V(1).Infof("serviceTemplate.num=%d", len(t.ServiceTemplateMap))
 }
 
