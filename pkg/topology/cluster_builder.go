@@ -16,6 +16,7 @@ type ClusterBuilder struct {
 	pods       map[string]*target.Pod
 	vnodes     map[string]*target.VNode
 	nodes      map[string]*target.Node
+	switches   map[string]*target.Switch
 	services   []*target.VirtualApp
 }
 
@@ -156,6 +157,10 @@ func assignNode(node *target.Node, tmp *nodeTemplate) {
 	node.IP = tmp.IP
 }
 
+func assignSwitch(networkswitch *target.Switch, tmp *switchTemplate) {
+	networkswitch.NetworkThroughput.Capacity = tmp.NetworkThroughput
+}
+
 //Note: will set Node resourceAmount in cluster.SetResourceAmount()
 func (b *ClusterBuilder) buildNodes() error {
 	result := make(map[string]*target.Node)
@@ -189,6 +194,42 @@ func (b *ClusterBuilder) buildNodes() error {
 	}
 
 	b.nodes = result
+	return nil
+}
+
+//Note: will set Node resourceAmount in cluster.SetResourceAmount()
+func (b *ClusterBuilder) buildSwitches() error {
+	result := make(map[string]*target.Switch)
+
+	allPMs := b.nodes
+	for k, v := range b.topology.SwitchTemplateMap {
+		networkswitch := target.NewSwitch(k, k)
+		assignSwitch(networkswitch, v)
+		networkswitch.ClusterId = b.clusterId
+
+		nodes := make(map[string]*target.Node)
+		for i, pmKey := range v.PMs {
+			if pm, exist := allPMs[pmKey]; exist {
+				nodes[pm.UUID] = pm
+			} else {
+				glog.Warningf("node[%s]-%dth PM[%s] does not exist.", k, i+1, pmKey)
+				break
+			}
+		}
+
+		glog.V(3).Infof("node[%s] has %d Nodes.", k, len(nodes))
+		if len(nodes) != len(v.PMs) {
+			glog.Warningf("cannot get enough VMs[%d Vs. %d] for node[%s].",
+				len(nodes), len(v.PMs), k)
+			continue
+		}
+
+		networkswitch.PMs = nodes
+		result[networkswitch.UUID] = networkswitch
+		glog.V(4).Infof("[node] %+v", networkswitch)
+	}
+
+	b.switches = result
 	return nil
 }
 
@@ -255,6 +296,12 @@ func (b *ClusterBuilder) GenerateCluster() (*target.Cluster, error) {
 		return nil, err
 	}
 
+	if err := b.buildSwitches(); err != nil {
+		err := fmt.Errorf("Generate cluster failed: build switches failed: %v", err)
+		glog.Error(err.Error())
+		return nil, err
+	}
+
 	if err := b.buildVirtualApp(); err != nil {
 		err := fmt.Errorf("Generate cluster failed: build virtualApp failed: %v", err)
 		glog.Error(err.Error())
@@ -262,6 +309,7 @@ func (b *ClusterBuilder) GenerateCluster() (*target.Cluster, error) {
 	}
 
 	cluster := target.NewCluster(b.clusterName, b.clusterId)
+	cluster.Switches = b.switches
 	cluster.Nodes = b.nodes
 	cluster.Services = b.services
 
