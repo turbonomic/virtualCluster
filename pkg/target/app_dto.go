@@ -13,6 +13,7 @@ func (app *Application) BuildDTO(docker *Container, pod *Pod) (*proto.EntityDTO,
 	sold, _ := app.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_CONTAINER_POD, docker.UUID)
 	appData, _ := app.createApplicationData(pod)
+	truep := true
 
 	//TODO: do we need ApplicationProperties?
 
@@ -24,6 +25,7 @@ func (app *Application) BuildDTO(docker *Container, pod *Pod) (*proto.EntityDTO,
 		SellsCommodities(sold).
 		ApplicationData(appData).
 		WithPowerState(proto.EntityDTO_POWERED_ON).
+		ConsumerPolicy(&proto.EntityDTO_ConsumerPolicy{ProviderMustClone: &truep}).
 		Create()
 
 	if err != nil {

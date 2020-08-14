@@ -54,6 +54,7 @@ func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {
 	bought, _ := docker.createCommoditiesBought(pod.UUID)
 	sold, _ := docker.createCommoditiesSold()
 	provider := builder.CreateProvider(proto.EntityDTO_CONTAINER_POD, pod.UUID)
+	truep := true
 
 	entity, err := builder.
 		NewEntityDTOBuilder(proto.EntityDTO_CONTAINER, docker.UUID).
@@ -62,6 +63,7 @@ func (docker *Container) BuildDTO(pod *Pod) (*proto.EntityDTO, error) {
 		BuysCommodities(bought).
 		SellsCommodities(sold).
 		WithPowerState(proto.EntityDTO_POWERED_ON).
+		ConsumerPolicy(&proto.EntityDTO_ConsumerPolicy{ProviderMustClone: &truep}).
 		Create()
 
 	if err != nil {
