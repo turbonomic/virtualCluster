@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/turbonomic/turbo-api/pkg/api"
 	"net/url"
 
 	"github.com/golang/glog"
@@ -16,8 +17,9 @@ type TAPService struct {
 	// TurboProbe provides the communication interface between the Turbo server
 	// and the infrastructure environment
 	*probe.TurboProbe
-	turboClient         *client.TurboClient
-	disconnectFromTurbo chan struct{}
+	turboClient                 *client.TurboClient
+	disconnectFromTurbo         chan struct{}
+	communicationBindingChannel string
 }
 
 func (tapService *TAPService) DisconnectFromTurbo() {
@@ -27,32 +29,27 @@ func (tapService *TAPService) DisconnectFromTurbo() {
 }
 
 func (tapService *TAPService) addTarget(isRegistered chan bool) {
-	c := tapService.ProbeConfiguration
-	pinfo := c.ProbeCategory + "::" + c.ProbeType
-
-	//1. wait until probe is registered.
-	select {
-	case status := <-isRegistered:
-		if !status {
-			glog.Errorf("Probe %v registration failed.", pinfo)
-			return
-		}
-		break
-	case <-tapService.disconnectFromTurbo:
-		glog.V(2).Infof("Abort adding target: Kubeturbo service is stopped.")
+	targetInfos := tapService.GetProbeTargets()
+	if len(targetInfos) <= 0 {
+		return
+	}
+	// Block until probe is registered
+	status := <-isRegistered
+	if !status {
+		c := tapService.ProbeConfiguration
+		pInfo := c.ProbeCategory + "::" + c.ProbeType
+		glog.Errorf("Probe %v registration failed.", pInfo)
 		return
 	}
 
-	targetInfos := tapService.GetProbeTargets()
-	if len(targetInfos) > 0 {
-		//2. register the targets
-		for _, targetInfo := range targetInfos {
-			target := targetInfo.GetTargetInstance()
-			service := mediationcontainer.GetMediationService()
-			if err := tapService.turboClient.AddTarget(target, service); err != nil {
-				glog.Errorf("Failed to add target %v: %v",
-					targetInfo, err)
-			}
+	for _, targetInfo := range targetInfos {
+		target := targetInfo.GetTargetInstance()
+		target.InputFields = append(target.InputFields, &api.InputField{
+			Name: api.CommunicationBindingChannel, Value: tapService.communicationBindingChannel})
+		service := mediationcontainer.GetMediationService()
+		if err := tapService.turboClient.AddTarget(target, service); err != nil {
+			glog.Errorf("Failed to add target %v: %v",
+				targetInfo, err)
 		}
 	}
 }
@@ -70,7 +67,7 @@ func (tapService *TAPService) ConnectToTurbo() {
 	defer close(isRegistered)
 
 	// start a separate go routine to connect to the Turbo server
-	go mediationcontainer.InitMediationContainer(isRegistered)
+	go mediationcontainer.InitMediationContainer(isRegistered, tapService.disconnectFromTurbo)
 	go tapService.addTarget(isRegistered)
 
 	// Once connected the mediation container will keep running till a disconnect message is sent to the tap service
@@ -109,6 +106,12 @@ func (builder *TAPServiceBuilder) Create() (*TAPService, error) {
 	return builder.tapService, nil
 }
 
+// WithCommunicationBindingChannel records the given binding channel in the builder
+func (builder *TAPServiceBuilder) WithCommunicationBindingChannel(communicationBindingChannel string) *TAPServiceBuilder {
+	builder.tapService.communicationBindingChannel = communicationBindingChannel
+	return builder
+}
+
 // Build the mediation container and Turbo API client.
 func (builder *TAPServiceBuilder) WithTurboCommunicator(commConfig *TurboCommunicationConfig) *TAPServiceBuilder {
 	if builder.err != nil {
@@ -117,8 +120,9 @@ func (builder *TAPServiceBuilder) WithTurboCommunicator(commConfig *TurboCommuni
 
 	// Create the mediation container. This is a singleton.
 	containerConfig := &mediationcontainer.MediationContainerConfig{
-		ServerMeta:      commConfig.ServerMeta,
-		WebSocketConfig: commConfig.WebSocketConfig,
+		ServerMeta:                  commConfig.ServerMeta,
+		WebSocketConfig:             commConfig.WebSocketConfig,
+		CommunicationBindingChannel: builder.tapService.communicationBindingChannel,
 	}
 	mediationcontainer.CreateMediationContainer(containerConfig)
 
@@ -129,10 +133,9 @@ func (builder *TAPServiceBuilder) WithTurboCommunicator(commConfig *TurboCommuni
 		return builder
 	}
 	config := client.NewConfigBuilder(serverAddress).
-		BasicAuthentication(commConfig.OpsManagerUsername, commConfig.OpsManagerPassword).
+		BasicAuthentication(url.QueryEscape(commConfig.OpsManagerUsername), url.QueryEscape(commConfig.OpsManagerPassword)).
 		SetProxy(commConfig.ServerMeta.Proxy).
 		Create()
-	glog.V(4).Infof("The Turbo API client config authentication is: %s, %s", commConfig.OpsManagerUsername, commConfig.OpsManagerPassword)
 	glog.V(4).Infof("The Turbo API client config is create successfully: %v", config)
 	builder.tapService.turboClient, err = client.NewTurboClient(config)
 	if err != nil {

@@ -3,6 +3,7 @@ package probe
 import (
 	"fmt"
 
+	protobuf "github.com/golang/protobuf/proto"
 	"github.com/turbonomic/turbo-go-sdk/pkg/builder"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 
@@ -29,6 +30,7 @@ type ProbeRegistrationAgent struct {
 	IAccountDefinitionProvider
 	IActionPolicyProvider
 	IEntityMetadataProvider
+	IActionMergePolicyProvider
 }
 
 type TurboRegistrationClient interface {
@@ -222,7 +224,7 @@ func (theProbe *TurboProbe) GetProbeTargets() []*TurboTargetInfo {
 	return targets
 }
 
-// The ProbeInfo for the probe
+// GetProbeInfo produces a ProbeInfo to be used to register the probe.
 func (theProbe *TurboProbe) GetProbeInfo() (*proto.ProbeInfo, error) {
 	// 1. construct the basic probe info.
 	probeConf := theProbe.ProbeConfiguration
@@ -230,7 +232,8 @@ func (theProbe *TurboProbe) GetProbeInfo() (*proto.ProbeInfo, error) {
 	probeType := probeConf.ProbeType
 	probeUICat := probeConf.ProbeUICategory
 
-	probeInfoBuilder := builder.NewBasicProbeInfoBuilder(probeType, probeCat, probeUICat)
+	probeInfoBuilder := builder.NewBasicProbeInfoBuilder(probeType, probeCat, probeUICat).
+		WithVersion(probeConf.Version).WithDisplayName(probeConf.DisplayName)
 
 	// 2. discovery intervals metadata
 	probeInfoBuilder.WithFullDiscoveryInterval(probeConf.discoveryMetadata.GetFullRediscoveryIntervalSeconds())
@@ -262,8 +265,14 @@ func (theProbe *TurboProbe) GetProbeInfo() (*proto.ProbeInfo, error) {
 		probeInfoBuilder.WithEntityMetadata(registrationClient.GetEntityMetadata())
 	}
 
+	// 8. action merge policy metadata
+	if registrationClient.IActionMergePolicyProvider != nil {
+		probeInfoBuilder.WithActionMergePolicySet(registrationClient.GetActionMergePolicy())
+	}
+
 	probeInfo := probeInfoBuilder.Create()
-	glog.V(3).Infof("ProbeInfo %+v", probeInfo)
+
+	glog.V(3).Infof("%s", protobuf.MarshalTextString(probeInfo))
 
 	return probeInfo, nil
 }

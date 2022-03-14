@@ -1,6 +1,7 @@
 package mediationcontainer
 
 import (
+	protobuf "github.com/golang/protobuf/proto"
 	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 	"github.com/turbonomic/turbo-go-sdk/pkg/version"
 
@@ -15,15 +16,17 @@ const (
 )
 
 type SdkClientProtocol struct {
-	allProbes map[string]*ProbeProperties
-	version   string
+	allProbes                   map[string]*ProbeProperties
+	version                     string
+	communicationBindingChannel string
 	//TransportReady chan bool
 }
 
-func CreateSdkClientProtocolHandler(allProbes map[string]*ProbeProperties, version string) *SdkClientProtocol {
+func CreateSdkClientProtocolHandler(allProbes map[string]*ProbeProperties, version, communicationBindingChannel string) *SdkClientProtocol {
 	return &SdkClientProtocol{
-		allProbes: allProbes,
-		version:   version,
+		allProbes:                   allProbes,
+		version:                     version,
+		communicationBindingChannel: communicationBindingChannel,
 		//TransportReady: done,
 	}
 }
@@ -126,7 +129,7 @@ func (clientProtocol *SdkClientProtocol) HandleRegistration(transport ITransport
 		return false
 	}
 
-	glog.V(4).Infof("Send registration message: %+v", containerInfo)
+	glog.V(2).Infof("containerInfo: %s", protobuf.MarshalTextString(containerInfo))
 
 	// Create Protobuf Endpoint to send and handle registration messages
 	protoMsg := &RegistrationResponse{}
@@ -173,6 +176,7 @@ func (clientProtocol *SdkClientProtocol) MakeContainerInfo() (*proto.ContainerIn
 	}
 
 	return &proto.ContainerInfo{
-		Probes: probes,
+		Probes:                      probes,
+		CommunicationBindingChannel: &clientProtocol.communicationBindingChannel,
 	}, nil
 }

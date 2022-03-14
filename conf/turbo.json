@@ -1,7 +1,7 @@
 {
     "serverMeta": {
         "turboServer": "https://localhost",
-        "version": "7.22"
+        "version": "8.4"
     },
     "restAPIConfig": {
         "opsManagerUserName": "user",

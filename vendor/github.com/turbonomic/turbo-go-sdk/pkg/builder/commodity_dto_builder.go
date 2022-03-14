@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	OneHundredPercent = 100.0
+	OneHundredPercent           = 100.0
+	AppCommodityDefaultCapacity = 100000.0
 )
 
 type CommodityDTOBuilder struct {
@@ -52,21 +53,22 @@ func (cb *CommodityDTOBuilder) Create() (*proto.CommodityDTO, error) {
 		return nil, err
 	}
 	commodityDTO := &proto.CommodityDTO{
-		CommodityType:   cb.commodityType,
-		Key:             cb.key,
-		Used:            cb.used,
-		Reservation:     cb.reservation,
-		Capacity:        cb.capacity,
-		Limit:           cb.limit,
-		Peak:            cb.peak,
-		Active:          cb.active,
-		Resizable:       cb.resizable,
-		DisplayName:     cb.displayName,
-		Thin:            cb.thin,
-		ComputedUsed:    cb.computedUsed,
-		UsedIncrement:   cb.usedIncrement,
-		PropMap:         buildPropertyMap(cb.propMap),
-		UtilizationData: cb.utilizationData,
+		CommodityType:           cb.commodityType,
+		Key:                     cb.key,
+		Used:                    cb.used,
+		Reservation:             cb.reservation,
+		Capacity:                cb.capacity,
+		Limit:                   cb.limit,
+		Peak:                    cb.peak,
+		Active:                  cb.active,
+		Resizable:               cb.resizable,
+		DisplayName:             cb.displayName,
+		Thin:                    cb.thin,
+		ComputedUsed:            cb.computedUsed,
+		UsedIncrement:           cb.usedIncrement,
+		PropMap:                 buildPropertyMap(cb.propMap),
+		UtilizationData:         cb.utilizationData,
+		UtilizationThresholdPct: cb.utilizationThresholdPct,
 	}
 
 	if cb.storageLatencyData != nil {
@@ -126,6 +128,14 @@ func (cb *CommodityDTOBuilder) Reservation(reservation float64) *CommodityDTOBui
 	return cb
 }
 
+func (cb *CommodityDTOBuilder) UtilizationThresholdPct(utilizationThresholdPct float64) *CommodityDTOBuilder {
+	if cb.err != nil {
+		return cb
+	}
+	cb.utilizationThresholdPct = &utilizationThresholdPct
+	return cb
+}
+
 func (cb *CommodityDTOBuilder) Active(active bool) *CommodityDTOBuilder {
 	if cb.err != nil {
 		return cb
@@ -140,6 +150,10 @@ func (cb *CommodityDTOBuilder) Resizable(resizable bool) *CommodityDTOBuilder {
 	}
 	cb.resizable = &resizable
 	return cb
+}
+
+func (cb *CommodityDTOBuilder) HasResizable() bool {
+	return cb.resizable != nil
 }
 
 func (cb *CommodityDTOBuilder) UtilizationData(points []float64, lastPointTimestampMs int64, intervalMs int32) *CommodityDTOBuilder {
@@ -174,6 +188,8 @@ func (cb *CommodityDTOBuilder) validateAndConvert() error {
 		cb.Used(used).Capacity(OneHundredPercent)
 	case proto.CommodityDTO_DB_CACHE_HIT_RATE:
 		cb.Capacity(OneHundredPercent)
+	case proto.CommodityDTO_APPLICATION:
+		cb.Capacity(AppCommodityDefaultCapacity)
 	}
 	return nil
 }
